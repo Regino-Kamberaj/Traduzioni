@@ -1,4 +1,4 @@
- ### Dipartimento di Ingegneria dell’Informazione
+Dipartimento di Ingegneria dell’Informazione
 
 **Università degli Studi di Firenze**
 
@@ -592,348 +592,244 @@ Come abbiamo visto nell'Esempio 4.3, e forse contrariamente all'intuizione, sceg
 Per evitare questo tipo di comportamento, richiediamo che la direzione di ricerca sia in qualche modo legata al vettore gradiente. Formalizziamo questa idea con la seguente definizione.
 
 ---
- **Definizione 4.4: Direzioni Correlate al Gradiente**
+**Definizione 4.4: Direzioni Correlate al Gradiente**
 
-Sia {xk,dk}\{x_k, d_k\} la sequenza generata da un algoritmo iterativo della forma:
+Sia $\{x_k, d_k\}$ la sequenza generata da un algoritmo iterativo della forma:	$x_{k+1} = x_k + \alpha_k d_k$
 
-xk+1=xk+αkdk.x_{k+1} = x_k + \alpha_k d_k.
+Diciamo che la sequenza $\{d_k\}$ delle direzioni è **correlata al gradiente** rispetto a $\{x_k\}$ se esistono due costanti $c_1, c_2 > 0$ tali che, per ogni k=0,1,… valgano le seguenti condizioni:
 
-Diciamo che la sequenza {dk}\{d_k\} delle direzioni è correlata al gradiente rispetto a {xk}\{x_k\} se esistono due costanti c1,c2>0c_1, c_2 > 0 tali che, per ogni k=0,1,…k = 0, 1, \dots, valgano le seguenti condizioni:
-
-1. ∥dk∥≤c1∥∇f(xk)∥\|d_k\| \leq c_1 \|\nabla f(x_k)\|,
-2. ∇f(xk)Tdk≤−c2∥∇f(xk)∥2\nabla f(x_k)^T d_k \leq -c_2 \|\nabla f(x_k)\|^2.
+1. $\|d_k\| \leq c_1 \|\nabla f(x_k)\|$
+2. $\nabla f(x_k)^T d_k \leq -c_2 \|\nabla f(x_k)\|^2$
 
 ---
 
- Interpretazione delle Condizioni
+Interpretazione ora le due condizioni:
+- **Prima condizione:** La grandezza della direzione di ricerca può essere molto grande, purché non sia infinitamente maggiore rispetto alla grandezza del gradiente. ==Inoltre, la direzione deve ridursi a zero quando il gradiente tende a zero.==
+- **Seconda condizione:** Richiede che la direzione **di discesa selezionata** abbia ==una derivata direzionale non trascurabile rispetto alla derivata direzionale lungo il gradiente,== e che si riduca a zero solo quando ci si avvicina a un punto stazionario.
 
-- **Prima condizione:** La grandezza della direzione di ricerca può essere molto grande, purché non sia infinitamente maggiore rispetto alla grandezza del gradiente. Inoltre, la direzione deve ridursi a zero quando il gradiente tende a zero.
-- **Seconda condizione:** Richiede che la direzione di discesa selezionata abbia una derivata direzionale non trascurabile rispetto alla derivata direzionale lungo il gradiente, e che si riduca a zero solo quando ci si avvicina a un punto stazionario.
+Denotiamo con $\theta(v_1, v_2)$ l'angolo tra due vettori $v_1$ e $v_2$. Combinando le due condizioni della Definizione 4.4, otteniamo:
 
----
+	$\cos \theta(d_k, -\nabla f(x_k)) = \frac{-\nabla f(x_k)^T d_k}{\|d_k\| \|\nabla f(x_k)\|} \geq \frac{c_2 \|\nabla f(x^k)\|^2}{c_1 \|\nabla f(x_k)\|\|\nabla f(x_k)\|} = \frac{c_2}{c_1} > 0$
 
- Relazione tra Direzione di Ricerca e Gradiente
+Questa relazione garantisce che l'angolo tra la **direzione di ricerca e il gradiente negativo** rimanga inferiore o uguale a $90^\circ$ e sia sempre maggiore di zero. In questo modo, evitiamo che ==le due direzioni diventino asintoticamente ortogonali==, come osservato nell'Esempio 4.3.
 
-Denotiamo con θ(v1,v2)\theta(v_1, v_2) l'angolo tra due vettori v1v_1 e v2v_2. Combinando le due condizioni della Definizione 4.4, otteniamo:
+Quali sono quindi le direzioni gradient related?
+Un esempio ovvio di direzione correlata al gradiente è il gradiente negativo stesso, $-\nabla f(x_k)$ che soddisfa le due condizioni con $c_1 = c_2 = 1$.
 
-cos⁡θ(dk,−∇f(xk))=−∇f(xk)Tdk∥dk∥∥∇f(xk)∥≥c2c1>0.\cos \theta(d_k, -\nabla f(x_k)) = \frac{-\nabla f(x_k)^T d_k}{\|d_k\| \|\nabla f(x_k)\|} \geq \frac{c_2}{c_1} > 0.
+Un'altra _classe_ di direzioni correlate al gradiente è data da: $d_k = -H_k \nabla f(x_k)$,
+dove $H_k$ è una **matrice simmetrica** con opportune proprietà. In particolare, $d_k$ è certamente una direzione di discesa se $H_k$ è **definita positiva**, poiché:
+	
+	$\nabla f(x_k)^T d_k = -\nabla f(x_k)^T H_k \nabla f(x_k) < 0$.
 
-Questa relazione garantisce che l'angolo tra la direzione di ricerca e il gradiente negativo rimanga inferiore o uguale a 90∘90^\circ e sia sempre maggiore di zero. In questo modo, evitiamo che le due direzioni diventino asintoticamente ortogonali, come osservato nell'Esempio 4.3.
+Tuttavia, la sola definitezza positiva di $H_k$ non è sufficiente a garantire la correlazione al gradiente. La proprietà può essere assicurata se imponiamo che la sequenza $\{H_k\}$ soddisfi la condizione di **autovalori limitati**, cioè esistano costanti $c_1, c_2$ con $0 < c_2 < c_1 < \infty$ tali che, per ogni $k = 0, 1, \dots$ : 	$c_2 \leq \lambda_{\text{min}}(H_k) \leq \lambda_{\text{max}}(H_k) \leq c_1.$
 
----
+Sotto questa assunzione, possiamo dimostrare che per ogni k (Ricorda Prop 1.2 ):
 
- Classi di Direzioni di Ricerca Correlate al Gradiente
-
-Un esempio ovvio di direzione correlata al gradiente è il gradiente negativo stesso, −∇f(xk)-\nabla f(x_k), che soddisfa le due condizioni con c1=c2=1c_1 = c_2 = 1.
-
-Un'altra classe di direzioni correlate al gradiente è data da:
-
-dk=−Hk∇f(xk),d_k = -H_k \nabla f(x_k),
-
-dove HkH_k è una matrice simmetrica con opportune proprietà. In particolare, dkd_k è certamente una direzione di discesa se HkH_k è definita positiva, poiché:
-
-∇f(xk)Tdk=−∇f(xk)THk∇f(xk)<0.\nabla f(x_k)^T d_k = -\nabla f(x_k)^T H_k \nabla f(x_k) < 0.
-
----
-
- Proprietà degli Autovalori della Matrice HkH_k
-
-Tuttavia, la sola definitezza positiva di HkH_k non è sufficiente a garantire la correlazione al gradiente. La proprietà può essere assicurata se imponiamo che la sequenza {Hk}\{H_k\} soddisfi la condizione di autovalori limitati, cioè esistano costanti c1,c2c_1, c_2 con 0<c2<c1<∞0 < c_2 < c_1 < \infty tali che, per ogni k=0,1,…k = 0, 1, \dots:
-
-c2≤λmin(Hk)≤λmax(Hk)≤c1.c_2 \leq \lambda_{\text{min}}(H_k) \leq \lambda_{\text{max}}(H_k) \leq c_1.
-
-Sotto questa assunzione, possiamo dimostrare che per ogni kk:
-
-1. ∥dk∥=∥Hk∇f(xk)∥≤λmax(Hk)∥∇f(xk)∥≤c1∥∇f(xk)∥,\|d_k\| = \|H_k \nabla f(x_k)\| \leq \lambda_{\text{max}}(H_k) \|\nabla f(x_k)\| \leq c_1 \|\nabla f(x_k)\|,
-2. ∇f(xk)Tdk=−∇f(xk)THk∇f(xk)≤−λmin(Hk)∥∇f(xk)∥2≤−c2∥∇f(xk)∥2.\nabla f(x_k)^T d_k = -\nabla f(x_k)^T H_k \nabla f(x_k) \leq -\lambda_{\text{min}}(H_k) \|\nabla f(x_k)\|^2 \leq -c_2 \|\nabla f(x_k)\|^2.
-
----
-
- Conclusione
+1. $\|d_k\| = \|H_k \nabla f(x_k)\| \leq \lambda_{\text{max}}(H_k) \|\nabla f(x_k)\| \leq c_1 \|\nabla f(x_k)\|$, 
+2. $\nabla f(x_k)^T d_k = -\nabla f(x_k)^T H_k \nabla f(x_k) \leq -\lambda_{\text{min}}(H_k) \|\nabla f(x_k)\|^2 \leq -c_2 \|\nabla f(x_k)\|^2$.
 
 Questa condizione sarà particolarmente utile nella discussione di alcune classi importanti di algoritmi, dove la correlazione tra direzione e gradiente è fondamentale per garantire proprietà di convergenza e stabilità.
-
-
 #### 4.2.3 Risultati di Convergenza
 
 In questa sezione forniamo i risultati generali di convergenza per i metodi di discesa basati su **line search**. Cominciamo con il risultato di convergenza globale.
 
 ---
+##### **Proposizione 4.3: Convergenza Globale**
 
-#### **Proposizione 4.3: Convergenza Globale**
+Sia $f$ una funzione continuamente differenziabile, e sia $\{x_k, d_k\}$ la sequenza generata da un algoritmo iterativo della forma: $x_{k+1} = x_k + \alpha_k d_k$, supponendo che:
+- il passo $\alpha_k$ sia ottenuto tramite l'algoritmo di Armijo (Algoritmo 1) per ogni $k$,
+- la sequenza delle direzioni $\{d_k\}$ sia correlata al gradiente rispetto a $\{x_k\}$. 
+- Inoltre, supponiamo che l'insieme di livello: $L_0 = \{x \in \mathbb{R}^n \, | \, f(x) \leq f(x_0)\}$ sia compatto. 
 
-Sia ff una funzione continuamente differenziabile, e sia {xk,dk}\{x_k, d_k\} la sequenza generata da un algoritmo iterativo della forma:
-
-xk+1=xk+αkdk,x_{k+1} = x_k + \alpha_k d_k,
-
-supponendo che il passo αk\alpha_k sia ottenuto tramite l'algoritmo di Armijo (Algoritmo 1) per ogni kk, e che la sequenza delle direzioni {dk}\{d_k\} sia correlata al gradiente rispetto a {xk}\{x_k\}. Inoltre, supponiamo che l'insieme di livello:
-
-L0={x∈Rn ∣ f(x)≤f(x0)}L_0 = \{x \in \mathbb{R}^n \, | \, f(x) \leq f(x_0)\}
-
-sia compatto. Allora, la sequenza {xk}\{x_k\} ammette punti di accumulazione, e ogni punto di accumulazione xˉ\bar{x} è un punto stazionario, cioè:
-
-∇f(xˉ)=0.\nabla f(\bar{x}) = 0.
+Allora, la sequenza $\{x_k\}$ ammette punti di accumulazione, e ==ogni punto di accumulazione $\bar{x}$ è un punto stazionario==, cioè: $\nabla f(\bar{x}) = 0$.
 
 ---
 
-#### **Dimostrazione**
+**Dimostrazione**
+Per ogni $k = 0, 1, \dots$, poiché la condizione di Armijo è soddisfatta e ricordando la condizione di correlazione al gradiente, abbiamo:
 
-Per ogni k=0,1,…k = 0, 1, \dots, poiché la condizione di Armijo è soddisfatta e ricordando la condizione di correlazione al gradiente, abbiamo:
+	$f(x_{k+1}) = f(x_k + \alpha_k d_k) \leq f(x_k) + \gamma \alpha_k \nabla f(x_k)^T d_k \leq f(x_k) - \gamma c_2 \alpha_k \|\nabla f(x_k)\|^2 < f(x_k). \tag{5}$ (5)
 
-f(xk+1)=f(xk+αkdk)≤f(xk)+γαk∇f(xk)Tdk≤f(xk)−γc2αk∥∇f(xk)∥2<f(xk).(5)f(x_{k+1}) = f(x_k + \alpha_k d_k) \leq f(x_k) + \gamma \alpha_k \nabla f(x_k)^T d_k \leq f(x_k) - \gamma c_2 \alpha_k \|\nabla f(x_k)\|^2 < f(x_k). \tag{5}
+La sequenza $\{f(x_k)\}$ è quindi **monotona decrescente** (tolgo infatti una quantità positiva) e, grazie alla compattezza di $L_0$ e alla Proposizione 4.1, la sequenza $\{x_k\}$ ammette punti limite, tutti appartenenti a $L_0$. Inoltre, $\{f(x_k)\}$ converge a un valore finito $f^*$, e abbiamo:
 
-La sequenza {f(xk)}\{f(x_k)\} è quindi monotona decrescente e, grazie alla compattezza di L0L_0 e alla Proposizione 4.1, la sequenza {xk}\{x_k\} ammette punti limite, tutti appartenenti a L0L_0. Inoltre, {f(xk)}\{f(x_k)\} converge a un valore finito f∗f^*, e abbiamo:
+	$\lim_{k \to \infty} f(x_{k+1}) - f(x_k) = 0. \tag{6}$ (6)
 
-lim⁡k→∞(f(xk+1)−f(xk))=0.(6)\lim_{k \to \infty} \left(f(x_{k+1}) - f(x_k)\right) = 0. \tag{6}
+Sia $\bar{x}$ uno di questi punti limite, cioè esiste $K \subseteq \{0, 1, \dots\}$ tale che:
 
-Sia xˉ\bar{x} uno di questi punti limite, cioè esiste K⊆{0,1,… }K \subseteq \{0, 1, \dots\} tale che:
+	$\lim_{k \in K, \, k \to \infty} x_k = \bar{x}$
 
-lim⁡k∈K, k→∞xk=xˉ.\lim_{k \in K, \, k \to \infty} x_k = \bar{x}.
+Supponiamo per assurdo che $\bar{x}$ non sia un punto stazionario, cioè che $\|\nabla f(\bar{x})\| = \nu > 0$. Riscrivendo l'equazione (5), otteniamo:
 
-Supponiamo per assurdo che xˉ\bar{x} non sia un punto stazionario, cioè che ∥∇f(xˉ)∥=ν>0\|\nabla f(\bar{x})\| = \nu > 0. Riscrivendo l'equazione (5), otteniamo:
+	$f(x_{k+1}) - f(x_k) \leq \gamma \alpha_k \nabla f(x_k)^T d_k \leq 0$
 
-f(xk+1)−f(xk)≤γαk∇f(xk)Tdk≤0.f(x_{k+1}) - f(x_k) \leq \gamma \alpha_k \nabla f(x_k)^T d_k \leq 0.
+Prendendo il limite per $k \in K, \, k \to \infty$ e ricordando (6), abbiamo:
 
-Prendendo il limite per k∈K, k→∞k \in K, \, k \to \infty e ricordando (6), abbiamo:
+	$0 \leq \lim_{k \in K, \, k \to \infty} \gamma \alpha_k \nabla f(x_k)^T d_k \leq 0$
 
-0≤lim⁡k∈K, k→∞γαk∇f(xk)Tdk≤0,0 \leq \lim_{k \in K, \, k \to \infty} \gamma \alpha_k \nabla f(x_k)^T d_k \leq 0,
+quindi (per i carabinieri):
 
-quindi:
-
-lim⁡k∈K, k→∞αk∇f(xk)Tdk=0.\lim_{k \in K, \, k \to \infty} \alpha_k \nabla f(x_k)^T d_k = 0.
+	$\lim_{k \in K, \, k \to \infty} \alpha_k \nabla f(x_k)^T d_k = 0$
 
 Dalla condizione di correlazione al gradiente, sappiamo che:
 
-∇f(xk)Tdk≤−c2∥∇f(xk)∥2,\nabla f(x_k)^T d_k \leq -c_2 \|\nabla f(x_k)\|^2,
+	$\nabla f(x_k)^T d_k \leq -c_2 \|\nabla f(x_k)\|^2$,
 
 e quindi:
 
-0=lim⁡k∈K, k→∞αk∇f(xk)Tdk≤lim⁡k∈K, k→∞−c2αk∥∇f(xk)∥2.0 = \lim_{k \in K, \, k \to \infty} \alpha_k \nabla f(x_k)^T d_k \leq \lim_{k \in K, \, k \to \infty} -c_2 \alpha_k \|\nabla f(x_k)\|^2.
+	$0 = \lim_{k \in K, \, k \to \infty} \alpha_k \nabla f(x_k)^T d_k \leq \lim_{k \in K, \, k \to \infty} -c_2 \alpha_k \|\nabla f(x_k)\|^2.$
 
 Questo implica:
 
-lim⁡k∈K, k→∞αk∥∇f(xk)∥2=0.(7)\lim_{k \in K, \, k \to \infty} \alpha_k \|\nabla f(x_k)\|^2 = 0. \tag{7}
+	$\lim_{k \in K, \, k \to \infty} \alpha_k \|\nabla f(x_k)\|^2 = 0. \tag{7}$ 
 
----
+Grazie alla continuità di ∇f(x), abbiamo che, per $k \in K, \, k \to \infty$, vale:
 
-Grazie alla continuità di ∇f(x)\nabla f(x), abbiamo che, per k∈K, k→∞k \in K, \, k \to \infty, vale:
-
-∥∇f(xk)∥2→∥∇f(xˉ)∥2=ν2>0.\|\nabla f(x_k)\|^2 \to \|\nabla f(\bar{x})\|^2 = \nu^2 > 0.
+	$\|\nabla f(x_k)\|^2 \to \|\nabla f(\bar{x})\|^2 = \nu^2 > 0$ 
 
 Pertanto, deve necessariamente valere:
 
-lim⁡k∈K, k→∞αk=0.\lim_{k \in K, \, k \to \infty} \alpha_k = 0.
+	$\lim_{k \in K, \, k \to \infty} \alpha_k = 0$
 
----
+Ora, $\alpha_k \to 0$ **lungo la sottosequenza K** implica che esiste un $k̄ \in K$ tale che:
 
-Ora, αk→0\alpha_k \to 0 lungo la sottosequenza KK implica che esiste un kˉ∈Kk̄ \in K tale che:
+	$\alpha_k < \Delta_0, \quad \forall k \in K, \, k \geq k̄$ 
 
-αk<Δ0,∀k∈K, k≥kˉ.\alpha_k < \Delta_0, \quad \forall k \in K, \, k \geq k̄.
+Secondo la Proposizione 4.2, abbiamo: 
 
-Secondo la Proposizione 4.2, abbiamo:
+	$f(x_k + \frac{\alpha_k}{\delta} d_k) > f(x_k) + \gamma \frac{\alpha_k}{\delta} \nabla f(x_k)^T d_k$ (7)
 
-f(xk+αkdk)>f(xk)+γαk∇f(xk)Tdk,f(x_k + \alpha_k d_k) > f(x_k) + \gamma \alpha_k \nabla f(x_k)^T d_k,
+ per ogni $k \in K, k \geq \bar{k}$. 
+ Riprendendo il discorso dal **teorema del valor medio**, per ogni k abbiamo:
+	
+	$f\left(x_k + \frac{\alpha_k}{\delta} d_k\right) = f(x_k) + \frac{\alpha_k}{\delta} \nabla f\left(x_k + \theta_k \frac{\alpha_k}{\delta} d_k\right)^T d_k \space \text{con} \space \theta_k \in (0, 1)$. 
 
-il che contraddice il fatto che la condizione di Armijo sia soddisfatta. Quindi, ∥∇f(xˉ)∥=0\|\nabla f(\bar{x})\| = 0, e xˉ\bar{x} è un punto stazionario. Questo conclude la dimostrazione.
-### Continuazione della Dimostrazione della Proposizione 4.3
+Combinando questa espressione con l'equazione (7) (con un po' di semplificazioni), otteniamo per ogni $k \in K$:
 
-Riprendendo il discorso dalla relazione derivata dal **teorema del valor medio**, per ogni kk abbiamo:
+	$\nabla f\left(x_k + \theta_k \frac{\alpha_k}{\delta} d_k\right)^T d_k > \gamma \nabla f(x_k)^T d_k$ (8)
 
-f(xk+αkδdk)=f(xk)+αkδ∇f(xk+θkαkδdk)Tdk,f\left(x_k + \frac{\alpha_k}{\delta} d_k\right) = f(x_k) + \frac{\alpha_k}{\delta} \nabla f\left(x_k + \theta_k \frac{\alpha_k}{\delta} d_k\right)^T d_k,
+Grazie alla continuità di ∇f(x), sappiamo che la sequenza $\{\nabla f(x_k)\}_K$ converge a $\nabla f(\bar{x})$ ed è quindi limitata. Esiste una costante $M>0$ tale che:
 
-con θk∈(0,1)\theta_k \in (0, 1). Combinando questa espressione con l'equazione (7), otteniamo per ogni k∈Kk \in K:
-
-αkδ∇f(xk+θkαkδdk)Tdk>γ∇f(xk)Tdk.\frac{\alpha_k}{\delta} \nabla f\left(x_k + \theta_k \frac{\alpha_k}{\delta} d_k\right)^T d_k > \gamma \nabla f(x_k)^T d_k.
-
-Denotiamo questa relazione con l'etichetta:
-
-αkδ∇f(xk+θkαkδdk)Tdk>γ∇f(xk)Tdk.(8)\frac{\alpha_k}{\delta} \nabla f\left(x_k + \theta_k \frac{\alpha_k}{\delta} d_k\right)^T d_k > \gamma \nabla f(x_k)^T d_k. \tag{8}
-
----
-
-#### Limiti e Sequenza delle Direzioni
-
-Grazie alla continuità di ∇f(x)\nabla f(x), sappiamo che la sequenza {∇f(xk)}K\{\nabla f(x_k)\}_K converge a ∇f(xˉ)\nabla f(\bar{x}) ed è quindi limitata. Esiste una costante M>0M > 0 tale che:
-
-∥∇f(xk)∥≤M,∀k∈K.\|\nabla f(x_k)\| \leq M, \quad \forall k \in K.
+	$\|\nabla f(x_k)\| \leq M, \quad \forall k \in K$
 
 Grazie alla condizione di correlazione al gradiente, segue che:
 
-∥dk∥≤c1∥∇f(xk)∥≤c1M,∀k∈K.\|d_k\| \leq c_1 \|\nabla f(x_k)\| \leq c_1 M, \quad \forall k \in K.
+	$\|d_k\| \leq c_1 \|\nabla f(x_k)\| \leq c_1 M, \quad \forall k \in K$
 
-Pertanto, la sequenza {dk}K\{d_k\}_K è limitata e ammette una sottosequenza {dk}K2⊆{dk}K\{d_k\}_{K_2} \subseteq \{d_k\}_K tale che:
+Pertanto, la sequenza $\{d_k\}_K$ è limitata e ammette una sottosequenza $K_2 \subseteq K$ tale che:
 
-lim⁡k∈K2,k→∞dk=dˉ.\lim_{k \in K_2, k \to \infty} d_k = \bar{d}.
+	$\lim_{k \in K_2, k \to \infty} d_k = \bar{d}$.
 
----
+Prendendo i limiti nell'equazione (8) per $k \in K_2, k \to \infty$, e ricordando che $\theta_k \in (0, 1)$ e $\alpha_k \to 0$, otteniamo:
 
-#### Limiti nell'Equazione (8)
-
-Prendendo i limiti nell'equazione (8) per k∈K2,k→∞k \in K_2, k \to \infty, e ricordando che θk∈(0,1)\theta_k \in (0, 1) e αk→0\alpha_k \to 0, otteniamo:
-
-dˉT∇f(xˉ)≥γdˉT∇f(xˉ),\bar{d}^T \nabla f(\bar{x}) \geq \gamma \bar{d}^T \nabla f(\bar{x}),
+	$\nabla f(\bar{x})^T \bar{d} \geq \gamma  \nabla f(\bar{x})^T \bar{d}$,
 
 che implica:
 
-(1−γ)dˉT∇f(xˉ)≥0,(1 - \gamma) \bar{d}^T \nabla f(\bar{x}) \geq 0,
+	$(1 - \gamma)  \nabla f(\bar{x})^T \bar{d} \geq 0$
 
 cioè:
 
-dˉT∇f(xˉ)≥0.\bar{d}^T \nabla f(\bar{x}) \geq 0.
+	$\nabla f(\bar{x})^T \bar{d}\geq 0$
 
-Tuttavia, dalla condizione di correlazione al gradiente e dall'assunzione che xˉ\bar{x} non sia stazionario, sappiamo che:
+Tuttavia, dalla condizione di correlazione al gradiente e dall'assunzione che $\bar{x}$ non sia stazionario, sappiamo che:
 
-dˉT∇f(xˉ)=lim⁡k∈K2,k→∞dkT∇f(xk)≤lim⁡k∈K2,k→∞−c2∥∇f(xk)∥2=−ν2<0.\bar{d}^T \nabla f(\bar{x}) = \lim_{k \in K_2, k \to \infty} d_k^T \nabla f(x_k) \leq \lim_{k \in K_2, k \to \infty} -c_2 \|\nabla f(x_k)\|^2 = -\nu^2 < 0.
+$\nabla f(\bar{x})^T\bar{d} = \lim_{k \in K_2, k \to \infty} \nabla f(x_k)^T  d_k \leq \lim_{k \in K_2, k \to \infty} -c_2 \|\nabla f(x_k)\|^2 = -\nu^2 < 0.$
 
-Questa è una contraddizione, completando la dimostrazione della Proposizione 4.3.
+Questa è una contraddizione, completando la dimostrazione.
+
+Successivamente, forniamo ulteriori informazioni sulla condizione di Armijo e sull'algoritmo di ricerca della linea di backtracking, nel caso speciale in cui viene utilizzato in combinazione con le direzioni relative al gradiente e la funzione obiettivo ha gradienti continui di Lipschitz. Il primo risultato identifica un intervallo completo di stepsize sufficientemente piccolo che ==soddisfano la condizione di Armijo **in tutte le iterazioni**==
+
+---
+##### **Proposizione 4.4: Intervallo dei Passi Sufficientemente Piccoli**
+
+Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione _L-smooth_. Sia $\{x_k\}$ la sequenza generata da un algoritmo iterativo della forma: $x_{k+1} = x_k + \alpha_k d_k$, supponendo che la sequenza delle direzioni di ricerca $\{d_k\}$ sia _gradient related_. Allora, per ogni $k$, la condizione di Armijo  è soddisfatta per ogni passo $\alpha \in [0, \Delta_{\text{low}}]$, con: $\Delta_{\text{low}} = \frac{2 c_2 (1 - \gamma)}{L c_1^2}$.
 
 ---
 
-### Proposizione 4.4: Intervallo dei Passi Sufficientemente Piccoli
+Supponiamo che un passo $\alpha$ non soddisfi la condizione di Armijo, cioè:
 
-Sia f:Rn→Rf : \mathbb{R}^n \to \mathbb{R} una funzione LL-liscia. Sia {xk}\{x_k\} la sequenza generata da un algoritmo iterativo della forma:
+	$f(x_k + \alpha d_k) > f(x_k) + \gamma \alpha \nabla f(x_k)^T d_k$
 
-xk+1=xk+αkdk,x_{k+1} = x_k + \alpha_k d_k,
-
-supponendo che la sequenza delle direzioni di ricerca {dk}\{d_k\} sia correlata al gradiente. Allora, per ogni kk, la condizione di Armijo (4) è soddisfatta per ogni passo α∈[0,Δlow]\alpha \in [0, \Delta_{\text{low}}], con:
-
-Δlow=2c2(1−γ)Lc12.\Delta_{\text{low}} = \frac{2 c_2 (1 - \gamma)}{L c_1^2}.
-
----
-
-#### Dimostrazione della Proposizione 4.4
-
-Supponiamo che un passo α\alpha non soddisfi la condizione di Armijo, cioè:
-
-f(xk+αdk)>f(xk)+γα∇f(xk)Tdk.f(x_k + \alpha d_k) > f(x_k) + \gamma \alpha \nabla f(x_k)^T d_k.
-
-Dalla LL-liscezza di ff, sappiamo anche che:
-
-f(xk+αdk)≤f(xk)+α∇f(xk)Tdk+Lα22∥dk∥2.f(x_k + \alpha d_k) \leq f(x_k) + \alpha \nabla f(x_k)^T d_k + \frac{L \alpha^2}{2} \|d_k\|^2.
+Dalla _L-smoothness_ di $f$, sappiamo anche che:
+	
+	$f(x_k + \alpha d_k) \leq f(x_k) + \alpha \nabla f(x_k)^T d_k + \frac{L \alpha^2}{2} \|d_k\|^2$
 
 Combinando le due disuguaglianze, otteniamo:
 
-γα∇f(xk)Tdk<α∇f(xk)Tdk+Lα22∥dk∥2.\gamma \alpha \nabla f(x_k)^T d_k < \alpha \nabla f(x_k)^T d_k + \frac{L \alpha^2}{2} \|d_k\|^2.
+	$\gamma \alpha \nabla f(x_k)^T d_k < \alpha \nabla f(x_k)^T d_k + \frac{L \alpha^2}{2} \|d_k\|^2$
 
 Riordinando i termini:
 
-(1−γ)α∣∇f(xk)Tdk∣<Lα22∥dk∥2.(1 - \gamma) \alpha |\nabla f(x_k)^T d_k| < \frac{L \alpha^2}{2} \|d_k\|^2.
+	$(1 - \gamma) \alpha |\nabla f(x_k)^T d_k| < \frac{L \alpha^2}{2} \|d_k\|^2$
 
-Dividendo entrambi i membri per α>0\alpha > 0:
+Dividendo entrambi i membri per $\alpha > 0$:
 
-(1−γ)∣∇f(xk)Tdk∣<Lα2∥dk∥2.(1 - \gamma) |\nabla f(x_k)^T d_k| < \frac{L \alpha}{2} \|d_k\|^2.
+	$(1 - \gamma) |\nabla f(x_k)^T d_k| < \frac{L \alpha}{2} \|d_k\|^2$
 
 Sfruttando la condizione di correlazione al gradiente, abbiamo:
 
-∣∇f(xk)Tdk∣≥c2∥∇f(xk)∥2,∥dk∥2≤c12∥∇f(xk)∥2.|\nabla f(x_k)^T d_k| \geq c_2 \|\nabla f(x_k)\|^2, \quad \|d_k\|^2 \leq c_1^2 \|\nabla f(x_k)\|^2.
+	$|\nabla f(x_k)^T d_k| \geq c_2 \|\nabla f(x_k)\|^2, \quad \|d_k\|^2 \leq c_1^2 \|\nabla f(x_k)\|^2$
 
 Sostituendo, otteniamo:
 
-(1−γ)c2∥∇f(xk)∥2<Lα2c12∥∇f(xk)∥2.(1 - \gamma) c_2 \|\nabla f(x_k)\|^2 < \frac{L \alpha}{2} c_1^2 \|\nabla f(x_k)\|^2.
+	$(1 - \gamma) c_2 \|\nabla f(x_k)\|^2 < \frac{L \alpha}{2} c_1^2 \|\nabla f(x_k)\|^2$
 
-Semplificando ∥∇f(xk)∥2\|\nabla f(x_k)\|^2, ricaviamo il limite superiore per α\alpha:
+Semplificando $\|\nabla f(x_k)\|^2$, ricaviamo il limite superiore per $\alpha$:
 
-α<2c2(1−γ)Lc12.\alpha < \frac{2 c_2 (1 - \gamma)}{L c_1^2}.
+	$\alpha < \frac{2 c_2 (1 - \gamma)}{L c_1^2}= \Delta_{\text{low}}$.
 
 Questo conclude la dimostrazione.
-### Completamento della Dimostrazione e Risultati Derivati
 
-#### Proposizione 4.4: Conclusione della Dimostrazione
+---
+##### **Proposizione 4.5: Numero Massimo di Backtrack**
 
-Abbiamo dimostrato che un passo α\alpha non soddisfa la condizione di Armijo se:
-
-α(1−γ)∇f(xk)Tdk+α2L2∥dk∥2>0.\alpha(1 - \gamma)\nabla f(x_k)^T d_k + \frac{\alpha^2 L}{2} \|d_k\|^2 > 0.
-
-Utilizzando le ipotesi di correlazione al gradiente, possiamo limitare i termini ∇f(xk)Tdk\nabla f(x_k)^T d_k e ∥dk∥\|d_k\| come segue:
-
-∇f(xk)Tdk≤−c2∥∇f(xk)∥2,∥dk∥≤c1∥∇f(xk)∥.\nabla f(x_k)^T d_k \leq -c_2 \|\nabla f(x_k)\|^2, \quad \|d_k\| \leq c_1 \|\nabla f(x_k)\|.
-
-Sostituendo nella disuguaglianza:
-
-−c2α(1−γ)∥∇f(xk)∥2+c12α2L2∥∇f(xk)∥2>0.-c_2 \alpha(1 - \gamma)\|\nabla f(x_k)\|^2 + \frac{c_1^2 \alpha^2 L}{2} \|\nabla f(x_k)\|^2 > 0.
-
-Dividendo entrambi i membri per α∥∇f(xk)∥2\alpha \|\nabla f(x_k)\|^2 e riordinando i termini:
-
-α>2c2(1−γ)c12L=Δlow.\alpha > \frac{2c_2(1 - \gamma)}{c_1^2 L} = \Delta_{\text{low}}.
-
-Questo conclude la dimostrazione della Proposizione 4.4.
+Possiamo ora sfruttare il risultato di sopra per settare un bound sul numero di passi di backtrack necessari ad ogni iterazione per ottenere uno stepsize corretto.
 
 ---
 
-#### Proposizione 4.5: Numero Massimo di Backtrack
+**Enunciato:** Sotto le stesse ipotesi della Proposizione 4.4, supponiamo inoltre che, per ogni $k$, il passo $\alpha_k$ venga ottenuto utilizzando l'algoritmo di Armijo con un passo iniziale $\Delta_0 > 0$. Allora, a ogni iterazione $k$, il numero di passi di backtracking $j_k$ è limitato superiormente da:
 
-**Enunciato:** Sotto le stesse ipotesi della Proposizione 4.4, supponiamo inoltre che, per ogni kk, il passo αk\alpha_k venga ottenuto utilizzando l'algoritmo di Armijo con un passo iniziale Δ0>0\Delta_0 > 0. Allora, a ogni iterazione kk, il numero di passi di backtracking jkj_k è limitato superiormente da:
+	$j_k \leq j^* = \max\left(0, \lceil \log_{1/\delta} \frac{\Delta_0}{\Delta_{\text{low}}}\right \rceil) \space \text{dove} \space \Delta_{\text{low}} = \frac{2c_2(1 - \gamma)}{L c_1^2}$
+	
+ Inoltre, il passo $\alpha_k$ è limitato da:
 
-jk≤j∗=max⁡(0,log⁡1/δΔ0Δlow),j_k \leq j^* = \max\left(0, \log_{1/\delta} \frac{\Delta_0}{\Delta_{\text{low}}}\right),
-
-dove Δlow=2c2(1−γ)Lc12\Delta_{\text{low}} = \frac{2c_2(1 - \gamma)}{L c_1^2}. Inoltre, il passo αk\alpha_k è limitato inferiormente da:
-
-αk≥min⁡{Δ0,δΔlow}.\alpha_k \geq \min\{\Delta_0, \delta \Delta_{\text{low}}\}.
+	$\alpha_k \geq \min\{\Delta_0, \delta \Delta_{\text{low}}\}$.
 
 ---
 
-#### Dimostrazione della Proposizione 4.5
+Dimostrazione.
+Sia $j^*$ il più piccolo intero positivo tale che:
 
-Sia j∗j^* il più piccolo intero positivo tale che:
+	$\delta^{j^*} \Delta_0 \leq \Delta_{\text{low}}$.
 
-δj∗Δ0≤Δlow.\delta^{j^*} \Delta_0 \leq \Delta_{\text{low}}.
+Secondo la Proposizione 4.4, il passo $\delta^{j^*}\Delta_0$ soddisfa la condizione di Armijo per ogni $k$. Quindi, dall'algoritmo di Armijo, abbiamo 	$j∗.j_k \leq j^*$.  Per la definizione di $j^*$, vale anche:
 
-Secondo la Proposizione 4.4, il passo δj∗Δ0\delta^{j^*} \Delta_0 soddisfa la condizione di Armijo per ogni kk. Quindi, dall'algoritmo di Armijo, abbiamo:
+	$\delta^{j^*} \leq  \frac{\Delta_{\text{low}}}{\Delta_0 }$,
 
-jk≤j∗.j_k \leq j^*.
+e prendendo il logaritmo (in base $\delta$):
 
-Per la definizione di j∗j^*, vale anche:
+	$j^* \geq \log_{\delta} \frac{\Delta_{\text{low}}}{\Delta_0} = \log_{1/\delta} \frac{\Delta_0}{\Delta_{\text{low}}}$,
 
-δj∗−1Δ0>Δlow,\delta^{j^* - 1} \Delta_0 > \Delta_{\text{low}},
+quindi, essendo $j^*$ il più piccolo intero che soddisfa la disequazione di sopra vale:
 
-e prendendo il logaritmo in base 1/δ1/\delta:
+	$j^* = \max\left(0, \lceil \log_{1/\delta} \frac{\Delta_0}{\Delta_{\text{low}}} \rceil \right)$
 
-j∗−1<log⁡1/δΔ0Δlow,j^* - 1 < \log_{1/\delta} \frac{\Delta_0}{\Delta_{\text{low}}},
+Ora consideriamo i due casi:
 
-quindi:
+1. Se $\Delta_0 < \Delta_{\text{low}}$, non è necessario effettuare backtracking ($j_k = 0$), e abbiamo:
+		$\alpha_k = \Delta_0$.
 
-j∗=max⁡(0,⌈log⁡1/δΔ0Δlow⌉).j^* = \max\left(0, \lceil \log_{1/\delta} \frac{\Delta_0}{\Delta_{\text{low}}} \rceil \right).
+2. Altrimenti se $\Delta_0 > \Delta_{\text{low}}$, abbiamo: $j_k \leq j^* = \lceil \log_{1/\delta} \frac{\Delta_0}{\Delta{\text{low}}} \rceil \leq  \log_{1/\delta} \frac{\Delta_0}{\Delta{\text{low}}} +1$ e quindi: $\frac{1}{\delta^{j_k - 1}} \leq \frac{\Delta_0}{\Delta_{\text{low}}}$, cioè $\delta^{j_k-1} \geq \frac{\Delta_{\text{low}}}{\Delta_0}$ e finalmente $\Delta_{\text{low}} \leq \delta^{j_k}\Delta_0 = \alpha_k$ 
 
----
+Un'interessante conseguenza dei risultati precedenti è che, se conoscessimo le quantità $L$, $c_1$, e $c_2$, e quindi $\Delta_{\text{low}}$, potremmo impostare direttamente il passo $\alpha_k = \Delta_{\text{low}}$. Questo garantirebbe sempre la soddisfazione della condizione di Armijo, oltre alla convergenza globale descritta nella Proposizione 4.3, senza necessità di effettuare backtracking. Inoltre, il risultato di complessità successivo sarebbe anch'esso garantito.
 
-#### Limiti Inferiori su αk\alpha_k
+Questo giustifica il fatto che talvolta gli algoritmi di discesa utilizzano un passo costante: se il valore scelto è inferiore a $\Delta_{\text{low}}$, si ottiene convergenza globale. Tuttavia, passi troppo piccoli riducono l'efficienza pratica degli algoritmi, dunque usare le line search è in pratica più conveniente, poiché consentono di provare passi più aggressivi senza compromettere le garanzie di convergenza.
 
-Consideriamo i due casi:
+##### Proposizione 4.6: Complessità nel Caso Non Convesso
 
-1. Se Δ0≤Δlow\Delta_0 \leq \Delta_{\text{low}}, non è necessario effettuare backtracking (jk=0j_k = 0), e abbiamo:
-
-αk=Δ0.\alpha_k = \Delta_0.
-
-2. Se Δ0>Δlow\Delta_0 > \Delta_{\text{low}}, il backtracking fornisce:
-
-αk=δjkΔ0,\alpha_k = \delta^{j_k} \Delta_0,
-
-e quindi, dal limite inferiore sul numero di iterazioni jkj_k:
-
-αk≥δΔlow.\alpha_k \geq \delta \Delta_{\text{low}}.
+Siamo pronti a dare l'ultimo risultato di questa sezione, osservando il bound di complessità peggiore nel caso non convesso.
 
 ---
-
-### Risultato Finale
-
-Concludiamo che il passo αk\alpha_k è limitato inferiormente da:
-
-αk≥min⁡{Δ0,δΔlow}.\alpha_k \geq \min\{\Delta_0, \delta \Delta_{\text{low}}\}.
-
-Inoltre, il numero massimo di passi di backtracking necessari è dato da:
-
-jk≤max⁡(0,log⁡1/δΔ0Δlow).j_k \leq \max\left(0, \log_{1/\delta} \frac{\Delta_0}{\Delta_{\text{low}}}\right).
-### Considerazioni sul Passo Costante e Risultati di Complessità
-
-#### Conseguenze del Risultato su Δlow\Delta_{\text{low}}
-
-Un'interessante conseguenza dei risultati precedenti è che, se conoscessimo le quantità LL, c1c_1, e c2c_2, e quindi Δlow\Delta_{\text{low}}, potremmo impostare direttamente il passo αk=Δlow\alpha_k = \Delta_{\text{low}}. Questo garantirebbe sempre la soddisfazione della condizione di Armijo, oltre alla convergenza globale descritta nella Proposizione 4.3, senza necessità di effettuare backtracking. Inoltre, il risultato di complessità successivo sarebbe anch'esso garantito.
-
-Questo giustifica il fatto che talvolta gli algoritmi di discesa utilizzano un passo costante: se il valore scelto è inferiore a Δlow\Delta_{\text{low}}, si ottiene convergenza globale. Tuttavia, passi troppo piccoli riducono l'efficienza pratica degli algoritmi, rendendo le line search più convenienti, poiché consentono di provare passi più aggressivi senza compromettere le garanzie di convergenza.
-
----
-
-### Proposizione 4.6: Complessità nel Caso Non Convesso
 
 **Enunciato:**  
 Sia f:Rn→Rf : \mathbb{R}^n \to \mathbb{R} una funzione LL-liscia. Sia {xk}\{x_k\} la sequenza generata da un algoritmo iterativo della forma:

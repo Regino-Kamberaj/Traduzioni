@@ -41,19 +41,19 @@
     
     Line-search type methods: general scheme; crucial elements for convergence: choice of the direction and the stepsize; counterexample [LN 4.2]. 
     
-- ## 22-23 October
+- ## ==22-23 October==
     
     ~~**Lecture 09 (2hrs):**~~ 
     
     Line searches: general concepts; exact line searches, the quadratic case; inexact line searches, sufficient decrease, Armijo condition; Armijo line search, finite termination properties (w/ prf.) [LN 4.2.1]. 
     
-    **Lecture 10 (2hrs):**
+    ~~**Lecture 10 (2hrs):**~~
     
     Gradient-related directions: definition and interpretation; bounded eigenvalues condition [LN 4.2.2]. Global convergence of line search based methods (w/ prf.) [LN 4.2.3]
     
 - ## 29-30 October
     
-    **Lecture 11 (2hrs):** 
+    ~~**Lecture 11 (2hrs):**~~ 
     
     L-smoothness, descent lemma; Armijo line search along gradient related directions: interval of surely acceptable stepsizes (w/ prf.); upper bound on backtracks/lower bound on stepsize (w/o prf.); complexity of the algorithmic framework under L-smoothness assumptions (w/ prf.), optimal complexity of first-order methods (w/o prf.).  [LN 4.2.3]. Gradient descent method: algorithmic scheme, convergence properites [GS 6.1-6.2, LN 4.3].  
       
