@@ -4,12 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "8f6e08d2d131d662",
+        "id": "65a657b44dfc55f6",
         "type": "tabs",
-        "dimension": 50,
         "children": [
           {
-            "id": "7cf9d769c7fc3d06",
+            "id": "1ae5c5996784ecc5",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -25,12 +24,11 @@
         ]
       },
       {
-        "id": "65a657b44dfc55f6",
+        "id": "9ed8bf0b8303179f",
         "type": "tabs",
-        "dimension": 50,
         "children": [
           {
-            "id": "0a0fc7b4276ba69b",
+            "id": "413e50be61459299",
             "type": "leaf",
             "state": {
               "type": "pdf",
@@ -179,7 +177,7 @@
       "command-palette:Apri riquadro comandi": false
     }
   },
-  "active": "7cf9d769c7fc3d06",
+  "active": "1ae5c5996784ecc5",
   "lastOpenFiles": [
     "Opt/notes_2024_lapucci_R3.pdf",
     "Opt/Traduzione Pdf Optimization.md",

@@ -1,4 +1,4 @@
-Dipartimento di Ingegneria dell’Informazione
+WDipartimento di Ingegneria dell’Informazione
 
 **Università degli Studi di Firenze**
 
@@ -787,7 +787,7 @@ Possiamo ora sfruttare il risultato di sopra per settare un bound sul numero di 
 
 ---
 
-**Enunciato:** Sotto le stesse ipotesi della Proposizione 4.4, supponiamo inoltre che, per ogni $k$, il passo $\alpha_k$ venga ottenuto utilizzando l'algoritmo di Armijo con un passo iniziale $\Delta_0 > 0$. Allora, a ogni iterazione $k$, il numero di passi di backtracking $j_k$ è limitato superiormente da:
+**Enunciato:** Sotto le stesse ipotesi della Proposizione 4.4, supponiamo inoltre che, per ogni $k$, il passo $\alpha_k$ venga ottenuto utilizzando l'algoritmo di Armijo con un passo iniziale $\Delta_0 > 0$. Allora, a ogni iterazione $k$, il numero di **passi di backtracking** $j_k$ è limitato superiormente da:
 
 	$j_k \leq j^* = \max\left(0, \lceil \log_{1/\delta} \frac{\Delta_0}{\Delta_{\text{low}}}\right \rceil) \space \text{dove} \space \Delta_{\text{low}} = \frac{2c_2(1 - \gamma)}{L c_1^2}$
 	
@@ -832,160 +832,112 @@ Siamo pronti a dare l'ultimo risultato di questa sezione, osservando il bound di
 ---
 
 **Enunciato:**  
-Sia f:Rn→Rf : \mathbb{R}^n \to \mathbb{R} una funzione LL-liscia. Sia {xk}\{x_k\} la sequenza generata da un algoritmo iterativo della forma:
+Sia $f: \mathbb{R}^n \to \mathbb{R}$ una funzione $L-smooth$. Sia $\{x_k\}$ la sequenza generata da un algoritmo iterativo della forma: 	$x_{k+1} = x_k + \alpha_k d_k$, supponendo che la sequenza delle direzioni di ricerca $\{d_k\}$ sia _gradient related_ e che il passo $\alpha_k$ venga calcolato tramite l'algoritmo di Armijo con un passo iniziale $\Delta_0 > \delta \Delta_{\text{low}}$. Inoltre, supponiamo che $f$ sia limitata inferiormente da un valore $f^*$. Allora, per ogni $\epsilon > 0$, sono necessarie al **massimo $k_{\text{max}}$ iterazioni** per produrre un iterata $x_k$ tale che: $\|\nabla f(x_k)\| \leq \epsilon$, dove:
 
-xk+1=xk+αkdk,x_{k+1} = x_k + \alpha_k d_k,
+	$k_{\text{max}} \leq \frac{f(x_0) - f^*}{\gamma c_2 \delta \Delta_{\text{low}} \epsilon^2} = O(\epsilon^{-2})$
 
-supponendo che la sequenza delle direzioni di ricerca {dk}\{d_k\} sia correlata al gradiente e che il passo αk\alpha_k venga calcolato tramite l'algoritmo di Armijo con un passo iniziale Δ0>δΔlow\Delta_0 > \delta \Delta_{\text{low}}. Inoltre, supponiamo che ff sia limitata inferiormente da un valore f∗f^*. Allora, per ogni ϵ>0\epsilon > 0, sono necessarie al massimo kmaxk_{\text{max}} iterazioni per produrre un iterato xkx_k tale che:
-
-∥∇f(xk)∥≤ϵ,\|\nabla f(x_k)\| \leq \epsilon,
-
-dove:
-
-kmax≤f(x0)−f∗γc2δΔlowϵ2=O(ϵ−2).k_{\text{max}} \leq \frac{f(x_0) - f^*}{\gamma c_2 \delta \Delta_{\text{low}} \epsilon^2} = O(\epsilon^{-2}).
-
-Lo stesso limite di complessità O(ϵ−2)O(\epsilon^{-2}) vale anche per il numero di valutazioni di funzione e gradiente.
+Lo stesso limite di complessità $O(\epsilon^{-2})$ ==vale anche per il numero di valutazioni di funzione e gradiente==.
 
 ---
 
-#### Dimostrazione della Proposizione 4.6
+Dimostrazione.
+Poiché la condizione di Armijo è soddisfatta a ogni iterazione e grazie alla condizione di gradient related, abbiamo per ogni $k$:
 
-Poiché la condizione di Armijo è soddisfatta a ogni iterazione e grazie alla condizione di correlazione al gradiente, abbiamo per ogni kk:
+	$f(x_{k+1}) - f(x_k) = f(x_k + \alpha_k d_k) - f(x_k)$
+				$\leq \gamma \alpha_k \nabla f(x_k)^T d_k$
+				$\leq -\gamma c_2 \alpha_k \|\nabla f(x_k)\|^2$
+				$\leq -\gamma c_2 \delta \Delta_{\text{low}} \|\nabla f(x_k)\|^2$
 
-f(xk+1)−f(xk)=f(xk+αkdk)−f(xk)≤γαk∇f(xk)Tdk≤−γc2αk∥∇f(xk)∥2≤−γc2δΔlow∥∇f(xk)∥2.f(x_{k+1}) - f(x_k) = f(x_k + \alpha_k d_k) - f(x_k) \leq \gamma \alpha_k \nabla f(x_k)^T d_k \leq -\gamma c_2 \alpha_k \|\nabla f(x_k)\|^2 \leq -\gamma c_2 \delta \Delta_{\text{low}} \|\nabla f(x_k)\|^2.
+L'ultima disuguaglianza deriva dalla Proposizione 4.5.
+Supponiamo ora che, per le prime $k_\epsilon$ iterazioni, valga $\|\nabla f(x_k)\| > \epsilon$. Poiché $f$ è limitata inferiormente da $f^*$, possiamo scrivere:
 
-L'ultima disuguaglianza deriva dalla Proposizione 4.5. Supponiamo ora che, per le prime kϵk_\epsilon iterazioni, valga ∥∇f(xk)∥>ϵ\|\nabla f(x_k)\| > \epsilon. Poiché ff è limitata inferiormente da f∗f^*, possiamo scrivere:
+	$f^* - f(x_0) \leq f(x_{k_\epsilon}) - f(x_0) = \sum_{k=0}^{k_\epsilon - 1} \big(f(x_{k+1}) - f(x_k)\big) \leq \sum_{k=0}^{k_\epsilon - 1} -\gamma c_2 \delta \Delta_{\text{low}} \|\nabla f(x_k)\|^2$.
 
-f∗−f(x0)≤f(xkϵ)−f(x0)=∑k=0kϵ−1(f(xk+1)−f(xk))≤∑k=0kϵ−1−γc2δΔlow∥∇f(xk)∥2.f^* - f(x_0) \leq f(x_{k_\epsilon}) - f(x_0) = \sum_{k=0}^{k_\epsilon - 1} \big(f(x_{k+1}) - f(x_k)\big) \leq \sum_{k=0}^{k_\epsilon - 1} -\gamma c_2 \delta \Delta_{\text{low}} \|\nabla f(x_k)\|^2.
+Sostituendo il limite inferiore $\|\nabla f(x_k)\|^2 > \epsilon^2$:
 
-Sostituendo il limite inferiore ∥∇f(xk)∥2>ϵ2\|\nabla f(x_k)\|^2 > \epsilon^2:
-
-f∗−f(x0)≤−kϵγc2δΔlowϵ2.f^* - f(x_0) \leq -k_\epsilon \gamma c_2 \delta \Delta_{\text{low}} \epsilon^2.
+	$f^* - f(x_0) \leq -k_\epsilon \gamma c_2 \delta \Delta_{\text{low}} \epsilon^2$
 
 Riordinando i termini, otteniamo:
 
-kϵ≤f(x0)−f∗γc2δΔlowϵ2.k_\epsilon \leq \frac{f(x_0) - f^*}{\gamma c_2 \delta \Delta_{\text{low}} \epsilon^2}.
+	$k_\epsilon \leq \frac{f(x_0) - f^*}{\gamma c_2 \delta \Delta_{\text{low}} \epsilon^2}$
+
+Dato che il gradiente viene valutato **una volta per iterazione** e che, dalla Proposizione 4.5, il numero massimo di backtracking è costante a ogni iterazione, lo stesso limite $O(\epsilon^{-2})$ ==si applica al numero di valutazioni della funzione e del gradiente.==
+
+Conclundendo i metodi di discesa basati su line search con Armijo e direzioni gradient-related hanno nel caso non convesso e funzioni L-smooth, hanno nle caso peggiore un iteration complexity di $O(\frac{1}{\epsilon^2})$ (o equivalentemente un iteration error di $O(\frac{1}{\sqrt{k}})$). Sebbene questo risultato rappresenti il caso peggiore, dimostra che i metodi di discesa basati su line search sono praticabili anche per problemi complessi e non convessi.
+
+##### Proposizione 4.7: Limite per Metodi di Primo Ordine
+
+Questo risultato è significativo poiché il limite è noto per essere **ottimale** ==per i metodi di primo ordine.==
 
 ---
 
-#### Complessità di Valutazione della Funzione e del Gradiente
-
-Dato che il gradiente viene valutato una volta per iterazione e che, dalla Proposizione 4.5, il numero massimo di backtracking è costante a ogni iterazione, lo stesso limite O(ϵ−2)O(\epsilon^{-2}) si applica al numero di valutazioni della funzione e del gradiente.
+**Enunciato:** Nessun algoritmo di primo ordine può essere progettato con una complessità migliore di $O\left(\frac{1}{\epsilon^2}\right)$ per trovare un punto stazionario approssimato $\epsilon$-accurato di una funzione _L-smooth_.
 
 ---
 
-### Conclusione
-
-Nel caso non convesso, il limite di complessità O(ϵ−2)O(\epsilon^{-2}) stabilisce il numero massimo di iterazioni (e valutazioni di funzione/gradiente) necessario per raggiungere un gradiente con norma inferiore a ϵ\epsilon. Sebbene questo risultato rappresenti il caso peggiore, dimostra che i metodi di discesa basati su line search sono praticabili anche per problemi complessi e non convessi.
-
-### Complessità e Metodo di Discesa del Gradiente
-
-#### Complessità nei Metodi di Primo Ordine
-
-Abbiamo dimostrato che i metodi di discesa basati su line search di tipo Armijo e direzioni correlate al gradiente hanno, per funzioni LL-lisce e non convesse, una complessità iterativa nel caso peggiore di:
-
-O(1ϵ2),O\left(\frac{1}{\epsilon^2}\right),
-
-equivalentemente descritta come:
-
-O(1k).O\left(\frac{1}{\sqrt{k}}\right).
-
-Questo risultato è significativo poiché il limite è noto per essere **ottimale** per i metodi di primo ordine.
-
----
-
-#### Proposizione 4.7: Limite per Metodi di Primo Ordine
-
-**Enunciato:** Nessun algoritmo di primo ordine può essere progettato con una complessità migliore di O(1ϵ2)O\left(\frac{1}{\epsilon^2}\right) per trovare un punto stazionario approssimato ϵ\epsilon-accurato di una funzione LL-liscia.
-
-**Osservazione:** Complessità migliori possono essere ottenute solo con ipotesi più forti, ad esempio quando la funzione obiettivo è convessa o, ancor meglio, strettamente convessa. Per questi casi particolari, le dimostrazioni devono sfruttare la definizione specifica delle regole di aggiornamento dell'algoritmo. Tali casi verranno analizzati in seguito.
-
----
-
+Complessità migliori possono essere ottenute solo con ipotesi più forti, ad esempio quando la funzione obiettivo è **convessa** o, ancor meglio, **strettamente convessa**. Per questi casi particolari, le dimostrazioni devono sfruttare la definizione specifica delle regole di aggiornamento e i meccanismi dell'algoritmo. Tali casi verranno analizzati successivamente.
+x
 ### 4.3 Metodo di Discesa del Gradiente
 
-È ora semplice introdurre l'algoritmo archetipo per l'ottimizzazione non lineare: il **metodo di discesa del gradiente**. Questo famoso algoritmo è un metodo basato su line search della forma:
+È ora semplice introdurre l'algoritmo archetipo per l'ottimizzazione non lineare: il **metodo di discesa del gradiente**. Questo famoso algoritmo è un metodo basato su line search della forma: $x_{k+1} = x_k + \alpha_k d_k$, dove:
 
-xk+1=xk+αkdk,x_{k+1} = x_k + \alpha_k d_k,
+1. **Direzione di ricerca:** La direzione è il **gradiente negativo**: $d_k = -\nabla f(x_k)$, che è, ovviamente, ==una direzione correlata al gradiente== con $c_1 = c_2 = 1$.
+2. **Scelta del passo:** Il passo $alpha_k$ è selezionato tramite la regola di Armijo.
 
-dove:
+---
+##### **Algoritmo 2: Metodo di Discesa del Gradiente**
 
-1. **Direzione di ricerca:** La direzione è il gradiente negativo: dk=−∇f(xk),d_k = -\nabla f(x_k), che è, ovviamente, una direzione correlata al gradiente con c1=c2=1c_1 = c_2 = 1.
-2. **Scelta del passo:** Il passo αk\alpha_k è selezionato tramite la regola di Armijo.
+1. **Input:** $x_0 \in \mathbb{R}^n$.
+2. Inizializza $k = 0$.
+3. **Mentre** $\|\nabla f(x_k)\| \neq 0$:  
+    a. Imposta $d_k= -\nabla f(x_k)$.  
+    b. Calcola $\alpha_k$ lungo $d_k$ usando la line search di Armijo (Algoritmo 1).  
+    c. Aggiorna $x_{k+1} = x_k + \alpha_k d_k$.  
+    d. Incrementa $k = k + 1$.
 
 ---
 
-#### Algoritmo 2: Metodo di Discesa del Gradiente
+Poiché l'algoritmo soddisfa tutti i criteri analizzati nelle sezioni 4.2.1 e 4.2.2, possiamo applicare direttamente le proposizioni appena viste per affermare:
+- **Convergenza globale:** L'algoritmo converge verso un punto stazionario in contesti non convessi. (Proposizione 4.3)
+- **Complessità iterativa:** La complessità iterativa nel caso peggiore è $O\left(\frac{1}{\epsilon^2}\right)$, ==ottimale per i metodi di primo ordine==.(Proposizione 4.6)
+- **Valutazioni del gradiente e della funzione:** Poiché ogni iterazione richiede ==una sola valutazione del gradiente== e il numero di passi di backtracking è ==limitato da una quantità costante== (Proposizione 4.5), la complessità (nel caso peggiore) per le **valutazioni della funzione** è anch'essa $O\left(\frac{1}{\epsilon^2}\right)$.
 
-**Input:** x0∈Rnx_0 \in \mathbb{R}^n.
+##### **Proposizione 4.8: Convergenza nel Caso Convesso**
 
-1. Inizializza k=0k = 0.
-2. **Mentre** ∥∇f(xk)∥≠0\|\nabla f(x_k)\| \neq 0:  
-    a. Imposta dk=−∇f(xk)d_k = -\nabla f(x_k).  
-    b. Calcola αk\alpha_k lungo dkd_k usando la line search di Armijo (Algoritmo 1).  
-    c. Aggiorna xk+1=xk+αkdkx_{k+1} = x_k + \alpha_k d_k.  
-    d. Incrementa k=k+1k = k + 1.
+Analizziamo ora il **caso convesso** assumendo un passo costante $\alpha_k = \frac{1}{L}$ a ogni iterazione. Sappiamo, dalla Proposizione 4.4 (con $\gamma = 0.5$), che questo passo ==soddisfa sempre la condizione di Armijo== e sempre per Armijo conduce a risultati di convergenza globale.
 
 ---
 
-#### Risultati di Convergenza nel Caso Non Convesso
+**Enunciato:** Sia $f$ una funzione _L-smooth_ e convessa, e sia $\{x_k\}$ la sequenza generata dall'algoritmo di discesa del gradiente con passo costante $\alpha_k = \frac{1}{L}$.
+Supponiamo che $f^*$ sia il valore ottimale di $f$ e che $x^*$ sia un minimizzatore di $f$, cioè $f(x^*) = f^*$. Allora:
 
-Poiché l'algoritmo soddisfa tutti i criteri analizzati nelle sezioni 4.2.1 e 4.2.2, possiamo applicare direttamente le Proposizioni 4.3 e 4.6 per affermare:
+	$f(x_k) - f^* \leq \frac{L \|x_0 - x^*\|^2}{2k}$
 
-- **Convergenza globale:** L'algoritmo converge verso un punto stazionario in contesti non convessi.
-- **Complessità iterativa:** La complessità iterativa nel caso peggiore è O(1ϵ2)O\left(\frac{1}{\epsilon^2}\right), ottimale per i metodi di primo ordine.
-- **Valutazioni del gradiente e della funzione:** Poiché ogni iterazione richiede una sola valutazione del gradiente e il numero di passi di backtracking è limitato da una quantità costante (Proposizione 4.5), la complessità per le valutazioni della funzione è anch'essa O(1ϵ2)O\left(\frac{1}{\epsilon^2}\right).
-
----
-
-#### Caso Convesso con Passo Costante
-
-Analizziamo ora il caso convesso assumendo un passo costante αk=1L\alpha_k = \frac{1}{L} a ogni iterazione. Sappiamo, dalla Proposizione 4.4 (con γ=0.5\gamma = 0.5), che questo passo soddisfa sempre la condizione di Armijo e conduce a risultati di convergenza globale.
-
-**Proposizione 4.8: Convergenza nel Caso Convesso**
-
-**Enunciato:** Sia ff una funzione LL-liscia e convessa, e sia {xk}\{x_k\} la sequenza generata dall'algoritmo di discesa del gradiente con passo costante αk=1L\alpha_k = \frac{1}{L}. Supponiamo che f∗f^* sia il valore ottimale di ff e che x∗x^* sia un minimizzatore di ff, cioè f(x∗)=f∗f(x^*) = f^*. Allora:
-
-f(xk)−f∗≤L∥x0−x∗∥22k.f(x_k) - f^* \leq \frac{L \|x_0 - x^*\|^2}{2k}.
+Ovvero che , l'algoritmo ha un **errore d'iterazione** di $O(\frac{1}{k})$ e una **complessità di iterazione** di $O(\frac{1}{\epsilon})$. 
 
 ---
 
-#### Interpretazione della Proposizione 4.8
+Dimostrazione.
 
-Il risultato implica che:
+Dalla **_continuità Lipschitziana_** (Proposizione 1.8) del gradiente $\nabla f(x)$ e considerando $x_{k+1} = x_k + \alpha_k d_k$, abbiamo che:
 
-1. **Errore iterativo:** L'errore iterativo è O(1k)O\left(\frac{1}{k}\right).
-2. **Complessità iterativa:** La complessità iterativa è O(1ϵ)O\left(\frac{1}{\epsilon}\right).
+	$f(x_{k+1}) \leq f(x_k) + \alpha_k \nabla f(x_k)^T d_k + \frac{\alpha_k^2 L}{2} \|d_k\|^2$.
 
-Questo rappresenta un miglioramento significativo rispetto al caso non convesso, dove la complessità è O(1ϵ2)O\left(\frac{1}{\epsilon^2}\right). La dipendenza lineare da kk o 1ϵ\frac{1}{\epsilon} è una caratteristica fondamentale dei metodi di primo ordine applicati a funzioni convesse lisce.
+Sostituendo $d_k = -\nabla f(x_k)$ e $\alpha_k = \frac{1}{L}$:
 
-### Dimostrazione della Proposizione 4.8
-
-#### Passo 1: Continuità Lipschitziana di ∇f(x)\nabla f(x)
-
-Dalla continuità Lipschitziana del gradiente ∇f(x)\nabla f(x) e considerando xk+1=xk+αkdkx_{k+1} = x_k + \alpha_k d_k, abbiamo che:
-
-f(xk+1)≤f(xk)+αk∇f(xk)Tdk+αk2L2∥dk∥2.f(x_{k+1}) \leq f(x_k) + \alpha_k \nabla f(x_k)^T d_k + \frac{\alpha_k^2 L}{2} \|d_k\|^2.
-
-Sostituendo dk=−∇f(xk)d_k = -\nabla f(x_k) e αk=1L\alpha_k = \frac{1}{L}:
-
-f(xk+1)≤f(xk)−1L∥∇f(xk)∥2+12L2L∥∇f(xk)∥2.f(x_{k+1}) \leq f(x_k) - \frac{1}{L} \|\nabla f(x_k)\|^2 + \frac{1}{2L^2} L \|\nabla f(x_k)\|^2.
+	$f(x_{k+1}) \leq f(x_k) - \frac{1}{L} \|\nabla f(x_k)\|^2 + \frac{1}{2L^2} L \|\nabla f(x_k)\|^2$
 
 Semplificando:
 
-f(xk+1)≤f(xk)−12L∥∇f(xk)∥2.(9)f(x_{k+1}) \leq f(x_k) - \frac{1}{2L} \|\nabla f(x_k)\|^2. \tag{9}
+	$f(x_{k+1}) \leq f(x_k) - \frac{1}{2L} \|\nabla f(x_k)\|^2. \tag{9}$
 
----
+Dalla **convessità** di $f$ (Proposizone 1.10), possiamo scrivere:
 
-#### Passo 2: Convessità della Funzione ff
-
-Dalla convessità di ff, possiamo scrivere:
-
-f(x∗)≥f(xk)+∇f(xk)T(x∗−xk).f(x^*) \geq f(x_k) + \nabla f(x_k)^T (x^* - x_k).
+	$f(x^*) \geq f(x_k) + \nabla f(x_k)^T (x^* - x_k)$
 
 Riordinando:
 
-f(xk)≤f(x∗)+∇f(xk)T(xk−x∗).f(x_k) \leq f(x^*) + \nabla f(x_k)^T (x_k - x^*).
+	$f(x_k) \leq f(x^*) + \nabla f(x_k)^T (x_k - x^*)$.
 
 ---
 
@@ -1026,7 +978,7 @@ f(xk+1)−f(x∗)≤L2(k+1)∥x0−x∗∥2.f(x_{k+1}) - f(x^*) \leq \frac{L}{2(
 ---
 
 #### Conclusione
-
+Questo rappresenta un miglioramento significativo rispetto al caso non convesso, dove la complessità è O(1ϵ2)O\left(\frac{1}{\epsilon^2}\right). La dipendenza lineare da kk o 1ϵ\frac{1}{\epsilon} è una caratteristica fondamentale dei metodi di primo ordine applicati a funzioni convesse lisce.
 L'errore iterativo del metodo di discesa del gradiente è quindi:
 
 f(xk+1)−f(x∗)≤L2k∥x0−x∗∥2,f(x_{k+1}) - f(x^*) \leq \frac{L}{2k} \|x_0 - x^*\|^2,

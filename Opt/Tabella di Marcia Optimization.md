@@ -51,14 +51,14 @@
     
     Gradient-related directions: definition and interpretation; bounded eigenvalues condition [LN 4.2.2]. Global convergence of line search based methods (w/ prf.) [LN 4.2.3]
     
-- ## 29-30 October
+- ## ==29-30 October==
     
     ~~**Lecture 11 (2hrs):**~~ 
     
     L-smoothness, descent lemma; Armijo line search along gradient related directions: interval of surely acceptable stepsizes (w/ prf.); upper bound on backtracks/lower bound on stepsize (w/o prf.); complexity of the algorithmic framework under L-smoothness assumptions (w/ prf.), optimal complexity of first-order methods (w/o prf.).  [LN 4.2.3]. Gradient descent method: algorithmic scheme, convergence properites [GS 6.1-6.2, LN 4.3].  
       
     
-    **Lecture 12 (2hrs):** 
+    ~~**Lecture 12 (2hrs):**~~ 
     
     Gradient descent with constant stepsize; complexity under convexity assumptions (w/ prf.); convergence rate in the strongly convex case (w/o prf.) [LN 4.3], impact of l2 regularization in machine learning problems [LN 6.1]. Algorithms with momentum terms [LN 4.4], Heavy-ball method [LN 4.4.1].
     
