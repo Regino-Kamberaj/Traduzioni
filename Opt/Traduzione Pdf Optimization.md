@@ -882,7 +882,7 @@ x
 È ora semplice introdurre l'algoritmo archetipo per l'ottimizzazione non lineare: il **metodo di discesa del gradiente**. Questo famoso algoritmo è un metodo basato su line search della forma: $x_{k+1} = x_k + \alpha_k d_k$, dove:
 
 1. **Direzione di ricerca:** La direzione è il **gradiente negativo**: $d_k = -\nabla f(x_k)$, che è, ovviamente, ==una direzione correlata al gradiente== con $c_1 = c_2 = 1$.
-2. **Scelta del passo:** Il passo $alpha_k$ è selezionato tramite la regola di Armijo.
+2. **Scelta del passo:** Il passo $\alpha_k$ è selezionato tramite la regola di Armijo.
 
 ---
 ##### **Algoritmo 2: Metodo di Discesa del Gradiente**
@@ -913,7 +913,7 @@ Supponiamo che $f^*$ sia il valore ottimale di $f$ e che $x^*$ sia un minimizzat
 
 	$f(x_k) - f^* \leq \frac{L \|x_0 - x^*\|^2}{2k}$
 
-Ovvero che , l'algoritmo ha un **errore d'iterazione** di $O(\frac{1}{k})$ e una **complessità di iterazione** di $O(\frac{1}{\epsilon})$. 
+Ovvero, l'algoritmo ha un **errore d'iterazione** di $O(\frac{1}{k})$ e una **complessità di iterazione** di $O(\frac{1}{\epsilon})$ 
 
 ---
 
@@ -929,9 +929,9 @@ Sostituendo $d_k = -\nabla f(x_k)$ e $\alpha_k = \frac{1}{L}$:
 
 Semplificando:
 
-	$f(x_{k+1}) \leq f(x_k) - \frac{1}{2L} \|\nabla f(x_k)\|^2. \tag{9}$
+	$f(x_{k+1}) \leq f(x_k) - \frac{1}{2L} \|\nabla f(x_k)\|^2. \tag{9}$ (9)
 
-Dalla **convessità** di $f$ (Proposizone 1.10), possiamo scrivere:
+Dalla **convessità** di $f$ (Proposizione 1.10), possiamo scrivere:
 
 	$f(x^*) \geq f(x_k) + \nabla f(x_k)^T (x^* - x_k)$
 
@@ -939,54 +939,47 @@ Riordinando:
 
 	$f(x_k) \leq f(x^*) + \nabla f(x_k)^T (x_k - x^*)$.
 
----
-
-#### Passo 3: Combinazione dei Risultati
-
 Combinando la relazione sopra con l'equazione (9):
 
-f(xk+1)≤f(x∗)+∇f(xk)T(xk−x∗)−12L∥∇f(xk)∥2.f(x_{k+1}) \leq f(x^*) + \nabla f(x_k)^T (x_k - x^*) - \frac{1}{2L} \|\nabla f(x_k)\|^2.
+	$f(x_{k+1}) \leq f(x^*) + \nabla f(x_k)^T (x_k - x^*) - \frac{1}{2L} \|\nabla f(x_k)\|^2$
 
 Da questa, possiamo ottenere:
 
-f(xk+1)−f(x∗)≤∇f(xk)T(xk−x∗)−12L∥∇f(xk)∥2.f(x_{k+1}) - f(x^*) \leq \nabla f(x_k)^T (x_k - x^*) - \frac{1}{2L} \|\nabla f(x_k)\|^2.
+	$f(x_{k+1}) - f(x^*) \leq \frac{L}{2} (\frac{2}{L} \nabla f(x_k)^T (x_k - x^*) - \frac{1}{L^2} \|\nabla f(x_k)\|^2)$
+				$= \frac{L}{2} (\frac{2}{L} \nabla f(x_k)^T (x_k - x^*) - \frac{1}{L^2} \|\nabla f(x_k)\|^2 + \|(x_k - x^*)\|^2 - \|(x_k - x^*)\|^2)$
 
-Utilizziamo l'identità vettoriale ∥a∥2+∥b∥2−2aTb=∥a−b∥2\|a\|^2 + \|b\|^2 - 2a^T b = \|a - b\|^2, per riscrivere:
+Utilizziamo **l'identità vettoriale** $\|a\|^2 + \|b\|^2 - 2a^T b = \|a - b\|^2$, per riscrivere:
 
-∥∇f(xk)∥2−2∇f(xk)T(xk−x∗)+∥xk−x∗∥2=∥xk−x∗−∇f(xk)∥2.\|\nabla f(x_k)\|^2 - 2 \nabla f(x_k)^T (x_k - x^*) + \|x_k - x^*\|^2 = \|x_k - x^* - \nabla f(x_k)\|^2.
+	$\frac{1}{L^2} \|\nabla f(x_k)\|^2 - \frac{2}{L} \nabla f(x_k)^T (x_k - x^*) + \|x_k - x^*\|^2 = \|x_k - x^* - \frac{1}{L}\nabla f(x_k)\|^2$
 
 Pertanto, abbiamo:
 
-f(xk+1)−f(x∗)≤−L2∥xk+1−x∗∥2+L2∥xk−x∗∥2.f(x_{k+1}) - f(x^*) \leq -\frac{L}{2} \|x_{k+1} - x^*\|^2 + \frac{L}{2} \|x_k - x^*\|^2.
+	$f(x_{k+1}) - f(x^*) \leq \frac{L}{2}( - \|x_{k} - x^* - \frac{1}{L}\nabla f(x_k) \|^2 + \|x_k - x^*\|^2)$
+				$= \frac{L}{2}( - \|x_{k+1} - x^*\|^2 + \|x_k - x^*\|^2)$
+
+**Sommiamo entrambi i membri su** $t = 0, \dots, k$ (e con un po' di passaggi risulta):
+
+	$\sum_{t=0}^k \big(f(x_{t+1}) - f(x^*)\big) \leq \frac{L}{2} \big(\|x_0 - x^*\|^2 - \|x_{k+1} - x^*\|^2\big) \leq \frac{L}{2} \|x^0-x^*\|^2$
+
+Poiché $\{f(x_k)\}$ è decrescente (tolgo una quantità negativa), vale $f(x_{t+1}) \geq f(x_{k+1})$ per ogni $t = 0, \dots, k$, e quindi:
+
+	$(k+1) \big(f(x_{k+1}) - f(x^*)\big) \leq \frac{L}{2} \|x_0 - x^*\|^2$.
+
+Dividendo per $(k+1)$, otteniamo:
+
+	$f(x_{k+1}) - f(x^*) \leq \frac{L}{2(k+1)} \|x_0 - x^*\|^2$.
+
+Questo rappresenta un miglioramento significativo rispetto al caso non convesso, dove la complessità è $O\left(\frac{1}{\epsilon^2}\right)$. La dipendenza lineare da $k$ o $\frac{1}{\epsilon}$ è una caratteristica fondamentale dei metodi di primo ordine applicati a funzioni convesse lisce. Anche se questo rate ==non è ottimale==, infatti sublineare, per i metodi del primo ordine nel caso convesso. Discuteremo questo aspetto successivamente.
+
+##### Proposizione 4.9: Convergenza nel caso fortemente convesso
 
 ---
 
-#### Passo 4: Somma su kk
-
-Sommiamo entrambi i membri su t=0,…,kt = 0, \dots, k:
-
-∑t=0k(f(xt+1)−f(x∗))≤L2(∥x0−x∗∥2−∥xk+1−x∗∥2).\sum_{t=0}^k \big(f(x_{t+1}) - f(x^*)\big) \leq \frac{L}{2} \big(\|x_0 - x^*\|^2 - \|x_{k+1} - x^*\|^2\big).
-
-Poiché f(xt)f(x_t) è decrescente, vale f(xt+1)≥f(xk+1)f(x_{t+1}) \geq f(x_{k+1}) per ogni t=0,…,kt = 0, \dots, k, e quindi:
-
-(k+1)(f(xk+1)−f(x∗))≤L2∥x0−x∗∥2.(k+1) \big(f(x_{k+1}) - f(x^*)\big) \leq \frac{L}{2} \|x_0 - x^*\|^2.
-
-Dividendo per (k+1)(k+1), otteniamo:
-
-f(xk+1)−f(x∗)≤L2(k+1)∥x0−x∗∥2.f(x_{k+1}) - f(x^*) \leq \frac{L}{2(k+1)} \|x_0 - x^*\|^2.
+**Enunciato:** Sia $f$ una funzione _L-smooth_ e _fortemente convessa_. Per ogni $x^0 \in \mathbb{R}^n$, l'intera sequenza $\{x^k\}$ prodotta dal metodo di discesa del gradiente con $\alpha_k = \frac{1}{L}$ per ogni $k$, converge all'unico punto di minimo globale $x^*$ di $f$ con un ==tasso di convergenza lineare==.   
 
 ---
 
-#### Conclusione
-Questo rappresenta un miglioramento significativo rispetto al caso non convesso, dove la complessità è O(1ϵ2)O\left(\frac{1}{\epsilon^2}\right). La dipendenza lineare da kk o 1ϵ\frac{1}{\epsilon} è una caratteristica fondamentale dei metodi di primo ordine applicati a funzioni convesse lisce.
-L'errore iterativo del metodo di discesa del gradiente è quindi:
-
-f(xk+1)−f(x∗)≤L2k∥x0−x∗∥2,f(x_{k+1}) - f(x^*) \leq \frac{L}{2k} \|x_0 - x^*\|^2,
-
-il che implica che l'algoritmo ha:
-
-1. **Errore iterativo:** O(1k)O\left(\frac{1}{k}\right),
-2. **Complessità iterativa:** O(1ϵ)O\left(\frac{1}{\epsilon}\right).
+Possiamo vedere che c'è una differenza significativa di performance quando andiamo verso problemi fortemente convessi, come qui il tasso di convergenza è totalmente superiore.
 
 ### 4.4 Metodi del Gradiente con Momento
 

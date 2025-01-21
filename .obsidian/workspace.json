@@ -6,6 +6,7 @@
       {
         "id": "65a657b44dfc55f6",
         "type": "tabs",
+        "dimension": 63.85927505330491,
         "children": [
           {
             "id": "1ae5c5996784ecc5",
@@ -26,6 +27,7 @@
       {
         "id": "9ed8bf0b8303179f",
         "type": "tabs",
+        "dimension": 36.140724946695094,
         "children": [
           {
             "id": "413e50be61459299",
@@ -169,12 +171,12 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Apri selezione rapida": false,
-      "graph:Apri vista grafo": false,
-      "canvas:Crea nuova lavagna": false,
-      "daily-notes:Apri nota del giorno": false,
-      "templates:Inserisci modello": false,
-      "command-palette:Apri riquadro comandi": false
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
     }
   },
   "active": "1ae5c5996784ecc5",
