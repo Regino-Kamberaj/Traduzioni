@@ -983,250 +983,92 @@ Possiamo vedere che c'è una differenza significativa di performance quando andi
 
 ### 4.4 Metodi del Gradiente con Momento
 
-Il semplice metodo di discesa del gradiente non è particolarmente efficiente in teoria e, in pratica, risulta spesso poco performante. Per questo motivo, si studiano approcci che mirano a migliorare la velocità del metodo di discesa del gradiente. Iniziamo con metodi di primo ordine che sfruttano informazioni dalle iterazioni precedenti per determinare la direzione di ricerca e il passo nell'iterazione corrente.
+Il semplice metodo di discesa del gradiente non è particolarmente efficiente in teoria e, in pratica, risulta spesso poco performante. Per questo motivo, si studiano approcci che mirano a migliorare la velocità del metodo di discesa del gradiente. Iniziamo con metodi di primo ordine che sfruttano ==informazioni dalle iterazioni precedenti== per determinare la **direzione di ricerca** e **il passo** nell'iterazione corrente.
 
 Questi metodi, noti come **metodi del gradiente con momento**, sono descritti dalla seguente regola di aggiornamento generica:
 
-xk+1=xk−αk∇f(xk)+βk(xk−xk−1),x_{k+1} = x_k - \alpha_k \nabla f(x_k) + \beta_k (x_k - x_{k-1}),
+	$x_{k+1} = x_k - \alpha_k \nabla f(x_k) + \beta_k (x_k - x_{k-1})$ (10)
 
 dove:
 
-- αk>0\alpha_k > 0 è il passo,
-- βk>0\beta_k > 0 è il peso del momento.
+- $\alpha_k > 0$ è il passo,
+- $\beta_k > 0$ è il peso del momento.
 
-L'idea alla base di questo aggiornamento è che la direzione dell'ultima iterazione sia probabilmente una buona direzione di ricerca anche per quella corrente. Ripetere parzialmente il passo precedente ha l'effetto di controllare le oscillazioni e fornire accelerazione nelle regioni di bassa curvatura. Questa strategia sfrutta solo informazioni già disponibili, senza richiedere ulteriori valutazioni della funzione, rendendola particolarmente attraente per problemi su larga scala.
+L'idea alla base di questo aggiornamento è che ==la direzione dell'ultima iterazione sia probabilmente una buona direzione di ricerca anche per quella corrente==. Ripetere parzialmente il passo precedente ha l'effetto di **controllare le oscillazioni** e **fornire accelerazione** nelle regioni di bassa curvatura. Questa strategia sfrutta solo informazioni già disponibili, ==senza richiedere ulteriori valutazioni della funzione==, rendendola particolarmente attraente per problemi su larga scala.
 
 I metodi del gradiente con momento più noti e importanti sono:
 
 - **Metodo della palla pesante (Heavy-ball method);**
 - **Metodi del gradiente coniugato (Conjugate gradient methods).**
 
----
-
-### 4.4.1 Metodo della Palla Pesante (Heavy-ball Method)
+#### 4.4.1 Metodo della Palla Pesante (Heavy-ball Method)
 
 Il **metodo della palla pesante** è descritto direttamente dalla regola di aggiornamento (10) ed è specificato dalla seguente regola in due passi:
 
-yk=xk−αk∇f(xk),xk+1=yk+βk(xk−xk−1),\begin{aligned} &y_k = x_k - \alpha_k \nabla f(x_k), \\ &x_{k+1} = y_k + \beta_k (x_k - x_{k-1}), \end{aligned}
+	$\begin{cases} &y_k = x_k - \alpha_k \nabla f(x_k), \\ &x_{k+1} = y_k + \beta_k (x_k - x_{k-1}), \end{cases}$
 
 dove:
 
-- αk\alpha_k e βk\beta_k sono tipicamente fissati a valori positivi.
+- $\alpha_k$ e $\beta_k$ sono tipicamente fissati a valori positivi.
 
-In linea di principio, i valori dei parametri dovrebbero essere scelti in base alle proprietà della funzione obiettivo (ad esempio, utilizzando la costante di Lipschitz del gradiente o la costante di forte convessità). Tuttavia, nella pratica queste informazioni non sono spesso accessibili, quindi:
+In linea di principio, i valori dei parametri dovrebbero essere scelti in base alle proprietà della funzione obiettivo (ad esempio, utilizzando la costante di Lipschitz del gradiente o la costante di forte convessità). Tuttavia, nella pratica ==queste informazioni non sono spesso accessibili==, quindi:
 
-- αk\alpha_k può essere scelto tramite una **line search**,
-- βk\beta_k viene spesso impostato a un valore "ragionevole" predefinito.
+- $\alpha_k$ può essere scelto tramite una **line search**,
+- $\beta_k$ viene spesso impostato a un valore "ragionevole" predefinito.
 
----
+Per il metodo della palla pesante, i risultati di **convergenza locale** sono stati dimostrati **nel caso convesso**. In particolare, nel caso di **funzioni quadratiche strettamente convesse**, i valori ottimali dei parametri $\alpha_k$ e $\beta_k$ possono essere calcolati in forma chiusa.
+Con questa scelta ottimale dei parametri, si ottiene un **tasso di convergenza lineare locale** ==con costanti migliori rispetto al metodo di discesa del gradiente standard== (occhio però è locale!!). Questo risultato può essere generalizzato sotto ipotesi di doppia continuità e differenziabilità, gradiente _lipschitz-continuo_ e convessità forte.
 
-#### Risultati di Convergenza Locale
-
-Per il metodo della palla pesante, i risultati di **convergenza locale** sono stati dimostrati nel caso convesso. In particolare:
-
-- Nel caso di **funzioni quadratiche strettamente convesse**, i valori ottimali dei parametri αk\alpha_k e βk\beta_k possono essere calcolati in forma chiusa.
-- Con questa scelta ottimale dei parametri, si ottiene un **tasso di convergenza lineare locale** con costanti migliori rispetto al metodo di discesa del gradiente standard.### Metodo della Palla Pesante: Limiti e Analogia Fisica
-
-Sebbene il **metodo della palla pesante** abbia dimostrato buone proprietà di accelerazione in diversi contesti, è stato mostrato che il metodo potrebbe non convergere anche sotto forti assunzioni di regolarità. La convergenza del metodo nel caso non convesso rimane un problema aperto, in parte perché la struttura dell'algoritmo non rientra nel quadro analizzato nella Sezione 4.2.2.
-
----
-
-#### Analogia Fisica
+Sebbene il **metodo della palla pesante** abbia dimostrato buone proprietà di accelerazione in diversi contesti, è stato mostrato che il metodo ==potrebbe non convergere anche sotto forti assunzioni di regolarità==. Inoltre la convergenza del metodo nel caso non convesso rimane un problema aperto, in parte perché la struttura dell'algoritmo non rientra nel quadro analizzato nella Sezione 4.2.2 (ovvero $d_k$ non è una direzione gradient-related).
 
 Il metodo della palla pesante è spesso spiegato tramite un'analogia fisica, sebbene non completamente accurata:
 - Il **vettore delle variabili** può essere visto come una particella che si muove nello spazio euclideo.
-- La particella tende naturalmente a preservare la sua traiettoria corrente ma viene deviata dall'accelerazione (il gradiente) prodotta da una forza.
+- La particella tende naturalmente a **preservare la sua traiettoria** corrente ma viene **deviata dall'accelerazione** (il gradiente) prodotta da una forza.
 
 In questo contesto, l'aggiornamento del momento può essere definito dalla seguente coppia di equazioni:
 
-\[
-v_{k+1} = \beta_k v_k - \alpha_k \nabla f(x_k),
-\]
-\[
-x_{k+1} = x_k + v_{k+1}.
-\]
+	$\begin{cases} v_{k+1} = \beta_k v_k - \alpha_k \nabla f(x_k),\\ x_{k+1} = x_k + v_{k+1} \end{cases}$
 
 Qui:
-- \(v_k\) rappresenta un termine di velocità, calcolato come una media decrescente esponenziale dei gradienti negativi passati.
-- I gradienti modificano la velocità della particella, piuttosto che direttamente la sua posizione.
-- Il movimento è quindi effettuato in base alla velocità calcolata nella posizione corrente.
-
----
-
-### Metodo del Gradiente Accelerato di Nesterov
+- Il vettore di aggiornamento $v_k$ rappresenta un termine di velocità, calcolato come una media decrescente esponenziale dei gradienti negativi passati.
+- I gradienti modificano la **velocità della particella**, piuttosto che direttamente la sua posizione.
+- Il movimento è quindi effettuato in base alla **velocità calcolata nella posizione corrente**.
+##### Metodo del Gradiente Accelerato di Nesterov
 
 Il **metodo di Nesterov Accelerated Gradient (NAG)** può essere visto come una variante del metodo della palla pesante. La regola di aggiornamento dell'algoritmo di Nesterov è data da:
 
-\[
-v_{k+1} = \beta_k v_k - \alpha_k \nabla f(x_k + \beta_k v_k),
-\]
-\[
-x_{k+1} = x_k + v_{k+1}.
-\]
-
----
-
-#### Differenze rispetto alla Palla Pesante
+	$\begin{cases}v_{k+1} = \beta_k v_k - \alpha_k \nabla f(x_k + \beta_k v_k), \\ x_{k+1} = x_k + v_{k+1}\end{cases}$
 
 L'unica differenza rispetto al metodo della palla pesante risiede nel fatto che:
-- Il gradiente è calcolato nel punto che sarebbe ottenuto ripetendo l'ultimo movimento (\(x_k + \beta_k v_k\)) piuttosto che nel punto corrente (\(x_k\)).
+- Il gradiente è calcolato nel punto che sarebbe ottenuto ripetendo l'ultimo movimento $x_k + \beta_k v_k$ piuttosto che nel punto corrente $x_k$.
 
-Le iterazioni sono essenzialmente composte da due fasi:
+Le iterazioni sono essenzialmente composte da due fasi (in successione):
 1. **Passo puro di momento** (senza influenza del gradiente).
 2. **Passo puro di discesa del gradiente**.
 
 La regola di aggiornamento può essere riscritta in forma equivalente come:
 
-\[
-y_k = x_k - \alpha_k \nabla f(x_k),
-\]
-\[
-x_{k+1} = y_k + \beta_k (y_k - y_{k-1}). \tag{11}
-\]
+	$\begin{cases}y_k = x_k - \alpha_k \nabla f(x_k), \\ x_{k+1} = y_k + \beta_k (y_k - y_{k-1}). \end{cases}$
+
+- Il passo $\alpha_k$ può essere calcolato tramite una **line search di Armijo**.
+- Il parametro del momento $\beta_k$ segue uno schema definito a priori.
+![[Pasted image 20250122091124.png]]
 
 ---
 
-#### Calcolo dei Parametri
+**Proposizione 4.10**
+Sia $f$ una funzione _L-smooth_ e convessa e sia $\{x_k\}$ la sequenza prodotta con il **metodo del gradiente accelerato di Nesterov**. Supponiamo che $f^*$ sia il valore ottimale di $f$. Allora:
 
-- Il passo \(\alpha_k\) può essere calcolato tramite una **line search di Armijo**.
-- Il parametro del momento \(\beta_k\) segue uno schema definito a priori.
+	$f(x_k) - f^* = O\left(\frac{1}{k^2}\right)$,
 
----
-
-#### Visualizzazione e Confronto
-
-Un confronto visivo delle iterazioni dei metodi della palla pesante e di Nesterov è mostrato nella **Figura 5**:
-- **(a)** Metodo della Palla Pesante.
-- **(b)** Metodo di Nesterov Accelerated Gradient.
+ovvero, l'algoritmo ha un **errore iterativo** di $O\left(\frac{1}{k^2}\right)$ e una **complessità iterativa** di $O\left(\frac{1}{\sqrt{\epsilon}}\right)$ Questi bound sono stretti per il caso di metodi del primo ordine su funzioni convesse.
 
 ---
 
-#### Importanza del Metodo di Nesterov
+Questo risultato è significativo poiché il limite di complessità $O\left(\frac{1}{\sqrt{\epsilon}}\right)$ è stato dimostrato essere **ottimale** per i metodi di primo ordine: utilizzando solo informazioni sui gradienti, non è possibile ottenere complessità migliori. Tuttavia, il tasso di convergenza rimane **sublineare**, anche se significativamente più veloce rispetto al metodo di discesa del gradiente standard.
+Nel caso di funzioni **fortemente convesse**, il metodo del gradiente accelerato ottiene la stessa complessità iterativa e tasso di convergenza del metodo di discesa del gradiente, cioè $O(\rho^k)$. Tuttavia, il valore di $\rho$ è più piccolo rispetto a quello della discesa del gradiente, indicando un tasso di **convergenza lineare più rapido**.
 
-Il seguente risultato è particolarmente rilevante nell'ottimizzazione convessa.
-
----
-
-### Proposizione per il Metodo di Nesterov
-
-Sia \(f\) una funzione \(L\)-liscia e convessa. Con il metodo di Nesterov, usando valori appropriati di \(\alpha_k\) e \(\beta_k\), possiamo ottenere risultati di accelerazione significativi, inclusa una convergenza che migliora rispetto al metodo della palla pesante. Questi risultati saranno discussi in dettaglio nelle sezioni successive.
-
----
-
-#### Generalizzazioni
-
-I risultati sopra citati possono essere generalizzati sotto le seguenti ipotesi:
-
-1. Differenziabilità due volte continua della funzione obiettivo;
-2. Gradiente Lipschitz-continuo;
-3. Forte convessità.
-
-Queste ipotesi consentono al metodo della palla pesante di ottenere prestazioni superiori rispetto al gradiente standard, specialmente su problemi ben condizionati, grazie alla combinazione di accelerazione e controllo delle oscillazioni.
-
-### Metodo della Palla Pesante: Limiti e Analogia Fisica
-
-Sebbene il **metodo della palla pesante** abbia dimostrato buone proprietà di accelerazione in diversi contesti, è stato mostrato che il metodo potrebbe non convergere anche sotto forti assunzioni di regolarità. La convergenza del metodo nel caso non convesso rimane un problema aperto, in parte perché la struttura dell'algoritmo non rientra nel quadro analizzato nella Sezione 4.2.2.
-
----
-
-#### Analogia Fisica
-
-Il metodo della palla pesante è spesso spiegato tramite un'analogia fisica, sebbene non completamente accurata:
-
-- Il **vettore delle variabili** può essere visto come una particella che si muove nello spazio euclideo.
-- La particella tende naturalmente a preservare la sua traiettoria corrente ma viene deviata dall'accelerazione (il gradiente) prodotta da una forza.
-
-In questo contesto, l'aggiornamento del momento può essere definito dalla seguente coppia di equazioni:
-
-vk+1=βkvk−αk∇f(xk),v_{k+1} = \beta_k v_k - \alpha_k \nabla f(x_k), xk+1=xk+vk+1.x_{k+1} = x_k + v_{k+1}.
-
-Qui:
-
-- vkv_k rappresenta un termine di velocità, calcolato come una media decrescente esponenziale dei gradienti negativi passati.
-- I gradienti modificano la velocità della particella, piuttosto che direttamente la sua posizione.
-- Il movimento è quindi effettuato in base alla velocità calcolata nella posizione corrente.
-
----
-
-### Metodo del Gradiente Accelerato di Nesterov
-
-Il **metodo di Nesterov Accelerated Gradient (NAG)** può essere visto come una variante del metodo della palla pesante. La regola di aggiornamento dell'algoritmo di Nesterov è data da:
-
-vk+1=βkvk−αk∇f(xk+βkvk),v_{k+1} = \beta_k v_k - \alpha_k \nabla f(x_k + \beta_k v_k), xk+1=xk+vk+1.x_{k+1} = x_k + v_{k+1}.
-
----
-
-#### Differenze rispetto alla Palla Pesante
-
-L'unica differenza rispetto al metodo della palla pesante risiede nel fatto che:
-
-- Il gradiente è calcolato nel punto che sarebbe ottenuto ripetendo l'ultimo movimento (xk+βkvkx_k + \beta_k v_k) piuttosto che nel punto corrente (xkx_k).
-
-Le iterazioni sono essenzialmente composte da due fasi:
-
-1. **Passo puro di momento** (senza influenza del gradiente).
-2. **Passo puro di discesa del gradiente**.
-
-La regola di aggiornamento può essere riscritta in forma equivalente come:
-
-yk=xk−αk∇f(xk),y_k = x_k - \alpha_k \nabla f(x_k), xk+1=yk+βk(yk−yk−1).(11)x_{k+1} = y_k + \beta_k (y_k - y_{k-1}). \tag{11}
-
----
-
-#### Calcolo dei Parametri
-
-- Il passo αk\alpha_k può essere calcolato tramite una **line search di Armijo**.
-- Il parametro del momento βk\beta_k segue uno schema definito a priori.
-
----
-
-#### Visualizzazione e Confronto
-
-Un confronto visivo delle iterazioni dei metodi della palla pesante e di Nesterov è mostrato nella **Figura 5**:
-
-- **(a)** Metodo della Palla Pesante.
-- **(b)** Metodo di Nesterov Accelerated Gradient.
-
----
-
-#### Importanza del Metodo di Nesterov
-
-Il seguente risultato è particolarmente rilevante nell'ottimizzazione convessa.
-
----
-
-### Proposizione per il Metodo di Nesterov
-
-Sia ff una funzione LL-liscia e convessa. Con il metodo di Nesterov, usando valori appropriati di αk\alpha_k e βk\beta_k, possiamo ottenere risultati di accelerazione significativi, inclusa una convergenza che migliora rispetto al metodo della palla pesante. Questi risultati saranno discussi in dettaglio nelle sezioni successive.
-
-### Proposizione 4.10: Complessità del Metodo di Nesterov
-
-**Enunciato:**  
-Sia ff una funzione LL-liscia e convessa, e sia {xk}\{x_k\} la sequenza prodotta dal **metodo del gradiente accelerato di Nesterov**. Supponiamo che f∗f^* sia il valore ottimale di ff. Allora:
-
-f(xk)−f∗=O(1k2),f(x_k) - f^* = O\left(\frac{1}{k^2}\right),
-
-ovvero, l'algoritmo ha un **errore iterativo** di O(1k2)O\left(\frac{1}{k^2}\right) e una **complessità iterativa** di O(1ϵ)O\left(\frac{1}{\sqrt{\epsilon}}\right).
-
----
-
-#### Significato del Risultato
-
-- Questo risultato è significativo poiché il limite di complessità O(1ϵ)O\left(\frac{1}{\sqrt{\epsilon}}\right) è stato dimostrato essere **ottimale** per i metodi di primo ordine: utilizzando solo informazioni sui gradienti, non è possibile ottenere complessità migliori.
-- Tuttavia, il tasso di convergenza rimane **sublineare**, anche se significativamente più veloce rispetto al metodo di discesa del gradiente standard.
-
----
-
-#### Caso Fortemente Convesso
-
-Nel caso di funzioni **fortemente convesse**, il metodo del gradiente accelerato ottiene:
-
-- La stessa complessità iterativa e tasso di convergenza del metodo di discesa del gradiente, cioè O(ρk)O(\rho^k).
-- Tuttavia, il valore di ρ\rho è più piccolo rispetto a quello della discesa del gradiente, indicando un tasso di **convergenza lineare più rapido**.
-
----
-
-### 4.4.2 Metodi del Gradiente Coniugato
+#### 4.4.2 Metodi del Gradiente Coniugato
 
 I **metodi del gradiente coniugato** sono descritti dalle seguenti regole di aggiornamento:
 
