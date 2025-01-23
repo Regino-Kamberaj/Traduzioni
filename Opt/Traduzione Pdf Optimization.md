@@ -162,7 +162,9 @@ In generale, tuttavia, non avremo accesso a formule esatte per risolvere il prob
 	$\mathbf{x}_{k+1} = \mathbf{x}_k + \mathbf{s}_k$
 
 cioè il nuovo punto viene ottenuto partendo dalla soluzione corrente e spostandosi di un vettore di aggiornamento $\mathbf{s}_k$. L'algoritmo si arresta non appena la condizione di stazionarietà viene soddisfatta in una delle iterazioni $\mathbf{x}_k$. Esistono diverse classi di algoritmi, ma le tre più rilevanti sono le seguenti (vedi Figura 3):
-![[Pasted image 20250113220602.png]]
+
+![[Pasted image 20250122224259.png]]
+
 1. **Algoritmi basati sulla ricerca in direzione**: il vettore di aggiornamento è strutturato come $\mathbf{s}_k = \alpha_k \mathbf{d}_k$, dove $\mathbf{d}_k \in \mathbb{R}^n$ è una direzione nello spazio euclideo e $\alpha_k \in \mathbb{R}^+$ è uno scalare denominato passo (stepsize). In questi algoritmi, viene prima identificata una direzione di ricerca $\mathbf{d}_k$, e successivamente scelto un passo appropriato per stabilire la grandezza dello spostamento lungo quella direzione.
     
 2. **Algoritmi basati sulla regione di fiducia**: il vettore di aggiornamento è definito come il miglior aggiornamento possibile per un'approssimazione (modello) della funzione obiettivo in una vicinanza della soluzione corrente:
@@ -1040,7 +1042,7 @@ Il **metodo di Nesterov Accelerated Gradient (NAG)** può essere visto come una 
 	$\begin{cases}v_{k+1} = \beta_k v_k - \alpha_k \nabla f(x_k + \beta_k v_k), \\ x_{k+1} = x_k + v_{k+1}\end{cases}$
 
 L'unica differenza rispetto al metodo della palla pesante risiede nel fatto che:
-- Il gradiente è calcolato nel punto che sarebbe ottenuto ripetendo l'ultimo movimento $x_k + \beta_k v_k$ piuttosto che nel punto corrente $x_k$.
+- Il gradiente è calcolato nel punto che sarebbe ottenuto ripetendo l'ultimo movimento ($x_k + \beta_k v_k$), piuttosto che nel punto corrente $x_k$.
 
 Le iterazioni sono essenzialmente composte da due fasi (in successione):
 1. **Passo puro di momento** (senza influenza del gradiente).
@@ -1052,6 +1054,7 @@ La regola di aggiornamento può essere riscritta in forma equivalente come:
 
 - Il passo $\alpha_k$ può essere calcolato tramite una **line search di Armijo**.
 - Il parametro del momento $\beta_k$ segue uno schema definito a priori.
+
 ![[Pasted image 20250122091124.png]]
 
 ---
@@ -1065,94 +1068,63 @@ ovvero, l'algoritmo ha un **errore iterativo** di $O\left(\frac{1}{k^2}\right)$ 
 
 ---
 
-Questo risultato è significativo poiché il limite di complessità $O\left(\frac{1}{\sqrt{\epsilon}}\right)$ è stato dimostrato essere **ottimale** per i metodi di primo ordine: utilizzando solo informazioni sui gradienti, non è possibile ottenere complessità migliori. Tuttavia, il tasso di convergenza rimane **sublineare**, anche se significativamente più veloce rispetto al metodo di discesa del gradiente standard.
+Questo risultato è significativo poiché il limite di complessità $O\left(\frac{1}{\sqrt{\epsilon}}\right)$ è stato dimostrato essere **ottimale** per i metodi di primo ordine: ==utilizzando solo informazioni sui gradienti, non è possibile ottenere complessità migliori==. Tuttavia, il tasso di convergenza rimane **sublineare**, anche se significativamente più veloce rispetto al metodo di discesa del gradiente standard.
 Nel caso di funzioni **fortemente convesse**, il metodo del gradiente accelerato ottiene la stessa complessità iterativa e tasso di convergenza del metodo di discesa del gradiente, cioè $O(\rho^k)$. Tuttavia, il valore di $\rho$ è più piccolo rispetto a quello della discesa del gradiente, indicando un tasso di **convergenza lineare più rapido**.
 
 #### 4.4.2 Metodi del Gradiente Coniugato
 
 I **metodi del gradiente coniugato** sono descritti dalle seguenti regole di aggiornamento:
 
-xk+1=xk+αkdk,x_{k+1} = x_k + \alpha_k d_k, dk+1=−∇f(xk+1)+βk+1dk,d_{k+1} = -\nabla f(x_{k+1}) + \beta_{k+1} d_k,
+	$x_{k+1} = x_k + \alpha_k d_k, \space\space   d_{k+1} = -\nabla f(x_{k+1}) + \beta_{k+1} d_k$ (12)
 
 dove:
+- $\alpha_k$ è calcolato tramite una **line search**,
+- $\beta_k$ è ottenuto secondo una delle seguenti regole:
+	- **Fletcher-Reeves**:
+	    $\beta_{k+1} = \frac{\|\nabla f(x_{k+1})\|^2}{\|\nabla f(x_k)\|^2}$
 
-- αk\alpha_k è calcolato tramite una **line search**,
-- βk\beta_k è ottenuto secondo una delle seguenti regole:
-
-1. **Fletcher-Reeves**:
-    
-    βk+1=∥∇f(xk+1)∥2∥∇f(xk)∥2.\beta_{k+1} = \frac{\|\nabla f(x_{k+1})\|^2}{\|\nabla f(x_k)\|^2}.
-2. **Polak-Ribiére**:
-    
-    βk+1=∇f(xk+1)T(∇f(xk+1)−∇f(xk))∥∇f(xk)∥2.\beta_{k+1} = \frac{\nabla f(x_{k+1})^T (\nabla f(x_{k+1}) - \nabla f(x_k))}{\|\nabla f(x_k)\|^2}.
-3. **Hestenes-Stiefel**:
-    
-    βk+1=∇f(xk+1)T(∇f(xk+1)−∇f(xk))dkT(∇f(xk+1)−∇f(xk)).\beta_{k+1} = \frac{\nabla f(x_{k+1})^T (\nabla f(x_{k+1}) - \nabla f(x_k))}{d_k^T (\nabla f(x_{k+1}) - \nabla f(x_k))}.
-4. **Liu-Storey**:
-    
-    βk+1=∥∇f(xk+1)∥2−dkT∇f(xk).\beta_{k+1} = \frac{\|\nabla f(x_{k+1})\|^2}{-d_k^T \nabla f(x_k)}.
-5. **Dai-Yuan**:
-    
-    βk+1=∇f(xk+1)T(∇f(xk+1)−∇f(xk))−dkT∇f(xk).\beta_{k+1} = \frac{\nabla f(x_{k+1})^T (\nabla f(x_{k+1}) - \nabla f(x_k))}{-d_k^T \nabla f(x_k)}.
+	- **Polak-Ribiére**:
+        $\beta_{k+1} = \frac{\nabla f(x_{k+1})^T (\nabla f(x_{k+1}) - \nabla f(x_k))}{\|\nabla f(x_k)\|^2}$
+        
+	-  **Hestenes-Stiefel**:    
+		$\beta_{k+1} = \frac{\nabla f(x_{k+1})^T (\nabla f(x_{k+1}) - \nabla f(x_k))}{d_k^T (\nabla f(x_{k+1}) - \nabla f(x_k))}$
+		
+	- **Dai-Yuan**:
+		$\beta_{k+1} = \frac{\|\nabla f(x_{k+1})\|^2}{-d_k^T \nabla f(x_k)}$
+		
+	-  **Liu-Storey**: 
+	    $\beta_{k+1} = \frac{\nabla f(x_{k+1})^T (\nabla f(x_{k+1}) - \nabla f(x_k))}{-d_k^T \nabla f(x_k)}$
 
 ---
 
-#### Costo Computazionale
-
-Tutte le regole sopra elencate richiedono calcoli semplici basati su quantità già calcolate nel metodo di discesa del gradiente di base. Pertanto, il costo aggiuntivo per la costruzione della direzione dk+1d_{k+1} è trascurabile nella pratica.
-
----
-
-#### Interpretazione come Metodo con Momento
+Tutte le regole sopra elencate richiedono calcoli semplici basati su quantità già calcolate nel metodo di discesa del gradiente di base. Pertanto, il costo aggiuntivo per la costruzione della direzione $d_{k+1}$ è trascurabile nella pratica.
 
 L'aggiornamento nei metodi del gradiente coniugato può essere riscritto come:
 
-xk+1=xk+αk(−∇f(xk)+βkdk−1),x_{k+1} = x_k + \alpha_k (-\nabla f(x_k) + \beta_k d_{k-1}),
+	$x_{k+1} = x_k + \alpha_k (-\nabla f(x_k) + \beta_k d_{k-1})$
 
 che equivale a:
 
-xk+1=xk−αk∇f(xk)+βkxk−xk−1αk−1.x_{k+1} = x_k - \alpha_k \nabla f(x_k) + \beta_k \frac{x_k - x_{k-1}}{\alpha_{k-1}}.
+	$x_{k+1} = x_k - \alpha_k( \nabla f(x_k) + \beta_k \frac{x_k - x_{k-1}}{\alpha_{k-1}})$
 
 Questo è esattamente un **metodo del gradiente con momento**, secondo la definizione:
 
-xk+1=xk−αk∇f(xk)+βk(xk−xk−1).x_{k+1} = x_k - \alpha_k \nabla f(x_k) + \beta_k (x_k - x_{k-1}).
+	$x_{k+1} = x_k - \alpha_k \nabla f(x_k) + \beta_k^* (x_k - x_{k-1})$
 
----
+dove: $\beta_k^* = \frac{\alpha_k}{\alpha_{k-1}}\beta$ 
 
-#### Risultati di Convergenza
-
-- I metodi del gradiente coniugato sono particolarmente efficaci per problemi quadratici strettamente convessi, dove convergono in un numero finito di iterazioni pari alla dimensione dello spazio del problema.
-- In generale, offrono prestazioni superiori rispetto alla discesa del gradiente nei problemi ben condizionati, mantenendo costi computazionali simili.
-
-### Metodi del Gradiente Coniugato: Problemi di Convergenza e Soluzioni
-
-#### Assenza di Garanzie di Convergenza
-
-Sebbene il metodo del gradiente coniugato segua la regola di aggiornamento:
-
-xk+1=xk+αkdk,x_{k+1} = x_k + \alpha_k d_k,
-
-dove αk\alpha_k è calcolato tramite una **line search** lungo la direzione dkd_k, non possiamo garantire in generale che dkd_k sia:
-
-- una **direzione di discesa** (∇f(xk)Tdk<0\nabla f(x_k)^T d_k < 0),
-- né una **direzione correlata al gradiente**.
-
+Quindi può essere visto come un metodo del gradiente con momentum secondo la definizione (10).
+Sebbene, diversamente da heavy-ball,, il metodo del gradiente coniugato segua la regola di aggiornamento di line search $x_{k+1} = x_k + \alpha_k d_k$, dove $\alpha_k$ è calcolato tramite una **line search** lungo la direzione $d_k$, non possiamo garantire in generale che $d_k$ sia nè una **direzione di discesa**, né una **direzione correlata al gradiente**.
 Di conseguenza, i risultati di convergenza descritti nella Sezione 4.2.2 non sono immediatamente applicabili.
 
----
+Per recuperare le garanzie di convergenza, una strategia semplice consiste nell'introduzione di una **salvaguardia** all'interno del metodo:
 
-#### Strategia di Salvaguardia per Garantire la Convergenza
-
-Per recuperare le garanzie di convergenza, una strategia semplice consiste nell'introduzione di una salvaguardia all'interno del metodo:
-
-1. **Verifica delle condizioni correlate al gradiente:** Se la direzione dkd_k soddisfa le condizioni correlate al gradiente, il metodo del gradiente coniugato può procedere normalmente con una **line search di Armijo**.
+1. **Verifica delle condizioni correlate al gradiente (ad ogni iterazione):** Date le due costanti $c_1$ e $c_2$ se la direzione $d_k$ soddisfa le condizioni correlate al gradiente, il metodo del gradiente coniugato può procedere normalmente con una **line search di Armijo**.
 2. **Restart:** In caso contrario, l'algoritmo viene "riavviato" utilizzando una pura iterazione di discesa del gradiente.
 
 Questa modifica permette di applicare immediatamente i risultati di convergenza e complessità delle Proposizioni 4.3 e 4.6.
 
----
-
-#### Line Search di Wolfe per Garantire Direzioni di Discesa
+##### Line Search di Wolfe per Garantire Direzioni di Discesa
 
 Un'alternativa alla strategia di salvaguardia è l'uso di una **line search più forte**, come la **line search di Wolfe**, per garantire che dkd_k sia una direzione di discesa.
 

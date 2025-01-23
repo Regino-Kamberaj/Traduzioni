@@ -4,39 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "65a657b44dfc55f6",
+        "id": "f164fe72ead58104",
         "type": "tabs",
         "children": [
           {
-            "id": "1ae5c5996784ecc5",
+            "id": "222a3d808b07906f",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Opt/Traduzione Pdf Optimization.md",
+                "file": "Opt/Tabella di Marcia Optimization.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Traduzione Pdf Optimization"
-            }
-          }
-        ]
-      },
-      {
-        "id": "9ed8bf0b8303179f",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "413e50be61459299",
-            "type": "leaf",
-            "state": {
-              "type": "pdf",
-              "state": {
-                "file": "Opt/notes_2024_lapucci_R3.pdf"
-              },
-              "icon": "lucide-file-text",
-              "title": "notes_2024_lapucci_R3"
+              "title": "Tabella di Marcia Optimization"
             }
           }
         ]
@@ -177,12 +159,14 @@
       "command-palette:Apri riquadro comandi": false
     }
   },
-  "active": "1ae5c5996784ecc5",
+  "active": "222a3d808b07906f",
   "lastOpenFiles": [
-    "Pasted image 20250122091124.png",
-    "Opt/notes_2024_lapucci_R3.pdf",
+    "Opt/Immagini Opt/Pasted image 20250122224259.png",
     "Opt/Traduzione Pdf Optimization.md",
+    "Pasted image 20250122224259.png",
     "Opt/Tabella di Marcia Optimization.md",
+    "Opt/notes_2024_lapucci_R3.pdf",
+    "Opt/Immagini Opt/Pasted image 20250122091124.png",
     "Senza nome.md",
     "Net Sec/README.md",
     "sync.sh",
@@ -200,8 +184,6 @@
     "Net Sec/Network Security.md",
     "Net Sec/Immagini NetSec/Pasted image 20241208153812.png",
     "Net Sec/Immagini NetSec/Pasted image 20250116184328.png",
-    "Opt/Pasted image 20250113220602.png",
-    "Opt/Pasted image 20250108174217.png",
     "Opt"
   ]
 }

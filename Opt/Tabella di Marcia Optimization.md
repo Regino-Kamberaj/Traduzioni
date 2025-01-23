@@ -62,13 +62,13 @@
     
     Gradient descent with constant stepsize; complexity under convexity assumptions (w/ prf.); convergence rate in the strongly convex case (w/o prf.) [LN 4.3], impact of l2 regularization in machine learning problems [LN 6.1]. Algorithms with momentum terms [LN 4.4], Heavy-ball method [LN 4.4.1].
     
-- ## 5-6 November
+- ## ==5-6 November==
     
-    **Lecture 13 (2hrs):** 
+    ~~**Lecture 13 (2hrs):**~~ 
     
     Accelerated gradient method [LN 4.4.2]. Nonlinear conjugate direction methods, restarting strategies, Wolfe line search [LN 4.4.3]. 
     
-    **Lecture 14 (2hrs):** 
+    ~~**Lecture 14 (2hrs):**~~ 
     
     Conjugate gradient method for quadratic problems, finite termination (w/o prf.) [LN 4.4.3]. 
     
