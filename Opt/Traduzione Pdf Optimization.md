@@ -1,4 +1,4 @@
-WDipartimento di Ingegneria dell’Informazione
+Dipartimento di Ingegneria dell’Informazione
 
 **Università degli Studi di Firenze**
 
@@ -95,8 +95,11 @@ In questa sezione riportiamo alcuni concetti preliminari, definizioni e propriet
 L’Operations Research (OR) è un campo della matematica che si concentra sulla modellazione e sulla risoluzione di problemi reali attraverso strumenti matematici. In particolare, l’OR mira a descrivere compiti decisionali del mondo reale come problemi di ottimizzazione matematica e a risolverli mediante procedure numeriche.
 
 L’Ottimizzazione Matematica (o Programmazione Matematica) è quindi un sottoinsieme dell’OR focalizzato sull’analisi formale dei problemi di ottimizzazione e sullo studio di procedure algoritmiche adatte a risolverli correttamente. Il workflow dell’approccio OR e l’oggetto della programmazione matematica sono riassunti nel diagramma della Figura 1.
+
 ![[Pasted image 20250108170907.png]]
+
 L’obiettivo di queste note e del corso da cui originano è fornire agli studenti una panoramica completa di alcuni argomenti fondamentali nella programmazione matematica. L’oggetto principale attorno a cui ruota tutta la discussione che segue è dunque il problema di ottimizzazione matematica. Formalmente, un problema di ottimizzazione è definito come:
+
 ![[Pasted image 20250108171128.png]]
 dove:
 
@@ -1126,84 +1129,43 @@ Questa modifica permette di applicare immediatamente i risultati di convergenza 
 
 ##### Line Search di Wolfe per Garantire Direzioni di Discesa
 
-Un'alternativa alla strategia di salvaguardia è l'uso di una **line search più forte**, come la **line search di Wolfe**, per garantire che dkd_k sia una direzione di discesa.
+Un'alternativa alla strategia di salvaguardia è l'uso di una **line search più forte** di quella di Armijo, come la **line search di Wolfe**, per garantire che $d_k$ sia una direzione di discesa.
+Per assicurarsi che la direzione $d_{k+1} = \nabla f(x_{k+1}) + \beta_{k+1}\nabla f(x_k)$ sia di discesa la condizione:
+	
+	$d_{k+1}^T \nabla f(x_{k+1}) = - \|\nabla f(x_{x+1})\|^2 + \beta_{k+1} d_k^T \nabla f(x_{k+1}) < 0$
 
----
+deve essere soddisfata.
 
-#### Condizioni di Wolfe
+Notare che sia $\nabla f(x_{k+1}) = \nabla f(x_k + \alpha_k d_k)$ che, (ad esempio, nel metodo di **Fletcher-Reeves**), $\beta_{k+1} = \frac{\|\nabla f(x_k+\alpha_kd_k)\|^2}{\|d_k\|^2}$ sono funzioni di $\alpha_k$ e dunque possono essere controllate tramite una line search.
 
-La line search di Wolfe mira a trovare un passo αk\alpha_k che soddisfi:
-
-1. **Condizioni di Wolfe deboli:**
-    
-    f(xk+αkdk)≤f(xk)+γαk∇f(xk)Tdk,f(x_k + \alpha_k d_k) \leq f(x_k) + \gamma \alpha_k \nabla f(x_k)^T d_k, ∇f(xk+αkdk)Tdk≥σ∇f(xk)Tdk.\nabla f(x_k + \alpha_k d_k)^T d_k \geq \sigma \nabla f(x_k)^T d_k.
-2. **Condizioni di Wolfe forti:**
-    
-    f(xk+αkdk)≤f(xk)+γαk∇f(xk)Tdk,f(x_k + \alpha_k d_k) \leq f(x_k) + \gamma \alpha_k \nabla f(x_k)^T d_k, ∣∇f(xk+αkdk)Tdk∣≤∣σ∇f(xk)Tdk∣.|\nabla f(x_k + \alpha_k d_k)^T d_k| \leq |\sigma \nabla f(x_k)^T d_k|.
-
-Dove:
-
-- γ∈(0,1)\gamma \in (0, 1),
-- σ∈(γ,1)\sigma \in (\gamma, 1).
-
----
-
-#### Significato delle Condizioni di Wolfe
-
-- Le condizioni richiedono che la **condizione di Armijo** sia soddisfatta (riduzione sufficiente della funzione obiettivo).
-- Richiedono inoltre che la derivata direzionale corrente sia significativamente ridotta al passo successivo, assicurando che la direzione corrente sia stata sfruttata al massimo.
-- Questo restringe l'intervallo dei passi αk\alpha_k a valori che sono **approssimativamente stazionari** per ϕ(α)\phi(\alpha), garantendo che il prossimo passo non necessiti di muoversi nella stessa direzione.
-
----
-
-#### Garanzie di Convergenza con Wolfe
-
-Per garantire che la direzione dk+1=−∇f(xk+1)+βk+1dkd_{k+1} = -\nabla f(x_{k+1}) + \beta_{k+1} d_k sia una direzione di discesa, deve essere verificata la seguente condizione:
-
-dk+1T∇f(xk+1)=−∥∇f(xk+1)∥2+βk+1dkT∇f(xk+1)<0.d_{k+1}^T \nabla f(x_{k+1}) = -\|\nabla f(x_{k+1})\|^2 + \beta_{k+1} d_k^T \nabla f(x_{k+1}) < 0.
-
-- Qui, ∇f(xk+1)=∇f(xk+αkdk)\nabla f(x_{k+1}) = \nabla f(x_k + \alpha_k d_k) e, ad esempio, nel metodo di **Fletcher-Reeves**, βk+1\beta_{k+1} dipende da ∥∇f(xk)∥2\|\nabla f(x_k)\|^2.
-- Poiché sia ∇f(xk+1)\nabla f(x_{k+1}) che βk+1\beta_{k+1} sono funzioni di αk\alpha_k, il loro comportamento può essere controllato tramite la line search di Wolfe.
-
----
-
-#### Rappresentazione Grafica
-
-Le condizioni di Wolfe, sia deboli che forti, possono essere illustrate graficamente (vedi Figura 6):
-
-- Mostrano come le direzioni vengano selezionate in modo da ottimizzare il passo corrente e garantire che la direzione successiva mantenga le proprietà di discesa.
-
-### Condizioni di Wolfe: Deboli e Forti
-
-Le **condizioni di Wolfe** (deboli e forti) sono utilizzate per garantire che il passo αk\alpha_k scelto in una line search soddisfi sia la **condizione di Armijo** sia ulteriori restrizioni sulla derivata direzionale. Esse si esprimono come segue:
+La line search di Wolfe quindi punta a trovare un passo che soddisfa:
 
 1. **Condizioni di Wolfe Deboli:**
     
-    f(xk+αkdk)≤f(xk)+γαk∇f(xk)Tdk,f(x_k + \alpha_k d_k) \leq f(x_k) + \gamma \alpha_k \nabla f(x_k)^T d_k, ∇f(xk+αkdk)Tdk≥σ∇f(xk)Tdk.\nabla f(x_k + \alpha_k d_k)^T d_k \geq \sigma \nabla f(x_k)^T d_k.
+	  $f(x_k + \alpha_k d_k) \leq f(x_k) + \gamma \alpha_k \nabla f(x_k)^T d_k, \space \nabla f(x_k + \alpha_k d_k)^T d_k \geq \sigma \nabla f(x_k)^T d_k.$
+	  
 2. **Condizioni di Wolfe Forti:**
-    
-    f(xk+αkdk)≤f(xk)+γαk∇f(xk)Tdk,f(x_k + \alpha_k d_k) \leq f(x_k) + \gamma \alpha_k \nabla f(x_k)^T d_k, ∣∇f(xk+αkdk)Tdk∣≤∣σ∇f(xk)Tdk∣.|\nabla f(x_k + \alpha_k d_k)^T d_k| \leq |\sigma \nabla f(x_k)^T d_k|.
+	  
+	  $f(x_k + \alpha_k d_k) \leq f(x_k) + \gamma \alpha_k \nabla f(x_k)^T d_k, \space \nabla f(x_k + \alpha_k d_k)^T d_k \leq |\sigma \nabla f(x_k)^T d_k|$.
 
 Dove:
 
-- γ∈(0,1)\gamma \in (0, 1) controlla la riduzione sufficiente della funzione,
-- σ∈(γ,1)\sigma \in (\gamma, 1) garantisce che la derivata direzionale diminuisca adeguatamente.
+- $\gamma \in (0, 1)$ controlla la riduzione sufficiente della funzione,
+- $\sigma \in (\gamma, 1)$ garantisce che la derivata direzionale diminuisca adeguatamente.
 
----
+ Entrambe le condizioni richiedono che la **condizione di Armijo** sia soddisfatta (riduzione sufficiente della funzione obiettivo). 
+ Richiedono inoltre ==che la derivata direzionale corrente sia significativamente ridotta al **passo successivo==**, assicurando che la **direzione corrente** sia stata sfruttata al massimo, così che non sia necessario fare un secondo passo di discesa su una direzione sostanzialmente inalterata. Questo restringe l'intervallo dei passi $\alpha_k$ a valori che sono **approssimativamente stazionari** per $\phi(\alpha)$.
 
-### Visualizzazione Grafica (Figura 6)
+![[Pasted image 20250123103903.png]]
 
-La Figura 6 mostra come la **condizione di Armijo** e le **condizioni di Wolfe** limitino il passo αk\alpha_k. I passi accettabili si trovano nell'intervallo in cui:
+La Figura 6 mostra come la **condizione di Armijo** e le **condizioni di Wolfe** limitino il passo $\alpha_k$. I passi accettabili si trovano nell'intervallo in cui:
 
 - La funzione obiettivo si riduce sufficientemente (condizione di Armijo).
 - La derivata direzionale soddisfa le restrizioni aggiuntive delle condizioni di Wolfe.
 
----
-
-### Implicazioni Computazionali
-
-- **Costi aggiuntivi:** L'uso della line search di Wolfe richiede il calcolo sia della funzione obiettivo sia del gradiente per ogni passo di prova, aumentando il costo computazionale rispetto alla sola condizione di Armijo.
-- **Vantaggi:** Nel metodo del gradiente coniugato (ad esempio, con la regola di Fletcher-Reeves), l'uso della line search di Wolfe garantisce che la direzione successiva dk+1d_{k+1} sia una direzione di discesa: ∇f(xk+αkdk)Tdk+1<0.\nabla f(x_k + \alpha_k d_k)^T d_{k+1} < 0. Questo assicura proprietà di convergenza globale, rendendo i metodi del gradiente coniugato efficaci sia nei casi convessi sia non convessi, anche se i risultati di complessità non sono ancora ben definiti.
+Un passo che soddisfa le condizioni deboli o forti di Wolfe, può essere trovato con strategie simile a quelle di Armijo (eccetto che i passi di prova possono essere aumentati se c'è bisogno).
+Dal punto di vista computazionale l'uso della line search di Wolfe richiede il calcolo **sia della funzione obiettivo** sia del **gradiente** per ogni passo di prova, aumentando il costo computazionale rispetto alla sola condizione di Armijo.
+Nel metodo del gradiente coniugato (ad esempio, con la regola di Fletcher-Reeves), l'uso della line search di Wolfe garantisce che la direzione successiva dk+1d_{k+1} sia una direzione di discesa: ∇f(xk+αkdk)Tdk+1<0.\nabla f(x_k + \alpha_k d_k)^T d_{k+1} < 0. Questo assicura proprietà di convergenza globale, rendendo i metodi del gradiente coniugato efficaci sia nei casi convessi sia non convessi, anche se i risultati di complessità non sono ancora ben definiti.
 
 ---
 
