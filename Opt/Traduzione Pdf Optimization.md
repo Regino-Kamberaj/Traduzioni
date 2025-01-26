@@ -1156,421 +1156,369 @@ Dove:
  Entrambe le condizioni richiedono che la **condizione di Armijo** sia soddisfatta (riduzione sufficiente della funzione obiettivo). 
  Richiedono inoltre ==che la derivata direzionale corrente sia significativamente ridotta al **passo successivo==**, assicurando che la **direzione corrente** sia stata sfruttata al massimo, così che non sia necessario fare un secondo passo di discesa su una direzione sostanzialmente inalterata. Questo restringe l'intervallo dei passi $\alpha_k$ a valori che sono **approssimativamente stazionari** per $\phi(\alpha)$.
 
-![[Pasted image 20250123103903.png]]
+![[Pasted image 20250123161650.png]]
 
-La Figura 6 mostra come la **condizione di Armijo** e le **condizioni di Wolfe** limitino il passo $\alpha_k$. I passi accettabili si trovano nell'intervallo in cui:
+La Figura 6 mostra come la **condizione di Armijo** e le **condizioni di Wolfe** limitino il passo $\alpha_k$ I passi accettabili si trovano nell'intervallo in cui:
 
 - La funzione obiettivo si riduce sufficientemente (condizione di Armijo).
 - La derivata direzionale soddisfa le restrizioni aggiuntive delle condizioni di Wolfe.
 
 Un passo che soddisfa le condizioni deboli o forti di Wolfe, può essere trovato con strategie simile a quelle di Armijo (eccetto che i passi di prova possono essere aumentati se c'è bisogno).
 Dal punto di vista computazionale l'uso della line search di Wolfe richiede il calcolo **sia della funzione obiettivo** sia del **gradiente** per ogni passo di prova, aumentando il costo computazionale rispetto alla sola condizione di Armijo.
-Nel metodo del gradiente coniugato (ad esempio, con la regola di Fletcher-Reeves), l'uso della line search di Wolfe garantisce che la direzione successiva dk+1d_{k+1} sia una direzione di discesa: ∇f(xk+αkdk)Tdk+1<0.\nabla f(x_k + \alpha_k d_k)^T d_{k+1} < 0. Questo assicura proprietà di convergenza globale, rendendo i metodi del gradiente coniugato efficaci sia nei casi convessi sia non convessi, anche se i risultati di complessità non sono ancora ben definiti.
+Nel metodo del gradiente coniugato (ad esempio, con la regola di Fletcher-Reeves), l'uso della line search di Wolfe garantisce che la direzione successiva $d_{k+1}$ sia una direzione di discesa: $\nabla f(x_k + \alpha_k d_k)^T d_{k+1} < 0$. Questo assicura proprietà di **convergenza globale**, rendendo i metodi del gradiente coniugato efficaci sia nei casi convessi sia non convessi, anche se i risultati di complessità non sono ancora ben definiti.
+La riduzione delle iterazioni in generale compensa l'aumento delle valutazioni del gradiente, fino a che i parametri della line search sono fissati in modo corretto e il passo di prova è frequentemente accettato dalla line search
+
+###### **Il caso quadratico**
+
+Infine i metodi del gradiente coniugato sono particolarmente efficaci per problemi di ottimizzazione **quadratici strettamente convessi** (o equivalentemente sistemi di equazione lineare). In questo caso tutte le regole definite per $\beta_k$ collassano alla stessa quantità, per qui parleremo di un solo metodo del gradiente con gradiente coniugato.
+
+Il nome di gradiente coniugato deriva da una proprietà delle direzioni nei problemi quadratici della forma $\frac{1}{2} x^TQx+c^Tx$ con $Q > 0$ (matrice simmetrica definita positiva)
+
+---
+**Definizione 4.5:** Un insieme di direzioni $d_0, d_1, \dots, d_{m-1} \in \mathbb{R}^n$ è detto **mutuamente coniugato** rispetto a $Q$ matrice simmetrica definita positiva se: 	$d_i^T Q d_j = 0, \quad \forall i, j= 0,..., m-1, i \neq j$
 
 ---
 
-### Caso Quadratico e Metodi delle Direzioni Coniugate
-
-I metodi del gradiente coniugato sono particolarmente efficaci per problemi di ottimizzazione **quadratici strettamente convessi** con funzioni obiettivo della forma:
-
-f(x)=12xTQx+cTx,f(x) = \frac{1}{2} x^T Q x + c^T x,
-
-dove QQ è una matrice simmetrica e definita positiva. In questi casi:
-
-1. **Definizione delle Direzioni Coniugate:** Un insieme di direzioni d0,d1,…,dm−1∈Rnd_0, d_1, \dots, d_{m-1} \in \mathbb{R}^n è detto **mutuamente coniugato** rispetto a QQ se:
-    
-    diTQdj=0,∀i≠j.d_i^T Q d_j = 0, \quad \forall i \neq j.
-    
-    Questa proprietà è più forte della linearità indipendente.
-    
-2. **Proposizione 4.11: Convergenza Finita** Se d0,…,dn−1d_0, \dots, d_{n-1} sono mutuamente coniugate rispetto a QQ, allora:
-    
-    xm+1=x∗,x_{m+1} = x^*,
-    
-    con m≤n−1m \leq n - 1, dove x∗x^* è il minimizzatore globale che soddisfa Qx∗+c=0Qx^* + c = 0.
-    
-    **Significato:** Per problemi quadratici, con una ricerca esatta lungo direzioni mutuamente coniugate, il metodo converge esattamente al minimo globale in un numero finito di passi.
-    
+Essere mutuamente coniugati può essere dimostrato essere più forte della condizione di indipendenza lineare; dal punto di vista dell'ottimizzazione, vorremmo avere un insieme di n direzioni coniugate rispetto a Q, come detto nella seguente Proposizione:
 
 ---
 
-### Metodo del Gradiente Coniugato per Problemi Quadratici
-
-L'algoritmo specifico per problemi quadratici è descritto come segue:
-
-1. Inizializza: g0=∇f(x0)g_0 = \nabla f(x_0), d0=−g0d_0 = -g_0.
-2. Per k=0,1,…k = 0, 1, \dots: αk=−gkTdkdkTQdk,\alpha_k = \frac{-g_k^T d_k}{d_k^T Q d_k}, xk+1=xk+αkdk,x_{k+1} = x_k + \alpha_k d_k, gk+1=∇f(xk+1),g_{k+1} = \nabla f(x_{k+1}), βk+1=∥gk+1∥2∥gk∥2,\beta_{k+1} = \frac{\|g_{k+1}\|^2}{\|g_k\|^2}, dk+1=−gk+1+βk+1dk.d_{k+1} = -g_{k+1} + \beta_{k+1} d_k.
+**Proposizione 4.11: Convergenza Finita del metodo del gradiente coniugato nel caso Quadratico**: Se $d_0, \dots, d_{n-1}$ sono mutuamente coniugate rispetto a $Q$, allora sia $x_0 \in \mathbb{R}^n$ e $x_{k+1} = x_k + \alpha_k d_k$, con $\alpha_k = \frac{-\nabla f{x_k}^Td_k}{d_k^TQd_k}$. Allora esiste $m < n -1$ tale che $x^{m+1} = x^*$  tale che $Qx^* + c = 0$ ovvero $x^*$ è il minimo globale.
 
 ---
 
-### Osservazioni Finali
-
-- **Convergenza Finita:** Per problemi quadratici, il metodo è esatto e raggiunge il minimo globale in nn iterazioni.
-- **Pratica:** In casi ad alta dimensione, si introduce un criterio di arresto basato su ∥gk∥≤ϵ\|g_k\| \leq \epsilon, rendendo il metodo iterativo. Soluzioni altamente accurate vengono spesso ottenute in poche iterazioni.
-
-### Metodo del Gradiente Coniugato per Problemi Quadratici: Algoritmo e Analisi
-
-#### Algoritmo 3: Metodo del Gradiente Coniugato per Problemi Quadratici
-
-1. **Input:** x0∈Rnx_0 \in \mathbb{R}^n, d0=−g0d_0 = -g_0 (con g0=∇f(x0)g_0 = \nabla f(x_0)).
-2. **Inizializzazione:** k=0k = 0.
-3. **Iterazione:**
-    - Calcola: αk=∥gk∥2dkTQdk.\alpha_k = \frac{\|g_k\|^2}{d_k^T Q d_k}.
-    - Aggiorna: xk+1=xk+αkdk.x_{k+1} = x_k + \alpha_k d_k. gk+1=gk+αkQdk.g_{k+1} = g_k + \alpha_k Q d_k. βk+1=∥gk+1∥2∥gk∥2.\beta_{k+1} = \frac{\|g_{k+1}\|^2}{\|g_k\|^2}. dk+1=−gk+1+βk+1dk.d_{k+1} = -g_{k+1} + \beta_{k+1} d_k.
-    - Incrementa k=k+1k = k + 1.
-4. **Output:** xkx_k quando ∥gk∥≤ϵ\|g_k\| \leq \epsilon.
+Per problemi quadratici, con una ricerca **esatta lungo direzioni mutuamente coniugate**, il metodo converge **esattamente** al minimo globale ==in un numero finito di passi!==
+Ora, il problema dell'algoritmo con il metodo di direzioni coniugate è appunto trovare l'insieme di direzioni. Ci dà una mano il metodo del gradiente coniugato, sia $g_k = \nabla f(x^k)$; sia $d_0 = -g_0$ allora: $\alpha_k = \frac{-g_k^T d_k}{d_k^TQd_k} = \frac{\|g_k\|^2}{d_k^TQd_k}, \space \beta_{k+1} = \frac{\|g_{k+1}\|^2}{\|g_k\|^2}, \space d_{k+1} = -g_{k+1} + \beta_{k+1}d_k$ .
+Può essere mostrato che, ad ogni iterazione la nuova iterazione $d_{k+1}$ è mutualmente coniugata rispetto a $d_0, ... , d_k$ 
 
 ---
 
-### Metodo di Newton: Introduzione
+**Algoritmo 3: Metodo del Gradiente Coniugato per Problemi Quadratici**
 
-Il **metodo di Newton** è un algoritmo di ottimizzazione di secondo ordine che utilizza informazioni derivate dalla **matrice hessiana** ∇2f(x)\nabla^2 f(x) per accelerare la convergenza. La regola di aggiornamento è:
-
-xk+1=xk−[∇2f(xk)]−1∇f(xk).x_{k+1} = x_k - [\nabla^2 f(x_k)]^{-1} \nabla f(x_k).
-
-Questo metodo si basa sull'approssimazione quadratica della funzione obiettivo, costruita tramite l'espansione di Taylor di secondo ordine:
-
-mk(x)=f(xk)+∇f(xk)T(x−xk)+12(x−xk)T∇2f(xk)(x−xk).m_k(x) = f(x_k) + \nabla f(x_k)^T (x - x_k) + \frac{1}{2} (x - x_k)^T \nabla^2 f(x_k) (x - x_k).
-
-Il minimizzatore globale di mk(x)m_k(x) si ottiene annullandone il gradiente:
-
-∇mk(x)=∇f(xk)+∇2f(xk)(x−xk)=0,x=xk−[∇2f(xk)]−1∇f(xk).\begin{aligned} \nabla m_k(x) &= \nabla f(x_k) + \nabla^2 f(x_k)(x - x_k) = 0, \\ x &= x_k - [\nabla^2 f(x_k)]^{-1} \nabla f(x_k). \end{aligned}
+1. **Input:** $x_0 \in \mathbb{R}^n, d_0 = -g_0 (\text{con} \space g_0 = \nabla f(x_0))$.
+2. **Inizializzazione:** $k = 0$.
+3. **Iterazione**  (finché $\|g_k\| \neq 0$):
+    - Calcola: $\alpha_k = \frac{\|g_k\|^2}{d_k^T Q d_k}$.
+    - Aggiorna:
+	    - $x_{k+1} = x_k + \alpha_k d_k$$
+	    - $g_{k+1} = g_k + \alpha_k Q d_k$.
+	    - $\beta_{k+1} = \frac{\|g_{k+1}\|^2}{\|g_k\|^2}$
+	    - $d_{k+1} = -g_{k+1} + \beta_{k+1} d_k$
+	- Incrementa $k = k + 1$.
+1. **Output:** $x_k$
 
 ---
 
-### Esempio 4.4: Iterazioni del Metodo di Newton
+Per problemi quadratici, il metodo è esatto e raggiunge il minimo globale in $n$ iterazioni.
+In casi ad alta dimensione, si introduce un criterio di arresto basato su $\|g_k\| \leq \epsilon$, rendendo il metodo iterativo. Soluzioni altamente accurate vengono spesso ottenute in **poche iterazioni**.
 
-**Problema:**  
-Minimizzare f(x)=1+x2f(x) = \sqrt{1 + x^2}, con:
+### 4.5 Metodo di Newton
 
-f′(x)=x1+x2,f′′(x)=1(1+x2)3/2.f'(x) = \frac{x}{\sqrt{1 + x^2}}, \quad f''(x) = \frac{1}{(1 + x^2)^{3/2}}.
+Abbiamo visto che con i metodi di discesa del gradiente e algoritmi del primo ordine in generale ci sono dei limiti che speriamo di ottenere di migliorare in termini di velocità di convergenza nei casi non convesso, convesso e fortemente convesso.
+
+Siamo quindi curioso di osservare, quando la funzione obiettivo lo permette, l'informazione di secondo ordine, e guardiamo se possiamo ottenere qualcosa di meglio.
+Assumiamo di avere $f \in C^2(\mathbb{R}^n)$ e ora usiamo l'informazione fornita da $\nabla^2 f(x)$ per costruire un metodo del secondo ordine. Assumiano che siamo ad una qualche soluzione $x^k$ e sia anche $\nabla^2 f(x^k)$ una matrice definita positiva. Possiamo quindi costruire l'espansione di _Taylor_ di $f$ al secondo ordine ottenendo
+
+	$m_k(x) = f(x_k) + \nabla f(x_k)^T (x - x_k) + \frac{1}{2} (x - x_k)^T \nabla^2 f(x_k) (x - x_k)$
+
+L'approssimazione ottenuta della funzione obiettivo è una funzione quadratica strettamente convessa (nel caso in cui l'_Hessiana_ sia definita positiva ), possiamo quindi trovare il minimizzatore globale di $m_k(x)$ annullandone il gradiente:
+
+	$\begin{aligned} \nabla m_k(x) &= \nabla f(x_k) + \nabla^2 f(x_k)(x - x_k) = 0, \\ x &= x_k - [\nabla^2 f(x_k)]^{-1} \nabla f(x_k). \end{aligned}$
+
+L'idea del _Metodo di Newton_, è quella di definire uno schema iterativo dove la nuova iterata è ottenuta prendendo il minimo del modello quadratico costruito intorno alla soluzione corrente, ovvero usando la formula di aggiornamento:
+
+	$x^{k+1} = x^k - [\nabla^2 f(x^k)]^{-1} \nabla f(x^k)$ 
+
+Questo tipo di regola di aggiornamento, può essere intesa, come la regola di aggiornamento del metodo di discesa della forma $x^{k+1} = x^k + \alpha_k d_k$ dove $d_k = - [\nabla^2 f(x^k)]^{-1} \nabla f(x^k)$ e $\alpha_k$ è posto costantemente a 1 per l'intero processo.
+
+Osserviamo nel prossimo esempio che può succedere adottando questo tipo di schema su un semplice problema ad una variabile.
+
+**Esempio 4.4: Iterazioni del Metodo di Newton**
+
+**Problema:**  Minimizzare $min_{x \in \mathbb{R}} f(x) = \sqrt{1 + x^2}$, che ha una funzione obiettivo abbastanza regolare: è infatti strettamente convessa, coerciva, doppiamente continua e differenziabile con:
+
+	$f'(x) = \frac{x}{\sqrt{1 + x^2}}, \quad f''(x) = \frac{1}{(1 + x^2)^{3/2}}$
 
 **Iterazioni:**
 
-xk+1=xk−f′(xk)f′′(xk)=xk−xk(1+xk2).x_{k+1} = x_k - \frac{f'(x_k)}{f''(x_k)} = x_k - x_k(1 + x_k^2).
+	$x_{k+1} = x_k - \frac{f'(x_k)}{f''(x_k)} = x_k - \frac{x_k}{(1 + x_k^2)^{\frac{1}{2}}}(1 + x_k^2)^{\frac{3}{2}} = x_k - x_k(1+x_k^2) = -x_k^3$
 
-- Se x0=±1x_0 = \pm 1, la sequenza oscilla tra 1 e -1, senza convergenza.
-- Se ∣x0∣>1|x_0| > 1, la sequenza diverge.
-- Se ∣x0∣<1|x_0| < 1 (es. x0=0.5x_0 = 0.5), la sequenza converge rapidamente a 0.
+- Se $x_0 = \pm 1$, la sequenza oscilla tra 1 e -1, senza convergenza.
+- Se $|x_0| > 1$, la sequenza diverge.
+- Se $|x_0| < 1$ (es. $x_0 = 0.5$), la sequenza converge rapidamente a 0.
+	x0 = 1/2 = 0.5, x1 = - 1/2^3 = −0.125, x2 = 1/2^9=0.00195, x3 ≈ −0.000000007, . . .
 
-**Conclusione:**  
-Il metodo di Newton non garantisce convergenza globale, ma se converge, lo fa **superlinearmente**.
+Che vediamo converge a 0, unico punto di minimo abbastanza velocemente, la distanza dall'ottimo ad ogni iterazione è molto minore di quanto era alla precedente iterazione, sembra un tasso **superlineare**.
+Possiamo comunque vedere che osservando il metodo di Newton non converge globalmente al punto di minimo, in quanto la convergenza dipende dal punto di partenza, ma sembra essere veloce quando converge!
+
+L'esempio ci dice tutta la storia sul metodo di Newton nella sua forma pura: non siamo sicuri che converga, ma se lo fa, lo fa molto velocemente. In termini formali, l'algoritmo non possiede garanzie di convergenza globali (peggio addirittura dei metodi del primo ordine), ma ha una garanzia su una velocità di convergenza locale.
+
+Nella prossima proposizione sono descritte queste proprietà.
 
 ---
 
-### Proposizione 4.12: Proprietà del Metodo di Newton
+#### Proposizione 4.12: Proprietà del Metodo di Newton
 
-Sia f:Rn→Rf : \mathbb{R}^n \to \mathbb{R} una funzione due volte continuamente differenziabile. Sia x∗x^* un punto tale che:
+Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione due volte continuamente differenziabile. Sia $x^*$ un punto tale che:
 
-- ∇f(x∗)=0\nabla f(x^*) = 0,
-- ∇2f(x∗)\nabla^2 f(x^*) è non singolare.
+- $\nabla f(x^*) = 0$,
+- $\nabla^2 f(x^*) \text{è non singolare}$.
 
-Allora esiste ϵ>0\epsilon > 0 tale che, per x0∈B(x∗,ϵ)x_0 \in B(x^*, \epsilon):
+Allora esiste $\epsilon > 0$ tale che, per ogni $x_0 \in B(x^*, \epsilon)$:
 
-1. La sequenza {xk}\{x_k\} è ben definita e rimane in B(x∗,ϵ)B(x^*, \epsilon).
-2. lim⁡k→∞xk=x∗\lim_{k \to \infty} x_k = x^*.
+1. La sequenza $\{x_k\}$ è ben definita e rimane in $B(x^*, \epsilon)$.
+2. $\lim_{k \to \infty} x_k = x^*$.
 3. Il tasso di convergenza è **superlineare**.
 
 ---
 
-#### Dimostrazione
+**Dimostrazione**.
 
-**Continuità dell'Hessiana:** ∇2f(x)\nabla^2 f(x) è continua e non singolare in x∗x^*. Esistono ϵ1>0\epsilon_1 > 0 e μ>0\mu > 0 tali che:
+Per **continuità dell'Hessiana:** $\nabla^2 f(x)$ è continua e non singolare in $x^*$. Esistono $\epsilon_1 > 0$ e $\mu > 0$ tali che:
 
-∥[∇2f(x)]−1∥≤μ,∀x∈B(x∗,ϵ1).\|[\nabla^2 f(x)]^{-1}\| \leq \mu, \quad \forall x \in B(x^*, \epsilon_1).
+	$\|[\nabla^2 f(x)]^{-1}\| \leq \mu, \quad \forall x \in B(x^*, \epsilon_1)$
 
-**Induzione:**
+Successivamente per ogni $\sigma \in (0,1)$, e sempre per la continuità di $\nabla^2f$ è sempre possibile trovare un $\epsilon \leq \epsilon_1$ tale che:
 
-- Base: x0∈B(x∗,ϵ)x_0 \in B(x^*, \epsilon).
-- Passo: Assumiamo xk∈B(x∗,ϵ)x_k \in B(x^*, \epsilon). Per la regola di aggiornamento di Newton:
+	$\|\nabla^2 f(x) - \nabla^2 f(y) \| \leq \frac{\sigma}{\mu} \quad \forall x,y \in B(x^*, \epsilon)$ (13)
+	
+Procediamo ora per **induzione:**
 
-xk+1−x∗=−[∇2f(xk)]−1(∇f(xk)−∇2f(xk)(xk−x∗)).x_{k+1} - x^* = -[\nabla^2 f(x_k)]^{-1} (\nabla f(x_k) - \nabla^2 f(x_k)(x_k - x^*)).
+- Base: $x_0 \in B(x^*, \epsilon)$.
+- Passo: Assumiamo per un arbitrario $k, x_k \in B(x^*, \epsilon)$. ovvero $\|x^k-x^*\| \leq \epsilon$. Per la regola di aggiornamento di Newton:
 
-Usando il teorema di Taylor e la continuità di ∇2f(x)\nabla^2 f(x), si dimostra che la sequenza converge a x∗x^* con tasso superlineare.
+	$x_{k+1} - x^* = x^k -[\nabla^2 f(x_k)]^{-1}\nabla f(x_k) - x^*$ 
+		   $= - [\nabla^2 f(x_k)]^{-1} \nabla f(x_k) + [\nabla^2 f(x_k)]^{-1} \nabla^2 f(x_k) (x_k - x^*)$
+		   $=- [\nabla^2 f(x_k)]^{-1} (\nabla f(x_k) - \nabla^2 f(x_k)(x_k - x^*))$
+		   $=- [\nabla^2 f(x_k)]^{-1} (\nabla f(x_k) - \nabla f(x^*) - \nabla^2 f(x_k)(x_k - x^*))$
+		
+Dove si è sfruttato il fatto che $[\nabla^2 f(x_k)]^{-1} \nabla^2 f(x_k) = I, \quad \nabla f(x^*) = 0$. 
+Andando avanti abbiamo:
 
----
+	$\|x^{k+1} - x^*\| =\|[\nabla^2 f(x_k)]^{-1} (\nabla f(x_k) - \nabla f(x^*) - \nabla^2 f(x_k)(x_k - x^*))\|$
+			$\leq \|[\nabla^2 f(x_k)]^{-1}\| \|(\nabla f(x_k) - \nabla f(x^*) - \nabla^2 f(x_k)(x_k - x^*))\|$
+			$\leq \mu \|(\nabla f(x_k) - \nabla f(x^*) - \nabla^2 f(x_k)(x_k - x^*))\|$
 
-### Osservazioni Finali
+Sfruttiamo ora il teorema della media per gli integrali (Proposizione 1.7):
 
-- **Convergenza Globale:** Non garantita; dipende dalla scelta della soluzione iniziale.
-- **Convergenza Locale:** Rapida, tipicamente superlineare.
-- **Implicazioni:** Il metodo di Newton è estremamente efficace vicino al minimo, ma richiede attenzione per evitare divergenza o oscillazioni lontano da esso.
+	$\nabla f(x_k) - \nabla f(x^*) = \int_0^1 \nabla^2f(x^*+t(x^k-x^*))(x^k-x^*)dt$
 
-### Metodo di Newton e Convergenza Superlineare
+Per ottenere:
 
-#### Proprietà del Metodo di Newton
+	$\|x_{k+1}-x^*\| = \mu \|\int_0^1 \nabla^2f(x^* + t(x^k-x^*))(x^k - x^*) dt - \nabla^2f(x_k)(x_k-x^*)\|$
+			$= \mu \|\int_0^1 (\nabla^2f(x^* + t(x^k-x^*) - \nabla^2f(x_k))(x^k - x^*) dt \|$
+			$\leq \mu \int_0^1\| (\nabla^2f(x^* + t(x^k-x^*)) - \nabla^2f(x_k))(x^k - x^*)\|dt$
+			$\leq \mu \int_0^1\| \nabla^2f(x^* + t(x^k-x^*)) - \nabla^2f(x_k)\|\|(x^k - x^*)\|dt$ (14)
+		
+Notiamo quindi che $B(x^*,\epsilon)$ è un insieme convesso e che entrambi $x^*$ e $x^k$ appartengono a $B(x^*,\epsilon)$.
+Allora, il punto $x(t) = x^*+ t(x^k+x^*) = (1-t)x^*+tx^k$ appartiene anche lui a $B(x^*,\epsilon)$ per $t \in [0,1]$, anche tutti i valori all'interno dell'integrale. Dunque ricordando (13), avremo $\|\nabla^2 f(x(t)) - \nabla^2 f(x^k)\| \leq \frac{\sigma}{\mu}$ per qualsiasi $t \in [0,1]$. 
 
-**Aggiornamento Iterativo:** Il metodo di Newton utilizza l'aggiornamento:
+Possiamo quindi scrivere:
 
-xk+1=xk−[∇2f(xk)]−1∇f(xk),x_{k+1} = x_k - [\nabla^2 f(x_k)]^{-1} \nabla f(x_k),
+	$\|x_{k+1}-x^*\| \leq \mu \|\int_0^1 \frac{\sigma}{\mu} \|x^k - x^*\|dt = \sigma \|x^k - x^*\| \leq \|x^k - x^*\| \leq \epsilon$ 
 
-dove:
+Per $\sigma \in (0,1)$ e $x^k \in B(x^*,\epsilon)$.
+Abbiamo fatto vedere quindi che anche $x^{k+1} \in B(x^*,\epsilon)$ se $x^k \in B(x^*,\epsilon)$. Ma allora per induzione l'intera sequenza $\{x^k\}$ sta in $B(x^*,\epsilon)$.
 
-- ∇2f(xk)\nabla^2 f(x_k) è la matrice hessiana.
-- ∇f(xk)\nabla f(x_k) è il gradiente della funzione obiettivo.
+Ora, tornando alle disuguaglianze precedenti si nota che:
 
-**Conclusione Principale:** Il metodo di Newton gode di **garanzie di convergenza locale superlineare** in prossimità di un punto stazionario x∗x^* che soddisfa le seguenti condizioni:
+	$0 \leq \|x^{k+1}-x^*\|  \leq \sigma \|x^k - x^*\| \leq \sigma^2 \|x^{k-1} - x^* \leq \dots \leq \sigma^{k+1}\|x^0-x^*|$
 
-1. ∇f(x∗)=0\nabla f(x^*) = 0,
-2. ∇2f(x∗)\nabla^2 f(x^*) è non singolare.
+Dunque prendendo il limite per $k \to \infty$ e ricordando che $\sigma \in (0,1)$ otteniamo che: 
+	$0 \leq \lim_{k \to \infty}\|x_{k}-x^*\|  \leq  \lim_{k \to \infty} \sigma^{k}\|x^0-x^*| = 0$
 
----
+ovvero che:  $\lim_{k \to \infty} x^k = x^*$ (per i carabinieri) 
 
-#### Analisi della Convergenza
+Infine tornando a (14), divido entrambe le parti per $\|x^k - x^*\|$ e ottengo:
 
-1. **Integrazione della Hessiana:** Usando il **teorema del valore medio**, possiamo esprimere:
-    
-    ∇f(xk)−∇f(x∗)=∫01∇2f(x∗+t(xk−x∗))(xk−x∗) dt.\nabla f(x_k) - \nabla f(x^*) = \int_0^1 \nabla^2 f(x^* + t(x_k - x^*))(x_k - x^*) \, dt.
-2. **Stima della Distanza:** Sostituendo nella relazione di aggiornamento, otteniamo:
-    
-    ∥xk+1−x∗∥≤μ∫01∥∇2f(x∗+t(xk−x∗))−∇2f(xk)∥∥xk−x∗∥ dt.\|x_{k+1} - x^*\| \leq \mu \int_0^1 \|\nabla^2 f(x^* + t(x_k - x^*)) - \nabla^2 f(x_k)\| \|x_k - x^*\| \, dt.
-3. **Continuità della Hessiana:** Poiché xk→x∗x_k \to x^* e ∇2f(x)\nabla^2 f(x) è continua, la differenza ∥∇2f(x∗+t(xk−x∗))−∇2f(xk)∥\|\nabla^2 f(x^* + t(x_k - x^*)) - \nabla^2 f(x_k)\| tende a 0. Questo porta a:
-    
-    ∥xk+1−x∗∥≤σ∥xk−x∗∥,\|x_{k+1} - x^*\| \leq \sigma \|x_k - x^*\|,
-    
-    con σ∈(0,1)\sigma \in (0, 1), garantendo convergenza.
-    
-4. **Tasso di Convergenza:** Iterando, abbiamo:
-    
-    ∥xk−x∗∥≤σk∥x0−x∗∥,\|x_k - x^*\| \leq \sigma^k \|x_0 - x^*\|,
-    
-    mostrando che la convergenza è **superlineare**.
-    
+	$0 \leq \frac{\|x^{k+1} - x^*\|}{\|x^k - x^*\|} \leq \mu \int_0^1\| \nabla^2f(x^* + t(x^k-x^*)) - \nabla^2f(x_k)\|dt$
 
----
+E prendendo i limiti per $k \to \infty$, ricordando che $x^k \to x^*$ allora otteniamo:
 
-#### Problemi del Metodo di Newton
+	$0 \leq \lim_{k \to \infty} \frac{\|x^{k+1} - x^*\|}{\|x^k - x^*\|} \leq \lim_{k \to \infty} \mu \int_0^1\| \nabla^2f(x^* + t(x^k-x^*)) - \nabla^2f(x_k)\|dt$
+				$=\mu \int_0^1\| \nabla^2f(x^*) - \nabla^2f(x^*)\|dt = 0$ 
 
-1. **Costo Computazionale Elevato:**
-    
-    - Calcolare ∇2f(xk)\nabla^2 f(x_k) richiede O(n2)O(n^2).
-    - Risolvere il sistema lineare [∇2f(xk)]dk=−∇f(xk)[ \nabla^2 f(x_k) ] d_k = -\nabla f(x_k) richiede O(n3)O(n^3).
-    - Questo rende il metodo meno pratico in problemi su larga scala.
-2. **Assenza di Garanzie di Convergenza Globale:**
-    
-    - Se ∇2f(xk)\nabla^2 f(x_k) non è definita positiva, il metodo potrebbe fallire.
-    - In funzioni non convesse, la direzione calcolata potrebbe essere di salita invece che di discesa.
-3. **Dipendenza dalla Soluzione Iniziale:**
-    
-    - Se il punto iniziale x0x_0 è lontano da x∗x^*, il metodo potrebbe non convergere.
+Ovvero il tasso di convergenza è **superlineare**.
 
 ---
 
-#### Strategia di Globalizzazione
+Abbiamo quindi dimostrato che il metodo puro di Newton gode di convergenza locale superlineare. Questo risultato ci incoraggia verso l'uso di informazioni del secondo ordine in algoritmi di ottimizazzione non lineari, ma dobbiamo comunque considerare che il costo della computazione della matrice Hessiana è comunque un operazione costosa (circa n volte più costoso di calcolare il gradiente e $n^2$ volte più costoso di $f$). Per calcolare la direzione $d_k = -[\nabla^2f(x^k)]^-1 \nabla f(x^k)$, o invertiamo la matrice $n\space x\space n$ e quindi eseguiamo un prodotto matrice per vettore, oppure risolviamo il sistema lineare (meno costoso e numericamente più robusto): in entrambi i modi il costo dell'operazione è di $O(n^3)$. Dunque, mentre il tasso di convergenza locale in termini di iterazione è molto buono, l'incremento significativo del costo è nascosto dietro il risultato. Dunque, non è sempre il caso in cui la riduzione del numero di iterazioni è specchiato da una discesa nel costo totale dell'algoritmo.
 
-Per risolvere i problemi sopra menzionati, si introducono le seguenti modifiche:
+Abbiamo da affrontare alcuni problemi:
 
-1. **Modifica della Hessiana:**
-    
-    - Se alcuni autovalori di ∇2f(xk)\nabla^2 f(x_k) sono fuori dall'intervallo [c2,c1][c_2, c_1] con 0<c2<c1<∞0 < c_2 < c_1 < \infty, si modifica la matrice per garantire che sia definita positiva.
-2. **Ricerca Lineare di Armijo:**
-    
-    - Si esegue una ricerca di Armijo lungo la direzione calcolata, iniziando con un passo iniziale α=1\alpha = 1.
-3. **Comportamento Localizzato:**
-    
-    - Una volta che il metodo entra in una regione vicina al punto stazionario x∗x^*, le modifiche alla Hessiana e la ricerca lineare diventano superflue, permettendo al metodo di recuperare la velocità di convergenza locale.
+- Presentando il metodo di Newton, noi sistematicamente facciamo l'assunzione sul fatto che $\nabla^2f(x^k)$ sia definita positiva, ma in pratica non è sempre il caso:
+	- Se la funzione obiettivo è convessa ma non fortemente, potremmo finire, potremmo finire in un punto $x^k$ tale che l'Hessiana sia non invertibile e l'algoritmo quindi non sia ben definito. 
+	- Con funzioni generali non convesse, l'Hessiana non solo può non essere invertibile come nel punto sopra, ma può avere anche autovalori negativi e quindi la direzione potrebbe essere di salita.
 
-**Conclusione:**  
-Queste strategie portano al **metodo di Newton globalmente convergente**, che combina garanzie di convergenza globale con tassi di convergenza locale superlineari.
+- L'assenza di garanzie di convergenza globale è una debolezza di relativa importanza del metodo. 
 
----
+Per risolvere i problemi sopra menzionati, si introducono _strategie di globalizzazione_, ovvero le seguenti modifiche:
 
-### Considerazioni Finali
+1. **Modifica della Hessiana:** se alcuni autovalori di $\nabla^2 f(x_k)$ sono fuori dall'intervallo $[c_2, c_1]$ con $0 < c_2 < c_1 < \infty$, si modifica la matrice di Newton per garantire che la condizione di autovalori limitati valga e quindi la matrice sia definita positiva.
+2. **Ricerca Lineare di Armijo:** Si esegue una ricerca di Armijo lungo la direzione calcolata, iniziando con un passo iniziale $\alpha = 1$.
 
-Il metodo di Newton rappresenta uno strumento potente per l'ottimizzazione non lineare, ma il suo utilizzo richiede attenzione:
-
-- **Localmente:** È estremamente efficace, con una velocità di convergenza superlineare.
-- **Globalmente:** Deve essere modificato per garantire la convergenza.
-
-Nonostante il costo computazionale elevato, il metodo è ideale per problemi in cui il numero di iterazioni è più critico del costo per iterazione.
-
-### Metodi Quasi-Newton
-
-I metodi Quasi-Newton nascono dall'esigenza di mantenere la velocità di convergenza dei metodi di Newton, riducendo però i costi computazionali per iterazione. Invece di calcolare esattamente la matrice hessiana, questi metodi utilizzano un'approssimazione costruita tramite informazioni di primo ordine e iterazioni precedenti.
-
-#### Formula Generale
-
-I metodi Quasi-Newton seguono la regola di aggiornamento:
-
-xk+1=xk+αkdk,x_{k+1} = x_k + \alpha_k d_k,
-
-dove la direzione dkd_k è calcolata come:
-
-dk=−Hk∇f(xk),d_k = -H_k \nabla f(x_k),
-
-con Hk≈[∇2f(xk)]−1H_k \approx [\nabla^2 f(x_k)]^{-1}. Alternativamente, possiamo utilizzare un'approssimazione diretta della Hessiana:
-
-dk=−Bk−1∇f(xk),d_k = -B_k^{-1} \nabla f(x_k),
-
-con Bk≈∇2f(xk)B_k \approx \nabla^2 f(x_k).
+Con queste strategie otteniamo un metodo di discesa usando la line search di Armijo lungo una direzione gradient-related, dunque ottenendo garanzie di convergenza globale.
+Sotto ragionevoli assunzioni, può essere dimostrato che quando il metodo di Newton globalizzato entra nell'intorno di un punto stazionario (soddisfacendo l'ipotesi della propozione 4.12), allora non c'è più bisogno di nè modificare l'Hessiana che di fare cattivi passi di backtrack: il metodo puro di Newton è portato da qui in avanti e quindi ottenendo i risultati di convergenza locale veloce.
+Quando un metodo ha questo tipo di comportamento è detto _Metodo di Newton globalmente convergente_
 
 ---
 
-#### Equazione Quasi-Newton
+### 4.6 Metodi Quasi-Newton
 
-Per funzioni quadratiche f(x)=12xTQx+cTxf(x) = \frac{1}{2}x^T Qx + c^T x, con Q≻0Q \succ 0, si ha:
+Abbiamo visto che i metodi di Newton posseggono delle proprietà di convergenza veloce molto interessanti, ma abbiamo fatto vedere come i costi per iterazione possono diventare comunque molto alti al crescere delle variabili, al punto in cui i vantaggi in termini di iterazione sono sopraffati dal peso richiesto dalle operazioni e l'algoritmo diventa sostanzialmente impraticabile. Ci chiediamo quindi se sia possibile arrivare a qualcosa di simile al metodo di Newton ma evitando i calcoli della matrice Hessiana, usando solo informazioni del primo ordine, e senza bisogno di invertire una matrice $n \space x \space n$ (o risolvere un analogo sistema lineare).
 
-Δ∇f=∇f(xk+1)−∇f(xk)=Q(xk+1−xk).\Delta \nabla f = \nabla f(x_{k+1}) - \nabla f(x_k) = Q(x_{k+1} - x_k).
+I metodi Quasi-Newton sono stati proposti seguendo precisamente quest'idea: Invece di calcolare esattamente la matrice hessiana, questi metodi utilizzano un'approssimazione costruita tramite informazioni di primo ordine e iterazioni precedenti.
+La forma generale dei metodi Quasi-Newton seguono la regola di aggiornamento:
 
-Generalizzando, imponiamo che le matrici approssimate soddisfino una relazione simile:
+	$x_{k+1} = x_k + \alpha_k d_k \quad \text{con} \quad d_k = -B_k^{-1} \nabla f(x_k)$
 
-Bk+1sk=yk,B_{k+1}s_k = y_k,
+Dove $B_k$ ==approssima la vera matrice Hessiana per$x_k$==. Una direzione definita in questo modo sarà sicuramente una direzione di discesa se $B_k$ definita positivamente. 
+Ora, il problema principale è come calcolare $B_k$ e quali proprietà questa approssimazione della matrice possiede. Per rispondere a questa domanda riprendiamo il caso quadratico.
 
-oppure:
+Per funzioni quadratiche $f(x) = \frac{1}{2}x^T Qx + c^T x$, con $Q \succ 0$, si ha:
 
-Hk+1yk=sk,H_{k+1}y_k = s_k,
+Per qualsiasi $x,z \in \mathbb{R}^n$: $\nabla f(x) - \nabla f(z) = Qx+c - Qz - c = Q(x-z)$ 
 
-dove:
+Dunque se inseriamo due iterate successive $x_k$ e $x_{k+1}$ e definiamo $y_k = \nabla f(x_{k+1}) - \nabla f(x)$ e $s_k = x_{k+1}- x_k$, allora otteniamo:
+	
+	$y_k = \nabla f(x_{k+1}) - \nabla f(x_k) = Q(x_{k+1} - x_k) = \nabla^2 f(x^{k+1})s_k$
 
-- sk=xk+1−xks_k = x_{k+1} - x_k,
-- yk=∇f(xk+1)−∇f(xk)y_k = \nabla f(x_{k+1}) - \nabla f(x_k).
+Uguaglianza che vale nel caso di vera Hessiana nel caso quadratico è chiamata _equazione di Quasi-Newton_. Eventualmente possiamo scrivere:
 
----
+	$[\nabla^2f(x^{k+1})]^{-1} y_k = s_k$
 
-#### Schema Generale
+Possiamo dunque pensare di traslare questa proprietà al caso generale non lineare, dove impiegheremo un approssimazione della matrice Hessiana che soddisa l'equazione di Quasi-Newton, ovvero soddisfa una proprietà tipica delle vere Hessiane per funzioni obiettivo quadratiche.
 
-Lo schema algoritmico per un metodo Quasi-Newton è riportato di seguito:
+Gli schemi generali per gli approcci Quasi-Newton sono descritti con aggiornamenti del tipo _diretto_ o _inverso_:
+- $x_{k+1} = x_k - \alpha_k B_k^{-1}\nabla f(x_k) \quad B \approx \nabla^2f(x_k) \quad B_{k+1}s_k = y_k \quad \text{update diretto}$
+- $x_{k+1} = x_k - \alpha_k H_k^\nabla f(x_k) \quad H \approx [\nabla^2f(x_k)]^{-1} \quad H_{k+1}y_k = s_k \quad \text{update inverso}$
 
-**Algoritmo 4: Metodo Quasi-Newton con Aggiornamenti Inversi**
+Update inversi sono spesso più convenienti da un punto di vista computazionale: siccome approssimiamo l'inversa dell'Hessiana, non abbiamo poi il dovere di invertire una grande matrice o risolvere un sistema lineare per calcolare la direzione di ricerca.
 
-1. **Input:** x0∈Rnx_0 \in \mathbb{R}^n, H0∈SnH_0 \in S^n, H0≻0H_0 \succ 0.
-2. **Inizializzazione:** k=0k = 0.
-3. **Ciclo:**
-    - Calcolare dk=−Hk∇f(xk)d_k = -H_k \nabla f(x_k).
-    - Determinare αk\alpha_k tramite una ricerca lineare.
-    - Aggiornare xk+1=xk+αkdkx_{k+1} = x_k + \alpha_k d_k.
-    - Calcolare ΔHk\Delta H_k affinché Hk+1yk=skH_{k+1} y_k = s_k.
-    - Aggiornare Hk+1=Hk+ΔHkH_{k+1} = H_k + \Delta H_k.
-4. **Fermarsi quando ∥∇f(xk)∥≈0\|\nabla f(x_k)\| \approx 0.
+Non abbiamo ancora visto come ottenere queste matrici di approssimazioni che soddisfano la proprietà di Quasi-Newton. L'idea è data l'approssimazione corrente $B_k$ (o $H_k$), aggiorneremo le matrici seconda una regola della forma:
 
----
+	$B_{k+1} = B_k + \Delta B_k H_{k+1} = H_k + \Delta H_k$ 
 
-#### Regole di Aggiornamento
-
-##### **Aggiornamenti di rango-1**
-
-La forma generale è:
-
-ΔHk=ρkukvkT,\Delta H_k = \rho_k u_k v_k^T,
-
-dove ρk∈R+\rho_k \in \mathbb{R}^+, uk,vk∈Rnu_k, v_k \in \mathbb{R}^n. Un esempio noto è la **regola di Broyden**:
-
-Bk+1=Bk+(yk−Bksk)skTskTsk.B_{k+1} = B_k + \frac{(y_k - B_k s_k)s_k^T}{s_k^T s_k}.
-
-**Svantaggi:** La simmetria e la definita positività di Bk+1B_{k+1} non sono garantite.
-
-##### **Aggiornamenti di rango-2**
-
-La forma generale è:
-
-ΔHk=akukukT+bkvkvkT,\Delta H_k = a_k u_k u_k^T + b_k v_k v_k^T,
-
-dove ak,bk∈R+a_k, b_k \in \mathbb{R}^+. Questi aggiornamenti garantiscono stabilità e proprietà desiderate per HkH_k.
+Segue lo schema Generale per un metodo Quasi-Newton (nel caso inverso):
 
 ---
 
-### Algoritmo BFGS
+<a id="algoritmo-4"></a>
+**Algoritmo-4: Metodo Quasi-Newton con Aggiornamenti Inversi**
 
-Il **BFGS (Broyden-Fletcher-Goldfarb-Shanno)** è uno dei metodi Quasi-Newton più popolari, basato su aggiornamenti di rango-2. Le formule sono:
-
-**Aggiornamento Diretto (Hessiana):**
-
-Bk+1=Bk+ykykTykTsk−BkskskTBkskTBksk.B_{k+1} = B_k + \frac{y_k y_k^T}{y_k^T s_k} - \frac{B_k s_k s_k^T B_k}{s_k^T B_k s_k}.
-
-**Aggiornamento Inverso (Hessiana inversa):**
-
-Hk+1=Hk+(1+ykTHkykskTyk)skskTskTyk−HkykskT+skykTHkskTyk.H_{k+1} = H_k + \left(1 + \frac{y_k^T H_k y_k}{s_k^T y_k}\right)\frac{s_k s_k^T}{s_k^T y_k} - \frac{H_k y_k s_k^T + s_k y_k^T H_k}{s_k^T y_k}.
-
----
-
-### Vantaggi dei Metodi Quasi-Newton
-
-1. **Efficienza Computazionale:**
-    
-    - Evitano il calcolo diretto di ∇2f(xk)\nabla^2 f(x_k).
-    - Risolvono O(n2)\mathcal{O}(n^2) operazioni per aggiornare HkH_k rispetto alle O(n3)\mathcal{O}(n^3) del metodo di Newton.
-2. **Convergenza Globale:**
-    
-    - Combinando una ricerca di Armijo e un controllo sugli autovalori, si garantisce la convergenza globale con complessità O(1ϵ2)\mathcal{O}(\frac{1}{\epsilon^2}).
-3. **Applicabilità su Scala Larga:**
-    
-    - Ideali per problemi ad alta dimensionalità.
+1. **Input:** $x_0 \in \mathbb{R}^n$, $H_0 \in S^n$, $H_0 \succ 0$.
+2. **Inizializzazione:** $k = 0$.
+3. **Ciclo:** (Finche $\|g_k\| \neq 0$)
+    - Calcolo $d_k = -H_k \nabla f(x_k)$.
+    - Determino $\alpha_k$ tramite una ricerca lineare lungo $d_k$.
+    - Aggiorno $x_{k+1} = x_k + \alpha_k d_k$.
+    - Calcolo $\Delta H_k$ affinché $H_{k+1} y_k = s_k$. 
+	    - Ovvero $(H_k + \Delta H_k)(\nabla f(x_{k+1}) - \nabla f(x_k)) = x_{k+1} - x_k$
+    - Aggiornare $H_{k+1} = H_k + \Delta H_k$.
+    - $k=k+1$ 
+4. Restituisco $\{H_k\}$ e $x_k$
 
 ---
+L'algoritmo 4 è uno schema generale, la realizzazione di questo schema sono caratterizzate da due elementi, il tipo di line search eseguito e la regola di update scelta per definire $\Delta H_k$. 
+Si nota subito che se sfruttiamo una line Search di Armijo e aggiungo una salvaguardia di garanzia affichè $H_k$ soddisfi la condizione di bound sugli autovalori, allora immediatamente riotteniamo la convergenza globale e bound sulla complessità di $O(\frac{1}{\epsilon^2})$.
 
-### Conclusione
+Regole di aggiornamento per la matrice Hessiana sono di solito basate su **aggiornamenti di rango-1 o rango-2** della matrice corrente:
 
-I metodi Quasi-Newton bilanciano efficienza computazionale e velocità di convergenza, rendendoli strumenti versatili per l'ottimizzazione non lineare, in particolare in contesti su larga scala.
+- **Aggiornamenti di rango-1**:
 
-### Nota che queste regole di aggiornamento soddisfano effettivamente la proprietà di quasi-Newton; infatti:
+	$\Delta B_k = \rho_k u_k v_k^T \quad \text{oppure} \quad \Delta H_k = \rho_k u_k v_k^T$,
 
-Bk+1sk=Bksk+ykykTykTsksk−BkskskTBkskTBksksk=Bksk+ykykTskykTsk−Bksk=Bksk+yk−Bksk=yk.B_{k+1}s_k = B_k s_k + \frac{y_k y_k^T}{y_k^T s_k}s_k - B_k \frac{s_k s_k^T B_k}{s_k^T B_k s_k}s_k = B_k s_k + y_k \frac{y_k^T s_k}{y_k^T s_k} - B_k s_k = B_k s_k + y_k - B_k s_k = y_k.
+dove $\rho_k \in \mathbb{R}_+$, $u_k, v_k \in \mathbb{R}^n$: La matrice ottenuta in questo modo è una matrice di rango-1, nella quale l'efficienza degli aggiornamenti dipendono sulla scelta specifica di $\rho_k,u_k, v_k$. 
+Un esempio noto è la **regola di Broyden**:
+
+	$B_{k+1} = B_k + \frac{(y_k - B_k s_k)s_k^T}{s_k^T s_k}$
+
+La simmetria e la definita positività negli aggiornamenti di $B_{k+1}$ non sono garantite ( a meno di giuste correzzioni)
+
+- **Aggiornamenti di rango-2**
+
+	$\Delta B_k = a_k u_k u_k^T + b_k v_k v_k^T \quad \text{oppure} \quad \Delta H_k = a_k u_k u_k^T + b_k v_k v_k^T$
+
+dove $a_k, b_k \in \mathbb{R}_+$ e  $u_k, v_k \in \mathbb{R}^n$. Di nuovo, l'efficacia degli aggiornamenti dipende dalla scelta specifica degli scalari e dei vettori che definiscono l'aggiornamento. Questi aggiornamenti garantiscono più stabilità di rango-1 in quanto riescono a mantenere proprietà di simmetria e positività per la matrice.
+
+#### 4.6.1 Algoritmo BFGS
+
+Il **BFGS (Broyden-Fletcher-Goldfarb-Shanno)** è uno dei metodi Quasi-Newton più popolari, basato su aggiornamenti di rango-2. 
+
+Le formule per gli aggiornamenti sono:
+- **Caso Diretto:**
+
+	$B_{k+1} = B_k + \frac{y_k y_k^T}{y_k^T s_k} - \frac{B_k s_k s_k^T B_k}{s_k^T B_k s_k}$
+
+- **Caso Inverso:**
+
+	$H_{k+1} = H_k + \left(1 + \frac{y_k^T H_k y_k}{s_k^T y_k}\right)\frac{s_k s_k^T}{s_k^T y_k} - \frac{H_k y_k s_k^T + s_k y_k^T H_k}{s_k^T y_k}$
+
+Notare che queste regole di aggiornamento soddisfano le proprietà di Quasi-Newton, infatti:
+
+	$B_{k+1}s_k = B_ks_k + \frac{y_k y_k^T}{y_k^T s_k}s_k - \frac{B_k s_k s_k^T B_k}{s_k^T B_k s_k}s_k$
+		$= B_k s_k + y_k\frac{y_k^T s_k}{y_k^Ts_k} -  B_k s_k\frac{ s_k^T B_ks_k}{s_k^T B_k s_k}$
+		$= B_k s_k + y_k -  B_k s_k = y_k$
 
 Calcoli simili possono essere eseguiti per la regola di aggiornamento inversa.
 
+Possiamo fare vedere anche come la regola di update di BFGS può rafforzare la preservazione della definitezza positiva.
+
 ---
 
-### Preservazione della definitezza positiva nell'algoritmo BFGS
+**Proposizione 4.13.** Sia $H_k$ definito positivo e $H_{k+1}$ calcolato tramite la regola di aggiornamento BFGS. Allora $H_{k+1}$ è definito positivo se e solo se $s_k^T y_k > 0$.
 
-**Proposizione 4.13.** Sia HkH_k definito positivo e Hk+1H_{k+1} calcolato tramite la regola di aggiornamento BFGS. Allora Hk+1H_{k+1} è definito positivo se e solo se skTyk>0s_k^T y_k > 0.
+Questa proposizione garantisce che, se $H_0$ è definito positivo e ad ogni iterazione $s_k^T y_k > 0$, la condizione di definitezza positiva sarà mantenuta in ogni passo.
+La condizione $s_k^T y_k > 0$ può essere imposta scegliendo adeguatamente il passo $\alpha_k$. 
 
-Questa proposizione garantisce che, se H0H_0 è definito positivo e ad ogni iterazione skTyk>0s_k^T y_k > 0, la condizione di definitezza positiva sarà mantenuta in ogni passo.
+Infatti:
 
-La condizione skTyk>0s_k^T y_k > 0 può essere imposta scegliendo adeguatamente il passo αk\alpha_k. Infatti:
-
-skTyk=(∇f(xk+1)−∇f(xk))T(xk+1−xk)>0,s_k^T y_k = (\nabla f(x_{k+1}) - \nabla f(x_k))^T (x_{k+1} - x_k) > 0,
+	$s_k^T y_k = (\nabla f(x_{k+1}) - \nabla f(x_k))^T (x_{k+1} - x_k) > 0$
 
 che equivale a:
 
-(∇f(xk+1)−∇f(xk))Tdk>0,(\nabla f(x_{k+1}) - \nabla f(x_k))^T d_k > 0,
+	$s_k^T y_k =  (x_{k+1} - x_k)^T (\nabla f(x_{k+1}) - \nabla f(x_k))$
+		$= (x_k - \alpha_kd_k - x_k)^T (\nabla f(x_{k+1}) - \nabla f(x_k))$
+		$= \alpha_kd_k^T (\nabla f(x_{k+1}) - \nabla f(x_k))$
+
+ovvero siccome $\alpha_k > 0$, necessariamente:
+
+	$(\nabla f(x_{k+1}) - \nabla f(x_k))^T d_k > 0$
 
 oppure:
 
-∇f(xk+1)Tdk>∇f(xk)Tdk.\nabla f(x_{k+1})^T d_k > \nabla f(x_k)^T d_k.
+	$\nabla f(x_{k+1})^T d_k > \nabla f(x_k)^T d_k$
 
-Questa condizione può essere soddisfatta utilizzando una ricerca lineare del tipo Wolfe per determinare αk\alpha_k nell'algoritmo 4.
+Questa condizione può essere soddisfatta utilizzando ==una ricerca lineare del tipo Wolfe== per determinare $\alpha_k$ nell'[algoritmo 4](#algoritmo-4-metodo-quasi-newton-con-aggiornamenti-inversi).
 
----
-
-### Algoritmo BFGS
-
-L'algoritmo BFGS, senza ulteriori accorgimenti, offre risultati di convergenza globale sotto ipotesi di convessità sulla funzione obiettivo ff. Inoltre, se ff è fortemente convessa e due volte differenziabile, l'algoritmo può essere dimostrato convergere superlinearmente al minimizzatore globale, accettando sempre il passo unitario per grandi kk.
-
-Pertanto, l'algoritmo BFGS riesce a raggiungere una velocità di convergenza locale rapida, simile al metodo di Newton, senza utilizzare informazioni di secondo ordine.
+Per BFGS puro, senza salvaguardie, esistono risultati di convergenza globale sotto ipotesi di convessità sulla funzione obiettivo, inoltre se si assumono forte convessità e doppia differenziabilità si può dimostrare che il metodo converge in modo superlineare al minimo globale, accettando sempre il passo unitario per $k$ grande.
+Dunque l'algoritmo BGFS è in grado di avere sia la convergenza veloce di Newton senza dover impiegare informazioni del secondo ordine.
 
 ---
 
-### Metodo L-BFGS
+#### 4.6.2 Metodo L-BFGS
 
 Il metodo **L-BFGS** è una variante del BFGS progettata specificamente per problemi di grande scala (da cui il nome _Limited Memory_). Questo metodo mostra un'ottima performance pratica ed è considerato una delle scelte preferite per risolvere problemi di ottimizzazione non vincolati.
 
-#### Idea Chiave
+L'idea di base è che in problemi ad alta dimensionalità, la memorizzazione della matrice $H_k$ e il calcolo di $d_k = -H_k \nabla f(x_k)$ possono diventare proibitivi. Per affrontare questa difficoltà, L-BFGS utilizza una regola ricorsiva che richiede solo i vettori $y_k$ e $s_k$ per calcolare:
 
-In problemi ad alta dimensionalità, la memorizzazione della matrice HkH_k e il calcolo di dk=−Hk∇f(xk)d_k = -H_k \nabla f(x_k) possono diventare proibitivi. Per affrontare questa difficoltà, L-BFGS utilizza una regola ricorsiva che richiede solo i vettori yky_k e sks_k per calcolare:
+	$H_{k+1} = V_k^T H_k V_k + \rho_k s_k s_k^T$
 
-Hk+1=VkTHkVk+ρkskskT,H_{k+1} = V_k^T H_k V_k + \rho_k s_k s_k^T,
+dove: $\rho_k = \frac{1}{y_k^T s_k}, \quad V_k = I - \rho_k y_k s_k^T$.
 
-dove:
+In L-BFGS, l'approssimazione $H_{k+1}$ viene interrotta dopo $m$ passi, utilizzando solo le ultime $m$ coppie $(y_k, s_k)$, insieme a una stima iniziale $H_{k-m} \approx \gamma I$ (di solito si usa questa), facilmente memorizzabile. Esperimenti mostrano che valori relativamente piccoli di $m$ (tra 2 e 20) sono sufficienti per ottenere approssimazioni soddisfacenti. La formula può quindi essere sfruttato per il calcolo di $H_k \nabla f(x^k)$.
+Inoltre, la procedura ricorsiva chiamata HG consente di calcolare $d_k$ con soli $4mn$ moltiplicazioni, tramite la sola conoscenza di $(y_{k-i}, s_{k-i}), i = 0, ..., m$ e l'approssimazione di $H_{k-m}$, riducendo significativamente i costi computazionali.
 
-ρk=1ykTsk,Vk=I−ρkykskT.\rho_k = \frac{1}{y_k^T s_k}, \quad V_k = I - \rho_k y_k s_k^T.
-
-In L-BFGS, l'approssimazione Hk+1H_{k+1} viene interrotta dopo mm passi, utilizzando solo le ultime mm coppie (yk,sk)(y_k, s_k), insieme a una stima iniziale Hk−m≈γIH_{k-m} \approx \gamma I, facilmente memorizzabile.
-
----
-
-### Prestazioni e Limiti del Metodo L-BFGS
-
-Esperimenti mostrano che valori relativamente piccoli di mm (tra 2 e 20) sono sufficienti per ottenere approssimazioni soddisfacenti. Inoltre, la procedura ricorsiva HG consente di calcolare dkd_k con soli 4mn4mn moltiplicazioni, riducendo significativamente i costi computazionali.
-
+Come precedentemente discusso L-BFGS è veramente efficiente nella pratica nel risolvere problemi di ottimizzazione non vincolata.
 Tuttavia:
-
-- Le proprietà teoriche di convergenza globale non sono forti come per il BFGS.
+- Le **proprietà teoriche** di convergenza globale non sono forti come per il BFGS: risultati di convergenza globale verso punti stazionari sono ancora sconosciuti, anche sotto assunzioni di convessità.
+- Si può garantire convergenza solo tramite strategie di salvaguardia.
 - La convergenza globale può essere garantita solo con strategie di salvaguardia standard.
-- In caso di forte convessità, è possibile dimostrare la convergenza lineare sotto ipotesi specifiche su HkH_k.
+- In caso di forte convessità, è possibile dimostrare la **convergenza lineare** sotto ipotesi specifiche sulla sequenza $\{H_k\}$.
 
 Un'estensione chiamata **L-BFGS-B** è stata progettata per affrontare problemi di ottimizzazione con vincoli di tipo _bound constrained_.
 
-### Metodi di Decomposizione e Metodi Stocastici
+### 4.7 Metodi di Decomposizione e Metodi Stocastici
 
 #### **Metodi di Decomposizione**
 
@@ -1856,3 +1804,9 @@ I valori nella tabella aiutano a visualizzare i trend; tuttavia, ricordiamo che 
 - **Costo per iterazione:** A differenza del batch GD, l'SGD non nasconde nei costanti della complessità temporale il numero NN dei termini sommati nella funzione obiettivo. Il costo per iterazione è quindi molto più basso rispetto al GD batch.
 
 L'**efficienza del GD rispetto all'SGD** si osserva solo per valori molto piccoli di ϵ\epsilon, cioè quando è richiesta un'elevata accuratezza nella soluzione (vedi Figura 9). Questo è uno dei motivi principali per cui il **minibatch GD** (1<∣B∣=M≪N1 < |B| = M \ll N), rappresentando una via di mezzo tra batch e stochastic GD, è nella pratica l'approccio più efficace nelle applicazioni.
+
+## 5. Algoritmi di ottimizzazione vincolata
+
+TBD
+
+## 6. Problemi di Ottimizzazione nel Machine Learning

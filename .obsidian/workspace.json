@@ -8,35 +8,15 @@
         "type": "tabs",
         "children": [
           {
-            "id": "222a3d808b07906f",
+            "id": "b6c2500bffe553f2",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "Opt/Traduzione Pdf Optimization.md",
-                "mode": "source",
-                "source": false
+                "file": "Opt/Immagini Opt/Pasted image 20250123161650.png"
               },
-              "icon": "lucide-file",
-              "title": "Traduzione Pdf Optimization"
-            }
-          }
-        ]
-      },
-      {
-        "id": "5bdbf9c24a87dad1",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "8716643d469762b7",
-            "type": "leaf",
-            "state": {
-              "type": "pdf",
-              "state": {
-                "file": "Opt/notes_2024_lapucci_R3.pdf"
-              },
-              "icon": "lucide-file-text",
-              "title": "notes_2024_lapucci_R3"
+              "icon": "lucide-image",
+              "title": "Pasted image 20250123161650"
             }
           }
         ]
@@ -61,7 +41,7 @@
                 "sortOrder": "alphabetical"
               },
               "icon": "lucide-folder-closed",
-              "title": "Files"
+              "title": "Esplora risorse"
             }
           },
           {
@@ -95,8 +75,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "1ac7e9d81bf48250",
@@ -169,21 +148,22 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Open quick switcher": false,
-      "graph:Open graph view": false,
-      "canvas:Create new canvas": false,
-      "daily-notes:Open today's daily note": false,
-      "templates:Insert template": false,
-      "command-palette:Open command palette": false
+      "switcher:Apri selezione rapida": false,
+      "graph:Apri vista grafo": false,
+      "canvas:Crea nuova lavagna": false,
+      "daily-notes:Apri nota del giorno": false,
+      "templates:Inserisci modello": false,
+      "command-palette:Apri riquadro comandi": false
     }
   },
-  "active": "222a3d808b07906f",
+  "active": "3866e5b81b45f173",
   "lastOpenFiles": [
     "Pasted image 20250123103903.png",
-    "Opt/notes_2024_lapucci_R3.pdf",
-    "Opt/Traduzione Pdf Optimization.md",
+    "Opt/Immagini Opt/Pasted image 20250123161650.png",
     "Pasted image 20250123103832.png",
+    "Opt/Traduzione Pdf Optimization.md",
     "Opt/Tabella di Marcia Optimization.md",
+    "Opt/notes_2024_lapucci_R3.pdf",
     "Opt/Immagini Opt/Pasted image 20250122224259.png",
     "Pasted image 20250122224259.png",
     "Opt/Immagini Opt/Pasted image 20250122091124.png",
@@ -199,8 +179,6 @@
     "Untitled 1.md",
     "Untitled.md",
     "Senza nome 1.md",
-    "Opt/Pasted image 20250116184353.png",
-    "Net Sec/Immagini NetSec/Pasted image 20241208162312.png",
     "Net Sec/Network Security.md",
     "Opt"
   ]

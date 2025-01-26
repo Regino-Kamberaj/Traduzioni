@@ -74,15 +74,15 @@
     
     Second order methods, Netwon method as iterative optimization of second order Taylor approximation;  Newton's method does not have global convergence properties: counterexample; Local convergence properties (w/ prf.) [LN 4.5].
     
-- ## 12-13 November
+- ## ==12-13 November==
     
-    **Lecture 15 (2hrs):** 
+    ~~**Lecture 15 (2hrs):**~~ 
     
     Local convergence properties of Newton's method (continued) [LN X.XX]. Globalization of Newton's method [LN 4.5]. 
     
     Hessian approximation, Quasi-Newton equation, direct and inverse update rules [LN 4.6].
     
-    **Lecture 16 (2hrs):  
+    ~~**Lecture 16 (2hrs):~~  
     
     Rank-1 and rank-2 update rules [LN 4.6]; BFGS method [LN 4.6.1]; large scale problems, L-BFGS algorithm [LN 4.6.2].
     
