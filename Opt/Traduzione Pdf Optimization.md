@@ -148,7 +148,7 @@ Qui ci occuperemo di problemi non lineari e continui di ottimizzazione, sia con 
 
 ## 3. Problemi di ottimizzazione: caratterizzazione delle soluzioni
 
-TBD
+TBD (Per ora vedi Pdf notes_palchetti_2023)
 
 ## 4. Algoritmi di Ottimizzazione Non Vincolata
 
@@ -1807,6 +1807,6 @@ L'**efficienza del GD rispetto all'SGD** si osserva solo per valori molto piccol
 
 ## 5. Algoritmi di ottimizzazione vincolata
 
-TBD
+TBD (Per ora vedi Pdf notes_palchetti_2023/ notes_senoner_2024)
 
 ## 6. Problemi di Ottimizzazione nel Machine Learning

@@ -88,19 +88,19 @@
     
     Constrained optimization problems: feasible directions, necessary optimality conditions [GS 17.2.1].
     
-- ## 19-20 November
+- ## ==19-20 November==
     
-    **Lecture 17 (2hrs):** 
+    ~~**Lecture 17 (2hrs):**~~ 
     
     Problems with convex constraints: feasible directions (w/ prf.), optimality conditions (w/ prf.) [GS 17.2.2]. Problems with linear constraints, feasible directions (w/o prf.), optimality conditions with box constraints (w/ prf.) [GS 17.2.3]. Projection onto a convex set: definition, equivalent characterization (w/o prf.), continuity (w/o prf.), stationarity condition basedon projection (w/ prf.) [GS 17.2.4].
     
-    **Lecture 18 (2hrs):** 
+    ~~**Lecture 18 (2hrs):**~~ 
     
     Projection onto box constraints and ball constraints [GS 17.2.4]. Constrained Armijo type line-search, convergence properties (w/o prf.) [GS 17.3]. Projected gradient method: algorithmic scheme and convergence properties (w/ prf.) [GS 17.5]. Frank-Wolfe method: algorithmic scheme and convergence properties (w/ prf.) [GS 17.4].
     
 - ## 26-27 November
     
-    **Lecture 19 (2hrs):** 
+    ~~**Lecture 19 (2hrs):**~~ 
     
     Optimization problems with analytical constraints [GS D]; Fritz-John conditions [GS D.1]; constraints qualifications, KKT conditions [GS D.2]; LCQ, LICQ (w/ prf.), SCQ; particular case of convex problems with linear constraints [GS D.5].
     
