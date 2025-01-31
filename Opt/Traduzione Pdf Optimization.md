@@ -1809,4 +1809,456 @@ L'**efficienza del GD rispetto all'SGD** si osserva solo per valori molto piccol
 
 TBD (Per ora vedi Pdf notes_palchetti_2023/ notes_senoner_2024)
 
-## 6. Problemi di Ottimizzazione nel Machine Learning
+## 6 Problemi di Ottimizzazione nel Machine Learning: Concetti di Base
+
+### 6.1 Introduzione
+
+Il machine learning non è ottimizzazione. Il machine learning è un ramo dell’intelligenza artificiale che si è dimostrato estremamente efficace in numerosi compiti negli ultimi anni; il suo successo è probabilmente attribuibile alle forti proprietà statistiche possedute dai modelli di apprendimento, che permettono di sfruttare correttamente la grande quantità di dati oggi disponibile; inoltre, l’enorme progresso in corso degli strumenti hardware e software ha giocato un ruolo cruciale nel rendere i sistemi di apprendimento effettivamente impiegabili.
+
+Tuttavia, l’ottimizzazione matematica è un elemento centrale per questa tecnologia: spesso si utilizza la metafora del "motore". Infatti, il processo di addestramento di un sistema di apprendimento consiste, per la stragrande maggioranza dei modelli, nella risoluzione di un problema di ottimizzazione. Molte librerie di machine learning sono diventate popolari e ampiamente utilizzate negli ultimi anni; in ciascuna di esse, premere il "pulsante di esecuzione" non fa altro che avviare un algoritmo di ottimizzazione.
+
+Per questa ragione, è estremamente importante per gli esperti e gli ingegneri di machine learning conoscere in dettaglio i meccanismi di questi processi; questo è particolarmente vero per essere in grado di interpretare comportamenti anomali e correggere i problemi che frequentemente si verificano nella progettazione e implementazione dei sistemi di apprendimento.
+
+Nel corso di questo capitolo, ci concentreremo sugli algoritmi di ottimizzazione più rilevanti impiegati nei compiti di apprendimento supervisionato. Consideriamo quindi un dataset:
+
+\[
+D = \left\{ (x^{(i)}, y^{(i)}) \mid x^{(i)} \in X, y^{(i)} \in Y, i = 1, \dots, n \right\}
+\]
+
+dove \(X \subseteq \mathbb{R}^p\) ed \(Y = \mathbb{R}\) (compiti di regressione) oppure \(Y = \{0,1\}\) (compiti di classificazione binaria). Il dataset rappresenta un campionamento da una qualche distribuzione, dove esiste una relazione \(f\) tra le coppie \((x, y)\), tale che \(f(x) = y\).
+
+L’obiettivo del machine learning è costruire, basandosi sulle coppie in \(D\), una funzione \(\hat{f}\) che catturi l’essenza di \(f\), essendo in grado di fornire accuratamente valori di \(\hat{y} = \hat{f}(x)\) per punti \(x\) che non sono presenti nel set di addestramento \(D\).
+
+L’addestramento è tipicamente modellato come un problema di ottimizzazione (minimizzazione del rischio empirico), dove una funzione di perdita deve essere minimizzata rispetto ai parametri \(w\) del modello \(f\).
+
+La forma usuale dei problemi di ottimizzazione per l’addestramento è:
+
+\[
+\min_{w} L(w) = \frac{1}{n} \sum_{i=1}^{n} \ell(f(x^{(i)};w), y^{(i)})
+\]
+
+cioè, vogliamo minimizzare la somma finita di termini che possono avere forme diverse, a seconda della specifica funzione di perdita impiegata; alcuni esempi di funzioni di perdita sono:
+
+- **Perdita quadratica:** \(\ell(u, v) = (u - v)^2\) (regressione);
+- **Perdita \(\ell_1\):** \(\ell(u, v) = |u - v|\) (regressione);
+- **Perdita logaritmica:** \(\ell(u, v) = -(u \log(v) + (1 - u) \log(1 - v))\) (classificazione binaria);
+- **Perdita 0-1:** \(\ell(u, v) = 1 - \mathbb{1}\{u = v\}\) (classificazione binaria);
+- **Perdita hinge:** \(\ell(u, v) = \max\{0, 1 - uv\}\) (classificazione binaria).
+
+Ora, essere in grado di risolvere efficacemente il problema di ottimizzazione (20) non è sufficiente per garantire che il modello risultante funzioni bene su dati fuori campione; si verificano spesso due situazioni sfortunate:
+
+- Se la qualità dei dati è scarsa, o se il modello è troppo semplice rispetto alla distribuzione dei dati, non è possibile identificare una buona approssimazione della “vera” \(f\), anche se il problema di ottimizzazione è risolto accuratamente; questo problema è noto come **underfitting** e non può essere affrontato con i soli strumenti di ottimizzazione matematica.
+Il secondo problema è in qualche modo l’opposto del primo e si verifica quando il problema di ottimizzazione è risolto “troppo bene”; infatti, nel problema (20) viene utilizzata una funzione obiettivo surrogata: si minimizza l’errore sul set di addestramento, mentre si vorrebbe minimizzare l’errore su tutta la distribuzione dei dati, inclusi quelli non visti. Se il modello di apprendimento è sufficientemente espressivo (come spesso accade con i modelli parametrici di grandi dimensioni), si potrebbe ottenere una funzione di previsione molto complessa, perfettamente adattata ai dati in \(D\), ma assolutamente scorretta per i dati non visti. Questo problema è noto come **overfitting**.
+
+Per mitigare parzialmente questo problema, solitamente si introduce un termine di **regolarizzazione** nel problema di addestramento per migliorare la capacità di generalizzazione del modello di apprendimento. Il problema di ottimizzazione risultante è:
+
+\[
+\min_{w} L(w) + \Omega(w),
+\]
+
+dove il termine di regolarizzazione \(\Omega(w)\) è solitamente scelto tra:
+
+- \(\Omega(w) = \|w\|_2^2\) (regolarizzazione quadratica);
+- \(\Omega(w) = \|w\|_1\) (regolarizzazione \(\ell_1\));
+- \(\Omega(w) = \|w\|_0\) (regolarizzazione \(\ell_0\), con \(\|w\|_0 = |\{i : w_i \neq 0\}|\)).
+
+La regolarizzazione quadratica è la più utilizzata per la sua semplicità e le sue proprietà di regolarità. I regolarizzatori \(\ell_1\) e \(\ell_0\) inducono **sparsità**, con il primo che ha proprietà di regolarità molto più forti rispetto al secondo. La **sparsità** è spesso una caratteristica desiderabile nei modelli predittivi.
+
+D’ora in avanti, non ci concentreremo sugli aspetti statistici dei modelli di apprendimento, ma considereremo solo il punto di vista della pura ottimizzazione matematica.
+
+Infatti, si noti che l’aggiunta di un termine di regolarizzazione quadratico nel problema di ottimizzazione non solo ha un valore statistico, migliorando le proprietà di generalizzazione del modello addestrato, ma trasforma anche funzioni obiettivo convesse in funzioni **fortemente convesse**. Tenendo conto della discussione sulla complessità computazionale degli algoritmi di ottimizzazione nella Sezione 4.2.3, possiamo sottolineare che la regolarizzazione dovrebbe anche **accelerare significativamente** il processo di ottimizzazione. Inoltre, il termine di regolarizzazione rende qualsiasi funzione di perdita limitata **coerciva** (anche in assenza di proprietà di convessità), garantendo l’esistenza di soluzioni per il problema di ottimizzazione sottostante.
+
+---
+
+### 6.2 Regressione Lineare
+
+Il modello più semplice per i compiti di regressione è la **regressione lineare**. I regressori lineari sono solitamente ottenuti risolvendo un problema di minimi quadrati **regolarizzato**:
+
+\[
+\min_{w \in \mathbb{R}^p} \|Aw - b\|^2 + \lambda\|w\|^2
+\]
+
+dove \(A \in \mathbb{R}^{n \times p}\) e \(b \in \mathbb{R}^{n}\). Il problema è **convesso** e può essere risolto trovando una soluzione con **gradiente nullo**. Definendo:
+
+\[
+f(w) = \|Aw - b\|^2 + \lambda\|w\|^2 = w^T A^T A w - 2w^T A^T b + \|b\|^2 + \lambda w^T w
+\]
+
+e calcolando il gradiente:
+
+\[
+\nabla f(w) = 2A^T A w - 2A^T b + 2\lambda w,
+\]
+
+il problema si riduce alla risoluzione del seguente sistema lineare, noto come **equazione normale**:
+
+\[
+(A^T A + \lambda I)w = A^T b.
+\]
+
+### 6.3 Classificatori Lineari e Regressione Logistica
+
+**QUESTA SEZIONE VERRÀ PESANTEMENTE RISTRUTTURATA NEL PROSSIMO FUTURO**
+
+In questa sezione affrontiamo il problema dell'addestramento di un modello di **regressione logistica**. Il problema di ottimizzazione per questo modello ha la seguente forma:
+
+\[
+\min_{w \in \mathbb{R}^p} L(w) + \lambda \Omega(w),
+\]
+
+dove \(L(w)\) è la funzione di **log-verosimiglianza negativa** del modello logistico, che è una funzione convessa, e \(\Omega(w)\) è un regolarizzatore convesso. Si noti che questa impostazione è concettualmente equivalente ad altri problemi di addestramento con funzioni di perdita convesse, come la **regressione softmax** o il fitting di modelli **ARMA** nelle serie temporali.
+
+Per risolvere problemi di questa forma, è necessario un algoritmo iterativo di ottimizzazione; metodi come **discesa del gradiente** o **metodo di Newton** sono opzioni valide. Tuttavia, l'algoritmo **L-BFGS** è generalmente considerato il metodo più efficiente per l'ottimizzazione non vincolata, sia nel caso convesso che in quello non convesso (quando non è richiesta l'ottimalità globale), anche per problemi di dimensioni considerevoli. Per dataset di grandi dimensioni, può essere considerato anche un metodo di tipo **SGD**.
+
+---
+
+### **Gradiente e Hessiano per la Regressione Logistica**
+
+Mostriamo ora come calcolare il **gradiente** e la **matrice Hessiana** per il problema della regressione logistica.
+
+Consideriamo una classificazione binaria con \(Y = \{-1,1\}\). La funzione di perdita ha la forma:
+
+\[
+L(w; X, y) = \sum_{i=1}^{n} \log(1 + \exp(-y^{(i)} w^T x^{(i)})).
+\]
+
+Se definiamo \(z = Xw\) (cioè \(z_i = w^T x^{(i)}\) per ogni \(i\)), possiamo riscrivere la funzione di perdita come:
+
+\[
+L(w; X, y) = \varphi(z; y) = \sum_{i=1}^{n} \log(1 + \exp(-y^{(i)} z_i)).
+\]
+
+Vogliamo ora calcolare \(\nabla_w L(w; X, y)\); applicando la regola della catena multivariata, otteniamo:
+
+\[
+\nabla_w L(w; X, y)^T = \nabla_z \varphi(Xw; y)^T \frac{\partial}{\partial w} (Xw).
+\]
+
+Osserviamo inoltre che:
+
+\[
+\frac{\partial}{\partial z_i} \varphi(z; y) = \frac{\partial}{\partial z_i} \left( \log(1 + \exp(-y^{(i)} z_i)) \right).
+\]
+
+Svolgendo il calcolo della derivata:
+
+\[
+\frac{1}{1 + \exp(-y^{(i)} z_i)} \cdot \exp(-y^{(i)} z_i) \cdot (-y^{(i)}) = -y^{(i)} \frac{1}{1 + \exp(y^{(i)} z_i)} = -y^{(i)} \sigma(-y^{(i)} z_i),
+\]
+
+dove \(\sigma(\cdot)\) è la **funzione sigmoide**. Quindi, possiamo scrivere:
+
+\[
+\nabla_z \varphi(z; y) = (-y^{(1)} \sigma(-y^{(1)} z_1), \dots, -y^{(n)} \sigma(-y^{(n)} z_n))^T.
+\]
+
+D'altra parte, abbiamo:
+
+\[
+\frac{\partial}{\partial w} (Xw) = X,
+\]
+
+quindi otteniamo il gradiente della funzione di perdita:
+
+\[
+\nabla_w L(w; X, y) = (r^T X)^T = X^T r,
+\]
+
+dove \(r \in \mathbb{R}^n\) è definito come:
+
+\[
+r_i = -y^{(i)} \sigma(-y^{(i)} w^T x^{(i)}) \quad \text{per ogni } i = 1, \dots, n.
+\]
+
+---
+
+### **Calcolo della Matrice Hessiana**
+
+Con calcoli analoghi, possiamo ottenere la matrice Hessiana:
+
+\[
+\nabla^2 L(w; X, y) = X^T D X,
+\]
+
+dove \(D\) è una matrice diagonale con elementi:
+
+\[
+d_{ii} = \sigma(y^{(i)} w^T x^{(i)}) \cdot \sigma(-y^{(i)} w^T x^{(i)}).
+\]
+
+# 7 Support Vector Machines
+
+Un modello di **Support Vector Machine (SVM)** lineare è, in breve, un modello di classificazione ottenuto risolvendo il problema di minimizzazione del rischio empirico con la **hinge loss** e il regolarizzatore \(\ell_2\), ossia:
+
+\[
+\min_{w,b} \frac{1}{2} \|w\|^2 + C \sum_{i=1}^{n} \max\{0, 1 - y^{(i)} (w^T x^{(i)} + b)\}.
+\]
+
+Si può notare che le soluzioni ottimali di questo problema di ottimizzazione **non liscio e non vincolato** sono anche soluzioni del seguente problema **liscio con vincoli lineari**:
+
+\[
+\min_{w,b,\xi} \frac{1}{2} \|w\|^2 + C \sum_{i=1}^{n} \xi^{(i)}
+\]
+
+soggetto a:
+
+\[
+y^{(i)} (w^T x^{(i)} + b) \geq 1 - \xi^{(i)}, \quad \xi^{(i)} \geq 0.
+\]
+
+---
+
+## **Separabilità Lineare e Interpretazione Geometrica**
+
+Si può dimostrare che, quando \( C = \infty \), il problema corrisponde a trovare, tra gli **iperpiani che separano perfettamente i dati di addestramento**, quello che **massimizza la distanza dal punto più vicino** di entrambe le classi (vedi Figure 10 e 11). Tuttavia, se i dati non sono **linearmente separabili**, il problema non ha soluzioni ammissibili (Figura 12).
+
+Pertanto, con una scelta finita di \( C \), si accetta di **pagare un costo** per tutti i punti classificati **erroneamente**, nonché per quelli classificati **correttamente ma con una confidenza insufficiente** (Figura 13). Questo non solo garantisce l'esistenza di una soluzione, ma aiuta anche ad **evitare problemi di overfitting**.
+
+---
+
+## **Studio del Problema di Ottimizzazione**
+
+Il problema (26) è **quadratico convesso con vincoli lineari**, quindi è in teoria risolvibile tramite solutori standard per problemi vincolati, come l'**algoritmo di Frank-Wolfe**. Tuttavia, il numero di vincoli è **proporzionale al numero di punti di addestramento** e può crescere rapidamente.
+
+Per questa ragione (e per altre che vedremo in seguito), si segue una strategia differente: l'analisi del **problema duale**.
+
+---
+
+## **7.1 Il Problema Duale**
+
+Come accennato, il problema (26) è **convesso e quadratico con vincoli lineari**. Questo implica che le **condizioni di Karush-Kuhn-Tucker (KKT)** sono **necessarie e sufficienti** per l'ottimalità. 
+
+Senza entrare nei dettagli di un argomento vasto e complesso, introduciamo un risultato dalla **teoria della dualità** per problemi convessi vincolati, che permetterà di riformulare il problema primale in una forma più trattabile.
+
+## **Proposizione 7.1**  
+Consideriamo il seguente problema di ottimizzazione:
+
+\[
+\min_{x} f(x) \quad \text{soggetto a} \quad g(x) \leq 0,
+\]
+
+dove \( f \) e \( g \) sono funzioni continuamente differenziabili e convesse.  
+Sia \( x^\star \) una soluzione ottimale del problema e supponiamo che esista un vettore di moltiplicatori \( \mu^\star \) tale che \( (x^\star, \mu^\star) \) soddisfi le **condizioni KKT**.  
+Allora, la coppia \( (x^\star, \mu^\star) \) è una soluzione ottimale del **problema duale di Wolfe**:
+
+\[
+\max_{x, \mu} L(x, \mu) = f(x) + \mu^T g(x)
+\]
+
+soggetto a:
+
+\[
+\nabla_x L(x, \mu) = 0, \quad \mu \geq 0.
+\]
+
+### **Dimostrazione**  
+La coppia \( (x^\star, \mu^\star) \) soddisfa le condizioni KKT, ossia:
+
+\[
+\nabla_x L(x^\star, \mu^\star) = 0, \quad \mu^\star \geq 0, \quad g(x^\star) \leq 0, \quad \mu^\star_i g_i(x^\star) = 0 \quad \forall i.
+\]
+
+Di conseguenza, \( (x^\star, \mu^\star) \) soddisfa i vincoli del problema duale di Wolfe. Inoltre, per la condizione di complementarità, abbiamo:
+
+\[
+L(x^\star, \mu^\star) = f(x^\star) + \sum_i \mu^\star_i g_i(x^\star) = f(x^\star).
+\]
+
+Ora, per una qualunque soluzione ammissibile \( (x, \mu) \) del problema duale, poiché \( \mu \geq 0 \) e \( g(x^\star) \leq 0 \), si ha:
+
+\[
+L(x^\star, \mu^\star) = f(x^\star) \geq f(x^\star) + \sum_i \mu_i g_i(x^\star) = L(x^\star, \mu).
+\]
+
+Dalla convessità di \( L(x, \mu) \) rispetto a \( x \) (essendo combinazione lineare positiva delle funzioni convesse \( f, g_1, \dots, g_m \)), possiamo scrivere:
+
+\[
+L(x^\star, \mu) \geq L(x, \mu) + \nabla_x L(x, \mu)^T (x^\star - x).
+\]
+
+Unendo tutti i passaggi precedenti e ricordando che \( \nabla_x L(x, \mu) = 0 \) per \( (x, \mu) \) ammissibile nel problema duale, otteniamo:
+
+\[
+L(x^\star, \mu^\star) \geq L(x^\star, \mu) \geq L(x, \mu).
+\]
+
+Essendo \( (x, \mu) \) una soluzione qualsiasi ammissibile del problema duale, si ottiene la tesi.
+
+---
+
+## **Applicazione alla Support Vector Machine (SVM)**  
+Torniamo ora al problema SVM (26).  
+Poiché le condizioni KKT sono **necessarie e sufficienti** per l'ottimalità globale, allora per una soluzione ottimale \( (w^\star, b^\star, \xi^\star) \) devono esistere moltiplicatori \( (\alpha^\star, \mu^\star) \) tali che la **coppia** \( (w^\star, b^\star, \xi^\star, \alpha^\star, \mu^\star) \) sia un punto KKT e, per la proposizione sopra, sia soluzione del **problema duale**:
+
+\[
+\max_{w, b, \xi, \alpha, \mu} L(w, b, \xi, \alpha, \mu) = \frac{1}{2} \|w\|^2 + C \sum_i \xi_i + \sum_i -\mu_i \xi_i + \sum_i \alpha_i (1 - y^{(i)} (w^T x^{(i)} + b) - \xi_i)
+\]
+
+soggetto a:
+
+\[
+\alpha \geq 0, \quad \mu \geq 0,
+\]
+
+\[
+\nabla_w L(w, b, \xi, \alpha, \mu) = 0, \quad \nabla_b L(w, b, \xi, \alpha, \mu) = 0, \quad \nabla_\xi L(w, b, \xi, \alpha, \mu) = 0.
+\]
+
+Osserviamo ora che dai vincoli sopra si ottengono le seguenti relazioni:
+
+\[
+0 = \nabla_w L(w, b, \xi, \alpha, \mu) = w - \sum_i \alpha_i y^{(i)} x^{(i)}, \quad \text{cioè} \quad w = \sum_i \alpha_i y^{(i)} x^{(i)}.
+\]
+
+\[
+0 = \nabla_b L(w, b, \xi, \alpha, \mu) = -\sum_i \alpha_i y^{(i)}, \quad \text{cioè} \quad \alpha^T y = 0.
+\]
+
+\[
+0 = \nabla_\xi L(w, b, \xi, \alpha, \mu) = C e - \sum_i \mu_i e_i - \sum_i \alpha_i e_i, \quad \text{cioè} \quad \alpha_i = C - \mu_i \leq C \quad \forall i.
+\]
+
+Queste relazioni sono alla base della formulazione duale del problema SVM e saranno utili per costruire algoritmi efficienti per la sua risoluzione.
+
+Manipolando la funzione obiettivo, possiamo prima ottenere:
+
+\[
+\frac{1}{2} w^T w + C \sum_{i} \xi_i + \sum_{i} -\mu_i \xi_i + \sum_{i} \alpha_i - \sum_{i} \alpha_i y^{(i)} w^T x^{(i)} - b \sum_{i} \alpha_i y^{(i)} - \sum_{i} \alpha_i \xi_i
+\]
+
+Ora, ricordiamo che \(\sum_{i} \alpha_i y^{(i)} = 0\) per la seconda condizione vista sopra. Inoltre, usando la terza condizione possiamo scrivere:
+
+\[
+C \sum_{i} \xi_i - \sum_{i} \mu_i \xi_i = \sum_{i} \xi_i (C - \mu_i) = \sum_{i} \xi_i \alpha_i.
+\]
+
+Otteniamo quindi:
+
+\[
+\frac{1}{2} w^T w + \sum_{i} \alpha_i \xi_i + \sum_{i} \alpha_i - \sum_{i} \alpha_i y^{(i)} w^T x^{(i)} - \sum_{i} \alpha_i \xi_i,
+\]
+
+ossia:
+
+\[
+w^T \left(\frac{1}{2} w - \sum_{i} \alpha_i y^{(i)} x^{(i)}\right) + \sum_{i} \alpha_i.
+\]
+
+Ora possiamo sostituire \( w = \sum_{i} \alpha_i y^{(i)} x^{(i)} \) per ottenere:
+
+\[
+L(w, b, \xi, \alpha, \mu) = -\frac{1}{2} \sum_{i} \sum_{j} \alpha_i \alpha_j y^{(i)} y^{(j)} x^{(i)T} x^{(j)} + \sum_{i} \alpha_i.
+\]
+
+Quindi, la funzione obiettivo dipende solo dai moltiplicatori \(\alpha\), che sono vincolati da \( y^T \alpha = 0 \), \( \alpha \geq 0 \) e \( \alpha \leq C \).
+
+Scambiando i segni e passando alla notazione matriciale, definiamo la matrice \( Q \) tale che:
+
+\[
+Q_{ij} = y^{(i)} y^{(j)} x^{(i)T} x^{(j)},
+\]
+
+ottenendo il problema duale:
+
+\[
+\min_{\alpha} \frac{1}{2} \alpha^T Q \alpha - e^T \alpha
+\]
+
+soggetto a:
+
+\[
+\alpha^T y = 0, \quad 0 \leq \alpha_i \leq C \quad \forall i.
+\]
+
+---
+
+## **Soluzione del problema duale e recupero delle variabili primali**
+
+Dopo aver risolto il problema duale (27), possiamo ottenere la soluzione \(\alpha^\star\) e recuperare le altre variabili:
+
+\[
+w^\star = \sum_{i} \alpha^\star_i y^{(i)} x^{(i)},
+\]
+
+\[
+\mu^\star_i = C - \alpha^\star_i \quad \forall i,
+\]
+
+\[
+b^\star = \frac{1}{y^{(i)}} - w^{\star T} x^{(i)} \quad \text{per ogni } i \text{ tale che } \alpha^\star_i \in (0, C),
+\]
+
+\[
+\xi^\star_i = \max\{0, 1 - y^{(i)} (w^{\star T} x^{(i)} + b^\star)\}.
+\]
+
+La terza equazione per \( b^\star \) segue dall'imposizione delle condizioni di complementarità delle KKT.
+
+---
+
+## **Interpretazione Geometrica: Support Vectors**
+
+Dalle condizioni di complementarità segue che:
+
+\[
+\alpha^\star_i (1 - y^{(i)} (w^{\star T} x^{(i)} + b^\star) - \xi^\star_i) = 0, \quad 0 = \mu^\star_i \xi^\star_i = (C - \alpha^\star_i) \xi^\star_i.
+\]
+
+- Se \( \alpha^\star_i \in (0, C) \), allora \( \xi^\star_i = 0 \) e il punto soddisfa esattamente \( y^{(i)} (w^{\star T} x^{(i)} + b^\star) = 1 \), ovvero si trova **sul margine di separazione**.
+- Se \( \alpha^\star_i = C \), allora \( \xi^\star_i > 0 \), indicando che il punto è un errore di classificazione.
+
+Tutti i punti associati a **moltiplicatori non nulli** \( \alpha^\star_i \) sono chiamati **support vectors**. Il classificatore risultante dipende esclusivamente dai **support vectors**, poiché:
+
+\[
+w^\star = \sum_{i} \alpha^\star_i y^{(i)} x^{(i)}.
+\]
+
+---
+
+## **Classificazione di nuovi punti**
+
+Per classificare un nuovo punto \( x \), calcoliamo:
+
+\[
+w^\star T x = \sum_{i} \alpha_i y^{(i)} x^T x^{(i)}.
+\]
+
+Il segno di questa espressione determina la classe assegnata al punto \( x \).
+
+In altre parole, il risultato della funzione decisionale è una somma pesata sui dati di addestramento, 
+dove solo i **support vector** vengono effettivamente considerati. Per ciascun support vector, 
+viene calcolato il prodotto scalare con il punto da classificare: **più alto è il prodotto scalare, maggiore è la somiglianza tra** \( x^{(i)} \) **e** \( x \), **più grande sarà il contributo di quel support vector nell'assegnare la classe** \( y^{(i)} \) **al nuovo punto dati**.
+
+Tuttavia, il prodotto scalare non è l'unica misura di somiglianza disponibile per confrontare due punti dati. 
+Infatti, possiamo pensare di sostituire i termini \( x^T x^{(i)} \) nella funzione decisionale con **funzioni di kernel**,
+\( k(\cdot, \cdot) : \mathbb{R}^p \times \mathbb{R}^p \to \mathbb{R} \) (vedi Figura 14). 
+In questo caso, gli elementi della matrice \( Q \) nel problema duale (27) diventano:
+
+\[
+Q_{ij} = y^{(i)} y^{(j)} k(x^{(i)}, x^{(j)}).
+\]
+
+Senza addentrarci nella teoria dei kernel, ricordiamo che una funzione \( k \) può essere usata come kernel se e solo se:
+
+- La matrice \( Q \) è **semidefinita positiva** per ogni possibile dataset \( D \) (garantendo che il problema duale sia convesso).
+- La funzione kernel rappresenta un **prodotto scalare** tra i punti dati mappati in uno spazio di dimensione potenzialmente maggiore.
+
+In questi casi, la funzione decisionale assume la forma:
+
+\[
+h(x) = \sum_{i} \alpha^\star_i y^{(i)} k(x, x^{(i)}),
+\]
+
+che in generale non è più una funzione lineare. 
+
+Da un lato, **non è più possibile esprimere il classificatore in termini di pesi** \( w \); 
+dall'altro, il classificatore diventa **non lineare**, consentendo di costruire modelli più espressivi e potenti.
+
+---
+
+### **Vantaggi dell'SVM Duale**
+Le due principali ragioni per considerare il **problema duale** della SVM sono:
+
+1. **Kernel trick:** consente di ottenere **classificatori non lineari** senza esplicitamente trasformare i dati in uno spazio di dimensione più elevata.
+2. **Forma del problema:** il problema rimane **quadratico convesso con vincoli lineari**, come nella formulazione primale, ma con vincoli più semplici (l'unico vincolo complesso è \( \alpha^T y = 0 \)).
+
