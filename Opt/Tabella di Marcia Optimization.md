@@ -98,22 +98,21 @@
     
     Projection onto box constraints and ball constraints [GS 17.2.4]. Constrained Armijo type line-search, convergence properties (w/o prf.) [GS 17.3]. Projected gradient method: algorithmic scheme and convergence properties (w/ prf.) [GS 17.5]. Frank-Wolfe method: algorithmic scheme and convergence properties (w/ prf.) [GS 17.4].
     
-- ## 26-27 November
+- ## ==26-27 November==
     
     ~~**Lecture 19 (2hrs):**~~ 
     
     Optimization problems with analytical constraints [GS D]; Fritz-John conditions [GS D.1]; constraints qualifications, KKT conditions [GS D.2]; LCQ, LICQ (w/ prf.), SCQ; particular case of convex problems with linear constraints [GS D.5].
     
-    **Lecture 20 (2hrs):** 
+    ~~**Lecture 20 (2hrs):**~~ 
     
     Simplex constraints, optimality condition (w/ prf.) [GS D.5]. Binary classification problems; Support Vector Machines as minimizers of L2-regularized hinge loss minimization, geometrical interpretation [LN 7]; properties of Wolfe dual problem (w/ prf.), derivation of SVM dual formulation (w/ prf.) [LN 7.1].
     
 - ## 3-4 December
     
-    **Lecture 21 (2hrs):  
-    **
+    ~~**Lecture 21 (2hrs):**~~
     
-    Derivation of dual problem (continued), geometrical interpretation of the solution [LN 7.1]. Kernel SVM [LN 7.1]. Decomposition Techniques [LN 4.7, GS 16].
+    Derivation of dual problem (continued), geometrical interpretation of the solution [LN.1]. Kernel SVM [LN 7.1]. Decomposition Techniques [LN 4.7, GS 16].
     
     **Lecture 22 (2hrs):** 
     
@@ -121,11 +120,11 @@
     
 - ## 10-11 December
     
-    **Lecture 23 (2hrs):  
-    **
+    **Lecture 23 (2hrs):**
     
     Finite-sum problems, Stochastic Gradient Descent method [LN 4.8]. Convergence of SGD (w/o prf.), complexity results, Minibatch SGD [LN 4.8.1]; Overview on Deep Networks training: problem characteristics and motivations for minibatch SGD [LN 8].
     
     **Lecture 24 (2hrs):** 
     
     SGD in DL scenario: addition of acceleration terms [LN 8.1.1], adaptive learning rate [LN 8.1.2]. Automatic differentiation and backpropagation [LN 8.2].
+    

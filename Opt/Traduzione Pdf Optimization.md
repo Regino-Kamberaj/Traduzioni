@@ -34,7 +34,7 @@ Dipartimento di Ingegneria dell’Informazione
     - 4.6 Metodi Quasi-Newton
         - 4.6.1 Metodo BFGS
         - 4.6.2 Metodo L-BFGS
-    - 4.7 Tecniche di Decomposizione
+    - 4.7 Metodi di Decomposizione
         - 4.7.1 Metodi di Decomposizione con Blocchi Sovrapposti
     - 4.8 Metodo del Gradiente Stocastico per Problemi con Somma Finita
         - 4.8.1 Analisi Teorica di SGD
@@ -1518,53 +1518,106 @@ Tuttavia:
 
 Un'estensione chiamata **L-BFGS-B** è stata progettata per affrontare problemi di ottimizzazione con vincoli di tipo _bound constrained_.
 
-### 4.7 Metodi di Decomposizione e Metodi Stocastici
+### 4.7 Metodi di Decomposizione
 
-#### **Metodi di Decomposizione**
-
-I metodi di decomposizione mirano a suddividere i problemi complessi in sottoproblemi più semplici, lavorando su blocchi di variabili. Tali approcci possono essere classificati in due categorie principali: **metodi sequenziali** e **metodi paralleli**.
+Esistono varie situazioni dove i problemi di ottimizzazione sono molto complicati e difficili da affrontare interamente. In alcuni di questi casi è possibile affrontare efficacemente il problema dividendolo in parti più piccole o semplici. 
+I casi dove i *metodi di decomposizione* sono utili includono quelle situazioni dove uno o più dei seguenti aspetti ricorrono:
+- Il numero $n$ di variabili è grande ( $∼ 10^4$)  e le informazioni sulle variabili oppure sulla funzione obiettivo non possono essere interamente memorizzate.
+- Fissato il valore per alcune variabili, otteniamo un sottoproblema che può essere diviso in parti indipendenti risolte con metodi di computazione parallela.
+- Fissato il valore per alcune variabili, il sottoproblema rimanente è facile da risolvere o possiede proprietà di regolarità superiori rispetto all'originale.
 
 ---
 
-#### **Metodi di Decomposizione Sequenziale**
+**Esempio 4.5**
+Di seguito, elenchiamo alcuni esempi di problemi in cui le strategie di decomposizione 
+possono essere utili:
 
-Nei metodi sequenziali, i sottoproblemi vengono risolti uno alla volta, aggiornando le variabili di ciascun blocco ad ogni passo. Un esempio classico è l'**algoritmo di Gauss-Seidel**, definito dalla seguente regola di aggiornamento:
+- $f (x) = g(x_1 ) + \sum_{i=2}^{n} h_i (x_1 )s_i (x_i )$
+  La funzione sopra diventa più semplice da gestire se il valore della variabile $x_1$ 
+  è fissato, poiché in tal caso rimangono $n - 1$ termini separabili, ognuno dipendente solo da una singola variabile $x_i$, che possono essere minimizzati in parallelo. Possiamo quindi alternare tra un passo di ottimizzazione univariata su $x_1$ e un'ottimizzazione parallela di tutte le altre variabili.
 
-xik+1=arg⁡min⁡ξi∈Xif(x1k+1,…,xi−1k+1,ξi,xi+1k,…,xmk).x_{i}^{k+1} = \arg\min_{\xi_i \in X_i} f(x_{1}^{k+1}, \dots, x_{i-1}^{k+1}, \xi_i, x_{i+1}^k, \dots, x_m^k).
+- $f (x, y) = \| \Phi(y)x - b \|^2$
+  Il problema di minimi quadrati non lineare sopra diventa un semplice problema 
+  di minimi quadrati lineari se il valore delle variabili $y$ è fissato.
+
+- $f (x, y) = x^2 y^2 + 10xy + x^2 + y^2$
+  La funzione sopra è non convessa; tuttavia, è una parabola convessa rispetto a $x$ 
+  per ogni valore di $y$, e lo stesso vale rispetto a $y$ per ogni valore di $x$. Pertanto, minimizzare rispetto a una sola delle due variabili alla volta equivale a risolvere un problema di ottimizzazione convessa più semplice, che può essere risolto fino a ottenere l'ottimo globale.
+
+---
+
+Supponiamo ora di avere un problema generico della forma:
+
+	$\min_{x \in X} f (x)$
+
+dove $f : \mathbb{R}^n \to \mathbb{R}$ e $X \subseteq \mathbb{R}^n$  
+Il problema può essere riscritto in una forma decomposta come:
+
+	$\min_{x_1 \in X_1 ,...,x_m \in X_m} f (x_1 , \dots , x_m )$
+
+dove $f : \mathbb{R}^{n_1} \times \dots \times \mathbb{R}^{n_m} \to \mathbb{R}, X_1 \subseteq \mathbb{R}^{n_1} , \dots , X_m \subseteq \mathbb{R}^{n_m}$ e $\sum_{i=1}^{m} n_i = n$.  
+
+In altre parole, il vettore delle variabili è stato **suddiviso in blocchi separati** 
+di variabili che possono essere gestiti in modo indipendente.
+
+Esistono diversi metodi per identificare un modo di dividere le variabili in blocchi e sfruttare questa suddivisione tramite algoritmi. Tali approcci possono essere classificati in due categorie principali: **metodi sequenziali** e **metodi paralleli**. In entrambi i casi i sottoproblemi sono definiti rispetto ai singoli blocchi di variabili, tenendo il valore delle variabili negli altri blocchi fermo.
+
+---
+##### **Metodi di Decomposizione Sequenziale**
+
+Nei metodi sequenziali, i sottoproblemi vengono ==risolti uno alla volta==, aggiornando le variabili di ciascun blocco ad ogni passo.
+
+![[Pasted image 20250203083017.png]]
+
+Un esempio classico è l'**algoritmo di Gauss-Seidel**, definito dalla seguente *regola di aggiornamento*:
+
+	$x_{i}^{k+1} = \arg\min_{\xi_i \in X_i} f(x_{1}^{k+1}, \dots, x_{i-1}^{k+1}, \xi_i, x_{i+1}^k, \dots, x_m^k)$.
 
 L'algoritmo risolve ciclicamente i sottoproblemi ottenuti fissando il valore di tutte le variabili, tranne quelle di un blocco. La soluzione trovata per il sottoproblema viene immediatamente utilizzata per aggiornare il valore delle variabili del blocco corrente.
 
-**Garanzie di convergenza:**
+Notare che l'algoritmo richiede di calcolare un ottimizzatore **globale** per ogni sottoproblema: questo è una richiesta forte, che può essere soddisfatta solo se i sottoproblemi sono abbastanza semplici.
 
-- **Convessità di ff:** il metodo converge ai punti stazionari.
-- **Convessità stretta per blocchi:** il metodo garantisce la convergenza anche in casi non globalmente convessi.
-- **Due blocchi di variabili (m=2m = 2):** la convessità globale non è necessaria.
+La convergenza globale verso punti stazionari può essere garantita per il metodo di Gauss-Seidel sotto assunzioni di compattezza sull'insieme di livello e in aggiunte le seguenti condizioni:
+
+-  f è convessità.
+- f è strettamente convessa per blocchi ovvero la funzione obiettivo di tutti i sottoproblemi è sempre strettamente convessa.
+- $m=2$ con solo due blocchi di variabili la convessità della funzione obiettivo non è necessaria.
+
+---
+##### **Metodi di Decomposizione Parallela**
+
+Nei metodi paralleli, i sottoproblemi associati ai diversi blocchi vengono risolti **in modo indipendente e simultaneo**. Successivamente, la soluzione migliore tra questi sottoproblemi viene utilizzata per aggiornare le variabili, ovvero ==ad ogni iterazione si aggiorna un solo blocco==.
+
+![[Pasted image 20250203091825.png]]
+
+Un esempio è l'**algoritmo di *Jacobi***, descritto dalle seguenti *regole di aggiornamento*:
+	
+	$\hat{x}_{i}^{k+1} \in \arg\min_{x_i} f(x_1^k, \dots, x_i, \dots, x_m^k)$,
+
+	$x^{k+1} \in \arg\min_{(x_1^k, \dots, \hat{x}_{i}^{k+1}, \dots, x_m^k)} f(x_1^k, \dots, \hat{x}_{i}^{k+1}, \dots, x_m^k)$
 
 ---
 
-#### **Metodi di Decomposizione Parallela**
+#### 4.7.1 Metodi di Decomposizione con Sovrapposizione dei Blocchi
 
-Nei metodi paralleli, i sottoproblemi associati ai diversi blocchi vengono risolti in modo indipendente e simultaneo. Successivamente, la soluzione migliore tra questi sottoproblemi viene utilizzata per aggiornare le variabili, ovvero ad ogni iterazione si aggiorna un solo blocco.
+Fino a questo punto, abbiamo considerato approcci di decomposizione dove $x \in \mathbb{R}^n$ è diviso in $m$ blocchi che non cambiano con l'iterazione $x^k=(x_1^k, ..., x_m^k)$
 
-Un esempio è l'**algoritmo di Jacobi**, descritto dalle seguenti regole di aggiornamento:
+Un'estensione più flessibile permette di lavorare con ==insiemi variabili di blocchi==, chiamati **insiemi di lavoro** ($W_k ⊂ \{1, ..., n\}$).Il sottoproblema considerato in ogni iterazione diventa:
 
-x^ik+1∈arg⁡min⁡xif(x1k,…,xi,…,xmk),\hat{x}_{i}^{k+1} \in \arg\min_{x_i} f(x_1^k, \dots, x_i, \dots, x_m^k), xk+1∈arg⁡min⁡f(x1k,…,x^ik+1,…,xmk).x^{k+1} \in \arg\min f(x_1^k, \dots, \hat{x}_{i}^{k+1}, \dots, x_m^k).
+	$\min_{x_{W_k}} f(x_{W_k}, x_{\overline{W}^k})$
 
----
+dove $\overline{W}^k$ è il **complemento** di $W_k$. La regola di aggiornamento è:
 
-#### **Metodi di Decomposizione con Sovrapposizione dei Blocchi**
+	$x_i^{k+1} = \begin{cases} x_i^\star & \text{se } i \in W_k, \\ x_i^k & \text{altrimenti.} \end{cases}$
 
-Un'estensione più flessibile permette di lavorare con insiemi variabili di blocchi, chiamati **insiemi di lavoro** (WkW_k). Il sottoproblema considerato in ogni iterazione diventa:
-
-min⁡xWkf(xWk,xWkc),\min_{x_{W_k}} f(x_{W_k}, x_{W_k^c}),
-
-dove WkcW_k^c è il complemento di WkW_k. La regola di aggiornamento è:
-
-xik+1={xi⋆se i∈Wk,xikaltrimenti.x_i^{k+1} = \begin{cases} x_i^\star & \text{se } i \in W_k, \\ x_i^k & \text{altrimenti.} \end{cases}
+La convergenza globale di questo schema dipende dal _working set selection rule_ ovvero la scelta delle variabili per ogni iterazione.
+Possibili regole di scelta che assicurano convergenza a punti stazionari includono:
+- *Regola ciclica*: $\exists M > 0 \space \text{t.c.} \space \forall i \in \{1,..., n\}, \forall k \space \exists \ell(k) \leq M  \space \text{t.c.} \space  i \in W^{k+\ell(k)}$ . Questa regola richiede che ogni variabile appare nel set di lavoro almeno ogni $M$ iterazioni; in questo modo, si previene che variabili importanti da ottimizzare vengano dimenticate.
+- *Regola di Gauss-Southwell*: $\forall k, i(k) \in W_k \space \text{if} \space | \nabla_{i(k)} f(x^k)| \geq | \nabla_i f(x^k)| \space \forall i \in \{1, ... , n\}$. Questa regola richiede di includere nella selezione delle variabili ad ogni iterazione, la variabile più "promettente" (che è quella associata alla derivata più grande). Questa strategia permette al limite, di portare a zero la più grande derivata parziale, ovvero portare a zero l'intero gradiente.
 
 ---
 
-#### **Metodi Stocastici**
+### 4.8 Metodo del Gradiente Stocastico per Problemi con Somma Finita
 
 I problemi di **somma finita**, tipici in apprendimento automatico, sono rappresentati come:
 
@@ -1813,452 +1866,380 @@ TBD (Per ora vedi Pdf notes_palchetti_2023/ notes_senoner_2024)
 
 ### 6.1 Introduzione
 
-Il machine learning non è ottimizzazione. Il machine learning è un ramo dell’intelligenza artificiale che si è dimostrato estremamente efficace in numerosi compiti negli ultimi anni; il suo successo è probabilmente attribuibile alle forti proprietà statistiche possedute dai modelli di apprendimento, che permettono di sfruttare correttamente la grande quantità di dati oggi disponibile; inoltre, l’enorme progresso in corso degli strumenti hardware e software ha giocato un ruolo cruciale nel rendere i sistemi di apprendimento effettivamente impiegabili.
+Il machine learning non è **ottimizzazione**. Il machine learning è un ramo dell’intelligenza artificiale che si è dimostrato estremamente efficace in numerosi compiti negli ultimi anni; il suo successo è probabilmente attribuibile alle forti proprietà statistiche possedute dai modelli di apprendimento, che permettono di sfruttare correttamente la grande quantità di dati oggi disponibile; inoltre, l’enorme progresso in corso degli strumenti hardware e software ha giocato un ruolo cruciale nel rendere i sistemi di apprendimento effettivamente impiegabili.
 
-Tuttavia, l’ottimizzazione matematica è un elemento centrale per questa tecnologia: spesso si utilizza la metafora del "motore". Infatti, il processo di addestramento di un sistema di apprendimento consiste, per la stragrande maggioranza dei modelli, nella risoluzione di un problema di ottimizzazione. Molte librerie di machine learning sono diventate popolari e ampiamente utilizzate negli ultimi anni; in ciascuna di esse, premere il "pulsante di esecuzione" non fa altro che avviare un algoritmo di ottimizzazione.
+Tuttavia, l’*ottimizzazione matematica* è un elemento centrale per questa tecnologia: spesso si utilizza la metafora del "motore". Infatti, il processo di addestramento di un sistema di apprendimento consiste, per la stragrande maggioranza dei modelli, nella risoluzione di un problema di ottimizzazione. Molte librerie di machine learning sono diventate popolari e ampiamente utilizzate negli ultimi anni; in ciascuna di esse, premere il "pulsante di esecuzione" non fa altro che ==avviare un algoritmo di ottimizzazione.==
 
 Per questa ragione, è estremamente importante per gli esperti e gli ingegneri di machine learning conoscere in dettaglio i meccanismi di questi processi; questo è particolarmente vero per essere in grado di interpretare comportamenti anomali e correggere i problemi che frequentemente si verificano nella progettazione e implementazione dei sistemi di apprendimento.
 
-Nel corso di questo capitolo, ci concentreremo sugli algoritmi di ottimizzazione più rilevanti impiegati nei compiti di apprendimento supervisionato. Consideriamo quindi un dataset:
+Nel corso di questo capitolo, ci concentreremo sugli algoritmi di ottimizzazione più rilevanti impiegati nei compiti di apprendimento supervisionato. 
+Consideriamo quindi un dataset:
 
-\[
-D = \left\{ (x^{(i)}, y^{(i)}) \mid x^{(i)} \in X, y^{(i)} \in Y, i = 1, \dots, n \right\}
-\]
+	$D = \left\{ (x^{(i)}, y^{(i)}) \mid x^{(i)} \in X, y^{(i)} \in Y, i = 1, \dots, n \right\}$
 
-dove \(X \subseteq \mathbb{R}^p\) ed \(Y = \mathbb{R}\) (compiti di regressione) oppure \(Y = \{0,1\}\) (compiti di classificazione binaria). Il dataset rappresenta un campionamento da una qualche distribuzione, dove esiste una relazione \(f\) tra le coppie \((x, y)\), tale che \(f(x) = y\).
+dove $X \subseteq \mathbb{R}^p$ ed $Y = \mathbb{R}$ (compiti di regressione) oppure $Y = \{0,1\}$ (compiti di classificazione binaria). Il dataset rappresenta un **campionamento** da una qualche distribuzione, dove esiste una relazione $f$ tra le coppie $(x, y)$, tale che $f(x) = y$.
 
-L’obiettivo del machine learning è costruire, basandosi sulle coppie in \(D\), una funzione \(\hat{f}\) che catturi l’essenza di \(f\), essendo in grado di fornire accuratamente valori di \(\hat{y} = \hat{f}(x)\) per punti \(x\) che non sono presenti nel set di addestramento \(D\).
+L’obiettivo del machine learning è costruire, basandosi sulle coppie in $D$, una funzione $\hat{f}$ che catturi *l’essenza* di $f$, essendo in grado di fornire "accuratamente" valori di $\hat{y} = \hat{f}(x)$ per punti $x$ che **non sono presenti** nel set di addestramento $D$.
 
-L’addestramento è tipicamente modellato come un problema di ottimizzazione (minimizzazione del rischio empirico), dove una funzione di perdita deve essere minimizzata rispetto ai parametri \(w\) del modello \(f\).
+L’addestramento è tipicamente modellato come un problema di ottimizzazione (**minimizzazione del rischio empirico**), dove una *funzione di perdita* deve essere minimizzata rispetto ai parametri $w$ del modello $f$.
 
 La forma usuale dei problemi di ottimizzazione per l’addestramento è:
 
-\[
-\min_{w} L(w) = \frac{1}{n} \sum_{i=1}^{n} \ell(f(x^{(i)};w), y^{(i)})
-\]
+	$\min_{w} L(w) = \frac{1}{n} \sum_{i=1}^{n} \ell(f(x^{(i)};w), y^{(i)})$ (20)
 
-cioè, vogliamo minimizzare la somma finita di termini che possono avere forme diverse, a seconda della specifica funzione di perdita impiegata; alcuni esempi di funzioni di perdita sono:
+cioè, vogliamo **minimizzare** la somma finita di termini **che possono avere forme diverse**, a seconda della specifica funzione di perdita impiegata; alcuni esempi di funzioni di perdita sono:
 
-- **Perdita quadratica:** \(\ell(u, v) = (u - v)^2\) (regressione);
-- **Perdita \(\ell_1\):** \(\ell(u, v) = |u - v|\) (regressione);
-- **Perdita logaritmica:** \(\ell(u, v) = -(u \log(v) + (1 - u) \log(1 - v))\) (classificazione binaria);
-- **Perdita 0-1:** \(\ell(u, v) = 1 - \mathbb{1}\{u = v\}\) (classificazione binaria);
-- **Perdita hinge:** \(\ell(u, v) = \max\{0, 1 - uv\}\) (classificazione binaria).
+- **Loss quadratica:** $\ell(u, v) = (u - v)^2$ (regressione);
+- **Loss $\ell_1$:** $\ell(u, v) = |u - v|$ (regressione);
+- **Loss logaritmica:** $\ell(u, v) = -(u \log(v) + (1 - u) \log(1 - v))$ (classificazione binaria);
+- **Loss 0-1:** $\ell(u, v) = 1 - \mathbb{1}\{u = v\}$ (classificazione binaria);
+- **Hinge loss:** $\ell(u, v) = \max\{0, 1 - uv\}$ (classificazione binaria).
 
 Ora, essere in grado di risolvere efficacemente il problema di ottimizzazione (20) non è sufficiente per garantire che il modello risultante funzioni bene su dati fuori campione; si verificano spesso due situazioni sfortunate:
 
-- Se la qualità dei dati è scarsa, o se il modello è troppo semplice rispetto alla distribuzione dei dati, non è possibile identificare una buona approssimazione della “vera” \(f\), anche se il problema di ottimizzazione è risolto accuratamente; questo problema è noto come **underfitting** e non può essere affrontato con i soli strumenti di ottimizzazione matematica.
-Il secondo problema è in qualche modo l’opposto del primo e si verifica quando il problema di ottimizzazione è risolto “troppo bene”; infatti, nel problema (20) viene utilizzata una funzione obiettivo surrogata: si minimizza l’errore sul set di addestramento, mentre si vorrebbe minimizzare l’errore su tutta la distribuzione dei dati, inclusi quelli non visti. Se il modello di apprendimento è sufficientemente espressivo (come spesso accade con i modelli parametrici di grandi dimensioni), si potrebbe ottenere una funzione di previsione molto complessa, perfettamente adattata ai dati in \(D\), ma assolutamente scorretta per i dati non visti. Questo problema è noto come **overfitting**.
+- Se la qualità dei dati è **scarsa**, o se il modello è **troppo semplice** rispetto alla distribuzione dei dati, non è possibile identificare una buona approssimazione della “vera” $f$, anche se il problema di ottimizzazione è risolto accuratamente; questo problema è noto come ***underfitting*** e non può essere affrontato con i soli strumenti di ottimizzazione matematica.
+- Il secondo problema è in qualche modo l’opposto del primo e si verifica quando il problema di ottimizzazione è risolto “troppo bene”; infatti, nel problema (20) viene utilizzata una funzione obiettivo "surrogata": si minimizza l’errore sul set di addestramento, mentre si vorrebbe minimizzare l’errore ==su tutta la distribuzione dei dati==, inclusi quelli non visti. Se il modello di apprendimento è sufficientemente espressivo (come spesso accade con i modelli parametrici di grandi dimensioni), si potrebbe ottenere una funzione di previsione molto complessa, perfettamente adattata ai dati in $D$, ma assolutamente scorretta per i dati non visti. Questo problema è noto come ***overfitting***.
 
-Per mitigare parzialmente questo problema, solitamente si introduce un termine di **regolarizzazione** nel problema di addestramento per migliorare la capacità di generalizzazione del modello di apprendimento. Il problema di ottimizzazione risultante è:
+Per mitigare parzialmente questo problema, solitamente si introduce un termine di **regolarizzazione** nel problema di addestramento per migliorare ==la capacità di generalizzazione== del modello di apprendimento. 
+Il problema di ottimizzazione risultante è:
 
-\[
-\min_{w} L(w) + \Omega(w),
-\]
+	$\min_{w} L(w) + \Omega(w)$,
 
-dove il termine di regolarizzazione \(\Omega(w)\) è solitamente scelto tra:
+dove il termine di regolarizzazione $\Omega(w)$ è solitamente scelto tra:
 
-- \(\Omega(w) = \|w\|_2^2\) (regolarizzazione quadratica);
-- \(\Omega(w) = \|w\|_1\) (regolarizzazione \(\ell_1\));
-- \(\Omega(w) = \|w\|_0\) (regolarizzazione \(\ell_0\), con \(\|w\|_0 = |\{i : w_i \neq 0\}|\)).
+- $\Omega(w) = \|w\|_2^2$ (regolarizzazione quadratica);
+- $\Omega(w) = \|w\|_1$ (regolarizzazione $\ell_1$);
+- $\Omega(w) = \|w\|_0$ (regolarizzazione $\ell_0$, con $\|w\|_0 = |\{i : w_i \neq 0\}|$).
 
-La regolarizzazione quadratica è la più utilizzata per la sua semplicità e le sue proprietà di regolarità. I regolarizzatori \(\ell_1\) e \(\ell_0\) inducono **sparsità**, con il primo che ha proprietà di regolarità molto più forti rispetto al secondo. La **sparsità** è spesso una caratteristica desiderabile nei modelli predittivi.
+La **regolarizzazione quadratica** è la più utilizzata per la sua semplicità e le sue proprietà di regolarità. I regolarizzatori $\ell_1$ e $\ell_0$ inducono **sparsità**, con il primo che ha proprietà di regolarità molto più forti rispetto al secondo. La **sparsità** è spesso una caratteristica desiderabile nei modelli predittivi.
 
 D’ora in avanti, non ci concentreremo sugli aspetti statistici dei modelli di apprendimento, ma considereremo solo il punto di vista della pura ottimizzazione matematica.
 
-Infatti, si noti che l’aggiunta di un termine di regolarizzazione quadratico nel problema di ottimizzazione non solo ha un valore statistico, migliorando le proprietà di generalizzazione del modello addestrato, ma trasforma anche funzioni obiettivo convesse in funzioni **fortemente convesse**. Tenendo conto della discussione sulla complessità computazionale degli algoritmi di ottimizzazione nella Sezione 4.2.3, possiamo sottolineare che la regolarizzazione dovrebbe anche **accelerare significativamente** il processo di ottimizzazione. Inoltre, il termine di regolarizzazione rende qualsiasi funzione di perdita limitata **coerciva** (anche in assenza di proprietà di convessità), garantendo l’esistenza di soluzioni per il problema di ottimizzazione sottostante.
+Infatti, si noti che l’aggiunta di un termine di regolarizzazione quadratico nel problema di ottimizzazione non solo ha un valore statistico, migliorando le proprietà di generalizzazione del modello addestrato, ma trasforma anche funzioni obiettivo convesse in funzioni **fortemente convesse**. Tenendo conto della discussione sulla complessità computazionale degli algoritmi di ottimizzazione nella Sezione 4.2.3, possiamo sottolineare che la regolarizzazione dovrebbe anche **accelerare significativamente** il processo di ottimizzazione. Inoltre, il termine di regolarizzazione rende qualsiasi funzione di perdita limitata **coerciva** (anche in assenza di proprietà di convessità), ==garantendo l’esistenza di soluzioni== per il problema di ottimizzazione sottostante.
 
 ---
 
 ### 6.2 Regressione Lineare
 
-Il modello più semplice per i compiti di regressione è la **regressione lineare**. I regressori lineari sono solitamente ottenuti risolvendo un problema di minimi quadrati **regolarizzato**:
+Il modello più semplice per i tasks di regressione è la **regressione lineare**. I regressori lineari sono solitamente ottenuti risolvendo un problema di minimi quadrati **regolarizzato**:
+	
+	$\min_{w \in \mathbb{R}^p} \|Aw - b\|^2 + \lambda\|w\|^2$ (22)
 
-\[
-\min_{w \in \mathbb{R}^p} \|Aw - b\|^2 + \lambda\|w\|^2
-\]
+dove $A \in \mathbb{R}^{n \times p}$ e $b \in \mathbb{R}^{n}$. Il problema è **convesso** e può essere risolto trovando una soluzione con **gradiente nullo**.
+Definendo:
 
-dove \(A \in \mathbb{R}^{n \times p}\) e \(b \in \mathbb{R}^{n}\). Il problema è **convesso** e può essere risolto trovando una soluzione con **gradiente nullo**. Definendo:
-
-\[
-f(w) = \|Aw - b\|^2 + \lambda\|w\|^2 = w^T A^T A w - 2w^T A^T b + \|b\|^2 + \lambda w^T w
-\]
+	$f(w) = \|Aw - b\|^2 + \lambda\|w\|^2 = w^T A^T A w - 2w^T A^T b + \|b\|^2 + \lambda w^T w$
 
 e calcolando il gradiente:
 
-\[
-\nabla f(w) = 2A^T A w - 2A^T b + 2\lambda w,
-\]
+	$\nabla f(w) = 2A^T A w - 2A^T b + 2\lambda w$
 
 il problema si riduce alla risoluzione del seguente sistema lineare, noto come **equazione normale**:
 
-\[
-(A^T A + \lambda I)w = A^T b.
-\]
+	$(A^T A + \lambda I)w = A^T b$ (23)
+
+**Proposizione 6.1** Il Problema 22 ammette soluzione ottimale unica.
+Dimostrazione.
+La funzione obiettivo è coerciva:
+
+	$\lim_{\|w\| \to \infty} \|Aw - b\|^2 + \lambda\|w\|^2 \geq \lim_{\|w\| \to \infty} \lambda\|w\|^2 = +\infty$ 
+
+Per cui, dal teorema di Weierstrass.
+
+La matrice Hessiana della funzione obiettivo è data da:
+
+	$\nabla^2 f(w) = 2A^T A + 2\lambda I$
+
+che è definita positiva, infatti per ogni $w \neq 0$ abbiamo:
+
+	$2w^TA^T A w + 2w^T(\lambda I)w = 2\|Aw\|^2 + 2\lambda \|w\|^2 \geq \lambda \|w\|^2 > 0$
+
+Dunque $f(w)$ è strettamente convessa è il minimo (globale) è unico.
+
+---
+Il sistema di equazioni (23) ha soluzione unica, che può essere calcolata:
+- In forma chiusa, tramite una matrice inversa $w^* = (A^TA + \lambda I)^{-1}A^Tb$. Questo approccio può essere usato se $p$ è relativamente piccolo (il costo della matrice inversa è $O(p^3)$) e se A non è mal condizionata
+- Usando un metodo iterativo, come il metodo di discesa del gradiente o quello di Newton; nei fatti il metodo del *gradiente coniugato* è spesso usato nei sistemi lineari.
+
+#### 6.2.1 Casi senza Regolarizzatore
+
+Il problema:
+
+	$min_{w \in \mathbb{R}^p}\|Aw-b\|^2$ (24)
+
+Ha proprietà simili alla sua controparte regolarizzata $\ell_2$  e può essere risolto similmente, ma far vedere che la soluzione del problema sempre esiste è un po' più complicato; inoltre la soluzione non sempre è unica, se il rango della matrice non è il massimo, la matrice Hessiana $A^TA$ non è strettamente definita positiva e $f$ non è necessariamente coerciva nè strettamente convessa.
+
+**Proposizione 6.2** Il problema (24) ammette sempre soluzione.
+Dimostrazione.
+Consideriamo il problema:
+	
+	$min_z \frac{1}{2}\|b-z\|^2 \quad \text{t.c.} \quad A^Tz=0$
+
+La  funzione obiettiva del problema è coerciva e l'insieme raggiungibile(?) è chiuso, dunque il problema ammette una soluzione.
+Siccome inoltre la funzione obiettivo è quadratica e i vincoli sono lineari, le KKT sono condizioni necessarie e sufficienti per l'ottimalità: $\exists \mu^* \in \mathbb{R}^p$ tale che:
+
+	$\nabla_z L(z^*,\mu^*) = -(b-z^*) + A\mu^* = 0 \quad \text{con} \quad A^Tz^* = 0$
+
+Dunque, $b = z^* + A\mu^*$, con $z^* \space : \space A^Tz^*=0 \quad e \quad \mu^*\in \mathbb{R}^p$ Abbiamo ottenuto un risultato base della geometria: $b = b_R+b_N$ tale che:
+
+	$b_R = A\mu^* \in Im(A) \quad (\exists:Ay =b_R), b_N = z^* \in Ker(A^T) \quad (A^Tb_N = 0)$
+
+Ora, possiamo osservare che:
+
+	$A^Tb = (A^Tz^*+A^TA\mu^*) = A^TA\mu^*$
+
+ovvero $b_R = A\mu^*$ è la soluzione dell'equazione normale.
 
 ### 6.3 Classificatori Lineari e Regressione Logistica
 
-**QUESTA SEZIONE VERRÀ PESANTEMENTE RISTRUTTURATA NEL PROSSIMO FUTURO**
+In questa sezione affrontiamo il problema dell'addestramento di un modello di **regressione logistica**. 
+Il problema di ottimizzazione per questo modello ha la seguente forma:
 
-In questa sezione affrontiamo il problema dell'addestramento di un modello di **regressione logistica**. Il problema di ottimizzazione per questo modello ha la seguente forma:
+	$\min_{w \in \mathbb{R}^p} L(w) + \lambda \Omega(w)$
 
-\[
-\min_{w \in \mathbb{R}^p} L(w) + \lambda \Omega(w),
-\]
-
-dove \(L(w)\) è la funzione di **log-verosimiglianza negativa** del modello logistico, che è una funzione convessa, e \(\Omega(w)\) è un regolarizzatore convesso. Si noti che questa impostazione è concettualmente equivalente ad altri problemi di addestramento con funzioni di perdita convesse, come la **regressione softmax** o il fitting di modelli **ARMA** nelle serie temporali.
+dove $L(w)$ è la funzione di **log-verosimiglianza negativa** del modello logistico, che è una funzione convessa, e $\Omega(w)$ è un regolarizzatore convesso. Si noti che questa impostazione è concettualmente equivalente ad altri problemi di addestramento con funzioni di perdita convesse, come la **regressione softmax** o il fitting di modelli **ARMA** nelle serie temporali.
 
 Per risolvere problemi di questa forma, è necessario un algoritmo iterativo di ottimizzazione; metodi come **discesa del gradiente** o **metodo di Newton** sono opzioni valide. Tuttavia, l'algoritmo **L-BFGS** è generalmente considerato il metodo più efficiente per l'ottimizzazione non vincolata, sia nel caso convesso che in quello non convesso (quando non è richiesta l'ottimalità globale), anche per problemi di dimensioni considerevoli. Per dataset di grandi dimensioni, può essere considerato anche un metodo di tipo **SGD**.
+#### Regressione logistica 
 
----
+Mostriamo ora come calcolare il **gradiente** e la **matrice Hessiana** per il problema della regressione logistica. Consideriamo una classificazione binaria con \(Y = \{-1,1\}\).
+La funzione di perdita ha la forma:
 
-### **Gradiente e Hessiano per la Regressione Logistica**
+	$L(w; X, y) = \sum_{i=1}^{n} \log(1 + \exp(-y^{(i)} w^T x^{(i)}))$
+##### Calcolo Gradiente ed Hessiana (da saltare senza problemi)
 
-Mostriamo ora come calcolare il **gradiente** e la **matrice Hessiana** per il problema della regressione logistica.
+Se definiamo $z = Xw$ (cioè $z_i = w^T x^{(i)}$ per ogni $i$), possiamo riscrivere la funzione di perdita come:
 
-Consideriamo una classificazione binaria con \(Y = \{-1,1\}\). La funzione di perdita ha la forma:
+	$L(w; X, y) = \varphi(z; y) = \sum_{i=1}^{n} \log(1 + \exp(-y^{(i)} z_i))$
+	
+Vogliamo ora calcolare $\nabla_w L(w; X, y)$; applicando la *regola della catena multivariata*, otteniamo:
 
-\[
-L(w; X, y) = \sum_{i=1}^{n} \log(1 + \exp(-y^{(i)} w^T x^{(i)})).
-\]
-
-Se definiamo \(z = Xw\) (cioè \(z_i = w^T x^{(i)}\) per ogni \(i\)), possiamo riscrivere la funzione di perdita come:
-
-\[
-L(w; X, y) = \varphi(z; y) = \sum_{i=1}^{n} \log(1 + \exp(-y^{(i)} z_i)).
-\]
-
-Vogliamo ora calcolare \(\nabla_w L(w; X, y)\); applicando la regola della catena multivariata, otteniamo:
-
-\[
-\nabla_w L(w; X, y)^T = \nabla_z \varphi(Xw; y)^T \frac{\partial}{\partial w} (Xw).
-\]
+	$\nabla_w L(w; X, y)^T = \nabla_z \varphi(Xw; y)^T \frac{\partial}{\partial w} (Xw)$
 
 Osserviamo inoltre che:
 
-\[
-\frac{\partial}{\partial z_i} \varphi(z; y) = \frac{\partial}{\partial z_i} \left( \log(1 + \exp(-y^{(i)} z_i)) \right).
-\]
+	$\frac{\partial}{\partial z_i} \varphi(z; y) = \frac{\partial}{\partial z_i} \left( \log(1 + \exp(-y^{(i)} z_i)) \right)$
 
 Svolgendo il calcolo della derivata:
 
-\[
-\frac{1}{1 + \exp(-y^{(i)} z_i)} \cdot \exp(-y^{(i)} z_i) \cdot (-y^{(i)}) = -y^{(i)} \frac{1}{1 + \exp(y^{(i)} z_i)} = -y^{(i)} \sigma(-y^{(i)} z_i),
-\]
+	$\frac{1}{1 + \exp(-y^{(i)} z_i)} \cdot \exp(-y^{(i)} z_i) \cdot (-y^{(i)}) = -y^{(i)} \frac{1}{1 + \exp(y^{(i)} z_i)} = -y^{(i)} \sigma(-y^{(i)} z_i)$
 
-dove \(\sigma(\cdot)\) è la **funzione sigmoide**. Quindi, possiamo scrivere:
+dove $\sigma(\cdot)$ è la **funzione sigmoide**. Quindi, possiamo scrivere:
 
-\[
-\nabla_z \varphi(z; y) = (-y^{(1)} \sigma(-y^{(1)} z_1), \dots, -y^{(n)} \sigma(-y^{(n)} z_n))^T.
-\]
+	$\nabla_z \varphi(z; y) = (-y^{(1)} \sigma(-y^{(1)} z_1), \dots, -y^{(n)} \sigma(-y^{(n)} z_n))^T$
 
 D'altra parte, abbiamo:
 
-\[
-\frac{\partial}{\partial w} (Xw) = X,
-\]
+	$\frac{\partial}{\partial w} (Xw) = X$
 
 quindi otteniamo il gradiente della funzione di perdita:
 
-\[
-\nabla_w L(w; X, y) = (r^T X)^T = X^T r,
-\]
+	$\nabla_w L(w; X, y) = (r^T X)^T = X^T r$
 
-dove \(r \in \mathbb{R}^n\) è definito come:
+dove $r \in \mathbb{R}^n$ è definito come:
 
-\[
-r_i = -y^{(i)} \sigma(-y^{(i)} w^T x^{(i)}) \quad \text{per ogni } i = 1, \dots, n.
-\]
-
----
-
-### **Calcolo della Matrice Hessiana**
+	$r_i = -y^{(i)} \sigma(-y^{(i)} w^T x^{(i)}) \quad \text{per ogni } i = 1, \dots, n$
 
 Con calcoli analoghi, possiamo ottenere la matrice Hessiana:
 
-\[
-\nabla^2 L(w; X, y) = X^T D X,
-\]
+	$\nabla^2 L(w; X, y) = X^T D X$
 
 dove \(D\) è una matrice diagonale con elementi:
 
-\[
-d_{ii} = \sigma(y^{(i)} w^T x^{(i)}) \cdot \sigma(-y^{(i)} w^T x^{(i)}).
-\]
+	$d_{ii} = \sigma(y^{(i)} w^T x^{(i)}) \cdot \sigma(-y^{(i)} w^T x^{(i)})$
 
-# 7 Support Vector Machines
+## 7 Support Vector Machines
 
-Un modello di **Support Vector Machine (SVM)** lineare è, in breve, un modello di classificazione ottenuto risolvendo il problema di minimizzazione del rischio empirico con la **hinge loss** e il regolarizzatore \(\ell_2\), ossia:
+Un modello di **Support Vector Machine (SVM)** lineare è, in breve, un modello di classificazione ottenuto risolvendo il problema di minimizzazione del ==rischio empirico con la **hinge loss** e il regolarizzatore $\ell_2$==, ossia:
 
-\[
-\min_{w,b} \frac{1}{2} \|w\|^2 + C \sum_{i=1}^{n} \max\{0, 1 - y^{(i)} (w^T x^{(i)} + b)\}.
-\]
+	$\min_{w,b} \frac{1}{2} \|w\|^2 + C \sum_{i=1}^{n} \max\{0, 1 - y^{(i)} (w^T x^{(i)} + b)\}$
 
 Si può notare che le soluzioni ottimali di questo problema di ottimizzazione **non liscio e non vincolato** sono anche soluzioni del seguente problema **liscio con vincoli lineari**:
 
-\[
-\min_{w,b,\xi} \frac{1}{2} \|w\|^2 + C \sum_{i=1}^{n} \xi^{(i)}
-\]
+	$\min_{w,b,\xi} \frac{1}{2} \|w\|^2 + C \sum_{i=1}^{n} \xi^{(i)}$
+										(26)
+	$\text{t.c} \quad y^{(i)} (w^T x^{(i)} + b) \geq 1 - \xi^{(i)}, \quad \xi^{(i)} \geq 0$ 
 
-soggetto a:
+Si può dimostrare che, quando $C = \infty$, il problema corrisponde a trovare, tra gli ==iperpiani che separano **perfettamente** i dati di addestramento==, quello che **massimizza la distanza** dal punto più vicino di entrambe le classi (vedi Figure 10 e 11). 
 
-\[
-y^{(i)} (w^T x^{(i)} + b) \geq 1 - \xi^{(i)}, \quad \xi^{(i)} \geq 0.
-\]
+![[Pasted image 20250201164438.png]]
+Figura 10: Classificazione tramite Iperpiani. Tutti gli iperpiani soddisfano correttamente il problema dell'addestramento dei dati. SVM sceglie fra questi quello che è equidistante fra le due classi(in verde).
 
----
+![[Pasted image 20250201164501.png]]
+Figura 11: Iperpiani di massimo margine. I punti cerchiati, che definiscono i margini di separazione sono chiamati _support vectors_.
 
-## **Separabilità Lineare e Interpretazione Geometrica**
+Tuttavia, se i dati non sono **linearmente separabili**, il problema non ha soluzioni ammissibili (Figura 12).
 
-Si può dimostrare che, quando \( C = \infty \), il problema corrisponde a trovare, tra gli **iperpiani che separano perfettamente i dati di addestramento**, quello che **massimizza la distanza dal punto più vicino** di entrambe le classi (vedi Figure 10 e 11). Tuttavia, se i dati non sono **linearmente separabili**, il problema non ha soluzioni ammissibili (Figura 12).
+![[Pasted image 20250201163933.png]]
+Figura 12: Esempio di un dataset non separabile.
 
-Pertanto, con una scelta finita di \( C \), si accetta di **pagare un costo** per tutti i punti classificati **erroneamente**, nonché per quelli classificati **correttamente ma con una confidenza insufficiente** (Figura 13). Questo non solo garantisce l'esistenza di una soluzione, ma aiuta anche ad **evitare problemi di overfitting**.
+Pertanto, con una scelta finita di $C$, si accetta di ==**pagare un costo** per tutti i punti classificati **erroneamente**,== nonché per quelli classificati **correttamente ma con una confidenza insufficiente** (Figura 13). Questo non solo garantisce l'esistenza di una soluzione, ma aiuta anche ad **evitare problemi di overfitting**.
 
----
+![[Pasted image 20250201164411.png]]
+Figura 13: Classificatori SVM ottenuti lasciando liberi _slacks_ non nulli.
 
-## **Studio del Problema di Ottimizzazione**
-
-Il problema (26) è **quadratico convesso con vincoli lineari**, quindi è in teoria risolvibile tramite solutori standard per problemi vincolati, come l'**algoritmo di Frank-Wolfe**. Tuttavia, il numero di vincoli è **proporzionale al numero di punti di addestramento** e può crescere rapidamente.
+Il problema (26) è **quadratico convesso con vincoli lineari**, quindi è in teoria risolvibile tramite solutori standard per problemi vincolati, come l'**algoritmo di Frank-Wolfe**. Tuttavia, il numero di vincoli è **proporzionale al numero di punti di addestramento** e può crescere rapidamente. 
 
 Per questa ragione (e per altre che vedremo in seguito), si segue una strategia differente: l'analisi del **problema duale**.
-
----
-
-## **7.1 Il Problema Duale**
+### 7.1 Il Problema Duale
 
 Come accennato, il problema (26) è **convesso e quadratico con vincoli lineari**. Questo implica che le **condizioni di Karush-Kuhn-Tucker (KKT)** sono **necessarie e sufficienti** per l'ottimalità. 
 
 Senza entrare nei dettagli di un argomento vasto e complesso, introduciamo un risultato dalla **teoria della dualità** per problemi convessi vincolati, che permetterà di riformulare il problema primale in una forma più trattabile.
 
-## **Proposizione 7.1**  
+---
+#### Proposizione 7.1 
+
 Consideriamo il seguente problema di ottimizzazione:
 
-\[
-\min_{x} f(x) \quad \text{soggetto a} \quad g(x) \leq 0,
-\]
+	$\min_{x} f(x) \quad \text{soggetto a} \quad g(x) \leq 0$
 
-dove \( f \) e \( g \) sono funzioni continuamente differenziabili e convesse.  
-Sia \( x^\star \) una soluzione ottimale del problema e supponiamo che esista un vettore di moltiplicatori \( \mu^\star \) tale che \( (x^\star, \mu^\star) \) soddisfi le **condizioni KKT**.  
-Allora, la coppia \( (x^\star, \mu^\star) \) è una soluzione ottimale del **problema duale di Wolfe**:
+dove $f$ e $g$ sono funzioni continuamente differenziabili e convesse.  
 
-\[
-\max_{x, \mu} L(x, \mu) = f(x) + \mu^T g(x)
-\]
+Sia $x^\star$ una soluzione ottimale del problema e supponiamo che esista un vettore di moltiplicatori $\mu^\star$ tale che $(x^\star, \mu^\star)$ soddisfi le **condizioni KKT**.  
+Allora, la coppia $(x^\star, \mu^\star)$ è una **soluzione ottimale** del **problema duale di Wolfe**:
 
-soggetto a:
+	$\max_{x, \mu} L(x, \mu) = f(x) + \mu^T g(x)$
 
-\[
-\nabla_x L(x, \mu) = 0, \quad \mu \geq 0.
-\]
+	$\text{t.c.} \quad \nabla_x L(x, \mu) = 0, \quad \mu \geq 0$
 
-### **Dimostrazione**  
-La coppia \( (x^\star, \mu^\star) \) soddisfa le condizioni KKT, ossia:
+---
+**Dimostrazione**.  
+La coppia $(x^\star, \mu^\star)$ soddisfa le condizioni KKT, ossia:
 
-\[
-\nabla_x L(x^\star, \mu^\star) = 0, \quad \mu^\star \geq 0, \quad g(x^\star) \leq 0, \quad \mu^\star_i g_i(x^\star) = 0 \quad \forall i.
-\]
+- $\nabla_x L(x^\star, \mu^\star) = 0$ (i),
+- $\quad \mu^\star \geq 0$ (ii), 
+- $\quad g(x^\star) \leq 0$ (iii),
+- $\quad \mu^\star_i g_i(x^\star) = 0 \quad \forall i$ (iv)
 
-Di conseguenza, \( (x^\star, \mu^\star) \) soddisfa i vincoli del problema duale di Wolfe. Inoltre, per la condizione di complementarità, abbiamo:
+Di conseguenza, $(x^\star, \mu^\star)$ soddisfa i vincoli del problema duale di Wolfe (grazie a (i) e (ii)). 
 
-\[
-L(x^\star, \mu^\star) = f(x^\star) + \sum_i \mu^\star_i g_i(x^\star) = f(x^\star).
-\]
+Inoltre, per la condizione di complementarità (iv), abbiamo:
+	
+	$L(x^\star, \mu^\star) = f(x^\star) + \sum_i \mu^\star_i g_i(x^\star) = f(x^\star)$
 
-Ora, per una qualunque soluzione ammissibile \( (x, \mu) \) del problema duale, poiché \( \mu \geq 0 \) e \( g(x^\star) \leq 0 \), si ha:
+Ora, per una qualunque soluzione ammissibile $(x, \mu)$ del problema duale, poiché $\mu \geq 0$  e $g(x^\star) \leq 0$, si ha:
 
-\[
-L(x^\star, \mu^\star) = f(x^\star) \geq f(x^\star) + \sum_i \mu_i g_i(x^\star) = L(x^\star, \mu).
-\]
+	$L(x^\star, \mu^\star) = f(x^\star) \geq f(x^\star) + \sum_i \mu_i g_i(x^\star) = L(x^\star, \mu)$
 
-Dalla convessità di \( L(x, \mu) \) rispetto a \( x \) (essendo combinazione lineare positiva delle funzioni convesse \( f, g_1, \dots, g_m \)), possiamo scrivere:
+Dalla convessità di $L(x, \mu)$ rispetto a $x$ (essendo combinazione lineare positiva delle funzioni convesse $f, \space g_1, \dots, g_m$), possiamo scrivere:
 
-\[
-L(x^\star, \mu) \geq L(x, \mu) + \nabla_x L(x, \mu)^T (x^\star - x).
-\]
+	$L(x^\star, \mu) \geq L(x, \mu) + \nabla_x L(x, \mu)^T (x^\star - x)$
 
-Unendo tutti i passaggi precedenti e ricordando che \( \nabla_x L(x, \mu) = 0 \) per \( (x, \mu) \) ammissibile nel problema duale, otteniamo:
+Unendo tutti i passaggi precedenti e ricordando che $\nabla_x L(x, \mu) = 0$ per $(x, \mu)$ ammissibile nel problema duale, otteniamo:
 
-\[
-L(x^\star, \mu^\star) \geq L(x^\star, \mu) \geq L(x, \mu).
-\]
+	$L(x^\star, \mu^\star) \geq L(x^\star, \mu) \geq L(x, \mu)$
 
-Essendo \( (x, \mu) \) una soluzione qualsiasi ammissibile del problema duale, si ottiene la tesi.
+Essendo $(x, \mu)$ una soluzione qualsiasi ammissibile del problema duale, si ottiene la tesi(richiediamo infatti che sia un max).
 
 ---
 
-## **Applicazione alla Support Vector Machine (SVM)**  
 Torniamo ora al problema SVM (26).  
-Poiché le condizioni KKT sono **necessarie e sufficienti** per l'ottimalità globale, allora per una soluzione ottimale \( (w^\star, b^\star, \xi^\star) \) devono esistere moltiplicatori \( (\alpha^\star, \mu^\star) \) tali che la **coppia** \( (w^\star, b^\star, \xi^\star, \alpha^\star, \mu^\star) \) sia un punto KKT e, per la proposizione sopra, sia soluzione del **problema duale**:
+Poiché le condizioni KKT sono **necessarie e sufficienti** per l'ottimalità globale, allora per una soluzione ottimale $(w^\star, b^\star, \xi^\star)$  devono esistere moltiplicatori  $(\alpha^\star, \mu^\star)$ tali che la **coppia** $(w^\star, b^\star, \xi^\star, \alpha^\star, \mu^\star)$ sia un punto KKT e, per la proposizione sopra, sia soluzione del **problema duale**:
 
-\[
-\max_{w, b, \xi, \alpha, \mu} L(w, b, \xi, \alpha, \mu) = \frac{1}{2} \|w\|^2 + C \sum_i \xi_i + \sum_i -\mu_i \xi_i + \sum_i \alpha_i (1 - y^{(i)} (w^T x^{(i)} + b) - \xi_i)
-\]
+	$\max_{w, b, \xi, \alpha, \mu} L(w, b, \xi, \alpha, \mu) = f(x) + \mu^Tg(x)$
+			  $= \frac{1}{2} \|w\|^2 + C \sum_i \xi_i + \sum_i -\mu_i \xi_i + \sum_i \alpha_i (1 - y^{(i)} (w^T x^{(i)} + b) - \xi_i)$
 
-soggetto a:
+	$\text{t.c} \quad \alpha \geq 0, \quad \mu \geq 0$,
 
-\[
-\alpha \geq 0, \quad \mu \geq 0,
-\]
-
-\[
-\nabla_w L(w, b, \xi, \alpha, \mu) = 0, \quad \nabla_b L(w, b, \xi, \alpha, \mu) = 0, \quad \nabla_\xi L(w, b, \xi, \alpha, \mu) = 0.
-\]
+	$\nabla_w L(w, b, \xi, \alpha, \mu) = 0, \quad \nabla_b L(w, b, \xi, \alpha, \mu) = 0, \quad \nabla_\xi L(w, b, \xi, \alpha, \mu) = 0$
 
 Osserviamo ora che dai vincoli sopra si ottengono le seguenti relazioni:
 
-\[
-0 = \nabla_w L(w, b, \xi, \alpha, \mu) = w - \sum_i \alpha_i y^{(i)} x^{(i)}, \quad \text{cioè} \quad w = \sum_i \alpha_i y^{(i)} x^{(i)}.
-\]
+	$0 = \nabla_w L(w, b, \xi, \alpha, \mu) = w - \sum_i \alpha_i y^{(i)} x^{(i)}, \quad \text{cioè} \quad w = \sum_i \alpha_i y^{(i)} x^{(i)}$
 
-\[
-0 = \nabla_b L(w, b, \xi, \alpha, \mu) = -\sum_i \alpha_i y^{(i)}, \quad \text{cioè} \quad \alpha^T y = 0.
-\]
-
-\[
-0 = \nabla_\xi L(w, b, \xi, \alpha, \mu) = C e - \sum_i \mu_i e_i - \sum_i \alpha_i e_i, \quad \text{cioè} \quad \alpha_i = C - \mu_i \leq C \quad \forall i.
-\]
-
-Queste relazioni sono alla base della formulazione duale del problema SVM e saranno utili per costruire algoritmi efficienti per la sua risoluzione.
-
+	$0 = \nabla_b L(w, b, \xi, \alpha, \mu) = -\sum_i \alpha_i y^{(i)}, \quad \text{cioè} \quad \alpha^T y = 0$
+	
+	$0 = \nabla_\xi L(w, b, \xi, \alpha, \mu) = C e - \sum_i \mu_i e_i - \sum_i \alpha_i e_i, \quad \text{cioè} \quad \alpha_i = C - \mu_i \leq C \quad \forall i$
+	
 Manipolando la funzione obiettivo, possiamo prima ottenere:
 
-\[
-\frac{1}{2} w^T w + C \sum_{i} \xi_i + \sum_{i} -\mu_i \xi_i + \sum_{i} \alpha_i - \sum_{i} \alpha_i y^{(i)} w^T x^{(i)} - b \sum_{i} \alpha_i y^{(i)} - \sum_{i} \alpha_i \xi_i
-\]
+	$\frac{1}{2} w^T w + C \sum_{i} \xi_i + \sum_{i} -\mu_i \xi_i + \sum_{i} \alpha_i - \sum_{i} \alpha_i y^{(i)} w^T x^{(i)} - b \sum_{i} \alpha_i y^{(i)} - \sum_{i} \alpha_i \xi_i$
 
-Ora, ricordiamo che \(\sum_{i} \alpha_i y^{(i)} = 0\) per la seconda condizione vista sopra. Inoltre, usando la terza condizione possiamo scrivere:
+Ora, ricordiamo che $\sum_{i} \alpha_i y^{(i)} = 0$ per la seconda condizione vista sopra. Inoltre, usando la terza condizione possiamo scrivere:
 
-\[
-C \sum_{i} \xi_i - \sum_{i} \mu_i \xi_i = \sum_{i} \xi_i (C - \mu_i) = \sum_{i} \xi_i \alpha_i.
-\]
+	$C \sum_{i} \xi_i - \sum_{i} \mu_i \xi_i = \sum_{i} \xi_i (C - \mu_i) = \sum_{i} \xi_i \alpha_i$
 
 Otteniamo quindi:
 
-\[
-\frac{1}{2} w^T w + \sum_{i} \alpha_i \xi_i + \sum_{i} \alpha_i - \sum_{i} \alpha_i y^{(i)} w^T x^{(i)} - \sum_{i} \alpha_i \xi_i,
-\]
+	$\frac{1}{2} w^T w + \sum_{i} \alpha_i \xi_i + \sum_{i} \alpha_i - \sum_{i} \alpha_i y^{(i)} w^T x^{(i)} - \sum_{i} \alpha_i \xi_i$
 
 ossia:
 
-\[
-w^T \left(\frac{1}{2} w - \sum_{i} \alpha_i y^{(i)} x^{(i)}\right) + \sum_{i} \alpha_i.
-\]
+	$w^T \left(\frac{1}{2} w - \sum_{i} \alpha_i y^{(i)} x^{(i)}\right) + \sum_{i} \alpha_i$
 
-Ora possiamo sostituire \( w = \sum_{i} \alpha_i y^{(i)} x^{(i)} \) per ottenere:
+Ora possiamo sostituire $w = \sum_{i} \alpha_i y^{(i)} x^{(i)}$ per ottenere:
 
-\[
-L(w, b, \xi, \alpha, \mu) = -\frac{1}{2} \sum_{i} \sum_{j} \alpha_i \alpha_j y^{(i)} y^{(j)} x^{(i)T} x^{(j)} + \sum_{i} \alpha_i.
-\]
+	$L(w, b, \xi, \alpha, \mu) = -\frac{1}{2} \sum_{i} \sum_{j} \alpha_i \alpha_j y^{(i)} y^{(j)} x^{(i)T} x^{(j)} + \sum_{i} \alpha_i$
 
-Quindi, la funzione obiettivo dipende solo dai moltiplicatori \(\alpha\), che sono vincolati da \( y^T \alpha = 0 \), \( \alpha \geq 0 \) e \( \alpha \leq C \).
+Quindi, la funzione obiettivo dipende **solo dai moltiplicatori $\alpha$**, che sono vincolati da $y^T \alpha = 0$, $\alpha \geq 0$ e $\alpha \leq C$. Scambiando i segni e passando alla notazione matriciale, definiamo la matrice $Q$ tale che: $Q_{ij} = y^{(i)} y^{(j)} x^{(i)T} x^{(j)}$, ottenendo il problema duale (27):
 
-Scambiando i segni e passando alla notazione matriciale, definiamo la matrice \( Q \) tale che:
+	$\min_{\alpha} \frac{1}{2} \alpha^T Q \alpha - e^T \alpha$
+	$\text{t.c.} \quad \alpha^T y = 0, \quad 0 \leq \alpha_i \leq C \quad \forall i$
 
-\[
-Q_{ij} = y^{(i)} y^{(j)} x^{(i)T} x^{(j)},
-\]
-
-ottenendo il problema duale:
-
-\[
-\min_{\alpha} \frac{1}{2} \alpha^T Q \alpha - e^T \alpha
-\]
-
-soggetto a:
-
-\[
-\alpha^T y = 0, \quad 0 \leq \alpha_i \leq C \quad \forall i.
-\]
+(Notare si passa facilmente al min cambiando il segno della funzione obiettivo)
 
 ---
 
-## **Soluzione del problema duale e recupero delle variabili primali**
+Dopo aver risolto il problema duale (27), possiamo ottenere la soluzione $\alpha^\star$ e recuperare le altre variabili:
+- $w^\star = \sum_{i} \alpha^\star_i y^{(i)} x^{(i)}$,
+- $\mu^\star_i = C - \alpha^\star_i \quad \forall i$,
+- $b^\star = \frac{1}{y^{(i)}} - w^{\star T} x^{(i)} \quad \text{per ogni } i \text{ tale che } \alpha^\star_i \in (0, C)$,
+- $\xi^\star_i = \max\{0, 1 - y^{(i)} (w^{\star T} x^{(i)} + b^\star)\}$
 
-Dopo aver risolto il problema duale (27), possiamo ottenere la soluzione \(\alpha^\star\) e recuperare le altre variabili:
-
-\[
-w^\star = \sum_{i} \alpha^\star_i y^{(i)} x^{(i)},
-\]
-
-\[
-\mu^\star_i = C - \alpha^\star_i \quad \forall i,
-\]
-
-\[
-b^\star = \frac{1}{y^{(i)}} - w^{\star T} x^{(i)} \quad \text{per ogni } i \text{ tale che } \alpha^\star_i \in (0, C),
-\]
-
-\[
-\xi^\star_i = \max\{0, 1 - y^{(i)} (w^{\star T} x^{(i)} + b^\star)\}.
-\]
-
-La terza equazione per \( b^\star \) segue dall'imposizione delle condizioni di complementarità delle KKT.
+La terza equazione (per $b^\star$) segue dall'imposizione delle condizioni di complementarità delle KKT. (ovvero imponendo $\xi_i^* = 0 \space e \space \alpha_i^* \neq 0$ necessariamente avrò $1- y^{(i)}(w^{*T}x^{(i)}) + b^*=0$ dalla condizione $\mu^Tg_i(x) \leq 0$, anzi vedi sotto... )
 
 ---
-
-## **Interpretazione Geometrica: Support Vectors**
+##### Interpretazione Geometrica: Support Vectors
 
 Dalle condizioni di complementarità segue che:
 
-\[
-\alpha^\star_i (1 - y^{(i)} (w^{\star T} x^{(i)} + b^\star) - \xi^\star_i) = 0, \quad 0 = \mu^\star_i \xi^\star_i = (C - \alpha^\star_i) \xi^\star_i.
-\]
+	$\alpha^\star_i (1 - y^{(i)} (w^{\star T} x^{(i)} + b^\star) - \xi^\star_i) = 0, \quad 0 = \mu^\star_i \xi^\star_i = (C - \alpha^\star_i) \xi^\star_i$
 
-- Se \( \alpha^\star_i \in (0, C) \), allora \( \xi^\star_i = 0 \) e il punto soddisfa esattamente \( y^{(i)} (w^{\star T} x^{(i)} + b^\star) = 1 \), ovvero si trova **sul margine di separazione**.
-- Se \( \alpha^\star_i = C \), allora \( \xi^\star_i > 0 \), indicando che il punto è un errore di classificazione.
+- Se $\alpha^\star_i \in (0, C)$, allora $\xi^\star_i = 0$  e il punto soddisfa esattamente  $y^{(i)} (w^{\star T} x^{(i)} + b^\star) = 1$, ovvero si trova **sul margine di separazione**.
+- Se $\alpha^\star_i = C$, allora $\xi^\star_i > 0$, (negativo non può essere per i vincoli del problema), indicando che il punto è un errore di classificazione(in quanto ha uno _slack_ non nullo).
 
-Tutti i punti associati a **moltiplicatori non nulli** \( \alpha^\star_i \) sono chiamati **support vectors**. Il classificatore risultante dipende esclusivamente dai **support vectors**, poiché:
+Tutti i punti associati a **moltiplicatori non nulli** $\alpha^\star_i$ sono chiamati **support vectors**, poiché:
 
-\[
-w^\star = \sum_{i} \alpha^\star_i y^{(i)} x^{(i)}.
-\]
+	$w^\star = \sum_{i} \alpha^\star_i y^{(i)} x^{(i)}$
 
----
+ovvero classificatore risultante dipende esclusivamente dai **support vectors**.
 
-## **Classificazione di nuovi punti**
+Per classificare un nuovo punto $x$, calcoliamo:
 
-Per classificare un nuovo punto \( x \), calcoliamo:
+	$w^{\star T} x = \sum_{i} \alpha_i y^{(i)} x^T x^{(i)}$
 
-\[
-w^\star T x = \sum_{i} \alpha_i y^{(i)} x^T x^{(i)}.
-\]
+In altre parole, il risultato della funzione decisionale è una ==somma pesata sui dati di addestramento==, dove solo i **support vector** (ovvero quelli con moltiplicatore non nullo) vengono effettivamente considerati. 
+Per ciascun support vector, viene calcolato il **prodotto scalare** con il punto da classificare: ==più alto è il prodotto scalare, maggiore è la somiglianza== tra $x^{(i)}$ e $x$, più grande sarà il contributo di quel support vector nell'assegnare la classe $y^{(i)}$ al nuovo punto dati.
 
-Il segno di questa espressione determina la classe assegnata al punto \( x \).
+Tuttavia, il prodotto scalare **non è l'unica misura di somiglianza** disponibile per confrontare due punti dati. Infatti, possiamo pensare di sostituire i termini $x^T x^{(i)}$ nella funzione decisionale con **funzioni di kernel**:  $k(\cdot, \cdot) : \mathbb{R}^p \times \mathbb{R}^p \to \mathbb{R}$. 
 
-In altre parole, il risultato della funzione decisionale è una somma pesata sui dati di addestramento, 
-dove solo i **support vector** vengono effettivamente considerati. Per ciascun support vector, 
-viene calcolato il prodotto scalare con il punto da classificare: **più alto è il prodotto scalare, maggiore è la somiglianza tra** \( x^{(i)} \) **e** \( x \), **più grande sarà il contributo di quel support vector nell'assegnare la classe** \( y^{(i)} \) **al nuovo punto dati**.
+![[Pasted image 20250202130559.png]]
 
-Tuttavia, il prodotto scalare non è l'unica misura di somiglianza disponibile per confrontare due punti dati. 
-Infatti, possiamo pensare di sostituire i termini \( x^T x^{(i)} \) nella funzione decisionale con **funzioni di kernel**,
-\( k(\cdot, \cdot) : \mathbb{R}^p \times \mathbb{R}^p \to \mathbb{R} \) (vedi Figura 14). 
-In questo caso, gli elementi della matrice \( Q \) nel problema duale (27) diventano:
+In questo caso, gli elementi della matrice $Q$ nel problema duale (27) diventano:
 
-\[
-Q_{ij} = y^{(i)} y^{(j)} k(x^{(i)}, x^{(j)}).
-\]
+	$Q_{ij} = y^{(i)} y^{(j)} k(x^{(i)}, x^{(j)})$
 
-Senza addentrarci nella teoria dei kernel, ricordiamo che una funzione \( k \) può essere usata come kernel se e solo se:
-
-- La matrice \( Q \) è **semidefinita positiva** per ogni possibile dataset \( D \) (garantendo che il problema duale sia convesso).
+Senza addentrarci nella teoria dei kernel, ricordiamo che una funzione $k$ può essere usata come kernel se e solo se:
+- La matrice $Q$ è **semidefinita positiva** per ogni possibile dataset $D$ (garantendo che il problema duale sia convesso).
 - La funzione kernel rappresenta un **prodotto scalare** tra i punti dati mappati in uno spazio di dimensione potenzialmente maggiore.
 
 In questi casi, la funzione decisionale assume la forma:
 
-\[
-h(x) = \sum_{i} \alpha^\star_i y^{(i)} k(x, x^{(i)}),
-\]
+	$h(x) = \sum_{i} \alpha^\star_i y^{(i)} k(x, x^{(i)})$
 
-che in generale non è più una funzione lineare. 
+che in generale **non è più una funzione lineare.** 
 
-Da un lato, **non è più possibile esprimere il classificatore in termini di pesi** \( w \); 
-dall'altro, il classificatore diventa **non lineare**, consentendo di costruire modelli più espressivi e potenti.
+Da un lato, non è più possibile esprimere il classificatore in termini di pesi $w$; 
+dall'altro, il classificatore diventa **non lineare**, consentendo di costruire modelli **più espressivi** e potenti.
 
----
+![[Pasted image 20250202130901.png]]
 
-### **Vantaggi dell'SVM Duale**
-Le due principali ragioni per considerare il **problema duale** della SVM sono:
+Per riassumere, le due principali ragioni per considerare il **problema duale** della SVM sono:
 
 1. **Kernel trick:** consente di ottenere **classificatori non lineari** senza esplicitamente trasformare i dati in uno spazio di dimensione più elevata.
-2. **Forma del problema:** il problema rimane **quadratico convesso con vincoli lineari**, come nella formulazione primale, ma con vincoli più semplici (l'unico vincolo complesso è \( \alpha^T y = 0 \)).
+2. **Forma del problema:** il problema rimane **quadratico convesso con vincoli lineari**, come nella formulazione primale, ma con vincoli più semplici (l'unico vincolo complesso è $\alpha^T y = 0$, il resto sono vincoli di box).
 
+### 7.2 Risolvendo il problema duale
+
+Prima di riprendere il problema duale riguardare tecniche di decomposizione (capitolo 4.7)
