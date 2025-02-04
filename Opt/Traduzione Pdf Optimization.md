@@ -1621,242 +1621,141 @@ Possibili regole di scelta che assicurano convergenza a punti stazionari includo
 
 I problemi di **somma finita**, tipici in apprendimento automatico, sono rappresentati come:
 
-min⁡x∈Rnf(x)=1N∑i=1Nfi(x).\min_{x \in \mathbb{R}^n} f(x) = \frac{1}{N} \sum_{i=1}^N f_i(x).
+	$\min_{x \in \mathbb{R}^n} f(x) = \frac{1}{N} \sum_{i=1}^N f_i(x)$
 
-Quando NN è molto grande, calcolare il gradiente completo ∇f(x)\nabla f(x) diventa oneroso. L'**algoritmo di discesa del gradiente stocastico (SGD)** fornisce una soluzione computazionalmente più leggera, aggiornando le variabili con passi stocastici basati su un gradiente approssimato:
+Quando $N$ è molto grande, calcolare il gradiente completo $\nabla f(x)$ diventa oneroso. Affrontare l'intera funzione obiettivo $f$ da sola potrebbe diventare costoso in termini di memoria e tempi di computazione.
 
-xk+1=xk−αk∇fik(xk),x^{k+1} = x^k - \alpha_k \nabla f_{i_k}(x^k),
+L'**algoritmo di discesa del gradiente stocastico (SGD)** fornisce una soluzione computazionalmente più leggera, aggiornando le variabili ad ogni iterazione con passi stocastici basati su un gradiente approssimato:	$x^{k+1} = x^k - \alpha_k \nabla f_{i_k}(x^k)$ (19), dove $i_k$ è un indice **scelto casualmente** tra $\{1, \dots, N\}$ all'iterazione K.
+L'approssimazione allevia la pesantezza del calcolo delle derivata, in quanto dobbiamo calcolare solo un gradiente $\nabla f_i$ , ad ogni iterazione rispetto agli $N$ termini necessari per calcolare la vera $\nabla f$ 
 
-dove iki_k è un indice scelto casualmente tra {1,…,N}\{1, \dots, N\}.
-
----
-
-#### **Proprietà e Varianti di SGD**
-
-1. **Stima del gradiente:** L'approccio è stocastico ma garantisce che il gradiente approssimato ∇fik(xk)\nabla f_{i_k}(x^k) sia un **stimatore non distorto** del gradiente reale:
-
-E[∇fik(xk)]=∇f(xk).\mathbb{E}[\nabla f_{i_k}(x^k)] = \nabla f(x^k).
-
-2. **Mini-batch SGD:** Per ridurre la varianza, si calcola il gradiente su un sottoinsieme (mini-batch) di MM termini della somma:
-
-dk=−1M∑i∈Bk∇fi(xk).d_k = -\frac{1}{M} \sum_{i \in B_k} \nabla f_i(x^k).
-
-3. **Strategia di riordinamento casuale:** Gli indici vengono rimescolati ad ogni epoca, garantendo che ogni termine sia usato una volta per epoca.
-
----
-
-#### **Analisi Teorica di SGD**
-
-Sotto opportune assunzioni di smoothness e scelta del passo αk\alpha_k, l'algoritmo garantisce che:
-
-lim⁡k→∞E[∥∇f(zk)∥2]=0.\lim_{k \to \infty} \mathbb{E}\left[\|\nabla f(z^k)\|^2\right] = 0.
-
-Questa proprietà assicura che l'algoritmo converge a punti stazionari, anche in presenza di rumore stocastico.
-
-### Traduzione in Italiano
-
-#### Aggiornamenti nell'SGD
-
-L'algoritmo **Stochastic Gradient Descent (SGD)** utilizza aggiornamenti della forma:
-
-xk+1=xk−αk∇fik(xk),x^{k+1} = x^k - \alpha_k \nabla f_{i_k}(x^k),
-
-dove il passo αk\alpha_k è spesso impostato a un valore costante o segue una sequenza predefinita. Le tradizionali ricerche di linee (line searches) non sono generalmente adatte in questo caso, poiché la funzione obiettivo cambia a ogni iterazione. Questo porta a due problematiche principali:
-
+Il passo $\alpha_k$ è spesso impostato a un valore costante o segue una sequenza predefinita. Le tradizionali ricerche di linee (line searches) non sono generalmente adatte in questo caso, poiché la funzione obiettivo cambia a ogni iterazione. Questo porta a due problematiche principali:
 1. Non si può garantire una diminuzione sufficiente della funzione obiettivo reale.
 2. Forzare una diminuzione sufficiente sull'approssimazione corrente potrebbe non portare benefici.
 
----
+La scelta stocastica della direzione di discesa si basa sul fatto che, se consideriamo il **valore atteso** della quantità $\nabla f_{i_k}(x^k)$, e assumendo una distribuzione uniforme sui valori $\{1, \ldots, N\}$, otteniamo (con $p_i = \frac{1}{N}$):
 
-#### **Razionalità della direzione di ricerca stocastica**
+$E[\nabla f_i(x^k)] = \sum_{i=1}^N p_i \nabla f_i(x^k) = \sum_{i=1}^N \frac{1}{N} \nabla f_i(x^k) = \frac{1}{N} \sum_{i=1}^N \nabla f_i(x^k)$
+$= \nabla f(x^k)$
 
-La scelta stocastica della direzione di discesa si basa sul fatto che, se consideriamo il valore atteso della quantità ∇fik(xk)\nabla f_{i_k}(x^k), e assumendo una distribuzione uniforme sui valori {1,…,N}\{1, \ldots, N\}, otteniamo:
+In altre parole, ==in media ci si aspetta di ottenere il gradiente reale==. 
 
-E[∇fi(xk)]=∑i=1Npi∇fi(xk)=∑i=1N1N∇fi(xk)=1N∑i=1N∇fi(xk)=∇f(xk).E[\nabla f_i(x^k)] = \sum_{i=1}^N p_i \nabla f_i(x^k) = \sum_{i=1}^N \frac{1}{N} \nabla f_i(x^k) = \frac{1}{N} \sum_{i=1}^N \nabla f_i(x^k) = \nabla f(x^k).
+Formalmente, diciamo che una direzione $d_k$ tale che $E[d_k]=-\nabla f(x^k)$ è uno **stimatore non distorto** (_unbiased_) del vero gradiente $\nabla f(x^k)$. In principio, vorremmo usare una direzione di ricerca fra i diversi stimatori unbiased di $-\nabla f(x^k)$, che abbia piccola varianza. In quanto riducendo questa, implicherebbe una minore probabilità di fare grossi errori nella stima della direzione del gradiente.
 
-In altre parole, in media ci si aspetta di ottenere il gradiente reale. Formalmente, diciamo che una direzione dkd_k è uno **stimatore non distorto** del vero gradiente ∇f(xk)\nabla f(x^k) se soddisfa E[dk]=−∇f(xk)E[d_k] = -\nabla f(x^k).
-
----
-
-#### **Strategie per ridurre la varianza**
-
-Ridurre la varianza del gradiente stocastico è fondamentale per diminuire gli errori nella stima della direzione di discesa. Strategie di riduzione della varianza sono state proposte per migliorare il tasso di convergenza teorico di SGD. Tuttavia, queste strategie richiedono:
-
-- **Elevati requisiti di memoria**, oppure
-- **Calcolo del gradiente reale** in alcune iterazioni.
-
+Strategie di riduzione della varianza sono state proposte per migliorare il tasso di convergenza teorico di SGD. 
+Tuttavia, queste strategie richiedono o elevati requisiti di memoria, oppure calcolo del gradiente reale in alcune iterazioni.
 Per questo motivo, tali strategie sono applicabili solo in problemi particolarmente strutturati.
 
-Un approccio pratico per ottenere un effetto di riduzione della varianza è basare il calcolo del gradiente non su un singolo termine della somma, ma su un sottoinsieme di termini Bk⊂{1,…,N}B_k \subset \{1, \ldots, N\}, con ∣Bk∣=M≪N|B_k| = M \ll N:
+Un approccio pratico per ottenere un effetto di riduzione della varianza è basare il calcolo del gradiente non su un singolo termine della somma, ma su un sottoinsieme di termini $B_k \subset \{1, \ldots, N\}$, con $|B_k| = M \ll N$:
 
-dk=−1∣Bk∣∑i∈Bk∇fi(xk).d_k = -\frac{1}{|B_k|} \sum_{i \in B_k} \nabla f_i(x^k).
+	$d_k = -\frac{1}{|B_k|} \sum_{i \in B_k} \nabla f_i(x^k)$.
 
----
+**Remark 4.1.** Nel contesto del **machine learning** e dell'apprendimento statistico:
 
-#### **Remark 4.1**
+- Ogni termine $f_i$ corrisponde alla **perdita associata a un campione**.
+- Un sottoinsieme $B_k$ di esempi è detto _mini-batch_, in contrasto con il *full batch*, che include l'intero dataset.
 
-Nel contesto del **machine learning** e dell'apprendimento statistico:
+Nel contesto del **deep learning**, il passo $\alpha_k$ è comunemente noto come **learning rate**.
 
-- Ogni termine fif_i corrisponde alla **perdita associata a un campione**.
-- Un sottoinsieme BkB_k di esempi è detto **mini-batch**, in contrasto con il **full batch**, che include l'intero dataset.
-
-Nel contesto del **deep learning**, il passo αk\alpha_k è comunemente noto come **learning rate**.
-
----
-
-#### **Mini-Batching e Random Reshuffling**
-
-Le tecniche di mini-batching e le strategie stocastiche sono spesso combinate con un rimescolamento casuale. Invece di scegliere gli indici in BkB_k completamente a caso a ogni iterazione:
-
-- Si effettuano **macro-iterazioni** (chiamate epoche), in cui tutti i termini della somma sono usati esattamente una volta.
+Le tecniche di mini-batching e le strategie stocastiche sono spesso combinate con un *rimescolamento casuale*: Invece di scegliere gli indici in $B_k$ completamente a caso a ogni iterazione, si effettuano **macro-iterazioni** (chiamate *epoche*), in cui ==tutti i termini della somma sono usati esattamente una volta==.
 
 La struttura di un algoritmo di **mini-batch SGD con random reshuffling** è mostrata in _Algorithm 5_.
+Praticamente entro ogni epoca (indicizzata da $k$), sono eseguite $\frac{N}{M}$ iterazioni (indicizzate da $t$) del minibatch GD, successivamente un diverso minibatch della funzione viene considerato, in modo tale che non ci sia overlap e dentro ogni epoca ogni termine viene considerato una ed una sola volta. Nota che che il random split in minibatches è diverso per ogni epoca.
+
+#### 4.8.1 Analisi Teorica del SGD
+
+In questa sezione, riportiamo l'analisi di convergenza per l'analisi di un metodo SGD base, dove un singolo e randomico sample è scelto per approssimare il gradiente ad ogni iterazione; seguendo  i passi della forma (19).
+
+---
+**Algoritmo 5: Mini-batch Discesa del Gradiente con Rimescolamento randomico**
+
+1. Input: $f_1, ... , f_n, \space x^0, \space \{\alpha_k\}$
+2. $k=0$
+3. **while** un criterio di arresto non è soddisfato fai
+	- Dividi randomicamente l'insieme di indici {1,...,N} in $\frac{N}{M}$ mini-batches $B_0^k, B_{\frac{N}{M} -1}$ di dimensione M
+	- $x_0^k = x_k$
+	- **for** $t = 0, ..., \frac{N}{M}$ fai
+		- $x_{t+1}^k = x_t^k - \alpha \frac{1}{M} \sum_{i \in B_{t^k}} \nabla f_i(x_t^k)$ 
+	- $x^{k+1} = x_{\frac{N}{M}}^k$
+4. Output: $x^k$
 
 ---
 
-#### **Analisi Teorica del SGD**
+Diversamente dall'algoritmo di discesa del gradiente, SGD non necessariamente abbassa il valore della funzione obiettivo ad ogni passo. 
 
-Per studiare rigorosamente l'SGD, si introducono alcune ipotesi aggiuntive:
+Per studiare rigorosamente l'SGD, si introducono alcune ipotesi aggiuntive che caratterizzano quanto lontano i campioni del gradiente possono distare da questo:
 
-1. ff è **limitata inferiormente**.
-2. Il modulo dei campioni di gradiente è limitato da una costante G>0G > 0: ∥∇fi(x)∥≤G,∀x∈Rn.\|\nabla f_i(x)\| \leq G, \quad \forall x \in \mathbb{R}^n.
-3. La funzione obiettivo è LL-lipschitziana (L-smooth).
+1. $f$ è **limitata inferiormente**.
+2. Il modulo dei campioni di gradiente è limitato da una costante $G > 0: \|\nabla f_i(x)\| \leq G, \quad \forall x \in \mathbb{R}^n$.
+3. La funzione obiettivo è _L-lipschitziana_ (L-smooth).
 
 ---
+**Proposizione 4.14**
 
-#### **Proposizione 4.14**
+Sia $\{x^k\}$ la sequenza generata dall'algoritmo SGD con una sequenza di passi $\{\alpha_k\}$ tale che:
 
-Sia {xk}\{x^k\} la sequenza generata dall'algoritmo SGD con una sequenza di passi {αk}\{\alpha_k\} tale che:
+- $\sum_{k=0}^\infty \alpha_k = \infty$,
+- $\sum_{k=0}^\infty \alpha_k^2 < \infty$.
 
-- ∑k=0∞αk=∞\sum_{k=0}^\infty \alpha_k = \infty,
-- ∑k=0∞αk2<∞\sum_{k=0}^\infty \alpha_k^2 < \infty.
+Assumendo che, a ogni iterazione $k$, l'algoritmo selezioni casualmente un $\tau \in \{0, \ldots, k-1\}$ con probabilità:
 
-Assumendo che, a ogni iterazione kk, l'algoritmo selezioni casualmente un τ∈{0,…,k−1}\tau \in \{0, \ldots, k-1\} con probabilità:
-
-P(τ=t)=αt∑i=0k−1αi,P(\tau = t) = \frac{\alpha_t}{\sum_{i=0}^{k-1} \alpha_i},
+	$P(\tau = t) = \frac{\alpha_t}{\sum_{i=0}^{k-1} \alpha_i}$,
 
 allora:
-
-lim⁡k→∞E[∥∇f(zk)∥2]=0.\lim_{k \to \infty} E\left[\|\nabla f(z^k)\|^2\right] = 0.
+	$\lim_{k \to \infty} E\left[\|\nabla f(z^k)\|^2\right] = 0$.
 
 ---
 
-#### **Dimostrazione (Schizzo)**
+**Dimostrazione (Schizzo male)**
 
 Dalla proprietà di smoothness e l'ipotesi sui campioni del gradiente, si ottiene che:
 
-f(xk+1)≤f(xk)−αk∇fik(xk)T∇f(xk)+αk2LG22.f(x^{k+1}) \leq f(x^k) - \alpha_k \nabla f_{i_k}(x^k)^T \nabla f(x^k) + \frac{\alpha_k^2 L G^2}{2}.
+	$f(x^{k+1}) \leq f(x^k) - \alpha_k \nabla f_{i_k}(x^k)^T \nabla f(x^k) + \frac{\alpha_k^2 L G^2}{2}$.
 
-Sotto aspettazione e applicando le ipotesi di αk\alpha_k, si dimostra che la successione converge in media a un punto stazionario, soddisfacendo:
+Sotto aspettazione (?) e applicando le ipotesi di $\alpha_k$, si dimostra che la successione converge in media a un punto stazionario, soddisfacendo:
 
-lim⁡k→∞E[∥∇f(zk)∥2]=0.\lim_{k \to \infty} E[\|\nabla f(z^k)\|^2] = 0.
-
-### Traduzione in Italiano
-
-#### **Valore atteso del gradiente stocastico**
-
-Il valore atteso di ∇fik(xk)\nabla f_{i_k}(x^k), dato xkx^k, può essere calcolato come:
-
-E[∇fik(xk) ∣ xk]=∑i=1n∇fi(xk)⋅P(ik=i ∣ xk)=∑i=1n∇fi(xk)⋅1n=∇f(xk).E\left[\nabla f_{i_k}(x^k) \,|\, x^k\right] = \sum_{i=1}^n \nabla f_i(x^k) \cdot P(i_k = i \,|\, x^k) = \sum_{i=1}^n \nabla f_i(x^k) \cdot \frac{1}{n} = \nabla f(x^k).
-
-Quindi, in media, il gradiente stocastico corrisponde al vero gradiente ∇f(xk)\nabla f(x^k).
+	$\lim_{k \to \infty} E[\|\nabla f(z^k)\|^2] = 0$
 
 ---
 
-#### **Dimostrazione dell'ineguaglianza ricorsiva**
+**Proposizione 4.15**
 
-Dalla proprietà di Lipschitz-continuity della funzione ff e dall'assunzione sui campioni del gradiente, abbiamo:
+Sia $\{x^k\}$ la sequenza generata dall'algoritmo SGD con una sequenza di passi $\{\alpha_k\}$ tale che:
 
-E[f(xk+1)]≤E[f(xk)]−αkE[∥∇f(xk)∥2]+αk2LG22.E\left[f(x^{k+1})\right] \leq E\left[f(x^k)\right] - \alpha_k E\left[\|\nabla f(x^k)\|^2\right] + \frac{\alpha_k^2 L G^2}{2}.
-
-Applicando ricorsivamente questa disuguaglianza e osservando che E[f(x0)]=f(x0)E[f(x^0)] = f(x^0), otteniamo:
-
-E[f(xk+1)]−f(x0)≤−∑t=0kαtE[∥∇f(xt)∥2]+LG22∑t=0kαt2.E\left[f(x^{k+1})\right] - f(x^0) \leq - \sum_{t=0}^k \alpha_t E\left[\|\nabla f(x^t)\|^2\right] + \frac{L G^2}{2} \sum_{t=0}^k \alpha_t^2.
-
-Da cui si deduce:
-
-∑t=0kαtE[∥∇f(xt)∥2]≤f(x0)−E[f(xk+1)]+LG22∑t=0kαt2.\sum_{t=0}^k \alpha_t E\left[\|\nabla f(x^t)\|^2\right] \leq f(x^0) - E\left[f(x^{k+1})\right] + \frac{L G^2}{2} \sum_{t=0}^k \alpha_t^2.
-
-Poiché f(xk+1)≥f⋆f(x^{k+1}) \geq f^\star, il valore ottimale minimo, possiamo riscrivere:
-
-∑t=0kαtE[∥∇f(xt)∥2]≤f(x0)−f⋆+LG22∑t=0kαt2.\sum_{t=0}^k \alpha_t E\left[\|\nabla f(x^t)\|^2\right] \leq f(x^0) - f^\star + \frac{L G^2}{2} \sum_{t=0}^k \alpha_t^2.
-
----
-
-#### **Soluzione "output" zk+1z^{k+1}**
-
-Consideriamo ora il valore atteso del gradiente in zk+1z^{k+1}, definito come una combinazione pesata degli iterati {xt}\{x^t\}:
-
-E[∥∇f(zk+1)∥2]=∑t=0kE[∥∇f(xt)∥2]⋅P(zk+1=xt).E\left[\|\nabla f(z^{k+1})\|^2\right] = \sum_{t=0}^k E\left[\|\nabla f(x^t)\|^2\right] \cdot P(z^{k+1} = x^t).
-
-Dato che P(zk+1=xt)=αt∑i=0kαiP(z^{k+1} = x^t) = \frac{\alpha_t}{\sum_{i=0}^k \alpha_i}, otteniamo:
-
-E[∥∇f(zk+1)∥2]=1∑i=0kαi∑t=0kαtE[∥∇f(xt)∥2].E\left[\|\nabla f(z^{k+1})\|^2\right] = \frac{1}{\sum_{i=0}^k \alpha_i} \sum_{t=0}^k \alpha_t E\left[\|\nabla f(x^t)\|^2\right].
-
-Sostituendo il limite superiore derivato in precedenza, otteniamo:
-
-E[∥∇f(zk+1)∥2]≤1∑i=0kαi(f(x0)−f⋆+LG22∑t=0kαt2).E\left[\|\nabla f(z^{k+1})\|^2\right] \leq \frac{1}{\sum_{i=0}^k \alpha_i} \left(f(x^0) - f^\star + \frac{L G^2}{2} \sum_{t=0}^k \alpha_t^2\right).
-
----
-
-#### **Limite per k→∞k \to \infty**
-
-Poiché:
-
-1. ∑t=0∞αt=∞\sum_{t=0}^\infty \alpha_t = \infty,
-2. ∑t=0∞αt2<∞\sum_{t=0}^\infty \alpha_t^2 < \infty,
-
-prendendo il limite per k→∞k \to \infty, si ottiene:
-
-lim⁡k→∞E[∥∇f(zk+1)∥2]=0.\lim_{k \to \infty} E\left[\|\nabla f(z^{k+1})\|^2\right] = 0.
-
----
-
-#### **Proposizione 4.15**
-
-Sia {xk}\{x^k\} la sequenza generata dall'algoritmo SGD con una sequenza di passi {αk}\{\alpha_k\} tale che:
-
-- ∑k=0∞αk=∞\sum_{k=0}^\infty \alpha_k = \infty,
-- ∑k=0∞αk2<∞\sum_{k=0}^\infty \alpha_k^2 < \infty.
+- $\sum_{k=0}^\infty \alpha_k = \infty$,
+- $\sum_{k=0}^\infty \alpha_k^2 < \infty$.
 
 Allora:
-
-lim inf⁡k→∞∥∇f(xk)∥=0.\liminf_{k \to \infty} \|\nabla f(x^k)\| = 0.
-
-### Traduzione in Italiano
-
-#### **Risultato della Proposizione 4.15**
-
-La proposizione sopra afferma che, se la regola sui passi {αk}\{\alpha_k\} richiesta dalla Proposizione 4.14 è soddisfatta, possiamo ottenere un risultato di convergenza in stazionarietà, in valore atteso, per la sequenza {xk}\{x_k\}. Una regola sui passi che garantisce la convergenza in valore atteso ai punti stazionari per l'algoritmo SGD è, ad esempio:
-
-αk=α0k+1.\alpha_k = \frac{\alpha_0}{k + 1}.
-
-In pratica, i passi devono tendere a zero per garantire la convergenza, ma devono farlo "abbastanza lentamente" da consentire all'algoritmo di raggiungere un punto stazionario.
+	$\liminf_{k \to \infty} \|\nabla f(x^k)\| = 0$.
 
 ---
 
-#### **Complessità dell'algoritmo**
+La proposizione sopra afferma che, se la regola sui passi $\{\alpha_k\}$ richiesta dalla Proposizione 4.14 è soddisfatta, possiamo ottenere un risultato di convergenza in stazionarietà, in valore atteso, per la sequenza $\{x_k\}$. 
 
-La velocità di convergenza dell'SGD è inferiore rispetto a quella dei metodi a batch completo (GD), come osservabile nella **Tabella 3**. Il limite di complessità nel caso peggiore è peggiore per l'SGD rispetto al GD nei casi non convessi, convessi e fortemente convessi. In particolare, nel caso fortemente convesso, i tassi di convergenza sono **lineari** per GD contro **sottolineari** per SGD.
+Una regola sui passi che garantisce la convergenza in valore atteso ai punti stazionari per l'algoritmo SGD è, ad esempio: $\alpha_k = \frac{\alpha_0}{k + 1}$.
 
-|**Caso**|**GD**|**SGD**|
-|---|---|---|
-|Non convesso (ff)|O(1ϵ2)O\left(\frac{1}{\epsilon^2}\right)|O(1ϵ4)O\left(\frac{1}{\epsilon^4}\right)|
-|Convesso (ff)|O(1ϵ)O\left(\frac{1}{\epsilon}\right)|O(1ϵ2)O\left(\frac{1}{\epsilon^2}\right)|
-|Fortemente convesso (ff)|O(log⁡(1ϵ))O\left(\log\left(\frac{1}{\epsilon}\right)\right)|O(1ϵ)O\left(\frac{1}{\epsilon}\right)|
+In pratica, i passi ==devono tendere a zero per garantire la convergenza, ma devono farlo "abbastanza lentamente"== da consentire all'algoritmo di raggiungere un punto stazionario.
+
+Per la complessità dell'algoritmo, la **velocità di convergenza** dell'SGD è inferiore rispetto a quella dei metodi a batch completo (GD), come osservabile nella tabella successiva. Il limite di complessità nel caso peggiore è peggiore per l'SGD rispetto al GD nei casi non convessi, convessi e fortemente convessi. In particolare, nel caso fortemente convesso, i tassi di convergenza sono **lineari** per GD contro **sottolineari** per SGD.
+
+| **Caso**                | **GD**                                              | **SGD**                              |
+| ----------------------- | --------------------------------------------------- | ------------------------------------ |
+| Non convesso $f$        | $O\left(\frac{1}{\epsilon^2}\right)$                | $O\left(\frac{1}{\epsilon^4}\right)$ |
+| Convesso $f$            | $O\left(\frac{1}{\epsilon}\right)$                  | $O\left(\frac{1}{\epsilon^2}\right)$ |
+| Fortemente convesso $f$ | $O\left(\log\left(\frac{1}{\epsilon}\right)\right)$ | $O\left(\frac{1}{\epsilon}\right)$   |
 
 **Tabella 3:** Esempi di complessità per GD e SGD.
 
-I valori nella tabella aiutano a visualizzare i trend; tuttavia, ricordiamo che i limiti sono validi asintoticamente, ovvero sono più accurati per piccoli valori di ϵ\epsilon.
+I valori nella tabella aiutano a visualizzare i trend; tuttavia, ricordiamo che i limiti sono validi asintoticamente, ovvero sono più accurati per piccoli valori di $\epsilon$
 
 ---
 
-#### **Osservazioni sul comportamento**
+**Osservazioni sul comportamento**
+- L'accelerazione non migliora il tasso di convergenza per SGD.
+- Però a differenza del batch GD, l'SGD non nasconde nelle costanti della complessità temporale il numero N dei termini sommati nella funzione obiettivo (ovvero il costo per-iterazione è molto più piccolo di quello del batch GD).
 
-- **Accelerazione:** L'accelerazione non migliora il tasso di convergenza per SGD.
-- **Costo per iterazione:** A differenza del batch GD, l'SGD non nasconde nei costanti della complessità temporale il numero NN dei termini sommati nella funzione obiettivo. Il costo per iterazione è quindi molto più basso rispetto al GD batch.
+L'**efficienza del GD rispetto all'SGD** si osserva solo per valori molto piccoli di $\epsilon$, cioè ==quando è richiesta un'elevata accuratezza nella soluzione== (vedi Figura sotto). Questo è uno dei motivi principali per cui il **minibatch GD** ($1 < |B| = M \ll N$), rappresentando una via di mezzo tra batch e stochastic GD, è nella pratica l'approccio più efficace nelle applicazioni.
 
-L'**efficienza del GD rispetto all'SGD** si osserva solo per valori molto piccoli di ϵ\epsilon, cioè quando è richiesta un'elevata accuratezza nella soluzione (vedi Figura 9). Questo è uno dei motivi principali per cui il **minibatch GD** (1<∣B∣=M≪N1 < |B| = M \ll N), rappresentando una via di mezzo tra batch e stochastic GD, è nella pratica l'approccio più efficace nelle applicazioni.
+![[Pasted image 20250204183712.png]]
 
 ## 5. Algoritmi di ottimizzazione vincolata
 
@@ -2237,9 +2136,604 @@ dall'altro, il classificatore diventa **non lineare**, consentendo di costruire 
 
 Per riassumere, le due principali ragioni per considerare il **problema duale** della SVM sono:
 
-1. **Kernel trick:** consente di ottenere **classificatori non lineari** senza esplicitamente trasformare i dati in uno spazio di dimensione più elevata.
-2. **Forma del problema:** il problema rimane **quadratico convesso con vincoli lineari**, come nella formulazione primale, ma con vincoli più semplici (l'unico vincolo complesso è $\alpha^T y = 0$, il resto sono vincoli di box).
+2. **Kernel trick:** consente di ottenere **classificatori non lineari** senza esplicitamente trasformare i dati in uno spazio di dimensione più elevata.
+3. **Forma del problema:** il problema rimane **quadratico convesso con vincoli lineari**, come nella formulazione primale, ma con vincoli più semplici (l'unico vincolo complesso è $\alpha^T y = 0$, il resto sono vincoli di box).
 
 ### 7.2 Risolvendo il problema duale
 
 Prima di riprendere il problema duale riguardare tecniche di decomposizione (capitolo 4.7)
+
+In questa sezione mostriamo come il problema duale per l'addestramento di un SVM **non lineare** può essere risolto in modo efficiente. Richiamiamo prima la formulazione con alcune modifiche nella notazione per renderla più chiara dal punto di vista dell'ottimizzazione (28):
+
+	$\min \frac{1}{2} x^T Q x - e^T x$
+
+	$\text{t.c} \quad a^T x = 0, \quad 0 \leq x \leq C$
+
+dove $Q \in \mathbb{R}^{n \times n}$ è una matrice semi-definita positiva ($n$ è la dimensione del set di addestramento) e $e = (1, \dots, 1)^T$. Tipicamente, $n$ è grande e $Q$ è densa, fattori che contribuiscono alla difficoltà del problema. Un'ulteriore fonte di complessità è il vincolo lineare $a^T x = 0$. I vincoli box sono invece più facili da trattare, poiché sono **separabili per componente.**
+
+Questo problema è risolto in modo efficiente attraverso una strategia di decomposizione: a ogni iterazione 
+viene selezionato un **working set** $W \subset \{1, \dots, n\}$, con complemento $\overline{W} = \{1, \dots, n\} \setminus W$.
+
+Il sottoproblema risultante (29) è quindi:
+
+	$\min_{x_W} f (x_W , x_{\overline{W}^k}) = \frac{1}{2} x_W^T Q_{W W} x_W - (e_W - Q_{W \overline{W}} x_{\overline{W}^k})^T x_W$
+
+	$\text{t.c.} \quad a_W^T x_W = -a_{\overline{W}}^T x_{\overline{W}^k}, \quad 0 \leq x_W \leq C$
+
+la cui soluzione è $x_W^\star$. Di conseguenza, le variabili vengono aggiornate come segue:
+
+	$x_i^{k+1} = \begin{cases} x_i^\star, & \text{se } i \in W, \\ x_i^k, & \text{se } i \notin W\end{cases}$
+
+A questo punto sorgono due domande.
+La prima riguarda la cardinalità minima di $W$: deve valere $|W| \geq 2$. Se fosse $W = \{i\}$, allora si avrebbe sempre $x^{k+1} = x^k$, poiché entrambi soddisfano il vincolo $a_W^T x_W = -a_{W^c}^T x_W^k$. (In particolare se prendessimo la cardinalità pari a 1, avremmo un valore sempre costante come soluzione che non ci permette alcuna condizione di discesa)
+
+Gli **algoritmi di decomposizione** si classificano in base alla cardinalità del working set:
+- Se $|W| = 2$, si parla di **Sequential Minimal Optimization (SMO)**, che non richiede l'uso di un solutore per il sottoproblema.
+- Se $|W| > 2$, l'algoritmo necessita di un solutore per trovare la soluzione di (29).
+
+La seconda questione riguarda la selezione di $W$, che approfondiremo nella prossima sezione.
+#### 7.2.1 Sequential Minimal Optimization (SMO)
+
+Nel caso $|W| = 2$, il sottoproblema (29) diventa:
+
+	$\min_{x_i, x_j} \frac{1}{2}\begin{bmatrix} x_i \\ x_j \end{bmatrix}^T\begin{bmatrix} q_{ii} & q_{ij} \\ q_{ij} & q_{jj} \end{bmatrix}\begin{bmatrix} x_i \\ x_j \end{bmatrix}- x_i -x_j + p_{\overline{W}^T} \begin{bmatrix} x_i \\ x_j \end{bmatrix}$
+
+	$\text{t.c.} \quad a_i x_i + a_j x_j = b, \quad 0 \leq x_i, x_j \leq C$
+
+Si tratta di un problema di programmazione **quadratica convessa in due variabili**, la cui soluzione può essere calcolata analiticamente.  
+Il principale vantaggio degli **algoritmi SMO** è proprio quello di non dover impiegare alcun solutore.
+
+Ora ci concentriamo sulla strategia di selezione delle variabili nel sottoproblema. Vogliamo ottenere un aggiornamento della forma:
+
+	$x^{k+1} = (x_1^k, \dots, x_i^{k+1}, \dots, x_j^{k+1}, \dots, x_n^k)$
+
+tale che sia **fattibile** e soddisfi: $f(x^{k+1}) < f(x^k)$
+
+Per raggiungere questi obiettivi, dobbiamo identificare, a ogni passo, una direzione di discesa ammissibile ==che abbia esattamente due componenti non nulle==.
+
+---
+
+**Proposizione 7.2**
+L'insieme delle direzioni ammissibili per il Problema (28) nel punto $\bar{x}$ è dato da:
+	$D(\bar{x}) = \{ d \in \mathbb{R}^n \mid a^T d = 0, \ d_i \geq 0 \ \forall i \in L(\bar{x}), \ d_i \leq 0 \ \forall i \in U(\bar{x}) \}$
+
+dove:
+
+	$L(\bar{x}) = \{ i \in \{1, \dots, n\} \mid \bar{x}_i = 0 \}$
+
+	$U(\bar{x}) = \{ i \in \{1, \dots, n\} \mid \bar{x}_i = C \}$
+
+---
+
+**Dimostrazione**.
+Indichiamo con $S$ l'insieme ammissibile:
+
+	$S = \{ x \in \mathbb{R}^n \mid a^T x = 0, \ 0 \leq x \leq C \}$
+
+Sia $\bar{x} \in S$ e sia $D(\bar{x})$ l'insieme delle direzioni ammissibili in $\bar{x}$; se $d \in D(\bar{x})$, allora deve valere(Per definizione di direzione ammissibile):
+
+	$\bar{x} + t d \in S, \quad \forall t \in [0, \bar{t}]$
+
+per $\bar{t}$ sufficientemente piccolo. Da ciò segue:
+
+	$a^T (\bar{x} + t d) = 0 \Rightarrow a^T \bar{x} + t a^T d = 0$
+
+da cui otteniamo (Guarda l'insieme ammissibile):	$a^T d = 0$ (31)
+
+Inoltre, deve valere: $0 \leq \bar{x} + t d \leq C$,
+
+il che implica:
+
+	$\begin{cases}d_i \leq 0 \text{ se } \bar{x}_i = C \quad(32) \\ d_i \geq 0 \text{ se } \bar{x}_i = 0\end{cases}$
+
+Combinando le condizioni precedenti otteniamo la tesi.
+
+---
+
+Stiamo cercando direzioni in $D(\bar{x})$ con due sole componenti non nulle tali che:
+
+	$d_{i,j}^T = (0, \dots, d_i, \dots, d_j, \dots, 0)$ (33)
+
+Poiché $a^T d_{i,j} = 0$, abbiamo: $a_i d_i + a_j d_j = 0$.
+
+Possiamo quindi scegliere: $d_i = \frac{1}{a_i}, \quad d_j = -\frac{1}{a_j}$ (34)
+
+Se $i \in L(\bar{x})$, cioè $\bar{x}_i = 0$, allora $d_i \geq 0$, quindi possiamo considerare solo variabili con $a_i > 0$.  
+Viceversa, se $i \in U(\bar{x})$, allora $d_i \leq 0$ e possiamo considerare l'$i$-esima componente solo se $a_i < 0$.
+
+Analogamente, se $j \in L(\bar{x})$ si deve avere $a_j < 0$, mentre se $j \in U(\bar{x})$ deve valere $a_j > 0$.  
+
+| Indice $i, j$    | $i \in L(\bar{x})$ | $i \in U(\bar{x})$ | $j \in L(\bar{x})$ | $j \in U(\bar{x})$ |
+| ---------------- | ------------------ | ------------------ | ------------------ | ------------------ |
+| Valore variabile | $\bar{x}_i = 0$    | $\bar{x}_i = C$    | $\bar{x}_j = 0$    | $\bar{x}_j = C$    |
+| Direzione amm.   | $d_i \geq 0$       | $d_i \leq 0$       | $d_j \geq 0$       | $d_j \leq 0$       |
+| Coeff. vincolo   | $a_i > 0$          | $a_i < 0$          | $a_j < 0$          | $a_j > 0$          |
+
+Osserviamo che se $0 < \bar{x}_i < C$ non vi è alcun vincolo sul segno di $a_i$, e lo stesso vale per $a_j$.  
+Possiamo quindi suddividere gli insiemi $L$ e $U$ come segue:
+
+	$L(\bar{x}) = L^+ (\bar{x}) \cup L^- (\bar{x}), \quad U(\bar{x}) = U^+ (\bar{x}) \cup U^- (\bar{x})$,
+
+dove:
+
+	$L^- (\bar{x}) = \{ h \in L(\bar{x}) \mid a_h < 0 \}, \quad L^+ (\bar{x}) = \{ h \in L(\bar{x}) \mid a_h > 0 \}$
+
+	$U^- (\bar{x}) = \{ h \in U(\bar{x}) \mid a_h < 0 \}, \quad U^+ (\bar{x}) = \{ h \in U(\bar{x}) \mid a_h > 0 \}.$
+
+Infine, definiamo gli insiemi:
+
+	$R(\bar{x}) = L^+ (\bar{x}) \cup U^- (\bar{x}) \cup \{ i \mid 0 < \bar{x}_i < C \}$ (direzioni pos)
+
+	$S(\bar{x}) = L^- (\bar{x}) \cup U^+ (\bar{x}) \cup \{ i \mid 0 < \bar{x}_i < C \}$ (direzioni neg)
+
+---
+
+**Proposizione 7.3**
+La direzione $d_{i,j}$ definita come in (33)-(34) è ammissibile in $\bar{x}$ per il Problema (28) se e solo se $i \in R(\bar{x})$ e $j \in S(\bar{x})$.
+
+**Dimostrazione**
+Sia $d_{i,j}$ una direzione ammissibile e supponiamo per assurdo che $j \notin S(\bar{x})$. Allora si ha che $j \in L^+(\bar{x})$ oppure $j \in U^-(\bar{x})$. Tuttavia, nel primo caso:
+
+	$d_j = -\frac{1}{a_j} < 0$
+
+mentre nel secondo caso:
+
+	$d_j = -\frac{1}{a_j} > 0$
+
+Entrambi i casi violano **l’ammissibilità** della direzione $d_{i,j}$.  
+Un ragionamento analogo vale per $i \notin R(\bar{x})$, il che completa la dimostrazione.
+
+D'altra parte, se $i \in R(\bar{x})$ e $j \in S(\bar{x})$, supponiamo in particolare $i \in U^-(\bar{x})$ e $j \in U^+(\bar{x})$.  
+Allora, vale la relazione:
+
+	$a^T d_{i,j} = a_i \frac{1}{a_i} - a_j \frac{1}{a_j} = 0$
+
+Inoltre, poiché $i \in U^-(\bar{x})$, segue che $a_i < 0$ e quindi:
+
+	$d_i = \frac{1}{a_i} < 0$
+
+Analogamente, $j \in U^+(\bar{x})$ implica $a_j > 0$ e quindi:
+
+	$d_j = -\frac{1}{a_j} < 0$
+
+Questo conclude la dimostrazione.
+
+---
+
+**Proposizione 7.4**
+La direzione $d_{i,j}$ definita come in (33)-(34) è una direzione di discesa per il Problema (28) se e solo se:
+
+	$\frac{\nabla_j f (\bar{x})}{a_j} < \frac{\nabla_i f (\bar{x})}{a_i}$
+
+**Dimostrazione**
+Poiché $f$ è una funzione quadratica convessa, l==a direzione $d$ è una direzione di discesa in $\bar{x}$ se e solo se:==
+
+	$\nabla f (\bar{x})^T d_{i,j} < 0$
+
+Esplicitando il prodotto scalare otteniamo:
+
+$\frac{1}{a_i} \nabla_i f (\bar{x}) - \frac{1}{a_j} \nabla_j f (\bar{x}) < 0$
+
+da cui segue la condizione: $\frac{\nabla_j f (\bar{x})}{a_j} < \frac{\nabla_i f (\bar{x})}{a_i}$
+
+---
+##### **Algoritmo 6: Sequential Minimal Optimization (SMO)**
+Di seguito riportiamo il procedimento generale dell’algoritmo SMO.
+
+---
+
+4. **Input**: $Q$, $a$ (vettore dei coefficienti), $C$  
+5. $x^0 = 0$;  
+6. $k = 0$;  
+7. $\nabla f (x^0) = -e$.
+8. **Ciclo fino al soddisfacimento del criterio di arresto**:
+   - Selezionare $i \in R(x^k)$,  $j \in S(x^k)$ tali che:
+		 $\frac{\nabla_j f (x^k)}{a_j} < \frac{\nabla_i f (x^k)}{a_i}$
+
+   - Definire il working set: $W = \{i, j\}$.
+
+   - Risolvere analiticamente il problema:
+     $\min_{x_W} f (x_W, x^k_{\overline{W}}) \quad \text{s.t.} \quad a_W^T x_W = -a_{\overline{W}}^T x^k_{\overline{W}}, \quad 0 \leq x_W \leq C$
+
+   - Sia $x^*_W$ la soluzione trovata al passo precedente.
+	   - Aggiornare le variabili:
+	     $x^{k+1}_h = \begin{cases} x^*_j & \text{se } h = j, \\ x^*_i & \text{se } h = i, \\x^k_h & \text{altrimenti}     \end{cases}$
+
+   - Aggiornare il gradiente:
+	$\nabla f (x^{k+1}) = \nabla f (x^k) + Q_i (x^{k+1}_i - x^k_i) + Q_j (x^{k+1}_j - x^k_j)$
+   - Incrementare $k$
+
+9. **Output**:  Restituire $x^k$
+
+---
+
+La selezione degli indici $i, j$ garantisce che $x^{k+1}$ rimanga ammissibile e che $f(x)$ diminuisca. L'aggiornamento del gradiente segue la formula:
+
+  $\nabla f (x^{k+1}) = Q x^{k+1} - e = Q (x^{k+1} - x^k) + Q x^k - e$
+
+e, poiché $Q x^{k+1}$ e $Q x^k$ differiscono solo nelle componenti $i$ e $j$, possiamo scrivere:
+
+ $\nabla f (x^{k+1}) = \nabla f (x^k) + Q_i (x^{k+1}_i - x^k_i) + Q_j (x^{k+1}_j - x^k_j)$
+
+Questo permette di aggiornare il gradiente ==usando solo due colonne della matrice== $Q$, con un notevole risparmio computazionale. Poiché $x^0 = 0$, si ha $\nabla f (x^0) = -e$, eliminando la necessità di calcolare il gradiente iniziale. La matrice $Q$ non è quindi mai necessaria interamente per il calcolo del gradiente, un vantaggio in termini in termini di I/O.
+Ammissibilità e discesa stretta sono sufficienti a garantire convergenza globale.
+#### 7.2.2 Proprietà di Convergenza di SMO con Regola di Selezione del Primo Ordine
+
+La scelta del working set $W = \{i, j\}$ è la chiave per ottenere proprietà di convergenza per SMO.
+
+---
+
+**Proposizione 7.5**
+Un punto $x^\star$ è un minimizzatore globale per il problema (28) se e solo se:
+
+	$\max_{h \in R(x^\star)} \left( -\frac{\nabla_h f (x^\star)}{a_h} \right) \leq \min_{h \in S(x^\star)} \left( -\frac{\nabla_h f (x^\star)}{a_h} \right)$ (36)
+
+**Dimostrazione**
+Poiché il problema (28) è convesso con vincoli lineari, le condizioni di ottimalità KKT sono necessarie e sufficienti:
+
+$\nabla_i L(x, \lambda, \xi, \hat{\xi}) = \nabla_i f (x) + \lambda a_i - \xi_i + \hat{\xi}_i = 0, \quad \forall i = 1, \dots, n$
+
+	$\xi_i x_i = 0, \quad \hat{\xi}_i (x_i - C) = 0, \quad \xi, \hat{\xi} \geq 0, \quad \forall i = 1, \dots, n$
+
+Pertanto, per $x^\star, \lambda^\star, \xi^\star, \hat{\xi}^\star$ ottimali, abbiamo:
+
+	$\nabla_i f(x^*)+\lambda^*a_i \begin{cases}\geq 0, & \text{se } i \in L(x^\star), \\\leq 0, & \text{se } i \in U(x^\star), \\= 0, & \text{se } 0 < x^\star_i < C.\end{cases}$
+
+e quindi:
+
+	$\frac{\nabla_i f(x^*)}{a_i} +\lambda^*\begin{cases}\geq 0, & \text{se } i \in L^+(x^\star) \cup U^-(x^\star) , \\\leq 0, & \text{se } i \in L^-(x^\star) \cup U^+(x^\star), \\= 0, & \text{altrimenti} \end{cases}$
+
+Segue che:
+
+	$\begin{cases}\lambda^\star \geq -\frac{\nabla_i f (x^\star)}{a_i}, & \forall i \in L^+ (x^\star) \cup U^- (x^\star)\\ \lambda^\star \leq -\frac{\nabla_i f (x^\star)}{a_i}, & \forall i \in L^- (x^\star) \cup U^+ (x^\star),  \\\lambda^\star = -\frac{\nabla_i f (x^\star)}{a_i}, & \forall i : 0 < x^\star_i < C.\end{cases}$
+
+
+Ricordando la definizione di:
+
+	$R(x^\star) = L^+ (x^\star) \cup U^- (x^\star) \cup \{i | 0 < x^\star_i < C\}$
+	
+	$S(x^\star) = L^- (x^\star) \cup U^+ (x^\star) \cup \{i | 0 < x^\star_i < C\}$
+
+otteniamo la disuguaglianza (36), completando la dimostrazione.
+
+---
+
+**Corollario 7.6**
+
+Sia $x^k$ la soluzione attuale (ammissibile) e supponiamo che non sia ottimale.  
+Allora esistono $i \in R(x^k)$ e $j \in S(x^k)$ tali che:
+
+	$-\frac{\nabla_j f (x^k)}{a_j} > -\frac{\nabla_i f (x^k)}{a_i}$
+
+**Dimostrazione**
+Questo corollario è una conseguenza diretta della Proposizione 7.5.
+
+---
+
+**Definizione 7.1**
+La **coppia più violante** (_most violating pair_) alla soluzione ammissibile e non ottimale $x^k$ del problema (28) è la coppia di indici $(i^\star, j^\star)$ definita come:
+
+	$i^\star \in \arg \max_{h \in R(x^k)} \left( -\frac{\nabla_h f (x^k)}{a_h} \right), \quad j^\star \in \arg \min_{h \in S(x^k)} \left( -\frac{\nabla_h f (x^k)}{a_h} \right)$
+
+---
+
+Nel metodo SMO, possiamo selezionare la **Most Violating Pair**, ovvero la coppia di indici che viola maggiormente la condizione di ottimalità (36).
+
+Questa strategia porta all'algoritmo **SVMlight** (Algoritmo 7), un algoritmo di decomposizione basato su SMO (Sequential Minimal Optimization) con proprietà di convergenza, storicamente impiegato nelle librerie software per la risoluzione del problema di addestramento degli SVM non lineari.
+
+---
+
+ **Algoritmo 7: SVMlight**
+```plaintext
+1  Input: Q, a, C.
+2  x^0 = 0;
+3  k = 0;
+4  ∇f (x^0 ) = −e;
+5  finchè criterio di stop non soddisfato fai
+6      identifica la most violating pair (i⋆ , j⋆);
+7      W = {i⋆ , j⋆};
+8      risolvi analytically
+		min f (xW , xkW )
+		- s.t. aTW xW = −aTW xkW , 0 ≤ xW ≤ C;
+9      sia x⋆W la solutione trovata allo step precedente;
+10     imposta:
+11         xk+1_h = x⋆h if h ∈ W,
+12         xk+1_h = xkh otherwise;
+
+13     ∇f (xk+1 ) = ∇f (xk ) + Qi⋆ (xk+1_i⋆ − xki⋆ ) 
+			+ Qj⋆ (xk+1_j⋆ − xkj⋆ );
+14     k = k + 1;
+15  Output: xk.
+````
+
+---
+
+**Proposizione 7.7**
+
+La sequenza $\{x^k\}$ generata dall'algoritmo **SVMlight** ha punti limite, ognuno dei quali è una soluzione del problema (28).
+
+---
+
+ Discutiamo infine un possibile **Criterio di Arresto**. La condizione di ottimalità è data dalla disuguaglianza:
+
+	$\max_{h \in R(x)} \left( -\frac{\nabla_h f (x)}{a_h} \right) \leq \min_{h \in S(x)} \left( -\frac{\nabla_h f (x)}{a_h} \right).$
+
+Possiamo definire due quantità:
+
+	$m(x) = \max_{h \in R(x)} \left( -\frac{\nabla_h f (x)}{a_h} \right),M(x) = \min_{h \in S(x)} \left( -\frac{\nabla_h f (x)}{a_h} \right)$
+
+Dalla **Proposizione 7.5**, sappiamo che $x^\star$ è una soluzione ottimale se e solo se:	$m(x^\star) \leq M(x^\star)$
+Dunque la seguente proposizione ci può dare un idea sul possibile criterio di arresto.
+
+---
+
+**Proposizione 7.8**
+
+Siano m(x) e M(x) definiti come in (38). Allora, per ogni $\epsilon > 0$, l'algoritmo **SVMlight** produce una soluzione $x^k$ tale che:
+
+	$m(x^k) \leq M(x^k) + \epsilon$
+
+entro un numero finito di iterazioni.
+
+La dimostrazione di questa proprietà richiede un ragionamento complesso, principalmente a causa della discontinuità delle funzioni m(x) e M(x).
+
+#### 7.2.3 Working Set Selection usando informazioni del secondo ordine
+
+Non fatte quindi non le studio :D
+
+### 7.3 Algoritmi per SVM lineari
+
+Uguale a 7.2.3 :D
+
+## 8 Ottimizzazioni su larga scala per Deep Models
+
+Prima leggere capitolo 4.8
+
+Uno dei problemi di ottimizzazione più rilevanti oggi è l'**addestramento delle reti neurali artificiali (ANNs)**. Le ANNs rappresentano un potente modello di **apprendimento automatico** (machine learning), utilizzato con risultati impressionanti in numerose applicazioni.
+
+L'**ottimizzazione del rischio empirico** di una rete con pesi $w \in \mathbb{R}^n$, dato un dataset $(X, Y)$ di $N$ campioni, assume la forma del problema (21), ma presenta diverse caratteristiche peculiari rispetto ai classici problemi di ottimizzazione non vincolata. In particolare:
+
+1. **Obiettivo dell'ottimizzazione e generalizzazione**  
+   Come in altri problemi di machine learning, non si cerca **realmente** di minimizzare il **rischio empirico** (che è solo una funzione obiettivo surrogata), ma piuttosto di trovare un modello **efficace in termini di generalizzazione**.  
+   Il problema di addestramento, altamente **non convesso**, presenta numerosi **punti stazionari subottimali**, molti dei quali con un valore di perdita molto vicino all’ottimo globale. Tuttavia, la **prestazione fuori campione** di queste soluzioni può variare drasticamente.  
+   **Non ha quindi senso cercare l’ottimo globale**, ma piuttosto individuare soluzioni locali che garantiscano una buona generalizzazione, anche se raggiunte con solver a **bassa precisione**.
+
+2. **Efficienza del calcolo del gradiente tramite backpropagation**  
+   Grazie all’**algoritmo di backpropagation**, i **gradienti della funzione di perdita** $\nabla L(w)$  possono essere calcolati in modo **estremamente efficiente**.  
+   Il **costo computazionale** del calcolo dei gradienti è **soltanto il doppio** di quello della valutazione della funzione di perdita stessa.  
+   Maggiori dettagli su backpropagation e differenziazione automatica sono riportati nella **Sezione 8.2**.
+
+3. **Costo computazionale elevato della valutazione della funzione obiettivo**  
+   Il calcolo del valore di **$L(w)$** è **computazionalmente oneroso**, poiché richiede l'uso dell'intero dataset per determinare tutti gli elementi della somma che definisce la funzione.
+
+L’**ottimizzazione stocastica**, e in particolare il **SGD (Stochastic Gradient Descent)**, è particolarmente adatta per l’addestramento delle ANNs per diversi motivi, che riassumiamo di seguito:
+
+1. **I dati sono spesso ridondanti**, quindi usare **tutte** le informazioni disponibili ad ogni iterazione risulta **inefficiente**.
+
+2. L'esperienza computazionale accumulata dalla comunità del **machine learning** dimostra che, se si seleziona correttamente un **passo $\alpha$**, i metodi **stocastici** sono **molto più veloci** di quelli batch, **soprattutto nelle fasi iniziali** del processo di ottimizzazione.
+
+3. **Il tasso di convergenza** di **SGD** verso una soluzione **$\epsilon$-ottimale** è **più lento** rispetto a quello del metodo **Gradient Descent** batch (cfr. **Tabella 3** in cap 4.8), ma **non dipende** dalla **dimensione del dataset di training**, che è solitamente **molto grande** nelle applicazioni pratiche.  
+   Questo implica che il **costo asintotico inferiore** di **GD** rispetto a **SGD** diventa evidente **solo per valori molto bassi di $\epsilon$**.  
+   Inoltre, recenti studi hanno mostrato che, in molti problemi di **deep learning**, la funzione di perdita soddisfa due proprietà fondamentali:
+   - **Proprietà di interpolazione**:  
+     Un **ottimizzatore globale** $w^* \in \arg\min_w L(w)$ della funzione di perdita totale è anche ottimale per **ciascun termine individuale** nella somma, ovvero:  
+		 $w^* \in \arg\min_w \ell_i(w) \quad \forall i = 1, \dots, N$
+     Questo significa che il modello è **sufficientemente espressivo** da poter **adattarsi perfettamente** a tutti i dati nel dataset.
+
+   - **Condizione di Polyak-Łojasiewicz (PL-condition)**:  
+     Se la funzione obiettivo soddisfa la seguente disuguaglianza  
+		 $L(w) - L^* \leq \frac{1}{2\mu} \|\nabla L(w)\|^2 \quad \forall w \in \mathbb{R}^n$
+     allora **ogni punto stazionario è un ottimizzatore globale** del problema.  
+     **Sotto queste due ipotesi, è possibile dimostrare che SGD possiede un tasso di convergenza lineare, esattamente come il batch Gradient Descent.**
+
+4. **SGD evita i minimi locali "stretti"** (**sharp minima**) grazie alla natura **stocastica** dei suoi passi di discesa.  
+   - I **minimi stretti** si trovano in **valli molto profonde** con una **curvatura molto alta**, rendendo il modello molto sensibile a piccoli cambiamenti nei dati di input.
+   - **SGD**, a causa della sua natura rumorosa, tende a **sfuggire** da questi minimi stretti e a trovare invece **minimi più "piatti"** (**flat minimizers**), che generalizzano meglio ai dati non visti. Questo effetto comporta **un'operazione di regolarizzazione intrinseca**, migliorando la capacità del modello di generalizzare. **(Figura 15 fornisce un’intuizione visiva di questo comportamento).**
+
+![[Pasted image 20250204223801.png]]
+Figura 15: Facendo un confronto fra le due loss, i punti di minimo più stretti sono molto più sensibili rispetto a punti di minimo più piatti.
+
+Tuttavia, i metodi **batch** possiedono alcuni **vantaggi intrinseci**, in particolare:
+
+- **Uso completo delle informazioni sul gradiente**  
+  Poiché ogni iterazione utilizza l'intero gradiente, i metodi batch permettono di sfruttare appieno numerose **tecniche deterministiche di ottimizzazione** basate sul gradiente.
+
+- **Parallelizzazione**  
+  A differenza di **SGD**, i metodi batch possono sfruttare il parallelismo in modo più efficace, dato che la computazione principale riguarda **la valutazione della funzione obiettivo e dei gradienti**, operazioni facilmente parallelizzabili.
+
+- **Migliore performance sul lungo termine**  
+  Se consideriamo **un numero elevato di epoche**, il metodo batch **supera** SGD in termini di **errore di training**, garantendo una soluzione più accurata.
+
+Queste osservazioni, sia **teoriche** che **empiriche**, suggeriscono che il metodo **minibatch SGD** (con **1 < M ≪ N**) rappresenta **un buon compromesso** tra le caratteristiche positive dei metodi **stocastici** e quelli **batch**.
+
+---
+
+### 8.1 Miglioramenti a SGD per l’Addestramento delle Reti Neurali Profonde
+
+Negli ultimi anni, diverse modifiche all'algoritmo **SGD** si sono dimostrate **praticamente efficaci** per migliorare l'ottimizzazione delle **reti neurali profonde**.
+
+#### 8.1.1 Accelerazione
+
+I termini di **Momentum** o **Nesterov Acceleration**, discussi in **Sezione 4.4**, sono particolarmente efficaci nell'ottimizzazione **stocastica** delle reti neurali per due motivi principali:
+
+1. **Filtraggio delle oscillazioni casuali**  
+   - Il **momentum** accumula informazioni dai passi precedenti, attenuando le forti **oscillazioni stocastiche** delle direzioni di discesa.
+   - Ciò riduce il tipico **comportamento a zigzag** di **SGD**, rendendo l'ottimizzazione più **stabile** ed efficace.
+
+2. **Computazione efficiente**  
+   - Il calcolo della funzione obiettivo e del suo gradiente è **computazionalmente costoso** nelle reti profonde.
+   - Tuttavia, i termini $(x^k - x^{k-1})$ necessari per l'accelerazione sono **facilmente ottenibili**, permettendo di **migliorare l'efficacia di ogni iterazione senza costi aggiuntivi significativi**.
+
+---
+
+#### 8.1.2 Adattamento del passo di apprendimento (Learning Rate)
+
+Oltre a migliorare la **direzione di discesa**, un'altra strategia vincente per l'ottimizzazione **stocastica** è **adattare il learning rate** in base al **progresso dell’addestramento**.  
+Poiché i gradienti **si comportano in modo diverso a seconda del layer**, ogni variabile del modello può avere un **passo di apprendimento individuale**.
+
+Negli ultimi anni, sono stati proposti diversi metodi per aggiornare il learning rate in modo **adattivo**.  
+Di seguito analizziamo le tecniche più rilevanti, utilizzando una **notazione batch** per semplicità, sebbene si tratti di **metodi stocastici**.
+
+---
+##### **AdaGrad (Adaptive Gradient)**
+
+Uno dei primi algoritmi a introdurre un **learning rate adattivo** è **AdaGrad**.  
+L'idea alla base di **AdaGrad** è **accumulare l’informazione sui gradienti passati**, in modo da **scalare** il passo di aggiornamento in base alla geometria della funzione obiettivo.
+
+Il metodo prevede di memorizzare la **somma cumulativa** dei **quadrati** delle derivate direzionali:
+
+	$s^{k+1}_i = s^k_i + (\nabla_i f(x^k))^2$
+
+Questa quantità viene utilizzata per **normalizzare il gradiente**, ottenendo il seguente **aggiornamento**:
+
+	$x^{k+1} = x^k - \alpha (\text{diag}(s^{k+1}) + \epsilon I)^{-1/2} \nabla f(x^k)$
+
+Dove:
+
+- $\epsilon$ è un piccolo termine di **smorzamento** per evitare divisioni per zero.
+- L'aggiornamento può essere riscritto in **forma componente-wise** più intuitiva:
+
+	$x^{k+1}_i = x^k_i - \frac{\alpha}{\sqrt{s^{k+1}_i} + \epsilon} \nabla_i f(x^k)$
+
+**Caratteristiche principali di AdaGrad**:
+- **Pro:**  
+  - Effettua passi **più grandi** per parametri con gradienti **piccoli**  
+  - Effettua passi **più piccoli** per parametri con gradienti **grandi**  
+  - Ideale per problemi **sparsi**, dove alcuni parametri aggiornano più lentamente di altri.  
+- **Contro:**  
+  - L'aggiornamento **accumula i gradienti quadrati**, causando un **decadimento eccessivo del learning rate**, che può portare a convergenza **troppo lenta**.
+
+Un aspetto critico di **AdaGrad** è che i componenti di $s^k$ **crescono continuamente** con le iterazioni. Sebbene la teoria dell'**SGD** suggerisca di **diminuire** il learning rate nel tempo (scalandolo con $O(1/k)$ ), in pratica il comportamento di **AdaGrad** è spesso **troppo aggressivo**. Per questo motivo, sono state proposte alcune **varianti** che hanno avuto un grande impatto nel campo del **deep learning**.
+
+---
+##### **RMSprop (Root Mean Square Propagation)**
+
+**RMSprop** è una variante di AdaGrad che cerca di risolverne le limitazioni, sostituendo la **somma cumulativa** con una **media esponenzialmente pesata** dei gradienti passati:
+
+	$s^{k+1}_i = \rho s^k_i + (1 - \rho)(\nabla_i f(x^k))^2$
+
+Dove:
+- $\rho$ determina il peso assegnato ai gradienti passati.
+- I parametri vengono aggiornati **esattamente come in AdaGrad**, utilizzando:
+
+	$x^{k+1} = x^k - \frac{\alpha}{\sqrt{s^{k+1}_i} + \epsilon} \nabla_i f(x^k)$
+
+**Vantaggi di RMSprop**:
+- I **gradienti più recenti** hanno un impatto maggiore sull'aggiornamento.
+- $s^k$ **non cresce all'infinito**, migliorando la **stabilità numerica** rispetto ad AdaGrad.
+
+---
+
+##### **AdaDelta**
+
+**AdaDelta** è un'altra variante di AdaGrad che cerca di **ridurre l'aggressività della riduzione del learning rate**.  
+Sebbene sviluppato **indipendentemente** da **RMSprop**, può essere considerato un'estensione di quest'ultimo.
+
+L'algoritmo introduce una **media esponenziale dei quadrati degli spostamenti** ($r^k$):
+
+	$r^{k+1} = \gamma r^k + (1 - \gamma)(x^k - x^{k-1})^2$
+
+**Regola di aggiornamento**:
+
+	$x^{k+1}_i = x^k_i - \frac{\sqrt{r^{k+1}_i} + \epsilon}{\sqrt{s^{k+1}_i} + \epsilon} \nabla_i f(x^k)$
+
+**Vantaggi di AdaDelta**:
+- **Elimina la necessità di scegliere manualmente** un learning rate ($\alpha$).
+- Evita la **riduzione eccessiva** del learning rate osservata in AdaGrad.
+
+---
+
+##### **Adam (Adaptive Moment Estimation)**
+
+L'**Adam** (**Adaptive Moment Estimation**) è oggi **l’algoritmo più utilizzato** per l'ottimizzazione delle reti neurali profonde.  
+Può essere visto come un'evoluzione di **RMSprop** e **AdaDelta**, combinando i **benefici del Momentum** con l'adattamento del learning rate.
+
+Adam mantiene due statistiche esponenzialmente pesate:
+1. **Media dei gradienti** (simile a Momentum):
+
+	$m^{k+1}_i = \beta_1 m^k_i + (1 - \beta_1) \nabla_i f(x^k)$
+
+2. **Varianza dei gradienti** (simile a RMSprop):
+
+    $v^{k+1}_i = \beta_2 v^k_i + (1 - \beta_2)(\nabla_i f(x^k))^2$
+
+Questi vettori sono inizializzati a zero che è molto importante per le iterazioni iniziali dove i tassi di decadimento sono piccoli:
+![[Pasted image 20250204231614.png]]
+
+L'algoritmo **Adam** presenta un bias iniziale dovuto alla modalità con cui vengono calcolate le stime dei momenti primo ($m^k$) e secondo ($v^k$).  
+Per correggere questo bias, si introducono le seguenti **stime corrette del bias**:
+
+	$\hat{m}^k = \frac{m^k}{1 - (\beta_1)^k}, \space \hat{v}^k = \frac{v^k}{1 - (\beta_2)^k}$
+
+Il nuovo aggiornamento delle variabili segue quindi la formula:
+
+	$x^{k+1}_i = x^k_i - \frac{\alpha \hat{m}^k_i}{\sqrt{\hat{v}^k_i} + \epsilon}$
+
+---
+
+Negli ultimi anni sono state proposte alcune **varianti** dell'algoritmo **Adam** per migliorarne stabilità ed efficienza:
+1. **AdaMax**  
+   - Proposto insieme ad Adam.  
+   - Sostituisce la stima del secondo momento con una **norma infinita stabilizzata**:
+   
+	$u^{k+1} = \max\{\beta_2 u^k, |\nabla f(x^k)|\}$
+  
+   - Questa modifica evita la necessità di correggere il bias iniziale e offre **migliore stabilità empirica**.
+
+2. **Nadam (Nesterov-accelerated Adam)**  
+   - Integra l’**accelerazione di Nesterov** nell’algoritmo Adam.  
+   - Mira a **migliorare la velocità di convergenza** nei problemi di ottimizzazione profonda.
+
+---
+
+### 8.2 Differenziazione Automatica e Algoritmo di Backpropagation
+
+Uno dei problemi fondamentali nell’**addestramento delle reti neurali** è il **calcolo dei gradienti della funzione di perdita**.  
+L'ottimizzazione di una rete neurale comporta la **somma di funzioni di milioni di variabili**, ciascuna ottenuta dalla **composizione di operazioni elementari**.
+
+**Problemi delle tecniche di derivazione numerica**:
+- **Costo computazionale elevato**: richiedono molte valutazioni della funzione per ottenere un'approssimazione del gradiente.
+- **Errori di approssimazione significativi**: la differenziazione numerica tramite differenze finite introduce errori significativi.
+
+**Alternative alla derivazione numerica**
+1. **Derivazione simbolica**  
+   - Utilizza strumenti software per manipolare espressioni matematiche ed estrarre le derivate.  
+   - Tuttavia, genera **formule enormi** e **calcoli eccessivamente costosi**.
+
+2. **Differenziazione Automatica (AD - Automatic Differentiation)**  
+   - Sfrutta **intelligentemente** la **regola della catena** per ottenere le derivate in modo **efficiente e preciso**:
+
+		$\frac{\partial f}{\partial x_j} = \sum_i \frac{\partial f}{\partial g_i} \frac{\partial g_i}{\partial x_j}$
+	
+   - Qualsiasi funzione matematica può essere decomposta in **operazioni elementari** (es: exp, log, sin, cos, etc.).  
+   - Applicando la regola della catena a ciascuna operazione, è possibile ottenere automaticamente le derivate **senza espandere simbolicamente l’intera funzione**.
+
+---
+
+Nel contesto del **deep learning**, l'algoritmo più utilizzato per l’AD è il **backpropagation**.  
+Tecnicamente, il backpropagation è **un'implementazione della differenziazione automatica in modalità inversa** (**reverse mode AD**).
+
+Il concetto chiave è:
+- **Propagazione avanti (forward pass):** calcola l'output della rete.
+- **Propagazione all'indietro (backward pass):** calcola i gradienti utilizzando la regola della catena.
+
+L’algoritmo di backpropagation consente il calcolo **efficiente dei gradienti** ed è il cuore di tutti i moderni algoritmi di addestramento delle **reti neurali profonde**.
+
+---
+
+**Esempio Semplice di Backpropagation**
+
+![[Pasted image 20250204232818.png]]
+
+![[Pasted image 20250204232851.png]]![[Pasted image 20250204232851 1.png]
+
+Prima, tutte le operazioni elementari vengono mappate in un Computation Graph (Figura 16a), che è una struttura che permette di collegare quantità che dipendono l'una dall'altra. 
+In questo modo, le quantità calcolate che saranno necessarie per calcolare altri termini possono essere memorizzate in memoria, evitando calcoli duplicati.
+
+Il calcolo effettivo procede prima alimentando gli input alla funzione e calcolando i prodotti 
+intermedi fino all'output della funzione; poi, il grafo viene attraversato all'indietro, 
+per calcolare tutte le derivate parziali. 
+Si deve notare che, per calcolare i gradienti, otteniamo come prodotto intermedio il valore della funzione; quindi, in un'iterazione di discesa del gradiente, possiamo ottenere il valore della funzione nel punto attuale, effettuando un passaggio in avanti attraverso il grafo di calcolo, e poi i gradienti, dopo un passaggio all'indietro attraverso il grafo.
+
+Come accennato in precedenza, alcuni termini appaiono più volte durante il calcolo; 
+per evitare calcoli duplicati, possiamo memorizzare questi valori per riutilizzarli quando necessario; ovviamente, non sarà difficile immaginare che nelle reti profonde e complesse i termini si ripetano in modo molto più massiccio rispetto al semplice esempio in questione.

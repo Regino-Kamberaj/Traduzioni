@@ -6,39 +6,17 @@
       {
         "id": "61ee8999e053ddbc",
         "type": "tabs",
-        "dimension": 47.95373665480427,
         "children": [
           {
             "id": "a5aa1dd8b3101fa4",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "Opt/Traduzione Pdf Optimization.md",
-                "mode": "source",
-                "source": false
+                "file": "Opt/Immagini Opt/Pasted image 20250204232851.png"
               },
-              "icon": "lucide-file",
-              "title": "Traduzione Pdf Optimization"
-            }
-          }
-        ]
-      },
-      {
-        "id": "9adcfc47c2c7e108",
-        "type": "tabs",
-        "dimension": 52.04626334519573,
-        "children": [
-          {
-            "id": "35ef509e79ccda67",
-            "type": "leaf",
-            "state": {
-              "type": "pdf",
-              "state": {
-                "file": "Opt/notes_2024_lapucci_R3.pdf"
-              },
-              "icon": "lucide-file-text",
-              "title": "notes_2024_lapucci_R3"
+              "icon": "lucide-image",
+              "title": "Pasted image 20250204232851"
             }
           }
         ]
@@ -182,25 +160,25 @@
   },
   "active": "a5aa1dd8b3101fa4",
   "lastOpenFiles": [
-    "Opt/notes_2024_lapucci_R3.pdf",
-    "Opt/Traduzione Pdf Optimization.md",
-    "Pasted image 20250203091825.png",
-    "Pasted image 20250203083017.png",
-    "Pasted image 20250202130901.png",
-    "Pasted image 20250202130559.png",
-    "Opt/Tabella di Marcia Optimization.md",
-    "Pasted image 20250201164501.png",
-    "Pasted image 20250201164438.png",
-    "Pasted image 20250201164411.png",
-    "Pasted image 20250201164334.png",
-    "Pasted image 20250201164143.png",
-    "Pasted image 20250201163933.png",
     "Senza nome 2.md",
+    "Opt/Immagini Opt/Pasted image 20250204232851.png",
+    "Senza nome 1.md",
+    "Senza nome.md",
+    "Pasted image 20250204232851 1.png",
+    "Opt/Immagini Opt/Pasted image 20250204232818.png",
+    "Pasted image 20250204232808.png",
+    "Opt/Immagini Opt/Pasted image 20250204231614.png",
+    "Opt/Immagini Opt/Pasted image 20250204223801.png",
+    "Opt/Immagini Opt/Pasted image 20250204183712.png",
+    "Pasted image 20250204222840.png",
+    "Pasted image 20250204222820.png",
+    "Opt/Immagini Opt/Pasted image 20250203091825.png",
+    "Opt/Traduzione Pdf Optimization.md",
+    "Opt/notes_2024_lapucci_R3.pdf",
+    "Opt/Tabella di Marcia Optimization.md",
     "appunti_studenti/notes_senoner_2024.pdf",
     "appunti_studenti/notes_palchetti_2023.pdf",
     "appunti_studenti",
-    "Senza nome 1.md",
-    "Senza nome.md",
     "Net Sec/README.md",
     "sync.sh",
     "Opt/Immagini Opt",
