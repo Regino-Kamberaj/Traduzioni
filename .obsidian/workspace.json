@@ -11,12 +11,32 @@
             "id": "a5aa1dd8b3101fa4",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "pdf",
               "state": {
-                "file": "Opt/Immagini Opt/Pasted image 20250204232851.png"
+                "file": "Swees/Slides/SWEES_introduction.pdf"
               },
-              "icon": "lucide-image",
-              "title": "Pasted image 20250204232851"
+              "icon": "lucide-file-text",
+              "title": "SWEES_introduction"
+            }
+          }
+        ]
+      },
+      {
+        "id": "37a30ab98ccbe121",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d124db1a36cfa4cc",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Swees/Swees - Traduzione slides.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Swees - Traduzione slides"
             }
           }
         ]
@@ -76,7 +96,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
+    "width": 361.501522064209,
     "collapsed": true
   },
   "right": {
@@ -93,6 +113,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Opt/Traduzione Pdf Optimization.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +123,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Riferimenti"
+              "title": "Riferimenti a Traduzione Pdf Optimization"
             }
           },
           {
@@ -125,7 +146,9 @@
               "type": "tag",
               "state": {
                 "sortOrder": "frequency",
-                "useHierarchy": true
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-tags",
               "title": "Etichette"
@@ -141,7 +164,8 @@
               "title": "Struttura"
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
@@ -158,21 +182,26 @@
       "command-palette:Apri riquadro comandi": false
     }
   },
-  "active": "a5aa1dd8b3101fa4",
+  "active": "d124db1a36cfa4cc",
   "lastOpenFiles": [
-    "Senza nome 2.md",
-    "Opt/Immagini Opt/Pasted image 20250204232851.png",
-    "Senza nome 1.md",
+    "Opt/Immagini Opt/Pasted image 20250210215505.png",
+    "Opt/Immagini Opt/Pasted image 20250209161303.png",
+    "Swees/Immagini Swees/Pasted image 20250307083400.png",
+    "Swees/Immagini Swees/Pasted image 20250307083253.png",
+    "Swees/Immagini Swees/Pasted image 20250307083209.png",
+    "Swees/Immagini Swees/Pasted image 20250307083055.png",
+    "Swees/Immagini Swees/Pasted image 20250307082543.png",
+    "Swees/Immagini Swees/Pasted image 20250307082401.png",
+    "Swees/Immagini Swees/Pasted image 20250306193027.png",
+    "Swees/Immagini Swees/Pasted image 20250306192729.png",
+    "Swees/Immagini Swees/Pasted image 20250306192543.png",
+    "Swees/Slides/SWEES_introduction.pdf",
+    "Swees/Slides/SWEES_advancedTopics.pdf",
+    "Swees/Swees - Traduzione slides.md",
     "Senza nome.md",
-    "Pasted image 20250204232851 1.png",
-    "Opt/Immagini Opt/Pasted image 20250204232818.png",
-    "Pasted image 20250204232808.png",
-    "Opt/Immagini Opt/Pasted image 20250204231614.png",
-    "Opt/Immagini Opt/Pasted image 20250204223801.png",
-    "Opt/Immagini Opt/Pasted image 20250204183712.png",
-    "Pasted image 20250204222840.png",
-    "Pasted image 20250204222820.png",
-    "Opt/Immagini Opt/Pasted image 20250203091825.png",
+    "Senza nome 3.md",
+    "Senza nome 2.md",
+    "Senza nome 1.md",
     "Opt/Traduzione Pdf Optimization.md",
     "Opt/notes_2024_lapucci_R3.pdf",
     "Opt/Tabella di Marcia Optimization.md",

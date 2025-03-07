@@ -63,7 +63,7 @@ Dipartimento di Ingegneria dell’Informazione
 
 In questa sezione riportiamo alcuni concetti preliminari, definizioni e proprietà che verranno usati ricorrentemente in queste note.
 
-**Notazione:**
+### Notazione:
 
 - Indichiamo con $e \in \mathbb{R}^n$ il vettore di tutti uno nello spazio euclideo $n$-dimensionale.
 - Con $e_i \in \mathbb{R}^n$ indichiamo l’$i$-esimo elemento della base canonica, ovvero il vettore con tutte le componenti a zero eccetto la $i$-esima pari a 1.
@@ -72,23 +72,123 @@ In questa sezione riportiamo alcuni concetti preliminari, definizioni e propriet
 - Denotiamo con $\mathcal{S}_n \subset \mathbb{R}^{n \times n}$ l’insieme delle matrici quadrate simmetriche di dimensione $n \times n$.
 - Data una matrice $A \in \mathcal{S}_n$ (di cui sappiamo che gli autovalori sono numeri reali), denotiamo con $\lambda_{\text{min}}(A)$ e $\lambda_{\text{max}}(A)$ rispettivamente il più piccolo e il più grande autovalore di $A$.
 
+### Matrice definita/semidefinita positiva
+
 **Definizione 1.1:** Una matrice $A \in \mathcal{S}_n$ è:
 
-- Semidefinita positiva, denotata $A \succeq 0$, se $x^T A x \geq 0$ per ogni $x \in \mathbb{R}^n$;
-- Definita positiva, denotata $A \succ 0$, se $x^T A x > 0$ per ogni $x \in \mathbb{R}^n, x \neq 0$.
+- *Semidefinita positiva*, denotata $A \succeq 0$, se $x^T A x \geq 0$ per ogni $x \in \mathbb{R}^n$;
+- *Definita positiva*, denotata $A \succ 0$, se $x^T A x > 0$ per ogni $x \in \mathbb{R}^n, x \neq 0$.
 
-**Proposizione 1.1:** Una matrice $A \in \mathcal{S}_n$ è semidefinita positiva se e solo se tutti gli autovalori di $A$ sono non negativi, cioè $\lambda_{\text{min}}(A) \geq 0$. Analogamente, $A$ è definita positiva se e solo se tutti gli autovalori di $A$ sono strettamente positivi, cioè $\lambda_{\text{min}}(A) > 0$.
+**Proposizione 1.1:** Una matrice $A \in \mathcal{S}_n$ è *semidefinita positiva* se e solo se:
+- Tutti gli autovalori di $A$ sono **non negativi**, cioè $\lambda_{\text{min}}(A) \geq 0$. 
+Analogamente, $A$ è *definita positiva* se e solo se:
+- Tutti gli autovalori di $A$ sono **strettamente positivi**, cioè $\lambda_{\text{min}}(A) > 0$.
 
 **Proposizione 1.2:** Data $A \in \mathcal{S}_n, A \succeq 0$, per ogni $x \in \mathbb{R}^n$ abbiamo:
 
 - $\lambda_{\text{min}}(A) |x|_2^2 \leq x^T A x \leq \lambda_{\text{max}}(A) |x|_2^2$;
 - $\lambda_{\text{min}}(A) |x| \leq |A x| \leq \lambda_{\text{max}}(A) |x|$.
 
-**Definizione 1.2:** Una funzione continua $f : \mathbb{R}^n \to \mathbb{R}$ si dice coerciva se $\lim_{k \to \infty} f(x_k) = +\infty$ per ogni sequenza ${x_k} \subseteq \mathbb{R}^n$ tale che $\lim_{k \to \infty} |x_k| = +\infty$.
+### Coercività della funzione
+
+**Definizione 1.2:** Una funzione continua $f : \mathbb{R}^n \to \mathbb{R}$ si dice coerciva se $\lim_{k \to \infty} f(x_k) = +\infty$ per ogni sequenza $\{x_k\} \subseteq \mathbb{R}^n$ tale che $\lim_{k \to \infty} \|x_k\| = +\infty$.
 
 **Proposizione 1.3:** Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione continua. Allora, $f$ è coerciva se e solo se tutti i suoi insiemi di livello sono compatti.
 
----
+### Riepilogo derivate 
+
+**Definizione 1.3. (Derivata Direzionale)** Sia $f : \mathbb{R}^n \to \mathbb{R}$. Diciamo che una funzione ha *derivata direzionale* $Df(x, d)$ in un punto $x \in \mathbb{R}^n$ lungo la direzione $d \in \mathbb{R}^n$ se:
+- il limite $\lim_{t \to 0^+} \frac{f(x + td) - f(x)}{t} = Df(x, d)$ **esiste ed è finito**.
+
+**Definizione 1.4. (Derivata Parziale)** Sia $f : \mathbb{R}^n \to \mathbb{R}$. Diciamo che una funzione ha *derivata parziale* $\frac{\partial f}{\partial x_j}(x)$ in un punto $x \in \mathbb{R}^n$ rispetto alla variabile $x_j$ se:
+- $f$ ha una derivata direzionale lungo $e_j$ e  $Df(x, e_j) = \frac{\partial f (x)}{\partial x_j}$
+
+**Definizione 1.5. (Gradiente)** Sia $f : \mathbb{R}^n \to \mathbb{R}$ e si supponga che $f$ ammetta in un punto $x$ la derivata parziale rispetto a ciascuna variabile $x_i$, con $i = 1, \dots, n$.
+- Definiamo il *gradiente* $\nabla f(x)$ di $f$ in $x$ come il vettore dato da:
+	$\nabla f(x) = \begin{pmatrix} \frac{\partial f (x)}{\partial x_1} \\ \vdots \\ \frac{\partial f (x)}{\partial x_n}\end{pmatrix}$
+
+**Definizione 1.6. (Funzione continuamente differenziabile)** Sia $f : \mathbb{R}^n \to \mathbb{R}$. Diciamo che $f$ è *continuamente differenziabile* su $\mathbb{R}^n$, e lo denotiamo con $f \in C^1(\mathbb{R}^n)$, se:
+- Il gradiente $\nabla f(x)$ **esiste** per ogni $x \in \mathbb{R}^n$
+- E la funzione $\nabla f : \mathbb{R}^n \to \mathbb{R}^n$ è continua su $\mathbb{R}^n$
+
+**Proposizione 1.4.** Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione continuamente differenziabile. Allora, per ogni $x \in \mathbb{R}^n$ e $d \in \mathbb{R}^n$, si ha:
+
+	$Df(x, d) = \nabla f(x)^T d$
+
+**Definizione 1.7. (Matrice Jacobiana)** Sia $F : \mathbb{R}^n \to \mathbb{R}^m$ una funzione vettoriale **continua**. Diciamo che $F$ è **continuamente differenziabile** se ogni componente $F_i : \mathbb{R}^n \to \mathbb{R}$ è **continuamente differenziabile** e definiamo la *matrice Jacobiana* $J_F : \mathbb{R}^n \to \mathbb{R}^{m \times n}$ come
+
+	$J_F(x) =\begin{pmatrix}\nabla F_1(x)^T \\\vdots \\\nabla F_m(x)^T\end{pmatrix}$
+
+**Definizione 1.8. (Matrice Hessiana)** Sia $f : \mathbb{R}^n \to \mathbb{R}$, con $f \in C^1(\mathbb{R}^n)$. 
+Supponiamo che, in un punto $x \in \mathbb{R}^n$, ogni componente $\nabla f(x)_i$ del gradiente **ammetta la derivata parziale** ==rispetto a ciascuna variabile== $x_j$, con $j = 1, \dots, n$.
+Definiamo la *matrice Hessiana* $\nabla^2 f(x)$ di $f$ in $x$ come la matrice (simmetrica) data dalle **derivate seconde** di $f$, ossia:
+
+	$\nabla^2 f(x) = \begin{pmatrix} \frac{\partial^2 f (x)}{\partial x_1^2} & \dots & \frac{\partial^2 f (x)}{\partial x_1 \partial x_n} \\ \vdots & \ddots & \vdots \\ \frac{\partial^2 f (x)}{\partial x_n \partial x_1} & \dots & \frac{\partial^2 f (x)}{\partial x_n^2} \end{pmatrix}$
+
+
+**Definizione 1.11.** Sia $f : \mathbb{R}^n \to \mathbb{R}$.
+Diciamo che $f$ è **due volte continuamente differenziabile** su $\mathbb{R}^n$, e lo denotiamo con $f \in C^2(\mathbb{R}^n)$, se:
+- La matrice Hessiana $\nabla^2 f(x)$ **esiste per ogni** $x \in \mathbb{R}^n$
+- La funzione $\nabla^2 f : \mathbb{R}^n \to \mathbb{R}^{n \times n}$ è **continua** su $\mathbb{R}^n$
+
+Si noti che l'Hessiano può essere visto come la matrice Jacobiana del gradiente $\nabla f(x)$, ossia:	$\nabla^2 f(x) = J_{\nabla f}(x)$
+
+**Proposizione 1.5.** Sia $f (x) = \frac{1}{2} x^T Qx + c^T x$, con $Q \in S^n$ e $x \in \mathbb{R}^n$. Allora si ha:
+- $\nabla f (x) = Qx + c$;
+- $\nabla^2 f (x) = Q$
+##### Lipschitz-continuità e L-smoothness
+
+**Definizione 1.9.** Sia $F : \mathbb{R}^n \to \mathbb{R}^m$. Diciamo che $f$ è *Lipschitz-continua* con costante $L$ se:
+- Per ogni $x, y \in \mathbb{R}^n$, si ha: $\|F(x) - F(y)\| \leq L\|x - y\|$
+
+**Definizione 1.10.** Sia $f : \mathbb{R}^n \to \mathbb{R}$, con $f \in C^1(\mathbb{R}^n)$. Diciamo che $f$ è *L-liscia* se:
+- Il gradiente $\nabla f$ è una funzione **Lipschitz-continua** con costante di Lipschitz $L$, ossia se
+	$\|\nabla f(x) - \nabla f(y)\| \leq L\|x - y\|$ per ogni $x, y \in \mathbb{R}^n$.
+
+**Proposizione 1.8** (**Lemma di discesa**). Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione **L-liscia**. Allora, per ogni $x \in \mathbb{R}^n$ e per ogni $d \in \mathbb{R}^n$, si ha
+
+	$f (x + d) \leq f (x) + \nabla f (x)^T d + \frac{L}{2} \|d\|^2$
+
+##### Teorema del valor medio e Taylor
+
+**Proposizione 1.6.** Sia $f : \mathbb{R}^n \to \mathbb{R}$. Allora:
+- (**Teorema del valor medio**) Se $f \in C^1 (\mathbb{R}^n)$, per ogni $x \in \mathbb{R}^n$ e $d \in \mathbb{R}^n$, esiste $t \in (0,1)$ tale che $\xi = x + td$ allora:
+	- $f (x + d) = f (x) + \nabla f (\xi)^T d$
+	- inoltre $f (x + d) = f (x) + \nabla f (x)^T d + \beta (x, d)$  dove $\lim_{\|d\| \to 0} \frac{\beta (x, d)}{\|d\|} = 0$
+
+- (**Taylor**) Se $f \in C^2 (\mathbb{R}^n)$, per ogni $x \in \mathbb{R}^n$ e $d \in \mathbb{R}^n$, esiste $t \in (0,1)$ tale che $\xi = x + td$ e
+	- $f (x + d) = f (x) + \nabla f (x)^T d + \frac{1}{2} d^T \nabla^2 f (\xi) d$
+	- inoltre, $f (x + d) = f (x) + \nabla f (x)^T d + \frac{1}{2} d^T \nabla^2 f (x) d + \beta (x, d)$ dove $\lim_{\|d\| \to 0} \frac{\beta (x, d)}{\|d\|^2} = 0$
+
+**Proposizione 1.7** (**Teorema del valor medio per gli integrali**). Sia $F : \mathbb{R}^n \to \mathbb{R}^m$ una funzione **continuamente differenziabile**. Allora, per ogni $x, y \in \mathbb{R}^n$, si ha
+
+	$F (x) = F (y) + \int_0^1 J_F (y + t (x - y)) (x - y) dt$
+
+### Convessità
+
+**Definizione 1.12.** Diciamo che una funzione $f : \mathbb{R}^n \to \mathbb{R}$ è:
+- **convessa** se, per ogni $x, y \in \mathbb{R}^n$ e $\lambda \in [0,1]$, si ha:
+
+	  $f (\lambda x + (1 - \lambda) y) \leq \lambda f (x) + (1 - \lambda) f (y)$ (funzione sta sotto)
+
+- **strettamente convessa** se, per ogni $x, y \in \mathbb{R}^n$ e $\lambda \in (0,1)$, si ha:
+  
+	$f (\lambda x + (1 - \lambda) y) < \lambda f (x) + (1 - \lambda) f (y)$
+
+- **fortemente convessa** se esiste $\mu > 0$ tale che $f (x) - \mu \|x\|^2$ è una **funzione convessa**, ovvero $f (x) = g (x) + \mu \|x\|^2$ con $g$ funzione convessa.
+
+**Proposizione 1.9.** Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione *fortemente convessa*. Allora $f$ è **coerciva** e **strettamente convessa**.
+
+**Proposizione 1.10.** Sia $f : \mathbb{R}^n \to \mathbb{R}$. Le seguenti proprietà valgono:
+- Se  $f \in C^1 (\mathbb{R}^n)$, allora $f$ è **convessa** se e solo se:
+	
+	$f (y) \geq f (x) + \nabla f (x)^T (y - x) \quad \forall x, y \in \mathbb{R}^n$ (funzione sta sopra)
+	
+- Se $f \in C^2 (\mathbb{R}^n)$, allora $f$ è **convessa** se e solo se
+
+	  $\nabla^2 f (x) \succeq 0 \quad \forall x \in \mathbb{R}^n$ (Hessiana semidefinita positiva)
+
+  Inoltre, se $\nabla^2 f (x) \succ 0$ per ogni $x \in \mathbb{R}^n$, allora $f$ è **strettamente convessa**.
 
 ## 2. Introduzione ai Problemi di Ottimizzazione
 
@@ -130,15 +230,15 @@ Il problema di selezione degli investimenti può essere modellato come un proble
 
 **Scopo:** Minimizzare il rischio e massimizzare il rendimento. Nel contesto di un problema di minimizzazione, possiamo definire una funzione obiettivo che è una combinazione pesata del rischio e del negativo del rendimento atteso:
 
-$- \mu^T x + \lambda x^T \Sigma x$
+	$- \mu^T x + \lambda x^T \Sigma x$
 
 dove $\lambda$ è un parametro che bilancia il compromesso tra rischio e rendimento.
 
 **Problema finale (in forma vettoriale):**
 
-$\min_{x \in \mathbb{R}^n} -\mu^T x + \lambda x^T \Sigma x \quad$ 
-$\text{s.t. } e^T x = 1$
-$x \geq 0$
+	$\min_{x \in \mathbb{R}^n} -\mu^T x + \lambda x^T \Sigma x \quad$
+	$\text{s.t. } e^T x = 1$
+	$x \geq 0$
 
 In queste note saremmo interessati negli aspetti della programmazione matematica della ricerca operativa. Ci focalizzeremo sulla caratterizzazione dei problemi, e sulle procedure algoritmiche per determinare le soluzioni a tali problemi.
 
@@ -159,76 +259,89 @@ TBD (Per ora vedi Pdf notes_palchetti_2023)
 Quando affrontiamo problemi di ottimizzazione non vincolata e non lineare della forma:
 	$\min_{x \in \mathbb{R}^n} f(x)$
 
-dove $f : \mathbb{R}^n \to \mathbb{R}$ è una funzione continuamente differenziabile, nella pratica si cerca di trovare soluzioni candidate ottimali che soddisfano la condizione di stazionarietà $\nabla f(x) = 0$. In rari e fortunati casi, gli zeri dei gradienti possono essere trovati analiticamente, risolvendo il problema in forma chiusa.
+dove $f : \mathbb{R}^n \to \mathbb{R}$ è una funzione continuamente differenziabile, nella pratica si cerca di trovare soluzioni candidate ottimali che soddisfano la condizione di stazionarietà $\nabla f(x) = 0$. In **rari e fortunati casi**, gli zeri dei gradienti possono essere trovati analiticamente, ==risolvendo il problema in forma chiusa==.
 
-In generale, tuttavia, non avremo accesso a formule esatte per risolvere il problema. Dobbiamo quindi affidarci ad algoritmi che costruiscono una soluzione attraverso un processo iterativo, cioè metodi che producono una sequenza di soluzioni ${x_k}$ che si avvicinano progressivamente a un punto stazionario. Gli algoritmi di ottimizzazione iterativa sono generalmente caratterizzati da una regola di aggiornamento della forma:
-	$\mathbf{x}_{k+1} = \mathbf{x}_k + \mathbf{s}_k$
+In generale, tuttavia, non avremo accesso a formule esatte per risolvere il problema. Dobbiamo quindi affidarci ad algoritmi che costruiscono una soluzione attraverso un processo iterativo, cioè metodi che producono una sequenza di soluzioni ${x_k}$ che si avvicinano progressivamente a un punto stazionario.
 
-cioè il nuovo punto viene ottenuto partendo dalla soluzione corrente e spostandosi di un vettore di aggiornamento $\mathbf{s}_k$. L'algoritmo si arresta non appena la condizione di stazionarietà viene soddisfatta in una delle iterazioni $\mathbf{x}_k$. Esistono diverse classi di algoritmi, ma le tre più rilevanti sono le seguenti (vedi Figura 3):
+Gli algoritmi di ottimizzazione iterativa sono generalmente caratterizzati da una regola di aggiornamento della forma:	$\mathbf{x}_{k+1} = \mathbf{x}_k + \mathbf{s}_k$, cioè il **nuovo punto** viene ottenuto ==partendo dalla soluzione corrente e spostandosi di un vettore di aggiornamento== $\mathbf{s}_k$.
+
+L'algoritmo si arresta non appena ==la condizione di stazionarietà viene soddisfatta== in una delle iterazioni $\mathbf{x}_k$. Esistono diverse classi di algoritmi, ma le tre più rilevanti sono le seguenti (vedi Figura 3):
 
 ![[Pasted image 20250122224259.png]]
 
-1. **Algoritmi basati sulla ricerca in direzione**: il vettore di aggiornamento è strutturato come $\mathbf{s}_k = \alpha_k \mathbf{d}_k$, dove $\mathbf{d}_k \in \mathbb{R}^n$ è una direzione nello spazio euclideo e $\alpha_k \in \mathbb{R}^+$ è uno scalare denominato passo (stepsize). In questi algoritmi, viene prima identificata una direzione di ricerca $\mathbf{d}_k$, e successivamente scelto un passo appropriato per stabilire la grandezza dello spostamento lungo quella direzione.
+1. **Algoritmi basati sulla ricerca in direzione** (_Line search_): il vettore di aggiornamento è strutturato come $\mathbf{s}_k = \alpha_k \mathbf{d}_k$, dove $\mathbf{d}_k \in \mathbb{R}^n$ è una direzione nello spazio euclideo e $\alpha_k \in \mathbb{R}^+$ è uno scalare denominato passo (*stepsize*). In questi algoritmi, viene prima identificata una direzione di ricerca $\mathbf{d}_k$, e successivamente scelto un passo appropriato per stabilire la grandezza dello spostamento **lungo quella direzione**.
     
-2. **Algoritmi basati sulla regione di fiducia**: il vettore di aggiornamento è definito come il miglior aggiornamento possibile per un'approssimazione (modello) della funzione obiettivo in una vicinanza della soluzione corrente:
+2. **Algoritmi basati sulla regione di fiducia**: il vettore di aggiornamento è definito come ==il miglior aggiornamento possibile== per un'approssimazione (modello) della funzione obiettivo **in una vicinanza della soluzione corrente**:
 		
 		$\mathbf{s}_k \in \arg\min_{x \in \Delta_k} m_k(x), \quad m_k(x) \approx f(x) \; \forall x \in \Delta_k, \; m_k(\mathbf{x}_k) = f(\mathbf{x}_k).$
 
-	L'accettazione dell'aggiornamento e la variazione del raggio $\rho_k$ della regione di fiducia $\Delta_k$ dipendono dal miglioramento della funzione obiettivo reale:
+	L'accettazione dell'aggiornamento e la variazione del raggio $\rho_k$ della regione di fiducia $\Delta_k$ dipendono dal **miglioramento della funzione obiettivo reale**:
 
 	- Se $f(\mathbf{x}_{k+1}) - f(\mathbf{x}_k) \ll 0$, allora $\mathbf{x}_{k+1} = \mathbf{x}_k + \mathbf{s}_k$, e $\rho_{k+1} > \rho_k$.
 	- Se $f(\mathbf{x}_{k+1}) - f(\mathbf{x}_k) < 0$, allora $\mathbf{x}_{k+1} = \mathbf{x}_k + \mathbf{s}_k$, e $\rho_{k+1} = \rho_k$.
 	- Se $f(\mathbf{x}_{k+1}) - f(\mathbf{x}_k) \geq 0$, allora $\mathbf{x}_{k+1} = \mathbf{x}_k$, e $\rho_{k+1} < \rho_k$.
 
-3. **Algoritmi di ricerca per schemi (pattern search)**: il vettore di aggiornamento è il migliore tra un insieme predefinito di soluzioni da verificare:
+3. **Algoritmi di ricerca per schemi (pattern search)**: il vettore di aggiornamento ==è il migliore tra un insieme predefinito di soluzioni da verificare==:
 
 	$\mathbf{s}_k \in \arg\min_{\mathbf{s}_{i,k}, i=1,\dots,N_k} f(\mathbf{x}_k + \mathbf{s}_{i,k})$
 
-I metodi di ricerca per schemi vengono spesso considerati quando non si ha accesso alle derivate della funzione obiettivo. In questi casi, si parla di metodi senza derivata (o di ordine zero). Al contrario, i metodi di ricerca in direzione e quelli basati sulla regione di fiducia utilizzano solitamente informazioni di primo ordine (gradienti, $\nabla f$) e secondo ordine (hessiane, $\nabla^2 f$), e in questa prospettiva si parla rispettivamente di metodi di primo ordine e di secondo ordine.
+I metodi di ricerca per schemi vengono spesso considerati quando non si ha accesso **alle derivate** della funzione obiettivo. In questi casi, si parla di **metodi senza derivata** (o di ordine zero). Al contrario, i metodi di ricerca in direzione e quelli basati sulla regione di fiducia utilizzano solitamente ==informazioni di primo ordine (gradienti, $\nabla f$) e secondo ordine (Hessiane==, $\nabla^2 f$), e in questa prospettiva si parla rispettivamente di metodi **di primo ordine e di secondo ordine**.
+
 Entreremo successivamente nei dettagli dei metodi basati su line search, nel mentre discuteremo le proprietà che vorremmo che la sequenza $\{x_k\}$ e le sequenze corrispondenti $\{f(x_k)\}$  e $\{\nabla f(x_k)\}$ abbiano, senza guardare il tipo di aggiornamento.
-In uno scenario ideale, un algoritmo finisce in un punto stazionari dopo un numero finito di iterazioni, in altre parole per qualche $k^*$ tale che $\nabla f(x^{k^*}) = 0$ e la procedura finisce. Quando un metodo è garantito che si comporta in questo modo, diremo che possiede proprietà di convergenza finita. Sfortunatamente, questa proprietà è ottenuta solo per pochi algoritmi di alcune classi di problemi. Le sequenze in generale sono infinite. Siamo quindi interessati a proprietà di convergenza su sequenze infinite. 
+
+**In uno scenario ideale,** un algoritmo finisce in un punto stazionario dopo un numero finito di iterazioni, in altre parole per qualche $k^*$ tale che $\nabla f(x^{k^*}) = 0$ e la procedura finisce.
+Quando un metodo è garantito che si comporta in questo modo, diremo che possiede **proprietà di convergenza finita**. Sfortunatamente, questa proprietà è ottenuta solo per pochi algoritmi di alcune classi di problemi. Le sequenze in generale **sono infinite**. Siamo quindi interessati a proprietà di convergenza su sequenze infinite. 
 
 #### 4.1.1 Esistenza di Punti di Accumulazione
 
-La prima proprietà fondamentale che un algoritmo deve garantire è che la sequenza che produce, o almeno una parte di essa, abbia una direzione precisa. In altre parole, **non** vorremmo che la sequenza $\{x_k\}$ divergesse completamente, ovvero che $\|x_k\| \to \infty$. Infatti, siamo interessati a ottenere una soluzione con valori finiti e definiti, da utilizzare in un sistema reale.
+La prima proprietà fondamentale che un algoritmo deve garantire è che la sequenza che produce, o **almeno una parte di essa**, abbia una direzione precisa. In altre parole, **non** vorremmo che la sequenza $\{x_k\}$ divergesse completamente, ovvero che $\|x_k\| \to \infty$. Infatti, siamo interessati a ottenere una soluzione con valori finiti e definiti, da utilizzare in un sistema reale.
 
-Questo requisito si traduce formalmente nella presenza di punti di accumulazione per la sequenza. Ricordiamo che un punto di accumulazione di una sequenza è un punto limite di una sottosequenza, cioè $\bar{x}$ è un punto di accumulazione per $\{x_k\}$ se esiste una sottosequenza $K \subseteq \{0, 1, \dots\}$ tale che $x_k \to \bar{x}$ per $k \in K, \, k \to \infty$.
+Questo requisito si traduce formalmente ==nella presenza di punti di accumulazione per la sequenza==. Ricordiamo che un punto di accumulazione di una sequenza è un punto limite di una *sotto-sequenza*, cioè $\bar{x}$ è un punto di accumulazione per $\{x_k\}$ se esiste una sotto-sequenza $K \subseteq \{0, 1, \dots\}$ tale che $x_k \to \bar{x}$ per $k \in K, \, k \to \infty$.
 
-Garantire l’esistenza di almeno un punto di accumulazione è piuttosto semplice dal punto di vista algoritmico, con ipotesi molto deboli sul problema considerato, come affermato nella seguente proposizione.
+Garantire l’esistenza di **almeno** un punto di accumulazione è piuttosto semplice dal punto di vista algoritmico, con ipotesi molto deboli sul problema considerato, come affermato nella seguente proposizione.
+
+---
 
 **Proposizione 4.1.**  
-Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione continua. Sia $x_0 \in \mathbb{R}^n$ e sia il sottoinsieme di livello $L_0 = \{x \in \mathbb{R}^n \, | \, f(x) \leq f(x_0)\}$ compatto. Supponiamo che la sequenza $\{x_k\}$, iniziando da $x_0$, sia tale che, per ogni $k, f(x_{k+1}) \leq f(x_k)$. Allora, la sequenza $\{x_k\}$ ammette punti di accumulazione, ognuno appartenente a $L_0$, e la sequenza $\{f(x_k)\}$ converge a un valore $\bar{f}$.
+Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione continua. Sia $x_0 \in \mathbb{R}^n$ e sia il sottoinsieme di livello $L_0 = \{x \in \mathbb{R}^n \, | \, f(x) \leq f(x_0)\}$ **compatto**. 
+Supponiamo che la sequenza $\{x_k\}$, iniziando da $x_0$, sia tale che $\forall k, f(x_{k+1}) \leq f(x_k)$. 
+Allora, la sequenza $\{x_k\}$ ammette punti di accumulazione, ognuno appartenente a $L_0$, e la sequenza $\{f(x_k)\}$ converge a un valore $\bar{f}$.
+
+----
 
 **Dimostrazione.**  
-In base alle ipotesi, $f(x_{k+1}) \leq f(x_k)$ per ogni $k$. Per induzione, abbiamo che $f(x_k) \leq f(x_0)$ per ogni $k = 0, 1, \dots,$ il che implica che l’intera sequenza $\{x_k\}$ è contenuta nel sottoinsieme di livello $L_0$. Dalla compattezza di $L_0$, segue che $\{x_k\}$ ha punti di accumulazione, tutti appartenenti a $L_0$.
+In base alle ipotesi, $f(x_{k+1}) \leq f(x_k)$ per ogni $k$. Per induzione, abbiamo che $f(x_k) \leq f(x_0)$ per ogni $k = 0, 1, \dots,$ il che implica che l’intera sequenza $\{x_k\}$ è contenuta nel sottoinsieme di livello $L_0$. Dalla **compattezza** di $L_0$, segue che $\{x_k\}$ ha punti di accumulazione, **tutti appartenenti** a $L_0$.
 
-Inoltre, la sequenza $\{f(x_k)\}$ è monotona decrescente e quindi ammette un limite $\bar{f}$. Grazie alla limitatezza di $\{x_k\} \subseteq L_0$ e alla continuità di $f$, il valore di $\bar{f}$ è finito.
+Inoltre, la sequenza $\{f(x_k)\}$ è *monotona decrescente* e quindi **ammette un limite** $\bar{f}$. Grazie alla limitatezza di $\{x_k\} \subseteq L_0$ e alla continuità di $f$, il valore di $\bar{f}$ è finito.
 
-La condizione di compattezza sul sottoinsieme di livello iniziale è soddisfatta, ad esempio, se la funzione obiettivo è coerciva. D’altra parte, imporre la monotonicità della sequenza dei valori della funzione obiettivo è relativamente semplice dal punto di vista algoritmico: ci concentreremo su questo aspetto nelle sezioni successive.
+---
 
-Un risultato interessante della proposizione è che la sequenza dei valori di $f$ converge completamente; di conseguenza, abbiamo $f(\bar{x}) = \bar{f}$ ​ per qualsiasi punto di accumulazione $\bar{x}$ (cioè, tutti i punti di accumulazione sono equivalenti in termini di valore della funzione obiettivo). In realtà, questa proprietà si verifica immediatamente ogni volta che garantiamo un comportamento monotono con una funzione limitata inferiormente.
+La condizione di compattezza sul sottoinsieme di livello iniziale è soddisfatta, ad esempio, se la funzione obiettivo è *coerciva*. D’altra parte, imporre la monotonicità della sequenza dei valori della funzione obiettivo è relativamente semplice dal punto di vista algoritmico: ci concentreremo su questo aspetto nelle sezioni successive.
 
-Tuttavia, mentre l’esistenza di punti di accumulazione è un requisito minimo essenziale, non abbiamo garanzie che uno qualsiasi di questi punti sia effettivamente significativo per il problema che stiamo cercando di risolvere. Questo è l’aspetto su cui ci concentreremo nella prossima sezione.
+Un risultato interessante della proposizione è che ==la sequenza dei valori di $f$ converge completamente==; di conseguenza, abbiamo $f(\bar{x}) = \bar{f}$ ​ **per qualsiasi punto di accumulazione** $\bar{x}$ (cioè, tutti i punti di accumulazione sono equivalenti in termini di valore della funzione obiettivo). In realtà, questa proprietà si verifica immediatamente ogni volta che garantiamo un comportamento monotono con una funzione limitata inferiormente.
+
+Tuttavia, mentre l’esistenza di punti di accumulazione è un requisito minimo essenziale, non abbiamo garanzie che uno qualsiasi di questi punti **sia effettivamente significativo** per il problema che stiamo cercando di risolvere. Questo è l’aspetto su cui ci concentreremo nella prossima sezione.
 #### 4.1.2 Convergenza verso la stazionarietà
 
-Ragionevolmente, vorremmo che le (sotto)sequenze convergenti discusse nella sezione precedente raggiungano asintoticamente la condizione di stazionarietà. Sebbene questo aspetto sia concettualmente semplice, la sua caratterizzazione formale richiede attenzione. In particolare, la proprietà di stazionarietà può essere raggiunta in modi diversi, elencati e descritti di seguito in ordine decrescente di forza:
+Ragionevolmente, vorremmo che le (sotto)sequenze convergenti discusse nella sezione precedente raggiungano asintoticamente **la condizione di stazionarietà**. Sebbene questo aspetto sia concettualmente semplice, la sua caratterizzazione formale richiede attenzione. In particolare, la proprietà di stazionarietà può essere raggiunta in modi diversi, elencati e descritti di seguito in ordine decrescente di forza:
 
-1. $\lim_{k \to \infty} x_k = \bar{x}$  con $\nabla f(\bar{x}) = 0$: l'intera sequenza converge a un punto limite che è un punto stazionario.
-2. $\lim_{k \to \infty} \|\nabla f(x_k)\| = 0$ : l'**intera** sequenza dei gradienti tende a zero; per continuità della norma e di $\nabla f$, tutti i punti di accumulazione della sequenza $\{x_k\}$ sono punti stazionari.
-3. $\lim \inf_{k \to \infty} \|\nabla f(x_k)\| = 0$ : i gradienti tendono a zero almeno **lungo una sottosequenza**; se $\{x_k\}$ non ha sottosequenze divergenti, **almeno un punto di accumulazione è stazionario**.
+1. $\lim_{k \to \infty} x_k = \bar{x}$  con $\nabla f(\bar{x}) = 0$: **l'intera sequenza** converge a un punto limite che **è un punto stazionario**.
+2. $\lim_{k \to \infty} \|\nabla f(x_k)\| = 0$ : l'**intera** sequenza dei gradienti tende a zero; per continuità della norma e di $\nabla f$, **tutti i punti di accumulazione** della sequenza $\{x_k\}$ **sono punti stazionari**.
+3. $\lim \inf_{k \to \infty} \|\nabla f(x_k)\| = 0$ : i gradienti **tendono a zero** almeno **lungo una sottosequenza**; se $\{x_k\}$ non ha sottosequenze divergenti, ==almeno un punto di accumulazione è stazionario.==
 
 Il significato di queste tre situazioni può essere meglio compreso attraverso il seguente esempio.
 
+---
 **Esempio 4.1.**  
 Consideriamo la funzione di una variabile $f(x)$ con derivata (gradiente) data da:
 $\nabla f(x) = (x - 1)(x - 2)$
 
-1. **Caso 1:** La sequenza dei valori
+4. **Caso 1:** La sequenza dei valori
 	    $\{x_k\} = \{0.9, 0.99, 0.999, 0.9999, 0.99999, \dots\}$
     
-    converge all’unico limite $\bar{x} = 1$, che è un punto stazionario per $f$.
+    converge a l’unico limite $\bar{x} = 1$, che è un punto stazionario per $f$.
     
-2. **Caso 2:** La sequenza dei valori
+5. **Caso 2:** La sequenza dei valori
 	    $\{x_k\} = \{0.9, 2.1, 0.99, 2.01, 0.999, 2.001, 0.9999, 2.0001, 0.99999, 2.00001, \dots\}$
     
     corrisponde alla sequenza dei gradienti:
@@ -237,18 +350,23 @@ $\nabla f(x) = (x - 1)(x - 2)$
     
     che chiaramente converge a zero. I due punti di accumulazione di $\{x_k\}$, 1 e 2, sono entrambi punti stazionari.
     
-3. **Caso 3:** La sequenza dei valori
+6. **Caso 3:** La sequenza dei valori
     
-    $\{x_k\} = \{0.9, 3.1, 0.99, 3.01, 0.999, 3.001, 0.9999, 3.0001, 0.99999, 3.00001, \dots\}$
+	    $\{x_k\} = \{0.9, 3.1, 0.99, 3.01, 0.999, 3.001, 0.9999, 3.0001, 0.99999, 3.00001, \dots\}$
     
-	che corrisponde alla sequenza dei gradienti: $\{\nabla f(x_k)\} = \{0.11, 2.31, 0.0101, 2.0301, 0.001001,$
-	$2.003001, 0.00010001, 2.00030001, 0.0000100001, 2.0000300001, \dots\}$
+	che corrisponde alla sequenza dei gradienti: 
+		$\{\nabla f(x_k)\} = \{0.11, 2.31, 0.0101, 2.0301, 0.001001,$
+		$2.003001, 0.00010001, 2.00030001, 0.0000100001, 2.0000300001, \dots\}$
 
-In questo caso, la sequenza $\{|\nabla f(x_k)|\}$ presenta due sottosequenze convergenti: una con limite 0 e l'altra con limite 2. Il limite inferiore della norma del gradiente è dunque 0, e esiste una sottosequenza di $\{x_k\}$ (quella che converge a 1) che tende a un punto stazionario.
+	In questo caso, la sequenza $\{|\nabla f(x_k)|\}$ presenta due sotto-sequenze convergenti: una con limite 0 e l'altra con limite 2. Il limite inferiore della norma del gradiente è dunque 0, e esiste una sotto-sequenza di $\{x_k\}$ (quella che converge a 1) che tende a un punto stazionario.
 
-Nella pratica, garantire la terza condizione $\lim \inf_{k \to \infty} \|\nabla f(x_k)\| = 0$) è sufficiente per scopi computazionali. Infatti, grazie alla continuità del gradiente, sappiamo che se $\lim \inf_{k \to \infty} \|\nabla f(x_k)\| = 0$, allora, per ogni $\epsilon > 0$, esiste un $k$ sufficientemente grande tale che $\|\nabla f(x_k)\| \leq \epsilon$. Questo è importante perché garantisce che, se utilizziamo una condizione di arresto basata su una soglia per la norma del gradiente, l'algoritmo si fermerà certamente in tempo finito, fornendoci una soluzione con il livello di accuratezza desiderato.
+---
 
-Garantire questo tipo di convergenza per la sequenza di soluzioni non è affatto banale; ad esempio, la semplice decrescita della funzione obiettivo non è sufficiente per garantire la convergenza ai punti stazionari, nemmeno nel caso convesso, come dimostra il seguente esempio.
+Nella pratica, garantire la terza condizione  ($\lim \inf_{k \to \infty} \|\nabla f(x_k)\| = 0$) è sufficiente per scopi computazionali. Infatti, grazie alla continuità del gradiente, sappiamo che se $\lim \inf_{k \to \infty} \|\nabla f(x_k)\| = 0$, allora, per ogni $\epsilon > 0$, esiste un $k$ sufficientemente grande tale che $\|\nabla f(x_k)\| \leq \epsilon$. Questo è importante perché garantisce che, se utilizziamo una condizione di arresto basata su una soglia per la norma del gradiente, l'algoritmo si fermerà certamente in tempo finito, fornendoci una soluzione con il livello di accuratezza desiderato.
+
+Garantire questo tipo di convergenza per la sequenza di soluzioni non è affatto banale; ad esempio, ==la semplice decrescita della funzione obiettivo non è sufficiente per garantire la convergenza ai punti stazionari==, nemmeno nel caso convesso, come dimostra il seguente esempio.
+
+---
 
 **Esempio 4.2.** Consideriamo il problema:
 
@@ -256,43 +374,45 @@ Garantire questo tipo di convergenza per la sequenza di soluzioni non è affatto
 
 dove la funzione obiettivo è continua e strettamente convessa, raggiungendo il valore minimo $f^\star = 0$ nell'unico ottimizzatore globale $x^\star = 0$.
 
-Supponiamo ora di considerare il processo iterativo che parte da $x^0 = 2$ e segue la regola di aggiornamento:
-	$x^{k+1} = x^k - \alpha_k f'(x^k) = x^k - \alpha_k x^k$
+Supponiamo ora di considerare il processo iterativo che parte da $x^0 = 2$ e segue la regola di aggiornamento:	$x^{k+1} = x^k - \alpha_k f'(x^k) = x^k - \alpha_k x^k$
 
-dove il passo $\alpha_k$ è definito come:
-	$\alpha_k = \frac{x^k - 1}{2x^k}$​.
+dove il passo $\alpha_k$ è definito come: $\alpha_k = \frac{x^k - 1}{2x^k}$​.
 
-In tal caso, la regola di aggiornamento diventa:
-	$x^{k+1} = \frac{x^k + 1}{2}$
+In tal caso, la regola di aggiornamento diventa:	$x^{k+1} = \frac{x^k + 1}{2}$
 
 Osserviamo che, per ogni $x^k \in (1, 2]$, abbiamo:
+
 	$2 \geq \frac{x^k + 1}{2} \geq \frac{1 + 1}{2} = 1$,
 
 cioè $x^{k+1}$ appartiene all'intervallo $(1, 2]$, e inoltre:
+
 	$x^{k+1} = \frac{x^k + 1}{2} < x^k$,
 
 Ricordando che $x^0 = 2$, per induzione abbiamo che $x^{k+1} < x_k$​ vale per l'intera sequenza $\{x_k\}$.
 
 Pertanto, possiamo osservare che:
+
 	$f(x^{k+1}) = \frac{1}{2}(x^{k+1})^2 < \frac{1}{2}(x^k)^2 = f(x^k)$
 
-Abbiamo così definito una sequenza strettamente decrescente su una funzione fortemente convessa; tuttavia, l'intera sequenza è contenuta nell'intervallo $(1, 2]$ e quindi non può convergere all'unico punto stazionario 0: in realtà, converge a 1.
+Abbiamo così definito una sequenza **strettamente decrescente** su una funzione fortemente convessa; tuttavia, l'intera sequenza è contenuta nell'intervallo $(1, 2]$ e quindi **non può convergere** all'unico punto stazionario 0: in realtà, converge a 1.
+
+---
 
 Concludiamo questa discussione evidenziando un'importante distinzione riguardo il tipo di proprietà di convergenza che possono essere associate a un algoritmo:
 
-- **Convergenza Globale:** Si dice che le proprietà di convergenza di un algoritmo siano **globali** se valgono indipendentemente dalla soluzione iniziale scelta per il processo iterativo.
-- **Convergenza Locale:** Si dice che le proprietà di convergenza siano **locali** se valgono solo quando il punto di partenza è sufficientemente vicino a una delle soluzioni desiderate.
+- **Convergenza Globale:** Si dice che le proprietà di convergenza di un algoritmo siano **globali** se valgono ==indipendentemente dalla soluzione iniziale scelta== per il processo iterativo.
+- **Convergenza Locale:** Si dice che le proprietà di convergenza siano **locali** se valgono solo quando ==il punto di partenza è sufficientemente vicino a una delle soluzioni desiderate==.
 
-Le proprietà di convergenza di tipo globale sono ovviamente preferibili. Questo è particolarmente vero poiché, nella pratica, non sappiamo quanto grande sia il "vicinato di convergenza" né dove si trovi, quando le proprietà di convergenza sono solo locali. Tuttavia, i risultati di convergenza locale sono talvolta di interesse, poiché possono essere dimostrate proprietà migliori per certi metodi quando si trovano **vicini** a una soluzione.
+Le proprietà di convergenza di tipo globale sono ovviamente preferibili. Questo è particolarmente vero poiché, nella pratica, non sappiamo **quanto grande** sia il "vicinato di convergenza" **né dove si trovi**, quando le proprietà di convergenza sono solo locali. Tuttavia, i risultati di convergenza locale sono talvolta di interesse, poiché possono essere dimostrate **proprietà migliori** per certi metodi ==quando si trovano **vicini** a una soluzione==.
 
 #### 4.1.3 Efficienza dei Solver di Ottimizzazione
 
-Nello studio degli algoritmi di ottimizzazione, l'interesse principale risiede nell'analisi delle proprietà di convergenza locale e globale verso i punti stazionari: è fondamentale garantire che producano effettivamente soluzioni candidate ottimali. Tuttavia, anche l'efficienza degli algoritmi è cruciale, specialmente nei contesti su larga scala, dove i tempi di calcolo possono essere molto lunghi.
+Nello studio degli algoritmi di ottimizzazione, l'interesse principale risiede nell'analisi delle proprietà di convergenza locale e globale verso i punti stazionari: è fondamentale garantire che producano effettivamente soluzioni candidate ottimali. Tuttavia, anche ==l'efficienza degli algoritmi è cruciale==, specialmente nei contesti su larga scala, dove i tempi di calcolo possono essere molto lunghi.
 
 L'efficienza degli algoritmi di ottimizzazione è solitamente studiata in termini di due concetti principali: **tasso di convergenza** e **complessità**.
 ##### Tasso di convergenza
 
-Il **tasso di convergenza** indica intuitivamente con quale rapidità la sequenza dei valori della funzione obiettivo $\{f(x_k)\}$ (o, equivalentemente, la sequenza degli iterati $\{x_k\}$ o dei gradienti $\{\|\nabla f(x_k)\|\}$ si avvicina al punto limite. Formalmente, possiamo distinguere i seguenti casi:
+Il **tasso di convergenza** indica intuitivamente con quale rapidità la sequenza dei valori della funzione obiettivo $\{f(x_k)\}$ (o, equivalentemente, la sequenza degli iterati $\{x_k\}$ o dei gradienti $\{\|\nabla f(x_k)\|\}$) si avvicina al punto limite. Formalmente, possiamo distinguere i seguenti casi:
 
 **Definizione 4.1.** Sia $\{f(x_k)\}$ la sequenza di valori obiettivo generata da un algoritmo iterativo, con $f(x_k) \to f^\star$. Allora, il tasso di convergenza è:
 
@@ -318,58 +438,67 @@ Per comprendere meglio queste definizioni, consideriamo il rapporto che viene ca
 Il tasso di convergenza misura come si comporta questo rapporto nel limite.
 
 Andando a interpretare i casi:
-- **Sublineare:** Un tasso di convergenza sublineare è inefficiente: più l'algoritmo procede, meno progresso viene fatto (la riduzione del divario diventa progressivamente irrilevante).
-- **Lineare:** Un tasso lineare è accettabile: a ogni iterazione, viene coperta una percentuale fissa della distanza residua dal valore finale.
-- **Superlineare:** Un tasso di convergenza superlineare è eccellente: per k grande, una singola iterazione è sufficiente per ridurre l'errore di ordini di grandezza.
+- **Sub-lineare:** Un tasso di convergenza sub-lineare è inefficiente: più l'algoritmo procede, meno progresso viene fatto, ovvero ==la riduzione del divario diventa progressivamente irrilevante==.
+- **Lineare:** Un tasso lineare è accettabile: **a ogni iterazione**, viene coperta una percentuale fissa della distanza residua dal valore finale.
+- **Superlineare:** Un tasso di convergenza superlineare è eccellente: per k grande, una singola iterazione è sufficiente **per ridurre l'errore di ordini di grandezza**.
 ##### Complessità
 
 Un altro approccio molto popolare per misurare l'efficienza degli algoritmi di ottimizzazione si basa sulla **complessità**. Tuttavia, anche se gli algoritmi hanno tassi di convergenza asintotici eccellenti, la loro complessità computazionale deve essere considerata per valutarne l'**efficacia** nei contesti pratici.
-Quante iterazioni (e possibilmente quante valutazioni della funzione e del gradiente) sono necessarie per raggiungere un determinato livello di accuratezza $\epsilon$?
+**Quante iterazioni** (e possibilmente quante valutazioni della funzione e del gradiente) **sono necessarie per raggiungere un determinato livello di accuratezza** $\epsilon$?
 
+---
 Partiamo prima dalla definizione di **Notazione O**
+
 **Definizione 4.2.** Date due funzioni $\phi$ e $g$, diciamo che $\phi(n) = O(g(n))$ se esistono una costante c > 0 e un indice $\bar{n}$ tali che:
 	$\phi(n) \leq c \, g(n), \quad \forall n \geq n̄$
 
+Da un certo punto in poi la funzione starà sotto una certa funzione.
+
+---
+
 Focalizzandoci sul numero di iterazioni come metrica di costo, possiamo definire quanto segue.
 
-**Definizione 4.3.** Sia $\{x^k\}$ la sequenza generata da un metodo iterativo, con $f(x^k) \to f^\star$ Diciamo che l'algoritmo ha un **errore di iterazione** di $O(h(k))$ se:
+**Definizione 4.3.** Sia $\{x^k\}$ la sequenza generata da un metodo iterativo, con $f(x^k) \to f^\star$ Diciamo che l'algoritmo ha un *errore di iterazione* di $O(h(k))$ se:
 
 	$f(x^k) - f^\star = O(h(k))$
 
-equivalentemente, dato un livello di accuratezza $\epsilon$, l'algoritmo ha una **complessità di iterazione** di $O(q(\epsilon))$ se:
+equivalentemente, dato un livello di accuratezza $\epsilon$, l'algoritmo ha una *complessità di iterazione* di $O(q(\epsilon))$ se:
 
 	$\min \{k \, | \, f(x^k) - f^\star \leq \epsilon\} = O(q(\epsilon))$
 
+---
+
 Invece di considerare il divario $f(x^k) - f^\star$, possiamo utilizzare la quantità $\|\nabla f(x^k)\|$, cioè la **distanza dalla stazionarietà**. Questa scelta è particolarmente utile per analizzare algoritmi in contesti non convessi, dove il gradiente viene spesso utilizzato come criterio di arresto.
 
-Il caso peggiore sull'errore di iterazione ci fornisce una misura della dimensione dell'**errore** che possiamo aspettarci dopo ==un dato numero di iterazioni.== D'altro canto, il bound sulla complessità di iterazione ci offre **una stima del tempo necessario** affinché l'algoritmo produca ==una soluzione accettabile== nel caso peggiore.
+**Il caso peggiore** sull'errore di iterazione ci fornisce una misura della dimensione dell'**errore** che possiamo aspettarci dopo ==un dato numero di iterazioni.== D'altro canto, il bound sulla complessità di iterazione ci offre **una stima del tempo necessario** affinché l'algoritmo produca ==una soluzione accettabile== nel caso peggiore.
 
-Esiste una corrispondenza fra errore di iterazione e complessità d'iterazione: se un algoritmo ha un **errore di iterazione** $O(\frac{1}{k})$ e vogliamo ottenere una soluzione accurata entro $\epsilon$, cioè $f(x_k) - f^\star \leq \epsilon$, nel caso peggiore abbiamo:
+Esiste una corrispondenza fra errore di iterazione e complessità d'iterazione: se un algoritmo ha un **errore di iterazione** $O(\frac{1}{k})$ e vogliamo ottenere una soluzione accurata **entro** $\epsilon$, cioè $f(x_k) - f^\star \leq \epsilon$, nel caso peggiore abbiamo:
 
 	$f(x_k) - f^\star \leq \frac{C}{k}$.
 
-Quindi, $\frac{C}{k} \leq \epsilon$, garantiamo che la soluzione è accettabile per ogni $k \geq \frac{C}{\epsilon}$. Concludiamo che il primo $k$ tale che $f(x_k) - f^\star \leq \epsilon$ è $O(\frac{1}{\epsilon})$, cioè la **complessità di iterazione** è:	$O\left(\frac{1}{\epsilon}\right)$.
+Quindi, $\frac{C}{k} \leq \epsilon$, garantiamo che la soluzione è accettabile per ogni $k \geq \frac{C}{\epsilon}$. Concludiamo che il primo $k$ tale che $f(x_k) - f^\star \leq \epsilon$ è $O(\frac{1}{\epsilon})$, cioè la **complessità di iterazione** è: $O\left(\frac{1}{\epsilon}\right)$.
 
 In modo analogo, se l'errore di iterazione è $O(\frac{1}{k^2})$, la complessità di iterazione diventa $O\left(\frac{1}{\sqrt{\epsilon}}\right)$.
 
-Nota che una complessità $O\left(\frac{1}{\epsilon}\right)$ non è favorevole. Consideriamo il significato pratico:
+---
 
-- Possiamo interpretare $\log\left(\frac{1}{\epsilon}\right)$ come il **numero di cifre decimali di accuratezza desiderate**.
-- Con una complessità $O\left(\frac{1}{\epsilon}\right)$, se servono 10 iterazioni per una cifra di accuratezza, potrebbero essere necessarie:
+Notare che una complessità $O\left(\frac{1}{\epsilon}\right)$ non è favorevole.
+Consideriamo il significato pratico:
+- Possiamo interpretare $\log\left(\frac{1}{\epsilon}\right)$ come il **numero di cifre decimali di accuratezza desiderate** Con una complessità $O\left(\frac{1}{\epsilon}\right)$, se servono **10 iterazioni** (da 1/0,1) per **una** cifra di accuratezza, potrebbero essere necessarie:
     - 100 iterazioni per 2 cifre,
     - 1000 iterazioni per 3 cifre,
     - e così via (il costo aumenta esponenzialmente).
 
 Questo può essere messo in relazione con la velocità di convergenza:
-- Per una complessità di iterazione di $O(\frac{1}{\epsilon})$ corrisponde un **Errore di Iterazione** $O(\frac{1}{k})$ che equivale a un tasso di convergenza **sublineare**, come mostrato:
+- Per una complessità di iterazione di $O(\frac{1}{\epsilon})$ corrisponde un **Errore di Iterazione** $O(\frac{1}{k})$ che equivale a un tasso di convergenza **sublineare** (prendo i due errori di iterazione prima e dopo), come mostrato:
 
 	$\lim_{k \to \infty} \frac{f(x_{k+1}) - f^\star}{f(x_k) - f^\star} = \lim_{k \to \infty} O ( \frac{k}{k+1}) = 1$.
 
 - **Errore di Iterazione** $O(\rho^k)$ con $\rho < 1$: Questo porta a un **tasso di convergenza lineare** e una complessità di iterazione di $O(\log\left(\frac{1}{\epsilon}\right))$. In questo caso, il costo per aggiungere una nuova cifra di accuratezza cresce in modo **polinomiale**, risultando molto più favorevole rispetto al caso sublineare.
 
-- Un errore del tipo $O(\rho^2)$, con $\rho < 1,$ porta a un tasso di convergenza **superlineare** e a una complessità di iterazione di $O(\log(\log(\frac{1}{\epsilon})))$. In questo caso, il costo per aggiungere una nuova cifra di accuratezza è **costante**, il che rappresenta una proprietà altamente desiderabile.
+- Un errore del tipo $O(\rho^2)$, con $\rho < 1,$ porta a un tasso di convergenza **superlineare** e a una complessità di iterazione di $O(\log(\log(\frac{1}{\epsilon})))$. In questo caso, ==il costo per aggiungere una nuova cifra di accuratezza è **costante**==, il che rappresenta una proprietà altamente desiderabile.
 
-**Tabella 1: Esempi di Tipi di Complessità**
+**Tabella 1: Esempi di Tipi di Complessità d'iterazione**
 
 | **ϵ**      | $O(\frac{1}{\epsilon^2})$ | $O(\frac{1}{\epsilon})$ | $O(\frac{1}{\epsilon^{1/2}})$ | $O(\log(\frac{1}{\epsilon}))$ | $O(\log(\log(\frac{1}{\epsilon})))$ |
 | ---------- | ------------------------- | ----------------------- | ----------------------------- | ----------------------------- | ----------------------------------- |
@@ -400,15 +529,16 @@ La classe principale di algoritmi di interesse è quella dei metodi basati su **
 	$x^{k+1} = x^k + \alpha_k d_k$,
 
 dove:
-
 - $d_k$ è una **direzione di ricerca** (in particolare, una **direzione di discesa** che soddisfa $\nabla f(x_k)^T d_k < 0$),
 - $\alpha_k$ è uno scalare positivo, detto **passo** (_stepsize_).
 
-Per algoritmi di questo tipo, è fondamentale scegliere con attenzione sia la direzione $d_k$ che il passo $\alpha_k$ per garantire le proprietà di convergenza.
+Per algoritmi di questo tipo, ==è fondamentale scegliere con attenzione sia la direzione $d_k$ che il passo $\alpha_k$== per garantire le proprietà di convergenza.
 
 Consideriamo ancora l'Esempio 4.2. In quel caso specifico, la sequenza $\{x^k\}$ è definita secondo una regola della forma: $x^{k+1} = x^k - \alpha_k \nabla f(x_k)$, dove la direzione di ricerca, $-\nabla f(x^k)$, è l'unica direzione di discesa in $x^k$. Il fallimento della convergenza è quindi attribuibile a una scelta errata del passo $\alpha_k$.
 
 Vediamo ora un esempio in cui i problemi di convergenza sono chiaramente legati alla scelta della direzione.
+
+---
 
 **Esempio 4.3.** Consideriamo il seguente problema di ottimizzazione:
 
@@ -457,32 +587,28 @@ Analogamente, per le iterazioni dispari, $d_k$ è una direzione di discesa se $y
 Consideriamo infine la sequenza delle soluzioni prodotte dall'algoritmo:
 
 1. Iterazione iniziale:
-    
 	    $(x_0, y_0, z_0) = (1, 1, 1)$
-1. Iterazione dispari:
-    
+2. Iterazione dispari:
 	    $(x_1, y_1, z_1) = (\frac{y_0}{2}, y_0, z_0) = \left(\frac{1}{2}, 1, 1\right)$
-1. Iterazione pari:
-    
+3. Iterazione pari:
 	    $(x_2, y_2, z_2) = (x_1, \frac{x_1}{2}, z_1) = \left(\frac{1}{2}, \frac{1}{4}, 1\right)$
-1. Iterazione dispari:
-    
+4. Iterazione dispari:
 	    $(x_3, y_3, z_3) = (\frac{y_2}{2}, y_2, z_2)= \left(\frac{1}{8}, \frac{1}{4}, 1\right)$
-1. Iterazione pari:
-    
+5. Iterazione pari:
 	    $(x_4, y_4, z_4) = (x_3, \frac{x_3}{2}, z_2)= \left(\frac{1}{8}, \frac{1}{16}, 1\right)$
 	    
-e così via. La sequenza converge lentamente verso (0, 0, 1).
+e così via. La sequenza converge lentamente verso **(0, 0, 1)**.
 
 La sequenza è costruita utilizzando una direzione di discesa e il miglior passo possibile a ogni iterazione, ed è chiaro che converge a (0, 0, 1). Tuttavia, il punto limite **non è un punto stazionario** per il problema, poiché: $\nabla f(0, 0, 1) = (0, 0, 2) \neq 0$
+
+---
 
 Questo esempio evidenzia che è fondamentale progettare con attenzione le regole di aggiornamento della forma: $x_{k+1} = x_k + \alpha_k d_k$, per i metodi di discesa. Nelle sezioni successive discuteremo questo problema in dettaglio.
 
 #### 4.2.1 Line Search
 
-Data una direzione di discesa $d_k$, ovvero una direzione che soddisfa:	$\nabla f(x_k)^T d_k < 0$
-
-il nostro obiettivo è trovare un **passo** $\alpha_k$ lungo questa direzione da utilizzare nella regola di aggiornamento: $x_{k+1} = x_k + \alpha_k d_k$, in modo tale che la funzione obiettivo decresca in modo appropriato.
+Data una direzione di discesa $d_k$, ovvero una direzione che soddisfa:	$\nabla f(x_k)^T d_k < 0$ 
+Il nostro obiettivo è trovare un **passo** $\alpha_k$ lungo questa direzione da utilizzare nella regola di aggiornamento: $x_{k+1} = x_k + \alpha_k d_k$, in modo tale ==che la funzione obiettivo decresca in modo appropriato.==
 
 ##### Line search esatta
 
@@ -492,9 +618,9 @@ Un'idea potrebbe essere quella di scegliere il **miglior passo possibile** lungo
 
 dove la funzione $\phi$ della variabile scalare $\alpha$ descrive l'evoluzione della funzione obiettivo lungo la direzione di ricerca. Questa operazione è stata eseguita, ad esempio, nell'Esempio 4.3 ed è rappresentata nella Figura 4a.
 
-![[Pasted image 20250116184353.png]]
+![[Pasted image 20250209161303.png]]
 
-Questa strategia è **generalmente** fattibile per problemi di ottimizzazione quadratica strettamente convessi della forma: $\min_x f(x) = \frac{1}{2}x^T Qx + c^T x, \quad Q \succ 0$.
+Questa strategia è "generalmente fattibile" per problemi di **ottimizzazione quadratica** strettamente convessi della forma: $\min_x f(x) = \frac{1}{2}x^T Qx + c^T x, \quad Q \succ 0$.
 
 Utilizzando lo sviluppo di Taylor di secondo ordine per $f(x_k + \alpha d_k)$ (che è esatto per funzioni quadratiche) e ricordando che $\nabla^2 f(x_k) = Q$, otteniamo:
 
@@ -502,7 +628,7 @@ Utilizzando lo sviluppo di Taylor di secondo ordine per $f(x_k + \alpha d_k)$ (c
 
 Questa è una parabola convessa (il coefficiente quadratico $d_k^T Q d_k$ è positivo grazie alla definitezza positiva di Q). 
 
-Il passo ottimale può essere calcolato annullando la derivata prima:
+Il passo ottimale può essere calcolato **annullando la derivata prima**:
 
 	$0 = \phi'(\alpha) = \nabla f(x_k)^T d_k + \alpha d_k^T Q d_k$
 
@@ -510,64 +636,76 @@ che si risolve con: $\alpha_k = -\frac{\nabla f(x_k)^T d_k}{d_k^T Q d_k}$.
 
 Tuttavia, eccetto per casi molto particolari come questo, le line search esatte devono essere evitate per due motivi principali:
 
-1. **Costo computazionale:** Per una funzione generica f, il minimizzatore di $\phi(\alpha)$ potrebbe non essere disponibile in forma chiusa, e trovarlo potrebbe richiedere l'uso di un risolutore, con un costo computazionale non trascurabile. Inoltre, la direzione $d_k$ potrebbe non essere sufficientemente buona da giustificare un'esplorazione così precisa.
+1. **Costo computazionale:** Per una funzione generica f, il minimizzatore di $\phi(\alpha)$ potrebbe non essere disponibile in forma chiusa, e trovarlo potrebbe richiedere l'uso di un risolutore, ==con un costo computazionale non trascurabile==. Inoltre, la direzione $d_k$ potrebbe **non essere sufficientemente buona** da giustificare un'esplorazione così precisa.
     
-2. **Caso non convesso:** Nel caso non convesso, non possiamo nemmeno verificare se un passo sia globalmente ottimale per la direzione di ricerca.
+2. **Caso non convesso:** Nel caso non convesso, non possiamo nemmeno verificare se un passo sia globalmente ottimale per la direzione di ricerca. (In quanto non sappiamo nemmeno se il passo ottenuto sia il migliore globalmente )
     
 ##### Line Search Approssimata
 
-Queste considerazioni motivano l'interesse per le tecniche di **line search approssimate**. Questa classe di metodi per la selezione del passo si pone l'obiettivo di identificare un valore $\alpha_k$ che garantisca una ==diminuzione della funzione obiettivo==, ovvero un decremento significativo rispetto allo stato attuale della soluzione: $f(x_k + \alpha_k d_k) < f(x_k)$
+Queste considerazioni motivano l'interesse per le tecniche di **line search approssimate**. Questa classe di metodi per la selezione del passo si pone l'obiettivo di identificare un valore $\alpha_k$ che garantisca una ==diminuzione della funzione obiettivo==, ovvero un decremento significativo **rispetto allo stato attuale** della soluzione: $f(x_k + \alpha_k d_k) < f(x_k)$
 
-La condizione di decremento sufficiente più utilizzata è la **Condizione di Armijo**, che richiede:
+La condizione di sufficiente decremento più utilizzata è la **Condizione di *Armijo***, che richiede:
 
 	$f(x_k + \alpha_k d_k) \leq f(x_k) + \gamma \alpha_k \nabla f(x_k)^T d_k, \space \text{con} \space \gamma \in (0, 1)$
 
-In pratica, questa condizione chiede di selezionare un passo $\alpha_k$ in modo che la funzione obiettivo decresca almeno quanto un modello lineare con una pendenza più "dolce" rispetto al modello tangente (vedi Figura 4b).
+In pratica, questa condizione chiede di selezionare un passo $\alpha_k$ in modo che la funzione obiettivo decresca ==almeno quanto un modello lineare== con una pendenza più "dolce" rispetto al modello tangente (vedi Figura 4b).
 
 Analizzando i termini:
 - Il termine a sinistra $\phi(\alpha)$ rappresenta ==la funzione obiettivo lungo la direzione di ricerca== $d_k$.
 - Il termine $f(x_k) = \phi(0)$ è il valore corrente della funzione obiettivo.
-- Il termine $\nabla f(x_k)^T d_k$, se guardiamo bene è la derivata di $\phi(\alpha)$, per $\alpha = 0$, per la regola della catena abbiamo $\phi'(\alpha) = \nabla f(x_k + \alpha d_k)^T d_k, \phi'(0) = \nabla f(x_k)^Td_k$  
+- Il termine $\nabla f(x_k)^T d_k$, se guardiamo bene è la derivata di $\phi(\alpha)$, per $\alpha = 0$, per la regola della catena abbiamo $\phi'(\alpha) = \nabla f(x_k + \alpha d_k)^T d_k, \space \phi'(0) = \nabla f(x_k)^Td_k$  
 
-Dunque, per $\gamma = 1$, la parte destra rappresenta la retta tangente al grafico di $\phi(\alpha)$ in $\alpha = 0$ Più in generale possiamo scrivere la condizione come: $\phi(\alpha) \leq \phi(0) + \gamma \phi'(0)\alpha$, che per direzioni di discesa, la condizione rappresenta una linea con un trend iniziale di discesa.
+Dunque, per $\gamma = 1$, la parte destra rappresenta **la retta tangente al grafico** di $\phi(\alpha)$ in $\alpha = 0$ Più in generale possiamo scrivere la condizione come: $\phi(\alpha) \leq \phi(0) + \gamma \phi'(0)\alpha$, che, per direzioni di discesa, rappresenta una ==linea con un trend iniziale di discesa==.
 
-Per valori di $\gamma \in (0, 1)$, otteniamo rette che passano per $(0, \phi(0))$ con una pendenza più dolce rispetto alla tangente. Quindi la condizione di Armijo ci chiede di trovare un passo tale che la funzione $\phi(\alpha)$ si trovi sotto la linea risultante (vedi figura 4b)
+Per valori di $\gamma \in (0, 1)$, otteniamo rette che passano per $(0, \phi(0))$ con una pendenza più dolce rispetto alla tangente. Quindi la condizione di Armijo ci chiede di trovare **un passo** tale che la funzione $\phi(\alpha)$ ==si trovi sotto la linea risultante== (vedi figura 4b)
 
 ###### Ricerca del Passo mediante Backtracking
 
 Per identificare **operativamente** un passo che soddisfi la condizione di decremento sufficiente, utilizziamo un algoritmo basato sul concetto di **backtracking**. 
 
 L'idea è intuitiva:
-1. Si assume un valore iniziale per il passo $\alpha_k$.
+1. Si assume un valore iniziale $\Delta_0$ per il passo $\alpha_k$.
 2. Si verifica se questo valore soddisfa la Condizione di Armijo: 
 	 $f(x_k + \alpha_k d_k) \leq f(x_k) + \gamma \alpha_k \nabla f(x_k)^T d_k$.
 3. Se la condizione è soddisfatta, il passo viene accettato.
-4. Altrimenti, si riduce il valore del passo moltiplicandolo per un fattore $\delta \in (0, 1)$ (passo di backtrack) e si ripete il controllo.
+4. Altrimenti, si riduce il valore del passo moltiplicandolo per un fattore $\delta \in (0, 1)$ (*passo di backtrack*) e si ripete il controllo.
 
 Andiamo a vedere quindi l'algoritmo:
+
+---
+**Algoritmo 1: Line search di Armijo:**
 
 **Input:**
 - $x_k \in \mathbb{R}^n, d_k \in \mathbb{R}^n \space \text{tc} \space \nabla f(x_k)^T d_k < 0$,
 - $\Delta_0 > 0, \gamma \in (0, 1), \delta \in (0, 1)$.
 
 **Procedura:**
-1. Imposta $\alpha = \Delta_0$.
-2. **While** $f(x_k + \alpha d_k) > f(x_k) + \gamma \alpha \nabla f(x_k)^T d_k$:
+5. Imposta $\alpha = \Delta_0$.
+6. **While** $f(x_k + \alpha d_k) > f(x_k) + \gamma \alpha \nabla f(x_k)^T d_k$:
     - Aggiorna $\alpha = \delta \alpha$.
-3. Imposta $\alpha_k = \alpha$.
-4. **Restituisci** $\alpha_k$.
+7. Imposta $\alpha_k = \alpha$.
+8. **Restituisci** $\alpha_k$.
+
+---
 
 Algoritmo riassumibile dalla seguente formula: 
 	$\alpha_k = max_{j=0,1,...} \{\delta^j\Delta_0 \space | \space \phi(\delta^j\Delta_0) \leq \phi(0) + \gamma \delta^j\Delta_0\phi'(0)\}$ con $\delta \in (0,1)$ e $\Delta_0 > 0$ 
 
+---
+
 Algoritmo che gode di alcune proprietà teoriche:
 
+---
+
 **Proposizione 4.2.**  
-Sia $f: \mathbb{R}^n \to \mathbb{R}$ una funzione continuamente differenziabile. Siano $x_k \in \mathbb{R}^n, d_k \in \mathbb{R}^n \space \text{con} \space \nabla f(x_k)^T d_k < 0,\gamma \in (0, 1), \delta \in (0, 1), \Delta_0 > 0$. Allora, l'algoritmo **Armijo Line Search** termina in ==un numero finito di iterazioni==, fornendo un passo $\alpha_k$ che soddisfa la condizione di Armijo. Inoltre, valgono le seguenti proprietà:
+Sia $f: \mathbb{R}^n \to \mathbb{R}$ una funzione continuamente differenziabile. Siano $x_k \in \mathbb{R}^n, d_k \in \mathbb{R}^n \space \text{con} \space \nabla f(x_k)^T d_k < 0,\gamma \in (0, 1), \delta \in (0, 1), \Delta_0 > 0$. Allora, l'algoritmo **Line Search di Armijo** termina in ==un numero finito di iterazioni==, fornendo un passo $\alpha_k$ che soddisfa la condizione di Armijo. Inoltre, valgono le seguenti proprietà:
 
 -  $\alpha_k = \Delta_0$, se il primo tentativo soddisfa la condizione di Armijo;  
--  $\alpha_k \leq \delta \Delta_0$ e $f(x^k + \frac{\alpha_k}{\delta}d_k) > f(x^k + \gamma \frac{\alpha_k}{\delta}\nabla f(x^k)^Td_k$ 
+-  $\alpha_k \leq \delta \Delta_0$ e $f(x^k + \frac{\alpha_k}{\delta}d_k) > f(x^k) + \gamma \frac{\alpha_k}{\delta}\nabla f(x^k)^Td_k$ 
 
+---
+
+**Dimostrazione.**
 Assumiamo per assurdo che l'algoritmo non termini mai, cioè che la condizione di arresto non venga mai soddisfatta per alcun passo $\delta^j \Delta_0$, con j=0,1,…
 Questo implica che: $f(x_k + \delta^j \Delta_0 d_k) > f(x_k) + \gamma \delta^j \Delta_0 \nabla f(x_k)^T d_k$.
 
@@ -583,18 +721,22 @@ Otteniamo quindi:
 
 	$\nabla f(x_k)^T d_k \geq \gamma \nabla f(x_k)^T d_k, => (1-\gamma)\nabla f(x^k)^Td_k \geq 0$ 
  
-Poiché $(1 - \gamma)$ è positivo e $\nabla f(x_k)^T d_k < 0$ per ipotesi, questa relazione è contraddittoria. Quindi, l'algoritmo deve terminare in un numero finito di iterazioni.
+Poiché $(1 - \gamma)$ è positivo e $\nabla f(x_k)^T d_k < 0$ per ipotesi, questa relazione è contraddittoria. 
 
-La seconda proprietà deriva direttamente dalla struttura dell'algoritmo: se il passo iniziale $\Delta_0$ non è accettabile, almeno un backtracking viene eseguito, e il passo accettato $\alpha_k$ sarà il primo che soddisfa la condizione, mentre il secondo ultimo step tentato sarà $\frac{\alpha_k}{\delta}$ che non soddisfa la condizione di Armijo.
+---
 
-La logica della prima proprietà è che, riducendo ripetutamente il passo della stessa frazione, nel caso peggiore ad un certo punto arriveremo nell'intervallo iniziale dello stepsize che soddisfa la condizione, cosicchè la linesearch si ferma in tempo finito.
+La seconda proprietà deriva direttamente dalla **struttura dell'algoritmo**: se il passo iniziale $\Delta_0$ non è accettabile, almeno un *backtracking* viene eseguito, e il passo accettato $\alpha_k$ ==sarà il primo che soddisfa la condizione==, mentre il secondo ultimo step tentato sarà $\frac{\alpha_k}{\delta}$ che **non soddisfa la condizione di Armijo**.
+
+---
+
+La logica della prima proprietà è che, riducendo ripetutamente il passo della stessa frazione, nel caso peggiore ad un certo punto arriveremo nell'intervallo iniziale dello stepsize che soddisfa la condizione, cosicchè la line search si ferma in tempo finito.
 La seconda proprietà ci dice banalmente che, se non accettiamo il primo passo, otteniamo un passo riducendo il passo più grande che non soddisfa la condizione di Armijo.
 
 #### 4.2.2 Direzioni gradient related
 
-Come abbiamo visto nell'Esempio 4.3, e forse contrariamente all'intuizione, scegliere una direzione di discesa a ogni iterazione non è sufficiente per garantire la convergenza verso un punto stazionario. Nell'esempio, si osserva che il punto limite non stazionario viene avvicinato asintoticamente utilizzando direzioni che diventano sempre meno di discesa, tendendo a essere ortogonali al gradiente del punto limite.
+Come abbiamo visto nell'Esempio 4.3, e forse contrariamente all'intuizione, scegliere una direzione di discesa a ogni iterazione non è sufficiente per garantire la convergenza verso un punto stazionario. Nell'esempio, si osserva che il punto limite non stazionario viene avvicinato asintoticamente utilizzando direzioni che diventano **sempre meno di discesa**, tendendo a essere ortogonali al gradiente del punto limite.
 
-Per evitare questo tipo di comportamento, richiediamo che la direzione di ricerca sia in qualche modo legata al vettore gradiente. Formalizziamo questa idea con la seguente definizione.
+Per evitare questo tipo di comportamento, richiediamo che la direzione di ricerca sia in qualche modo **legata al vettore gradiente**. Formalizziamo questa idea con la seguente definizione.
 
 ---
 **Definizione 4.4: Direzioni Correlate al Gradiente**
@@ -610,7 +752,9 @@ Diciamo che la sequenza $\{d_k\}$ delle direzioni è **correlata al gradiente** 
 
 Interpretazione ora le due condizioni:
 - **Prima condizione:** La grandezza della direzione di ricerca può essere molto grande, purché non sia infinitamente maggiore rispetto alla grandezza del gradiente. ==Inoltre, la direzione deve ridursi a zero quando il gradiente tende a zero.==
-- **Seconda condizione:** Richiede che la direzione **di discesa selezionata** abbia ==una derivata direzionale non trascurabile rispetto alla derivata direzionale lungo il gradiente,== e che si riduca a zero solo quando ci si avvicina a un punto stazionario.
+- **Seconda condizione:** Richiede che la **direzione di discesa selezionata** abbia una derivata direzionale non trascurabile rispetto alla derivata direzionale lungo il gradiente, e che ==si riduca a zero solo quando ci si avvicina a un punto stazionario==.
+
+---
 
 Denotiamo con $\theta(v_1, v_2)$ l'angolo tra due vettori $v_1$ e $v_2$. Combinando le due condizioni della Definizione 4.4, otteniamo:
 
@@ -633,6 +777,8 @@ Sotto questa assunzione, possiamo dimostrare che per ogni k (Ricorda Prop 1.2 ):
 1. $\|d_k\| = \|H_k \nabla f(x_k)\| \leq \lambda_{\text{max}}(H_k) \|\nabla f(x_k)\| \leq c_1 \|\nabla f(x_k)\|$, 
 2. $\nabla f(x_k)^T d_k = -\nabla f(x_k)^T H_k \nabla f(x_k) \leq -\lambda_{\text{min}}(H_k) \|\nabla f(x_k)\|^2 \leq -c_2 \|\nabla f(x_k)\|^2$.
 
+---
+
 Questa condizione sarà particolarmente utile nella discussione di alcune classi importanti di algoritmi, dove la correlazione tra direzione e gradiente è fondamentale per garantire proprietà di convergenza e stabilità.
 #### 4.2.3 Risultati di Convergenza
 
@@ -641,12 +787,12 @@ In questa sezione forniamo i risultati generali di convergenza per i metodi di d
 ---
 ##### **Proposizione 4.3: Convergenza Globale**
 
-Sia $f$ una funzione continuamente differenziabile, e sia $\{x_k, d_k\}$ la sequenza generata da un algoritmo iterativo della forma: $x_{k+1} = x_k + \alpha_k d_k$, supponendo che:
-- il passo $\alpha_k$ sia ottenuto tramite l'algoritmo di Armijo (Algoritmo 1) per ogni $k$,
-- la sequenza delle direzioni $\{d_k\}$ sia correlata al gradiente rispetto a $\{x_k\}$. 
-- Inoltre, supponiamo che l'insieme di livello: $L_0 = \{x \in \mathbb{R}^n \, | \, f(x) \leq f(x_0)\}$ sia compatto. 
+Sia $f$ una funzione **continuamente differenziabile**, e sia $\{x_k, d_k\}$ la sequenza generata da un algoritmo iterativo della forma: $x_{k+1} = x_k + \alpha_k d_k$, supponendo che:
+- il passo $\alpha_k$ sia ottenuto tramite **l'algoritmo di Armijo** (Algoritmo 1) per ogni $k$,
+- la sequenza delle direzioni $\{d_k\}$ sia **correlata al gradiente** rispetto a $\{x_k\}$. 
+- Inoltre, supponiamo che l'insieme di livello: $L_0 = \{x \in \mathbb{R}^n \, | \, f(x) \leq f(x_0)\}$ sia **compatto**. 
 
-Allora, la sequenza $\{x_k\}$ ammette punti di accumulazione, e ==ogni punto di accumulazione $\bar{x}$ è un punto stazionario==, cioè: $\nabla f(\bar{x}) = 0$.
+Allora, la sequenza $\{x_k\}$ ammette **punti di accumulazione**, e ==ogni punto di accumulazione $\bar{x}$ è un punto stazionario==, cioè: $\nabla f(\bar{x}) = 0$.
 
 ---
 
@@ -663,7 +809,7 @@ Sia $\bar{x}$ uno di questi punti limite, cioè esiste $K \subseteq \{0, 1, \dot
 
 	$\lim_{k \in K, \, k \to \infty} x_k = \bar{x}$
 
-Supponiamo per assurdo che $\bar{x}$ non sia un punto stazionario, cioè che $\|\nabla f(\bar{x})\| = \nu > 0$. Riscrivendo l'equazione (5), otteniamo:
+**Supponiamo per assurdo** che $\bar{x}$ non sia un punto stazionario, cioè che $\|\nabla f(\bar{x})\| = \nu > 0$. Riscrivendo l'equazione (5), otteniamo:
 
 	$f(x_{k+1}) - f(x_k) \leq \gamma \alpha_k \nabla f(x_k)^T d_k \leq 0$
 
@@ -742,11 +888,14 @@ $\nabla f(\bar{x})^T\bar{d} = \lim_{k \in K_2, k \to \infty} \nabla f(x_k)^T  d_
 
 Questa è una contraddizione, completando la dimostrazione.
 
-Successivamente, forniamo ulteriori informazioni sulla condizione di Armijo e sull'algoritmo di ricerca della linea di backtracking, nel caso speciale in cui viene utilizzato in combinazione con le direzioni relative al gradiente e la funzione obiettivo ha gradienti continui di Lipschitz. Il primo risultato identifica un intervallo completo di stepsize sufficientemente piccolo che ==soddisfano la condizione di Armijo **in tutte le iterazioni**==
-
 ---
 ##### **Proposizione 4.4: Intervallo dei Passi Sufficientemente Piccoli**
 
+Successivamente, forniamo ulteriori informazioni sulla condizione di Armijo e sull'algoritmo di ricerca della linea di backtracking, nel caso speciale in cui viene utilizzato in combinazione con le direzioni relative al gradiente e la funzione obiettivo ha gradienti continui di Lipschitz. Il primo risultato identifica un intervallo completo di stepsize sufficientemente piccolo che ==soddisfano la condizione di Armijo **in tutte le iterazioni**==
+
+---
+
+**Enunciato**
 Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione _L-smooth_. Sia $\{x_k\}$ la sequenza generata da un algoritmo iterativo della forma: $x_{k+1} = x_k + \alpha_k d_k$, supponendo che la sequenza delle direzioni di ricerca $\{d_k\}$ sia _gradient related_. Allora, per ogni $k$, la condizione di Armijo  è soddisfatta per ogni passo $\alpha \in [0, \Delta_{\text{low}}]$, con: $\Delta_{\text{low}} = \frac{2 c_2 (1 - \gamma)}{L c_1^2}$.
 
 ---
@@ -775,7 +924,7 @@ Sfruttando la condizione di correlazione al gradiente, abbiamo:
 
 	$|\nabla f(x_k)^T d_k| \geq c_2 \|\nabla f(x_k)\|^2, \quad \|d_k\|^2 \leq c_1^2 \|\nabla f(x_k)\|^2$
 
-Sostituendo, otteniamo:
+Sostituendo (stando attenti ai segni), otteniamo:
 
 	$(1 - \gamma) c_2 \|\nabla f(x_k)\|^2 < \frac{L \alpha}{2} c_1^2 \|\nabla f(x_k)\|^2$
 
@@ -802,12 +951,12 @@ Possiamo ora sfruttare il risultato di sopra per settare un bound sul numero di 
 
 ---
 
-Dimostrazione.
+Dimostrazione. (**saltabile**)
 Sia $j^*$ il più piccolo intero positivo tale che:
 
 	$\delta^{j^*} \Delta_0 \leq \Delta_{\text{low}}$.
 
-Secondo la Proposizione 4.4, il passo $\delta^{j^*}\Delta_0$ soddisfa la condizione di Armijo per ogni $k$. Quindi, dall'algoritmo di Armijo, abbiamo 	$j∗.j_k \leq j^*$.  Per la definizione di $j^*$, vale anche:
+Secondo la Proposizione 4.4, il passo $\delta^{j^*}\Delta_0$ soddisfa la condizione di Armijo per ogni $k$. Quindi, dall'algoritmo di Armijo, abbiamo 	$j^∗.j_k \leq j^*$.  Per la definizione di $j^*$, vale anche:
 
 	$\delta^{j^*} \leq  \frac{\Delta_{\text{low}}}{\Delta_0 }$,
 
@@ -815,7 +964,7 @@ e prendendo il logaritmo (in base $\delta$):
 
 	$j^* \geq \log_{\delta} \frac{\Delta_{\text{low}}}{\Delta_0} = \log_{1/\delta} \frac{\Delta_0}{\Delta_{\text{low}}}$,
 
-quindi, essendo $j^*$ il più piccolo intero che soddisfa la disequazione di sopra vale:
+quindi, essendo $j^*$ **il più piccolo intero** che soddisfa la disequazione di sopra vale:
 
 	$j^* = \max\left(0, \lceil \log_{1/\delta} \frac{\Delta_0}{\Delta_{\text{low}}} \rceil \right)$
 
@@ -826,17 +975,19 @@ Ora consideriamo i due casi:
 
 2. Altrimenti se $\Delta_0 > \Delta_{\text{low}}$, abbiamo: $j_k \leq j^* = \lceil \log_{1/\delta} \frac{\Delta_0}{\Delta{\text{low}}} \rceil \leq  \log_{1/\delta} \frac{\Delta_0}{\Delta{\text{low}}} +1$ e quindi: $\frac{1}{\delta^{j_k - 1}} \leq \frac{\Delta_0}{\Delta_{\text{low}}}$, cioè $\delta^{j_k-1} \geq \frac{\Delta_{\text{low}}}{\Delta_0}$ e finalmente $\Delta_{\text{low}} \leq \delta^{j_k}\Delta_0 = \alpha_k$ 
 
-Un'interessante conseguenza dei risultati precedenti è che, se conoscessimo le quantità $L$, $c_1$, e $c_2$, e quindi $\Delta_{\text{low}}$, potremmo impostare direttamente il passo $\alpha_k = \Delta_{\text{low}}$. Questo garantirebbe sempre la soddisfazione della condizione di Armijo, oltre alla convergenza globale descritta nella Proposizione 4.3, senza necessità di effettuare backtracking. Inoltre, il risultato di complessità successivo sarebbe anch'esso garantito.
+---
 
-Questo giustifica il fatto che talvolta gli algoritmi di discesa utilizzano un passo costante: se il valore scelto è inferiore a $\Delta_{\text{low}}$, si ottiene convergenza globale. Tuttavia, passi troppo piccoli riducono l'efficienza pratica degli algoritmi, dunque usare le line search è in pratica più conveniente, poiché consentono di provare passi più aggressivi senza compromettere le garanzie di convergenza.
+Un'interessante conseguenza dei risultati precedenti è che, se conoscessimo le quantità $L$, $c_1$, e $c_2$, e quindi $\Delta_{\text{low}}$, potremmo impostare direttamente il passo $\alpha_k = \Delta_{\text{low}}$. Questo garantirebbe sempre la soddisfazione della condizione di Armijo, oltre alla convergenza globale descritta nella Proposizione 4.3, **senza necessità di effettuare backtracking**. Inoltre, il risultato di complessità successivo sarebbe anch'esso garantito.
 
-##### Proposizione 4.6: Complessità nel Caso Non Convesso
+Questo giustifica il fatto che ==talvolta gli algoritmi di discesa utilizzano un passo costante==: se il valore scelto è inferiore a $\Delta_{\text{low}}$, si ottiene convergenza globale. Tuttavia, passi troppo piccoli riducono l'efficienza pratica degli algoritmi, dunque usare le line search è in pratica più conveniente, poiché consentono di provare passi più aggressivi senza compromettere le garanzie di convergenza.
+
+##### **Proposizione 4.6: Complessità nel Caso Non Convesso**
 
 Siamo pronti a dare l'ultimo risultato di questa sezione, osservando il bound di complessità peggiore nel caso non convesso.
 
 ---
 
-**Enunciato:**  
+**Enunciato** 
 Sia $f: \mathbb{R}^n \to \mathbb{R}$ una funzione $L-smooth$. Sia $\{x_k\}$ la sequenza generata da un algoritmo iterativo della forma: 	$x_{k+1} = x_k + \alpha_k d_k$, supponendo che la sequenza delle direzioni di ricerca $\{d_k\}$ sia _gradient related_ e che il passo $\alpha_k$ venga calcolato tramite l'algoritmo di Armijo con un passo iniziale $\Delta_0 > \delta \Delta_{\text{low}}$. Inoltre, supponiamo che $f$ sia limitata inferiormente da un valore $f^*$. Allora, per ogni $\epsilon > 0$, sono necessarie al **massimo $k_{\text{max}}$ iterazioni** per produrre un iterata $x_k$ tale che: $\|\nabla f(x_k)\| \leq \epsilon$, dove:
 
 	$k_{\text{max}} \leq \frac{f(x_0) - f^*}{\gamma c_2 \delta \Delta_{\text{low}} \epsilon^2} = O(\epsilon^{-2})$
@@ -845,7 +996,7 @@ Lo stesso limite di complessità $O(\epsilon^{-2})$ ==vale anche per il numero d
 
 ---
 
-Dimostrazione.
+**Dimostrazione**
 Poiché la condizione di Armijo è soddisfatta a ogni iterazione e grazie alla condizione di gradient related, abbiamo per ogni $k$:
 
 	$f(x_{k+1}) - f(x_k) = f(x_k + \alpha_k d_k) - f(x_k)$
@@ -866,11 +1017,13 @@ Riordinando i termini, otteniamo:
 
 	$k_\epsilon \leq \frac{f(x_0) - f^*}{\gamma c_2 \delta \Delta_{\text{low}} \epsilon^2}$
 
-Dato che il gradiente viene valutato **una volta per iterazione** e che, dalla Proposizione 4.5, il numero massimo di backtracking è costante a ogni iterazione, lo stesso limite $O(\epsilon^{-2})$ ==si applica al numero di valutazioni della funzione e del gradiente.==
+Dato che ==il gradiente viene valutato **una volta per iterazione**== e che, dalla Proposizione 4.5, il numero massimo di backtracking è **costante** a ogni iterazione, lo stesso limite $O(\epsilon^{-2})$ ==si applica al numero di valutazioni della funzione e del gradiente.==
 
-Conclundendo i metodi di discesa basati su line search con Armijo e direzioni gradient-related hanno nel caso non convesso e funzioni L-smooth, hanno nle caso peggiore un iteration complexity di $O(\frac{1}{\epsilon^2})$ (o equivalentemente un iteration error di $O(\frac{1}{\sqrt{k}})$). Sebbene questo risultato rappresenti il caso peggiore, dimostra che i metodi di discesa basati su line search sono praticabili anche per problemi complessi e non convessi.
+---
 
-##### Proposizione 4.7: Limite per Metodi di Primo Ordine
+Conclundendo i metodi di discesa basati su line search con Armijo e direzioni gradient-related hanno nel caso non convesso e funzioni L-smooth, hanno nel caso peggiore un *iteration complexity* di $O(\frac{1}{\epsilon^2})$ (o equivalentemente un iteration error di $O(\frac{1}{\sqrt{k}})$). Sebbene questo risultato rappresenti il caso peggiore, dimostra che i metodi di discesa basati su line search sono praticabili anche per problemi complessi e non convessi.
+
+##### **Proposizione 4.7: Limite per Metodi di Primo Ordine**
 
 Questo risultato è significativo poiché il limite è noto per essere **ottimale** ==per i metodi di primo ordine.==
 
@@ -881,7 +1034,7 @@ Questo risultato è significativo poiché il limite è noto per essere **ottimal
 ---
 
 Complessità migliori possono essere ottenute solo con ipotesi più forti, ad esempio quando la funzione obiettivo è **convessa** o, ancor meglio, **strettamente convessa**. Per questi casi particolari, le dimostrazioni devono sfruttare la definizione specifica delle regole di aggiornamento e i meccanismi dell'algoritmo. Tali casi verranno analizzati successivamente.
-x
+
 ### 4.3 Metodo di Discesa del Gradiente
 
 È ora semplice introdurre l'algoritmo archetipo per l'ottimizzazione non lineare: il **metodo di discesa del gradiente**. Questo famoso algoritmo è un metodo basato su line search della forma: $x_{k+1} = x_k + \alpha_k d_k$, dove:
@@ -892,7 +1045,7 @@ x
 ---
 ##### **Algoritmo 2: Metodo di Discesa del Gradiente**
 
-1. **Input:** $x_0 \in \mathbb{R}^n$.
+1. **Input:** $x_0 \in \mathbb{R}^n$
 2. Inizializza $k = 0$.
 3. **Mentre** $\|\nabla f(x_k)\| \neq 0$:  
     a. Imposta $d_k= -\nabla f(x_k)$.  
@@ -913,7 +1066,7 @@ Analizziamo ora il **caso convesso** assumendo un passo costante $\alpha_k = \fr
 
 ---
 
-**Enunciato:** Sia $f$ una funzione _L-smooth_ e convessa, e sia $\{x_k\}$ la sequenza generata dall'algoritmo di discesa del gradiente con passo costante $\alpha_k = \frac{1}{L}$.
+**Enunciato:** Sia $f$ una funzione _L-smooth_ e **convessa**, e sia $\{x_k\}$ la sequenza generata dall'algoritmo di discesa del gradiente con passo costante $\alpha_k = \frac{1}{L}$.
 Supponiamo che $f^*$ sia il valore ottimale di $f$ e che $x^*$ sia un minimizzatore di $f$, cioè $f(x^*) = f^*$. Allora:
 
 	$f(x_k) - f^* \leq \frac{L \|x_0 - x^*\|^2}{2k}$
@@ -922,7 +1075,7 @@ Ovvero, l'algoritmo ha un **errore d'iterazione** di $O(\frac{1}{k})$ e una **co
 
 ---
 
-Dimostrazione.
+**Dimostrazione.**
 
 Dalla **_continuità Lipschitziana_** (Proposizione 1.8) del gradiente $\nabla f(x)$ e considerando $x_{k+1} = x_k + \alpha_k d_k$, abbiamo che:
 
@@ -974,13 +1127,14 @@ Dividendo per $(k+1)$, otteniamo:
 
 	$f(x_{k+1}) - f(x^*) \leq \frac{L}{2(k+1)} \|x_0 - x^*\|^2$.
 
-Questo rappresenta un miglioramento significativo rispetto al caso non convesso, dove la complessità è $O\left(\frac{1}{\epsilon^2}\right)$. La dipendenza lineare da $k$ o $\frac{1}{\epsilon}$ è una caratteristica fondamentale dei metodi di primo ordine applicati a funzioni convesse lisce. Anche se questo rate ==non è ottimale==, infatti sublineare, per i metodi del primo ordine nel caso convesso. Discuteremo questo aspetto successivamente.
+Questo rappresenta un miglioramento significativo rispetto al caso non convesso, dove la complessità è $O\left(\frac{1}{\epsilon^2}\right)$. La dipendenza lineare da $k$ o $\frac{1}{\epsilon}$ è una caratteristica fondamentale dei metodi di primo ordine applicati a funzioni **convesse** *lisce*. Anche se questo rate ==non è ottimale==, infatti sublineare, per i metodi del primo ordine nel caso convesso. Discuteremo questo aspetto successivamente.
 
-##### Proposizione 4.9: Convergenza nel caso fortemente convesso
+##### **Proposizione 4.9: Convergenza nel caso fortemente convesso**
 
 ---
 
-**Enunciato:** Sia $f$ una funzione _L-smooth_ e _fortemente convessa_. Per ogni $x^0 \in \mathbb{R}^n$, l'intera sequenza $\{x^k\}$ prodotta dal metodo di discesa del gradiente con $\alpha_k = \frac{1}{L}$ per ogni $k$, converge all'unico punto di minimo globale $x^*$ di $f$ con un ==tasso di convergenza lineare==.   
+**Enunciato:** Sia $f$ una funzione _L-smooth_ e **_fortemente convessa_**. Per ogni $x^0 \in \mathbb{R}^n$, l'intera sequenza $\{x^k\}$ prodotta dal metodo **di discesa del gradiente** con $\alpha_k = \frac{1}{L}$ per ogni $k$, converge al'**unico punto di minimo globale** $x^*$ di $f$ con un ==tasso di convergenza lineare==. 
+(complessità di $O(log{\frac{1}{\epsilon}})$ a cui corrisponde una *iteration error* di $O(\frac{1}{2})^k)$)
 
 ---
 
@@ -988,21 +1142,21 @@ Possiamo vedere che c'è una differenza significativa di performance quando andi
 
 ### 4.4 Metodi del Gradiente con Momento
 
-Il semplice metodo di discesa del gradiente non è particolarmente efficiente in teoria e, in pratica, risulta spesso poco performante. Per questo motivo, si studiano approcci che mirano a migliorare la velocità del metodo di discesa del gradiente. Iniziamo con metodi di primo ordine che sfruttano ==informazioni dalle iterazioni precedenti== per determinare la **direzione di ricerca** e **il passo** nell'iterazione corrente.
+Il semplice metodo di discesa del gradiente non è particolarmente efficiente in teoria (tasso di convergenza comunque sublineare) e, in pratica, risulta spesso poco performante. Per questo motivo, si studiano approcci che mirano a migliorare la velocità del metodo di discesa del gradiente.
+
+Iniziamo con metodi di primo ordine che sfruttano ==informazioni dalle iterazioni precedenti== per determinare la **direzione di ricerca** $d_k$ e **il passo** $\alpha_k$ nell'iterazione corrente.
 
 Questi metodi, noti come **metodi del gradiente con momento**, sono descritti dalla seguente regola di aggiornamento generica:
 
 	$x_{k+1} = x_k - \alpha_k \nabla f(x_k) + \beta_k (x_k - x_{k-1})$ (10)
 
-dove:
+dove: 
+- $\alpha_k > 0$ è il **passo**,
+- $\beta_k > 0$ è il *peso del momento*.
 
-- $\alpha_k > 0$ è il passo,
-- $\beta_k > 0$ è il peso del momento.
-
-L'idea alla base di questo aggiornamento è che ==la direzione dell'ultima iterazione sia probabilmente una buona direzione di ricerca anche per quella corrente==. Ripetere parzialmente il passo precedente ha l'effetto di **controllare le oscillazioni** e **fornire accelerazione** nelle regioni di bassa curvatura. Questa strategia sfrutta solo informazioni già disponibili, ==senza richiedere ulteriori valutazioni della funzione==, rendendola particolarmente attraente per problemi su larga scala.
+L'idea alla base di questo aggiornamento è che ==la direzione dell'ultima iterazione sia probabilmente una buona direzione di ricerca anche per quella corrente==. Ripetere parzialmente il **passo precedente** ha l'effetto di **controllare le oscillazioni** e **fornire accelerazione** nelle regioni **di bassa curvatura**. Questa strategia sfrutta solo informazioni già disponibili, ==senza richiedere ulteriori valutazioni della funzione==, rendendola particolarmente attraente per problemi su larga scala.
 
 I metodi del gradiente con momento più noti e importanti sono:
-
 - **Metodo della palla pesante (Heavy-ball method);**
 - **Metodi del gradiente coniugato (Conjugate gradient methods).**
 
@@ -1013,18 +1167,16 @@ Il **metodo della palla pesante** è descritto direttamente dalla regola di aggi
 	$\begin{cases} &y_k = x_k - \alpha_k \nabla f(x_k), \\ &x_{k+1} = y_k + \beta_k (x_k - x_{k-1}), \end{cases}$
 
 dove:
-
 - $\alpha_k$ e $\beta_k$ sono tipicamente fissati a valori positivi.
 
-In linea di principio, i valori dei parametri dovrebbero essere scelti in base alle proprietà della funzione obiettivo (ad esempio, utilizzando la costante di Lipschitz del gradiente o la costante di forte convessità). Tuttavia, nella pratica ==queste informazioni non sono spesso accessibili==, quindi:
-
+In linea di principio, i valori dei parametri dovrebbero essere scelti in base alle proprietà della funzione obiettivo (ad esempio, utilizzando la costante di *Lipschitz* del gradiente o la costante di forte convessità). Tuttavia, nella pratica ==queste informazioni non sono spesso accessibili==, quindi:
 - $\alpha_k$ può essere scelto tramite una **line search**,
 - $\beta_k$ viene spesso impostato a un valore "ragionevole" predefinito.
 
 Per il metodo della palla pesante, i risultati di **convergenza locale** sono stati dimostrati **nel caso convesso**. In particolare, nel caso di **funzioni quadratiche strettamente convesse**, i valori ottimali dei parametri $\alpha_k$ e $\beta_k$ possono essere calcolati in forma chiusa.
 Con questa scelta ottimale dei parametri, si ottiene un **tasso di convergenza lineare locale** ==con costanti migliori rispetto al metodo di discesa del gradiente standard== (occhio però è locale!!). Questo risultato può essere generalizzato sotto ipotesi di doppia continuità e differenziabilità, gradiente _lipschitz-continuo_ e convessità forte.
 
-Sebbene il **metodo della palla pesante** abbia dimostrato buone proprietà di accelerazione in diversi contesti, è stato mostrato che il metodo ==potrebbe non convergere anche sotto forti assunzioni di regolarità==. Inoltre la convergenza del metodo nel caso non convesso rimane un problema aperto, in parte perché la struttura dell'algoritmo non rientra nel quadro analizzato nella Sezione 4.2.2 (ovvero $d_k$ non è una direzione gradient-related).
+Sebbene il **metodo della palla pesante** abbia dimostrato buone proprietà di accelerazione in diversi contesti, è stato mostrato con diversi esempi che il metodo ==potrebbe non convergere anche sotto forti assunzioni di regolarità==. Inoltre la convergenza del metodo nel caso non convesso rimane un problema aperto, in parte perché la struttura dell'algoritmo non rientra nel quadro analizzato nella Sezione 4.2.2 (ovvero $d_k$ **non è una direzione gradient-related**).
 
 Il metodo della palla pesante è spesso spiegato tramite un'analogia fisica, sebbene non completamente accurata:
 - Il **vettore delle variabili** può essere visto come una particella che si muove nello spazio euclideo.
@@ -1032,24 +1184,24 @@ Il metodo della palla pesante è spesso spiegato tramite un'analogia fisica, seb
 
 In questo contesto, l'aggiornamento del momento può essere definito dalla seguente coppia di equazioni:
 
-	$\begin{cases} v_{k+1} = \beta_k v_k - \alpha_k \nabla f(x_k),\\ x_{k+1} = x_k + v_{k+1} \end{cases}$
+	$\begin{cases} v_{k+1} = \beta_k v_k - \alpha_k \nabla f(x_k),\\ x_{k+1} = x_k + v_{k+1} \\ v_k = x_k - x_{k-1} \end{cases}$
 
 Qui:
-- Il vettore di aggiornamento $v_k$ rappresenta un termine di velocità, calcolato come una media decrescente esponenziale dei gradienti negativi passati.
+- Il vettore di aggiornamento $v_k$ rappresenta un **termine di velocità**, calcolato come una media decrescente esponenziale dei gradienti negativi passati.
 - I gradienti modificano la **velocità della particella**, piuttosto che direttamente la sua posizione.
 - Il movimento è quindi effettuato in base alla **velocità calcolata nella posizione corrente**.
 ##### Metodo del Gradiente Accelerato di Nesterov
 
 Il **metodo di Nesterov Accelerated Gradient (NAG)** può essere visto come una variante del metodo della palla pesante. La regola di aggiornamento dell'algoritmo di Nesterov è data da:
 
-	$\begin{cases}v_{k+1} = \beta_k v_k - \alpha_k \nabla f(x_k + \beta_k v_k), \\ x_{k+1} = x_k + v_{k+1}\end{cases}$
+	$\begin{cases}v_{k+1} = \beta_k v_k - \alpha_k \nabla f(x_k + \beta_k v_k), \\ x_{k+1} = x_k + v_{k+1} \end{cases}$
 
 L'unica differenza rispetto al metodo della palla pesante risiede nel fatto che:
-- Il gradiente è calcolato nel punto che sarebbe ottenuto ripetendo l'ultimo movimento ($x_k + \beta_k v_k$), piuttosto che nel punto corrente $x_k$.
+- Il **gradiente** è calcolato nel punto che sarebbe ottenuto ==ripetendo l'ultimo movimento== ($x_k + \beta_k v_k$), piuttosto che nel punto corrente $x_k$.
 
 Le iterazioni sono essenzialmente composte da due fasi (in successione):
 1. **Passo puro di momento** (senza influenza del gradiente).
-2. **Passo puro di discesa del gradiente**.
+2. **Passo puro di discesa del gradiente** (calcolato nel punto ottenuto con il passo di momento).
 
 La regola di aggiornamento può essere riscritta in forma equivalente come:
 
@@ -1058,7 +1210,7 @@ La regola di aggiornamento può essere riscritta in forma equivalente come:
 - Il passo $\alpha_k$ può essere calcolato tramite una **line search di Armijo**.
 - Il parametro del momento $\beta_k$ segue uno schema definito a priori.
 
-![[Pasted image 20250122091124.png]]
+![[Pasted image 20250210215505.png]]
 
 ---
 
@@ -1071,8 +1223,10 @@ ovvero, l'algoritmo ha un **errore iterativo** di $O\left(\frac{1}{k^2}\right)$ 
 
 ---
 
-Questo risultato è significativo poiché il limite di complessità $O\left(\frac{1}{\sqrt{\epsilon}}\right)$ è stato dimostrato essere **ottimale** per i metodi di primo ordine: ==utilizzando solo informazioni sui gradienti, non è possibile ottenere complessità migliori==. Tuttavia, il tasso di convergenza rimane **sublineare**, anche se significativamente più veloce rispetto al metodo di discesa del gradiente standard.
-Nel caso di funzioni **fortemente convesse**, il metodo del gradiente accelerato ottiene la stessa complessità iterativa e tasso di convergenza del metodo di discesa del gradiente, cioè $O(\rho^k)$. Tuttavia, il valore di $\rho$ è più piccolo rispetto a quello della discesa del gradiente, indicando un tasso di **convergenza lineare più rapido**.
+Questo risultato è significativo poiché il limite di complessità $O\left(\frac{1}{\sqrt{\epsilon}}\right)$ è stato dimostrato essere **ottimale** per i metodi di primo ordine: ==utilizzando solo informazioni sui gradienti, non è possibile ottenere complessità migliori==.
+Tuttavia, il tasso di convergenza rimane **sub-lineare**, anche se significativamente più veloce rispetto al metodo di discesa del gradiente standard.
+
+Nel caso di funzioni **fortemente convesse**, il metodo del gradiente accelerato ottiene la stessa complessità iterativa e tasso di convergenza del metodo di discesa del gradiente, cioè $O(\rho^k)$. Tuttavia, il valore di $\rho$ è **più piccolo** rispetto a quello della discesa del gradiente, indicando un tasso di **convergenza lineare più rapido**.
 
 #### 4.4.2 Metodi del Gradiente Coniugato
 
@@ -1114,29 +1268,29 @@ Questo è esattamente un **metodo del gradiente con momento**, secondo la defini
 
 	$x_{k+1} = x_k - \alpha_k \nabla f(x_k) + \beta_k^* (x_k - x_{k-1})$
 
-dove: $\beta_k^* = \frac{\alpha_k}{\alpha_{k-1}}\beta$ 
+dove: $\beta_k^* = \frac{\alpha_k}{\alpha_{k-1}}\beta_k$ 
 
 Quindi può essere visto come un metodo del gradiente con momentum secondo la definizione (10).
 Sebbene, diversamente da heavy-ball,, il metodo del gradiente coniugato segua la regola di aggiornamento di line search $x_{k+1} = x_k + \alpha_k d_k$, dove $\alpha_k$ è calcolato tramite una **line search** lungo la direzione $d_k$, non possiamo garantire in generale che $d_k$ sia nè una **direzione di discesa**, né una **direzione correlata al gradiente**.
-Di conseguenza, i risultati di convergenza descritti nella Sezione 4.2.2 non sono immediatamente applicabili.
+Di conseguenza, i risultati di convergenza descritti nella Sezione 4.2.2 **non sono immediatamente applicabili.**
 
 Per recuperare le garanzie di convergenza, una strategia semplice consiste nell'introduzione di una **salvaguardia** all'interno del metodo:
 
 1. **Verifica delle condizioni correlate al gradiente (ad ogni iterazione):** Date le due costanti $c_1$ e $c_2$ se la direzione $d_k$ soddisfa le condizioni correlate al gradiente, il metodo del gradiente coniugato può procedere normalmente con una **line search di Armijo**.
 2. **Restart:** In caso contrario, l'algoritmo viene "riavviato" utilizzando una pura iterazione di discesa del gradiente.
 
-Questa modifica permette di applicare immediatamente i risultati di convergenza e complessità delle Proposizioni 4.3 e 4.6.
+Questa modifica permette di applicare immediatamente i risultati di convergenza e complessità delle Proposizioni 4.3 e 4.6 (ovvero convergenza globale a punti stazionari e complessità di $\epsilon^{-2}$)
 
 ##### Line Search di Wolfe per Garantire Direzioni di Discesa
 
-Un'alternativa alla strategia di salvaguardia è l'uso di una **line search più forte** di quella di Armijo, come la **line search di Wolfe**, per garantire che $d_k$ sia una direzione di discesa.
-Per assicurarsi che la direzione $d_{k+1} = \nabla f(x_{k+1}) + \beta_{k+1}\nabla f(x_k)$ sia di discesa la condizione:
+Un'alternativa alla strategia di salvaguardia è l'uso di una **line search più forte** di quella di Armijo, come la **line search di Wolfe**, ==per garantire che $d_k$ sia una direzione di discesa.==
+Per assicurarsi che la direzione $d_{k+1} = - \nabla f(x_{k+1}) + \beta_{k+1}\nabla f(x_k)$ sia di discesa, la condizione:
 	
 	$d_{k+1}^T \nabla f(x_{k+1}) = - \|\nabla f(x_{x+1})\|^2 + \beta_{k+1} d_k^T \nabla f(x_{k+1}) < 0$
 
-deve essere soddisfata.
+deve essere soddisfatta.  
 
-Notare che sia $\nabla f(x_{k+1}) = \nabla f(x_k + \alpha_k d_k)$ che, (ad esempio, nel metodo di **Fletcher-Reeves**), $\beta_{k+1} = \frac{\|\nabla f(x_k+\alpha_kd_k)\|^2}{\|d_k\|^2}$ sono funzioni di $\alpha_k$ e dunque possono essere controllate tramite una line search.
+Notare che sia $\nabla f(x_{k+1}) = \nabla f(x_k + \alpha_k d_k)$ che, (ad esempio, nel metodo di **Fletcher-Reeves**), $\beta_{k+1} = \frac{\|\nabla f(x_k+\alpha_kd_k)\|^2}{\|\nabla f(x_k)\|^2}$ sono funzioni di $\alpha_k$ e dunque possono essere controllate tramite una line search.
 
 La line search di Wolfe quindi punta a trovare un passo che soddisfa:
 
@@ -1154,63 +1308,68 @@ Dove:
 - $\sigma \in (\gamma, 1)$ garantisce che la derivata direzionale diminuisca adeguatamente.
 
  Entrambe le condizioni richiedono che la **condizione di Armijo** sia soddisfatta (riduzione sufficiente della funzione obiettivo). 
- Richiedono inoltre ==che la derivata direzionale corrente sia significativamente ridotta al **passo successivo==**, assicurando che la **direzione corrente** sia stata sfruttata al massimo, così che non sia necessario fare un secondo passo di discesa su una direzione sostanzialmente inalterata. Questo restringe l'intervallo dei passi $\alpha_k$ a valori che sono **approssimativamente stazionari** per $\phi(\alpha)$.
+ Richiedono inoltre ==che la derivata direzionale corrente sia significativamente ridotta al **passo successivo==**, assicurando che la **direzione corrente** sia stata ==sfruttata al massimo==, così che non sia necessario fare un secondo passo di discesa su una direzione sostanzialmente inalterata. Questo restringe l'intervallo dei passi $\alpha_k$ a valori che sono **approssimativamente stazionari** per $\phi(\alpha)$.
 
 ![[Pasted image 20250123161650.png]]
 
-La Figura 6 mostra come la **condizione di Armijo** e le **condizioni di Wolfe** limitino il passo $\alpha_k$ I passi accettabili si trovano nell'intervallo in cui:
+La Figura 6 mostra come la **condizione di Armijo** e le **condizioni di Wolfe** limitino il passo $\alpha_k$.
 
+I passi accettabili si trovano nell'intervallo in cui:
 - La funzione obiettivo si riduce sufficientemente (condizione di Armijo).
 - La derivata direzionale soddisfa le restrizioni aggiuntive delle condizioni di Wolfe.
 
 Un passo che soddisfa le condizioni deboli o forti di Wolfe, può essere trovato con strategie simile a quelle di Armijo (eccetto che i passi di prova possono essere aumentati se c'è bisogno).
-Dal punto di vista computazionale l'uso della line search di Wolfe richiede il calcolo **sia della funzione obiettivo** sia del **gradiente** per ogni passo di prova, aumentando il costo computazionale rispetto alla sola condizione di Armijo.
-Nel metodo del gradiente coniugato (ad esempio, con la regola di Fletcher-Reeves), l'uso della line search di Wolfe garantisce che la direzione successiva $d_{k+1}$ sia una direzione di discesa: $\nabla f(x_k + \alpha_k d_k)^T d_{k+1} < 0$. Questo assicura proprietà di **convergenza globale**, rendendo i metodi del gradiente coniugato efficaci sia nei casi convessi sia non convessi, anche se i risultati di complessità non sono ancora ben definiti.
-La riduzione delle iterazioni in generale compensa l'aumento delle valutazioni del gradiente, fino a che i parametri della line search sono fissati in modo corretto e il passo di prova è frequentemente accettato dalla line search
+Dal punto di vista computazionale l'uso della line search di Wolfe richiede il calcolo **sia della funzione obiettivo** sia del **gradiente** per ogni passo di prova, ==aumentando il costo computazionale rispetto alla sola condizione di Armijo.==
 
+Nel metodo del gradiente coniugato (ad esempio, con la regola di Fletcher-Reeves), l'uso della line search di Wolfe garantisce che la **direzione successiva** $d_{k+1}$ sia una direzione di discesa: $\nabla f(x_k + \alpha_k d_k)^T d_{k+1} < 0$. Questo assicura proprietà di **convergenza globale**, rendendo i metodi del gradiente coniugato efficaci sia nei casi convessi **sia non convessi**, anche se i risultati di complessità **non sono ancora ben definiti**.
+La riduzione delle iterazioni in generale compensa l'aumento delle valutazioni del gradiente, fino a che i parametri della line search sono fissati in modo corretto e il passo di prova è frequentemente accettato dalla line search.
+
+Riassumendo... vuoi convergenza globale per gradiente coniugato usi condizioni di wolfe, arrivi globalmente allo soluzione ma ci spendi ancora più tempo!
 ###### **Il caso quadratico**
 
-Infine i metodi del gradiente coniugato sono particolarmente efficaci per problemi di ottimizzazione **quadratici strettamente convessi** (o equivalentemente sistemi di equazione lineare). In questo caso tutte le regole definite per $\beta_k$ collassano alla stessa quantità, per qui parleremo di un solo metodo del gradiente con gradiente coniugato.
+Infine i metodi del gradiente coniugato sono particolarmente efficaci per problemi di ottimizzazione **quadratici strettamente convessi** (o equivalentemente sistemi di equazione lineare). In questo caso tutte le regole definite per $\beta_k$ collassano alla stessa quantità, per qui parleremo di **un solo metodo del gradiente con gradiente coniugato**.
 
-Il nome di gradiente coniugato deriva da una proprietà delle direzioni nei problemi quadratici della forma $\frac{1}{2} x^TQx+c^Tx$ con $Q > 0$ (matrice simmetrica definita positiva)
-
----
-**Definizione 4.5:** Un insieme di direzioni $d_0, d_1, \dots, d_{m-1} \in \mathbb{R}^n$ è detto **mutuamente coniugato** rispetto a $Q$ matrice simmetrica definita positiva se: 	$d_i^T Q d_j = 0, \quad \forall i, j= 0,..., m-1, i \neq j$
+Il nome di *gradiente coniugato* deriva da **una proprietà delle direzioni** nei problemi quadratici della forma $\frac{1}{2} x^TQx+c^Tx$ con $Q > 0$ (matrice simmetrica definita positiva)
 
 ---
 
-Essere mutuamente coniugati può essere dimostrato essere più forte della condizione di indipendenza lineare; dal punto di vista dell'ottimizzazione, vorremmo avere un insieme di n direzioni coniugate rispetto a Q, come detto nella seguente Proposizione:
+**Definizione 4.5:** Un insieme di direzioni $d_0, d_1, \dots, d_{m-1} \in \mathbb{R}^n$ è detto *mutuamente coniugato* rispetto a $Q$ matrice simmetrica definita positiva se: 	$d_i^T Q d_j = 0, \quad \forall i, j= 0,..., m-1, i \neq j$
 
 ---
 
-**Proposizione 4.11: Convergenza Finita del metodo del gradiente coniugato nel caso Quadratico**: Se $d_0, \dots, d_{n-1}$ sono mutuamente coniugate rispetto a $Q$, allora sia $x_0 \in \mathbb{R}^n$ e $x_{k+1} = x_k + \alpha_k d_k$, con $\alpha_k = \frac{-\nabla f{x_k}^Td_k}{d_k^TQd_k}$. Allora esiste $m < n -1$ tale che $x^{m+1} = x^*$  tale che $Qx^* + c = 0$ ovvero $x^*$ è il minimo globale.
+Essere **mutuamente coniugati** può essere dimostrato essere più forte della condizione di indipendenza lineare; dal punto di vista dell'ottimizzazione, vorremmo avere un insieme di n direzioni coniugate rispetto a Q, come detto nella seguente Proposizione:
 
 ---
 
-Per problemi quadratici, con una ricerca **esatta lungo direzioni mutuamente coniugate**, il metodo converge **esattamente** al minimo globale ==in un numero finito di passi!==
-Ora, il problema dell'algoritmo con il metodo di direzioni coniugate è appunto trovare l'insieme di direzioni. Ci dà una mano il metodo del gradiente coniugato, sia $g_k = \nabla f(x^k)$; sia $d_0 = -g_0$ allora: $\alpha_k = \frac{-g_k^T d_k}{d_k^TQd_k} = \frac{\|g_k\|^2}{d_k^TQd_k}, \space \beta_{k+1} = \frac{\|g_{k+1}\|^2}{\|g_k\|^2}, \space d_{k+1} = -g_{k+1} + \beta_{k+1}d_k$ .
+**Proposizione 4.11: Convergenza Finita del metodo del gradiente coniugato nel caso Quadratico**: Se $d_0, \dots, d_{n-1}$ sono **mutuamente coniugate** rispetto a $Q$, allora sia $x_0 \in \mathbb{R}^n$ e $x_{k+1} = x_k + \alpha_k d_k$, con $\alpha_k = \frac{-\nabla f{x_k}^Td_k}{d_k^TQd_k}$. Allora esiste $m < n -1$ tale che $x^{m+1} = x^*$  tale che $Qx^* + c = 0$ ovvero $x^*$ è il **minimo globale**.
+
+---
+
+Per problemi quadratici, con una ricerca **esatta lungo direzioni mutuamente coniugate**, il **metodo converge** **esattamente** al minimo globale ==in un numero finito di passi!==
+
+Ora, il problema dell'algoritmo con il **metodo di direzioni coniugate** è appunto trovare l'insieme di direzioni. Ci dà una mano il metodo del gradiente coniugato, sia $g_k = \nabla f(x^k)$; sia $d_0 = -g_0$ allora: $\alpha_k = \frac{-g_k^T d_k}{d_k^TQd_k} = \frac{\|g_k\|^2}{d_k^TQd_k}, \space \beta_{k+1} = \frac{\|g_{k+1}\|^2}{\|g_k\|^2}, \space d_{k+1} = -g_{k+1} + \beta_{k+1}d_k$ .
 Può essere mostrato che, ad ogni iterazione la nuova iterazione $d_{k+1}$ è mutualmente coniugata rispetto a $d_0, ... , d_k$ 
 
 ---
 
 **Algoritmo 3: Metodo del Gradiente Coniugato per Problemi Quadratici**
 
-1. **Input:** $x_0 \in \mathbb{R}^n, d_0 = -g_0 (\text{con} \space g_0 = \nabla f(x_0))$.
-2. **Inizializzazione:** $k = 0$.
-3. **Iterazione**  (finché $\|g_k\| \neq 0$):
+3. **Input:** $x_0 \in \mathbb{R}^n, d_0 = -g_0 (\text{con} \space g_0 = \nabla f(x_0))$.
+4. **Inizializzazione:** $k = 0$.
+5. **Iterazione**  (finché $\|g_k\| \neq 0$):
     - Calcola: $\alpha_k = \frac{\|g_k\|^2}{d_k^T Q d_k}$.
     - Aggiorna:
-	    - $x_{k+1} = x_k + \alpha_k d_k$$
+	    - $x_{k+1} = x_k + \alpha_k d_k$
 	    - $g_{k+1} = g_k + \alpha_k Q d_k$.
 	    - $\beta_{k+1} = \frac{\|g_{k+1}\|^2}{\|g_k\|^2}$
 	    - $d_{k+1} = -g_{k+1} + \beta_{k+1} d_k$
 	- Incrementa $k = k + 1$.
-1. **Output:** $x_k$
+6. **Output:** $x_k$
 
 ---
 
-Per problemi quadratici, il metodo è esatto e raggiunge il minimo globale in $n$ iterazioni.
-In casi ad alta dimensione, si introduce un criterio di arresto basato su $\|g_k\| \leq \epsilon$, rendendo il metodo iterativo. Soluzioni altamente accurate vengono spesso ottenute in **poche iterazioni**.
+Per problemi quadratici, il metodo è ==esatto e raggiunge il minimo globale in $n$ iterazioni==.
+**In casi ad alta dimensione**, si introduce un criterio di arresto basato su $\|g_k\| \leq \epsilon$, rendendo il metodo iterativo. Soluzioni altamente accurate vengono spesso ottenute in **poche iterazioni**.
 
 ### 4.5 Metodo di Newton
 
@@ -1266,9 +1425,9 @@ Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione due volte continuamente diffe
 
 Allora esiste $\epsilon > 0$ tale che, per ogni $x_0 \in B(x^*, \epsilon)$:
 
-1. La sequenza $\{x_k\}$ è ben definita e rimane in $B(x^*, \epsilon)$.
-2. $\lim_{k \to \infty} x_k = x^*$.
-3. Il tasso di convergenza è **superlineare**.
+7. La sequenza $\{x_k\}$ è ben definita e rimane in $B(x^*, \epsilon)$.
+8. $\lim_{k \to \infty} x_k = x^*$.
+9. Il tasso di convergenza è **superlineare**.
 
 ---
 
@@ -1354,8 +1513,8 @@ Abbiamo da affrontare alcuni problemi:
 
 Per risolvere i problemi sopra menzionati, si introducono _strategie di globalizzazione_, ovvero le seguenti modifiche:
 
-1. **Modifica della Hessiana:** se alcuni autovalori di $\nabla^2 f(x_k)$ sono fuori dall'intervallo $[c_2, c_1]$ con $0 < c_2 < c_1 < \infty$, si modifica la matrice di Newton per garantire che la condizione di autovalori limitati valga e quindi la matrice sia definita positiva.
-2. **Ricerca Lineare di Armijo:** Si esegue una ricerca di Armijo lungo la direzione calcolata, iniziando con un passo iniziale $\alpha = 1$.
+10. **Modifica della Hessiana:** se alcuni autovalori di $\nabla^2 f(x_k)$ sono fuori dall'intervallo $[c_2, c_1]$ con $0 < c_2 < c_1 < \infty$, si modifica la matrice di Newton per garantire che la condizione di autovalori limitati valga e quindi la matrice sia definita positiva.
+11. **Ricerca Lineare di Armijo:** Si esegue una ricerca di Armijo lungo la direzione calcolata, iniziando con un passo iniziale $\alpha = 1$.
 
 Con queste strategie otteniamo un metodo di discesa usando la line search di Armijo lungo una direzione gradient-related, dunque ottenendo garanzie di convergenza globale.
 Sotto ragionevoli assunzioni, può essere dimostrato che quando il metodo di Newton globalizzato entra nell'intorno di un punto stazionario (soddisfacendo l'ipotesi della propozione 4.12), allora non c'è più bisogno di nè modificare l'Hessiana che di fare cattivi passi di backtrack: il metodo puro di Newton è portato da qui in avanti e quindi ottenendo i risultati di convergenza locale veloce.
@@ -1406,9 +1565,9 @@ Segue lo schema Generale per un metodo Quasi-Newton (nel caso inverso):
 <a id="algoritmo-4"></a>
 **Algoritmo-4: Metodo Quasi-Newton con Aggiornamenti Inversi**
 
-1. **Input:** $x_0 \in \mathbb{R}^n$, $H_0 \in S^n$, $H_0 \succ 0$.
-2. **Inizializzazione:** $k = 0$.
-3. **Ciclo:** (Finche $\|g_k\| \neq 0$)
+12. **Input:** $x_0 \in \mathbb{R}^n$, $H_0 \in S^n$, $H_0 \succ 0$.
+13. **Inizializzazione:** $k = 0$.
+14. **Ciclo:** (Finche $\|g_k\| \neq 0$)
     - Calcolo $d_k = -H_k \nabla f(x_k)$.
     - Determino $\alpha_k$ tramite una ricerca lineare lungo $d_k$.
     - Aggiorno $x_{k+1} = x_k + \alpha_k d_k$.
@@ -1416,7 +1575,7 @@ Segue lo schema Generale per un metodo Quasi-Newton (nel caso inverso):
 	    - Ovvero $(H_k + \Delta H_k)(\nabla f(x_{k+1}) - \nabla f(x_k)) = x_{k+1} - x_k$
     - Aggiornare $H_{k+1} = H_k + \Delta H_k$.
     - $k=k+1$ 
-4. Restituisco $\{H_k\}$ e $x_k$
+15. Restituisco $\{H_k\}$ e $x_k$
 
 ---
 L'algoritmo 4 è uno schema generale, la realizzazione di questo schema sono caratterizzate da due elementi, il tipo di line search eseguito e la regola di update scelta per definire $\Delta H_k$. 
@@ -1629,8 +1788,8 @@ L'**algoritmo di discesa del gradiente stocastico (SGD)** fornisce una soluzione
 L'approssimazione allevia la pesantezza del calcolo delle derivata, in quanto dobbiamo calcolare solo un gradiente $\nabla f_i$ , ad ogni iterazione rispetto agli $N$ termini necessari per calcolare la vera $\nabla f$ 
 
 Il passo $\alpha_k$ è spesso impostato a un valore costante o segue una sequenza predefinita. Le tradizionali ricerche di linee (line searches) non sono generalmente adatte in questo caso, poiché la funzione obiettivo cambia a ogni iterazione. Questo porta a due problematiche principali:
-1. Non si può garantire una diminuzione sufficiente della funzione obiettivo reale.
-2. Forzare una diminuzione sufficiente sull'approssimazione corrente potrebbe non portare benefici.
+16. Non si può garantire una diminuzione sufficiente della funzione obiettivo reale.
+17. Forzare una diminuzione sufficiente sull'approssimazione corrente potrebbe non portare benefici.
 
 La scelta stocastica della direzione di discesa si basa sul fatto che, se consideriamo il **valore atteso** della quantità $\nabla f_{i_k}(x^k)$, e assumendo una distribuzione uniforme sui valori $\{1, \ldots, N\}$, otteniamo (con $p_i = \frac{1}{N}$):
 
@@ -1668,15 +1827,15 @@ In questa sezione, riportiamo l'analisi di convergenza per l'analisi di un metod
 ---
 **Algoritmo 5: Mini-batch Discesa del Gradiente con Rimescolamento randomico**
 
-1. Input: $f_1, ... , f_n, \space x^0, \space \{\alpha_k\}$
-2. $k=0$
-3. **while** un criterio di arresto non è soddisfato fai
+18. Input: $f_1, ... , f_n, \space x^0, \space \{\alpha_k\}$
+19. $k=0$
+20. **while** un criterio di arresto non è soddisfato fai
 	- Dividi randomicamente l'insieme di indici {1,...,N} in $\frac{N}{M}$ mini-batches $B_0^k, B_{\frac{N}{M} -1}$ di dimensione M
 	- $x_0^k = x_k$
 	- **for** $t = 0, ..., \frac{N}{M}$ fai
 		- $x_{t+1}^k = x_t^k - \alpha \frac{1}{M} \sum_{i \in B_{t^k}} \nabla f_i(x_t^k)$ 
 	- $x^{k+1} = x_{\frac{N}{M}}^k$
-4. Output: $x^k$
+21. Output: $x^k$
 
 ---
 
@@ -1684,9 +1843,9 @@ Diversamente dall'algoritmo di discesa del gradiente, SGD non necessariamente ab
 
 Per studiare rigorosamente l'SGD, si introducono alcune ipotesi aggiuntive che caratterizzano quanto lontano i campioni del gradiente possono distare da questo:
 
-1. $f$ è **limitata inferiormente**.
-2. Il modulo dei campioni di gradiente è limitato da una costante $G > 0: \|\nabla f_i(x)\| \leq G, \quad \forall x \in \mathbb{R}^n$.
-3. La funzione obiettivo è _L-lipschitziana_ (L-smooth).
+22. $f$ è **limitata inferiormente**.
+23. Il modulo dei campioni di gradiente è limitato da una costante $G > 0: \|\nabla f_i(x)\| \leq G, \quad \forall x \in \mathbb{R}^n$.
+24. La funzione obiettivo è _L-lipschitziana_ (L-smooth).
 
 ---
 **Proposizione 4.14**
@@ -2135,9 +2294,8 @@ dall'altro, il classificatore diventa **non lineare**, consentendo di costruire 
 ![[Pasted image 20250202130901.png]]
 
 Per riassumere, le due principali ragioni per considerare il **problema duale** della SVM sono:
-
-2. **Kernel trick:** consente di ottenere **classificatori non lineari** senza esplicitamente trasformare i dati in uno spazio di dimensione più elevata.
-3. **Forma del problema:** il problema rimane **quadratico convesso con vincoli lineari**, come nella formulazione primale, ma con vincoli più semplici (l'unico vincolo complesso è $\alpha^T y = 0$, il resto sono vincoli di box).
+1. **Kernel trick:** consente di ottenere **classificatori non lineari** senza esplicitamente trasformare i dati in uno spazio di dimensione più elevata.
+2. **Forma del problema:** il problema rimane **quadratico convesso con vincoli lineari**, come nella formulazione primale, ma con vincoli più semplici (l'unico vincolo complesso è $\alpha^T y = 0$, il resto sono vincoli di box).
 
 ### 7.2 Risolvendo il problema duale
 
@@ -2322,11 +2480,11 @@ Di seguito riportiamo il procedimento generale dell’algoritmo SMO.
 
 ---
 
-4. **Input**: $Q$, $a$ (vettore dei coefficienti), $C$  
-5. $x^0 = 0$;  
-6. $k = 0$;  
-7. $\nabla f (x^0) = -e$.
-8. **Ciclo fino al soddisfacimento del criterio di arresto**:
+1. **Input**: $Q$, $a$ (vettore dei coefficienti), $C$  
+2. $x^0 = 0$;  
+3. $k = 0$;  
+4. $\nabla f (x^0) = -e$.
+5. **Ciclo fino al soddisfacimento del criterio di arresto**:
    - Selezionare $i \in R(x^k)$,  $j \in S(x^k)$ tali che:
 		 $\frac{\nabla_j f (x^k)}{a_j} < \frac{\nabla_i f (x^k)}{a_i}$
 
@@ -2343,7 +2501,7 @@ Di seguito riportiamo il procedimento generale dell’algoritmo SMO.
 	$\nabla f (x^{k+1}) = \nabla f (x^k) + Q_i (x^{k+1}_i - x^k_i) + Q_j (x^{k+1}_j - x^k_j)$
    - Incrementare $k$
 
-9. **Output**:  Restituire $x^k$
+6. **Output**:  Restituire $x^k$
 
 ---
 
@@ -2493,26 +2651,26 @@ Uno dei problemi di ottimizzazione più rilevanti oggi è l'**addestramento dell
 
 L'**ottimizzazione del rischio empirico** di una rete con pesi $w \in \mathbb{R}^n$, dato un dataset $(X, Y)$ di $N$ campioni, assume la forma del problema (21), ma presenta diverse caratteristiche peculiari rispetto ai classici problemi di ottimizzazione non vincolata. In particolare:
 
-1. **Obiettivo dell'ottimizzazione e generalizzazione**  
+7. **Obiettivo dell'ottimizzazione e generalizzazione**  
    Come in altri problemi di machine learning, non si cerca **realmente** di minimizzare il **rischio empirico** (che è solo una funzione obiettivo surrogata), ma piuttosto di trovare un modello **efficace in termini di generalizzazione**.  
    Il problema di addestramento, altamente **non convesso**, presenta numerosi **punti stazionari subottimali**, molti dei quali con un valore di perdita molto vicino all’ottimo globale. Tuttavia, la **prestazione fuori campione** di queste soluzioni può variare drasticamente.  
    **Non ha quindi senso cercare l’ottimo globale**, ma piuttosto individuare soluzioni locali che garantiscano una buona generalizzazione, anche se raggiunte con solver a **bassa precisione**.
 
-2. **Efficienza del calcolo del gradiente tramite backpropagation**  
+8. **Efficienza del calcolo del gradiente tramite backpropagation**  
    Grazie all’**algoritmo di backpropagation**, i **gradienti della funzione di perdita** $\nabla L(w)$  possono essere calcolati in modo **estremamente efficiente**.  
    Il **costo computazionale** del calcolo dei gradienti è **soltanto il doppio** di quello della valutazione della funzione di perdita stessa.  
    Maggiori dettagli su backpropagation e differenziazione automatica sono riportati nella **Sezione 8.2**.
 
-3. **Costo computazionale elevato della valutazione della funzione obiettivo**  
+9. **Costo computazionale elevato della valutazione della funzione obiettivo**  
    Il calcolo del valore di **$L(w)$** è **computazionalmente oneroso**, poiché richiede l'uso dell'intero dataset per determinare tutti gli elementi della somma che definisce la funzione.
 
 L’**ottimizzazione stocastica**, e in particolare il **SGD (Stochastic Gradient Descent)**, è particolarmente adatta per l’addestramento delle ANNs per diversi motivi, che riassumiamo di seguito:
 
-1. **I dati sono spesso ridondanti**, quindi usare **tutte** le informazioni disponibili ad ogni iterazione risulta **inefficiente**.
+10. **I dati sono spesso ridondanti**, quindi usare **tutte** le informazioni disponibili ad ogni iterazione risulta **inefficiente**.
 
-2. L'esperienza computazionale accumulata dalla comunità del **machine learning** dimostra che, se si seleziona correttamente un **passo $\alpha$**, i metodi **stocastici** sono **molto più veloci** di quelli batch, **soprattutto nelle fasi iniziali** del processo di ottimizzazione.
+11. L'esperienza computazionale accumulata dalla comunità del **machine learning** dimostra che, se si seleziona correttamente un **passo $\alpha$**, i metodi **stocastici** sono **molto più veloci** di quelli batch, **soprattutto nelle fasi iniziali** del processo di ottimizzazione.
 
-3. **Il tasso di convergenza** di **SGD** verso una soluzione **$\epsilon$-ottimale** è **più lento** rispetto a quello del metodo **Gradient Descent** batch (cfr. **Tabella 3** in cap 4.8), ma **non dipende** dalla **dimensione del dataset di training**, che è solitamente **molto grande** nelle applicazioni pratiche.  
+12. **Il tasso di convergenza** di **SGD** verso una soluzione **$\epsilon$-ottimale** è **più lento** rispetto a quello del metodo **Gradient Descent** batch (cfr. **Tabella 3** in cap 4.8), ma **non dipende** dalla **dimensione del dataset di training**, che è solitamente **molto grande** nelle applicazioni pratiche.  
    Questo implica che il **costo asintotico inferiore** di **GD** rispetto a **SGD** diventa evidente **solo per valori molto bassi di $\epsilon$**.  
    Inoltre, recenti studi hanno mostrato che, in molti problemi di **deep learning**, la funzione di perdita soddisfa due proprietà fondamentali:
    - **Proprietà di interpolazione**:  
@@ -2526,7 +2684,7 @@ L’**ottimizzazione stocastica**, e in particolare il **SGD (Stochastic Gradien
      allora **ogni punto stazionario è un ottimizzatore globale** del problema.  
      **Sotto queste due ipotesi, è possibile dimostrare che SGD possiede un tasso di convergenza lineare, esattamente come il batch Gradient Descent.**
 
-4. **SGD evita i minimi locali "stretti"** (**sharp minima**) grazie alla natura **stocastica** dei suoi passi di discesa.  
+13. **SGD evita i minimi locali "stretti"** (**sharp minima**) grazie alla natura **stocastica** dei suoi passi di discesa.  
    - I **minimi stretti** si trovano in **valli molto profonde** con una **curvatura molto alta**, rendendo il modello molto sensibile a piccoli cambiamenti nei dati di input.
    - **SGD**, a causa della sua natura rumorosa, tende a **sfuggire** da questi minimi stretti e a trovare invece **minimi più "piatti"** (**flat minimizers**), che generalizzano meglio ai dati non visti. Questo effetto comporta **un'operazione di regolarizzazione intrinseca**, migliorando la capacità del modello di generalizzare. **(Figura 15 fornisce un’intuizione visiva di questo comportamento).**
 
@@ -2556,11 +2714,11 @@ Negli ultimi anni, diverse modifiche all'algoritmo **SGD** si sono dimostrate **
 
 I termini di **Momentum** o **Nesterov Acceleration**, discussi in **Sezione 4.4**, sono particolarmente efficaci nell'ottimizzazione **stocastica** delle reti neurali per due motivi principali:
 
-1. **Filtraggio delle oscillazioni casuali**  
+14. **Filtraggio delle oscillazioni casuali**  
    - Il **momentum** accumula informazioni dai passi precedenti, attenuando le forti **oscillazioni stocastiche** delle direzioni di discesa.
    - Ciò riduce il tipico **comportamento a zigzag** di **SGD**, rendendo l'ottimizzazione più **stabile** ed efficace.
 
-2. **Computazione efficiente**  
+15. **Computazione efficiente**  
    - Il calcolo della funzione obiettivo e del suo gradiente è **computazionalmente costoso** nelle reti profonde.
    - Tuttavia, i termini $(x^k - x^{k-1})$ necessari per l'accelerazione sono **facilmente ottenibili**, permettendo di **migliorare l'efficacia di ogni iterazione senza costi aggiuntivi significativi**.
 
@@ -2649,11 +2807,11 @@ L'**Adam** (**Adaptive Moment Estimation**) è oggi **l’algoritmo più utilizz
 Può essere visto come un'evoluzione di **RMSprop** e **AdaDelta**, combinando i **benefici del Momentum** con l'adattamento del learning rate.
 
 Adam mantiene due statistiche esponenzialmente pesate:
-1. **Media dei gradienti** (simile a Momentum):
+16. **Media dei gradienti** (simile a Momentum):
 
 	$m^{k+1}_i = \beta_1 m^k_i + (1 - \beta_1) \nabla_i f(x^k)$
 
-2. **Varianza dei gradienti** (simile a RMSprop):
+17. **Varianza dei gradienti** (simile a RMSprop):
 
     $v^{k+1}_i = \beta_2 v^k_i + (1 - \beta_2)(\nabla_i f(x^k))^2$
 
@@ -2672,7 +2830,7 @@ Il nuovo aggiornamento delle variabili segue quindi la formula:
 ---
 
 Negli ultimi anni sono state proposte alcune **varianti** dell'algoritmo **Adam** per migliorarne stabilità ed efficienza:
-1. **AdaMax**  
+18. **AdaMax**  
    - Proposto insieme ad Adam.  
    - Sostituisce la stima del secondo momento con una **norma infinita stabilizzata**:
    
@@ -2680,7 +2838,7 @@ Negli ultimi anni sono state proposte alcune **varianti** dell'algoritmo **Adam*
   
    - Questa modifica evita la necessità di correggere il bias iniziale e offre **migliore stabilità empirica**.
 
-2. **Nadam (Nesterov-accelerated Adam)**  
+19. **Nadam (Nesterov-accelerated Adam)**  
    - Integra l’**accelerazione di Nesterov** nell’algoritmo Adam.  
    - Mira a **migliorare la velocità di convergenza** nei problemi di ottimizzazione profonda.
 
@@ -2696,11 +2854,11 @@ L'ottimizzazione di una rete neurale comporta la **somma di funzioni di milioni 
 - **Errori di approssimazione significativi**: la differenziazione numerica tramite differenze finite introduce errori significativi.
 
 **Alternative alla derivazione numerica**
-1. **Derivazione simbolica**  
+20. **Derivazione simbolica**  
    - Utilizza strumenti software per manipolare espressioni matematiche ed estrarre le derivate.  
    - Tuttavia, genera **formule enormi** e **calcoli eccessivamente costosi**.
 
-2. **Differenziazione Automatica (AD - Automatic Differentiation)**  
+21. **Differenziazione Automatica (AD - Automatic Differentiation)**  
    - Sfrutta **intelligentemente** la **regola della catena** per ottenere le derivate in modo **efficiente e preciso**:
 
 		$\frac{\partial f}{\partial x_j} = \sum_i \frac{\partial f}{\partial g_i} \frac{\partial g_i}{\partial x_j}$

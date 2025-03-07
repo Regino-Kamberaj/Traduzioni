@@ -1,10 +1,529 @@
+# Introduzione al corso - Ingegneria del Software per Sistemi Embedded
+
+**Ingegneria del Software per Sistemi Embedded**  
+**Introduzione al corso**
+
+Laura Carnevali  
+Laboratorio di Tecnologie Software  
+Dipartimento di Ingegneria dell’Informazione  
+Università di Firenze
+
+[http://stlab.dinfo.unifi.it/carnevali](http://stlab.dinfo.unifi.it/carnevali)  
+[laura.carnevali@unifi.it](mailto:laura.carnevali@unifi.it)
+
+---
+
+**Struttura del corso**
+
+1. Crediti
+2. Contenuti del corso
+3. Organizzazione del corso
+
+---
+
+## Crediti
+
+- Gran parte del materiale presentato in queste slide è tratto da:
+    
+    - Le slide del corso “Real-Time Systems” tenuto dal Prof. Giorgio Buttazzo:  
+        [http://retis.sssup.it/~giorgio/rts-MECS.html](http://retis.sssup.it/~giorgio/rts-MECS.html)
+    - Le slide del corso “Real-Time Systems” tenuto dal Prof. Tullio Vardanega:  
+        [https://www.math.unipd.it/~tullio/RTS/2019](https://www.math.unipd.it/~tullio/RTS/2019)
+- Queste slide sono autorizzate solo per uso personale.
+    
+- Qualsiasi altro uso, redistribuzione o vendita a scopo di lucro delle slide (in qualsiasi forma) richiede il consenso dei titolari del copyright.
+    
+
+---
+
+## Contenuti del corso
+
+**Il corso tratta** di:
+
+- Progettazione, implementazione e testing del **software embedded**
+	- Cos’è un sistema embedded?
+	- Dove viene utilizzato il software embedded?
+	- Quali sono le sfide nella progettazione software?
+	- Quali sono le linee guida per la programmazione e l’implementazione del software?
+	- Quali sono le strategie per il testing del software?
+
+---
+
+**Sistemi Embedded**
+
+- Un **sistema embedded** è un sistema di elaborazione dedicato progettato per funzioni specifiche all'interno di un sistema più grande, spesso con vincoli di elaborazione in tempo reale.
+	- Possono essere **autonomi, in rete, mobili o real-time**.
+	- Sono dotati di **microcontrollori, microprocessori o chip progettati su misura**.
+	- Possono includere **interfacce utente, anche complesse e grafiche**.
+
+**Sistemi embedded vs sistemi generici**
+
+- **Sistemi embedded**: progettati per uno scopo specifico o per pochi scopi.
+- **Sistemi generici**: progettati per molteplici utilizzi.
+
+**Sistemi embedded vs sistemi cyber-fisici**
+
+- **Sistemi embedded**: essenzialmente **chiusi**.
+- **Sistemi cyber-fisici**: essenzialmente **aperti**.
+
+![[Pasted image 20250306184601.png]]
+
+---
+
+**Sistemi embedded in tempo reale**
+
+- Un **sistema in tempo reale** è un sistema informatico soggetto a **vincoli temporali**.
+	- **I tempi di risposta e l’interferenza tra i task devono essere limitati in tutti gli scenari**.
+	- Il **tempo** non è un attributo intrinseco, ma dipende strettamente dall’ambiente.
+
+- Il **rispetto dei vincoli temporali deve essere dimostrato**.
+
+- La correttezza dipende sia dal **risultato logico** (correttezza funzionale) sia dal **tempo in cui il risultato è prodotto** (correttezza non funzionale).
+	- **Una risposta tardiva, anche se logicamente corretta, può essere dannosa quanto una risposta errata**.
+
+- Un sistema in tempo reale è tipicamente **incorporato** in un sistema più grande per:
+    - **Controllarne le funzioni**
+    - **Gestire le risorse disponibili**
+    - **Semplificare l’interazione con l’utente**
+
+![[Pasted image 20250306184843.png]]
+
+---
+
+**Un po’ di storia sui sistemi embedded (1/3)**
+
+- **Primi anni ‘60**: **Apollo Guidance Computer** (MIT Instrumentation Lab)
+    - **Primo sistema embedded in tempo reale** usato per guida, navigazione e controllo delle missioni Apollo.
+    - Uno dei **primi computer con circuiti integrati**.
+    - Uso di **simulatori software e hardware per la verifica e la validazione**.
+![[Pasted image 20250306185021.png]]
+
+---
+
+**Un po’ di storia sui sistemi embedded (2/3)**
+
+- **Metà anni ‘60**: sistemi di guida missilistica (Autonetics, ora Boeing)
+    - **D-17B**: primo sistema embedded prodotto su larga scala.
+    - **NS-17**: primo sistema embedded con un uso massiccio di circuiti integrati.
+- **Fine anni ‘60**: **microprocessore per il controllo dell'iniezione elettronica di carburante** (Bosch)
+    - Primo sistema embedded nel settore **automobilistico**.
+
+![[Pasted image 20250306185117.png]]
+
+---
+
+**Un po’ di storia sui sistemi embedded (3/3)**
+
+- **Fine anni ‘60 - inizio anni ‘70**: **Calo del costo dei circuiti integrati**, maggiore diffusione.
+    - **TMS1000** (Texas Instruments): primo microcontrollore commerciale.
+    - **Intel 4004**: primo microprocessore commerciale.
+
+- **Anni ‘80 e ‘90**:
+    - **VxWorks**: primo sistema operativo embedded real-time (WindRiver).
+    - **Windows Embedded CE**: sistema operativo embedded real-time (Microsoft).
+    - **Embedded Linux**: sistemi operativi embedded basati su Linux.
+    - **RTLinux**: sistema operativo real-time basato su Linux.
+
+![[Pasted image 20250306185229.png]]
+
+---
+
+**Evoluzione dei sistemi embedded (1/3)**
+
+- **Numero di transistor nei circuiti integrati (1971-2018)**. 
+
+![[Pasted image 20250306185258.png]]
+
+---
+
+ **Evoluzione dei sistemi embedded (2/3)**
+
+- **Numero di dispositivi connessi (1992-2020)**.
+
+![[Pasted image 20250306185621.png]]
+
+---
+
+ **Evoluzione dei sistemi embedded (3/3)**
+
+- **Ricavi globali del mercato dei sistemi embedded (2015-2021)**. ![[Pasted image 20250306185753.png]]
+
+---
+
+**I sistemi embedded sono ovunque**
+
+- **Oggi il 98% dei processori nel mondo è utilizzato nei sistemi embedded**.  Applicazioni in:
+    - **Avionica**
+    - **Automotive**
+    - **Militare e aerospaziale**
+    - **Robotica**
+    - **Automazione industriale**
+    - **Sanità**
+    - **Elettronica di consumo**
+    - **Telecomunicazioni**
+    - **Multimedia**
+    - **Sistemi di trasporto intelligenti**
+    - ... e molti altri settori.
+
+![[Pasted image 20250306190210.png]]
+
+---
+
+**Aumento della complessità nei sistemi embedded**
+
+- **Numero medio di Unità di Controllo Elettronico (ECU) in un'auto**.
+    - Un'auto di lusso moderna può avere fino a **100 ECU**.
+![[Pasted image 20250306190232.png]]
+
+---
+
+**Dove viene utilizzato il software embedded?**
+
+- Il **software embedded controlla quasi tutto in un'auto**.
+![[Pasted image 20250306190248.png]]
+
+---
+
+**Complessità del software embedded (1/2)**
+
+- **Numero medio di linee di codice (LOC) in un'auto**.
+
+![[Pasted image 20250306190458.png]]
+
+---
+
+ **Complessità del software embedded (2/2)**
+
+- **Confronto della complessità del software**:
+    - Le auto sono tra i **sistemi più intensivi dal punto di vista software**.
+![[Pasted image 20250306190805.png]]
+
+---
+
+**Cosa rende speciali i sistemi embedded?**
+
+- **Caratteristiche**
+	- **Elevata eterogeneità** dei componenti e delle attività di elaborazione.
+	- **Alta variabilità** in dimensioni e ambito di applicazione.
+	- **Risorse limitate** (spazio, peso, tempo, memoria, energia, ...).
+	- **Elevata concorrenza e condivisione delle risorse** (alta interferenza tra i task).
+	- **Interazione con l’ambiente**: reattività a eventi esterni e gestione temporale.
+	- **Variabilità elevata** nella richiesta di risorse e nel carico di lavoro.
+
+- **Requisiti**
+	- **Affidabilità garantita** (sicurezza, disponibilità, manutenzione, ...).
+	- **Continuità operativa** senza supervisione umana costante.
+	- **Efficienza nella gestione delle risorse**.
+	- **Rispetto dei vincoli temporali** e isolamento per limitare le interferenze tra i task.
+	- **Alta prevedibilità** nel rispondere a eventi ambientali e temporali.
+	- **Adattabilità (robustezza)** per gestire situazioni di sovraccarico.
+![[Pasted image 20250306190917.png]]
+---
+
+**Fonti di non determinismo nei sistemi embedded (1/2)**
+
+- **Multitasking** (chiamate di sistema per la programmazione concorrente)
+    - Può introdurre **ritardi imprevedibili** nell'esecuzione dei task.
+
+- **Scheduling basato sulle priorità**
+    - Supporta la gestione avanzata dei task, ma può richiedere **riassegnazione delle priorità** in caso di nuovi task in arrivo.
+
+- **Gestione delle interruzioni esterne**
+    - Elevata priorità delle interruzioni rispetto ai task può migliorare la reattività del sistema, ma può anche causare **ritardi imprevedibili**.
+
+- **Accesso diretto alla memoria (DMA)**
+    - Il trasferimento dati indipendente dalla CPU può bloccare il processore, causando ritardi non prevedibili.(fenomeno del cycle stealing dove la CPU rimane ferma un numero di cicli indefinito se la DMA eseguo un trasferimento dati)
+    - **Metodo time-slice**: riduce l'efficienza ma garantisce una maggiore prevedibilità.
+
+---
+
+**Fonti di non determinismo nei sistemi embedded (2/2)**
+
+- **Cache**
+    - Accelera l’esecuzione del processore ma è influenzata dal numero di **preemption**, che distruggono la **località dei dati**.
+
+- **Chiamate di sistema**
+    - Devono essere **preemptabili** e avere **tempo di esecuzione limitato**.
+
+- **Meccanismi di comunicazione e sincronizzazione tra task**
+    - Se mal gestiti, possono introdurre effetti indesiderati come:
+        - **Inversione di priorità**.
+        - **Blocchi e deadlock**.
+
+- **Gestione della memoria**
+    - L’**allocazione statica** migliora la prevedibilità ma riduce la flessibilità.
+
+- **Kernel leggero e cambio di contesto veloce**
+    - Riduce il **tempo medio di risposta**, ma **non garantisce il rispetto dei vincoli temporali**.
+
+- Scarso supporto per le specifiche di vincoli temporali sui tasks.
+
+---
+
+ **Soddisfare i requisiti: miti da sfatare**
+
+- **La programmazione real-time non è empirica**.
+    - Le tecniche empiriche possono rendere il comportamento del software **imprevedibile**.
+
+- **La programmazione real-time non è a basso livello**.
+    - La programmazione a basso livello è **complicata** e il codice è **difficile da mantenere**.
+    - L'uso di linguaggi di alto livello semplifica la **verifica dei requisiti**.
+
+- **Minimizzare il ==tempo medio di risposta== non è sufficiente**.
+	- **Aumentare la potenza della CPU non è una soluzione garantita** per i sistemi real-time.
+	- **Il real-time computing non è ==sinonimo di velocità di elaborazione**.==
+
+- **Il testing è essenziale, ma non è sufficiente**:
+    - Il comportamento del software dipende dai dati di input → il testing fornisce solo una **verifica parziale**.
+
+- **La simulazione hardware/software è utile, ma non basta**.
+
+![[Pasted image 20250306191745.png]]
+
+---
+
+**Soddisfare i requisiti: prevedibilità**
+
+- **La ==prevedibilità== a livello di sistema è essenziale**.
+    - Ho necessità di **predire il comportamento dei task e rispettare i vincoli temporali**.
+
+- **Come raggiungere prevedibilità e soddisfare i requisiti?**
+    - Servono **nuove soluzioni** per la progettazione e il testing del software.
+    - Sono necessari **test di schedulabilità e fattibilità efficienti**.
+    - È essenziale **stimare il tempo di esecuzione nel peggior caso (WCET)**.
+    - Anche **l’hardware deve essere progettato per migliorare la prevedibilità** (fuori dall'ambito di questo corso).
+    - 
+![[Pasted image 20250306192253.png]]
+---
+
+**Soddisfare i requisiti: la stima del WCET non è facile (1/3)**
+
+- **Stima analitica**:
+    - **Limitare il numero di iterazioni dei cicli**.
+    - **Calcolare il percorso più lungo**.
+    - **Stimare i cache miss massimi**.
+    - **Determinare il tempo di esecuzione delle istruzioni più critiche**.
+
+---
+
+**Soddisfare i requisiti: la stima del WCET non è facile (2/3)**
+
+- **Stima basata su misurazioni**:
+    - **Eseguire il task più volte con input diversi**.
+    - **Raccogliere statistiche sui tempi di esecuzione**.
+
+![[Pasted image 20250306192441.png]]
+
+---
+
+**Soddisfare i requisiti: la stima del WCET non è facile (3/3)**
+
+- **Combinazione di analisi e misurazioni**:
+    - **BOET (Best Observed Execution Time)**.
+    - **AOET (Average Observed Execution Time)**.
+    - **WOET (Worst Observed Execution Time)**.
+    - **WCET (Worst Case Execution Time)**.
+
+![[Pasted image 20250306192543.png]]
+
+---
+
+**Soddisfare i requisiti: prevedibilità vs efficienza**
+
+- **Criticità del software embedded (basata sugli effetti di un mancato rispetto della scadenza)**:
+    - **Soft**: il mancato rispetto della scadenza riduce le prestazioni.
+    - **Firm**: il mancato rispetto della scadenza invalida il task.
+    - **Hard**: il mancato rispetto della scadenza può avere effetti **catastrofici**.
+
+![[Pasted image 20250306192729.png]]
+
+---
+
+**Obiettivi del corso**
+
+- Studiare le **metodologie software** che migliorano la **prevedibilità** nei sistemi embedded.
+	- Imparare a **modellare applicazioni critiche dal punto di vista temporale** e **analizzarne le proprietà temporali**.
+	- Progettare, programmare e testare **applicazioni software con vincoli temporali**.
+
+![[Pasted image 20250306193027.png]]
+
+---
+
+**Panoramica del programma**
+
+- **Parte 1: Sistemi embedded e in tempo reale**
+	- **Algoritmi di scheduling per sistemi embedded real-time**:
+	    - Concetti di base
+	    - Scheduling dei task periodici
+	    - Scheduling ciclico esecutivo
+	    - Scheduling Rate Monotonic
+	    - Scheduling Deadline Monotonic
+	    - Scheduling Earliest Deadline First (EDF)
+
+	- **Protocolli di accesso alle risorse nei sistemi embedded real-time**:
+	    - Protocollo di ereditarietà delle priorità (Priority Inheritance Protocol)
+	    - Protocollo del soffitto delle priorità (Priority Ceiling Protocol)
+	    - Test avanzati di schedulabilità
+
+	- **Sistemi operativi real-time e standard**:
+	    - RT-POSIX, OSEK/VDX, ARINC-APEX
+	    - Il sistema operativo real-time VxWorks
+	    - Sviluppo di applicazioni real-time su **Raspberry Pi**
+
+ - **Parte 2: Argomenti avanzati su scheduling e testing**
+	- **Analisi avanzata della schedulabilità**:
+	    - Reti di Petri (Petri Nets)
+	    - Reti di Petri Temporizzate (Time Petri Nets)
+	    - Reti di Petri Temporizzate Preemptive (Preemptive Time Petri Nets)
+	    - Uso delle reti di Petri nel ciclo di vita del software secondo il **V-Model (MIL-STD-498)**
+	    - **Automi temporizzati (Timed Automata)**
+	
+	- **Testing del software**:
+	    - Metodologie di testing
+	    - Testing basato sul flusso di controllo e sul flusso di dati
+	    - Testing basato sugli automi a stati finiti (Finite State Testing)
+	    - Testing real-time
+
+- **Parte 3: Ingegneria dei sistemi**
+	- **Elementi di ingegneria dei sistemi basata su modelli (MBSE - Model-Based Systems Engineering)** **SysML (Systems Modeling Language)**
+
+---
+
+## Organizzazione del corso
+
+ **Lezioni**
+
+- **Pagina Moodle del corso**:  
+    [https://e-l.unifi.it/course/view.php?id=42580](https://e-l.unifi.it/course/view.php?id=42580)  
+    **Password:** SWEES
+- **Registrarsi alla pagina del corso per ricevere annunci e aggiornamenti**.
+- **Periodo**: Primo semestre (dal **16/09/2024 al 13/12/2024**).
+- **Orario delle lezioni**:
+    - **Martedì 16:00-18:00**, aula 49, Santa Marta.
+    - **Mercoledì 15:00-17:00**, aula 33, Santa Marta.
+- **Il calendario delle lezioni sarà confermato settimana per settimana**:
+    - **Lezione 1 (17/09/2024)** – Introduzione al corso.
+    - **Lezione 2 (18/09/2024)** – Algoritmi di scheduling.
+    - **…**
+- **Sessioni di laboratorio** con **Dr. Imad Zaza** (da annunciare durante il corso).
+- **Disponibilità per incontri con gli studenti**:
+    - Domande e richieste di chiarimenti possono essere inviate via email.
+    - È possibile fissare incontri in orario di ricevimento o in altri orari su richiesta.
+
+---
+
+**Esame**
+
+- **Valutazione delle competenze teoriche e pratiche** acquisite nel corso.
+    
+- **Esame di "Software Engineering for Embedded Systems" (6 CFU)**:
+    - **Colloquio orale** sui contenuti del corso.
+    - **Sviluppo individuale di un assignment (facoltativo)**.
+
+- **Esame di "Software Engineering for Embedded Systems Laboratory" (3 CFU)**:
+    
+    - Discussione di un assignment relativo agli argomenti del corso.
+    - L'**assignment può essere svolto individualmente o in gruppi (2-3 studenti)**.
+    - **Il tema è concordato con il docente** (gli studenti possono proporre argomenti).
+    - **Date d'esame** disponibili sulla pagina del corso.
+    - **Iscrizione all'esame**: [http://sol.unifi.it/prenot/prenot](http://sol.unifi.it/prenot/prenot)
+
+---
+
+**Esame orale con self-assignment (6 CFU)**
+
+- **Lo sviluppo di un self-assignment è facoltativo**.
+
+- Gli studenti che scelgono di svilupparlo devono:
+    - **Definire autonomamente il tema**.
+    - **Inviare un breve report una settimana prima dell'esame**.
+- **Esempi di self-assignment**:
+	- **Implementazione di task real-time** con scheduling a priorità fissa preemptiva su **VxWorks**.
+	- **Uso di ORIS 1.0 o Uppaal** per verificare i requisiti di un sistema concorrente temporizzato.
+	- **Sviluppo di diagrammi SysML** per modellare un sistema embedded.
+
+---
+
+**Project Work (3 CFU)**
+
+- Formare un gruppo di **1-3 studenti** e **concordare il tema via email** prima di iniziare.
+
+- **Presentazione dei risultati durante l’esame**.
+	- Ogni studente deve avere un **contributo chiaramente identificabile**.
+
+- **Esempi di assignment**:
+	- **Verifica dei requisiti di un task-set real-time** gestito da scheduling a priorità fissa preemptiva.
+	- **Sviluppo e testing di un task-set real-time** su **VxWorks**.
+	- **Analisi del log temporale** di eventi di un modello PTPN.
+	- **Fault injection** e testing di sistemi real-time.
+
+---
+
+**Esempi di progetti passati**: **Real-Time Programming su Linux-RTAI**
+
+- Implementazione e testing di **task-set real-time**:
+    - Task periodici e sporadici con risorse in mutua esclusione.
+    - **Testing rispetto a un modello formale basato su reti di Petri temporizzate**.
+
+- **RTAI (Real-Time Application Interface for Linux)**.
+    - Set di task Real-time sono implementati come moduli Kernel eseguiti su un *Intel NUC NUC10i3FNHN.
+
+![[Pasted image 20250307082401.png]]
+
+---
+**Un assignment su generazione e prioritizzazione dei test case**
+
+- Generazione automatica di **test case per sistemi cyber-fisici**
+	- Simulazione di **sistemi cyber-physical complessi**.
+	- **Uso di algoritmi genetici per la generazione di test reattivi**.
+
+![[Pasted image 20250307082543.png]]
+
+---
+
+**Un assignment su scheduling di grafi di task**
+
+- **Scheduling di task nel settore tessile**:
+    - Un grafo di task rappresenta le fasi di lavoro di un "bill of materials" con scadenza.
+    - Ogni fase di lavoro è eseguita tramite un sottocontratto su una macchina specifica
+    - Ogni istanza della macchina di un certo tipo ha la sua velocità di esecuzione.
+
+- Un algoritmo di scheduling **sequenziale senza prelazione**
+	- L'algoritmo schedula un task graph alla volta
+	- Si evitano prelazioni del task per costi pratici
+	- **Schedulazione con Earliest Deadline First (EDF)** e spinti al massimo senza violare le precedenze 
+
+![[Pasted image 20250307083055.png]]
+
+---
+**Altri esempi di temi di assignment**
+
+- **Analisi della schedulabilità** in sistemi real-time. (sistemi di scheduling a gerarchie)
+
+![[Pasted image 20250307083209.png]]
+
+- **Testing di sistemi real-time**.
+
+- **Analisi delle prestazioni nei sistemi ferroviari**.
+
+![[Pasted image 20250307083253.png]]
+
+- **Manutenzione predittiva in sistemi distribuiti**. 
+	- **Allocazione delle risorse nei sistemi edge-cloud**.
+
+![[Pasted image 20250307083400.png]]
+
+---
+
 # Concetti di base
 
 ## Task (1/2)
 
 - Un task è una sequenza di istruzioni che, in assenza di altre attività, viene eseguita continuamente dal processore fino al completamento.
 - Esempio: un singolo task in esecuzione che non subisce preemption.
-- ![[Pasted image 20240923171258.png]]
+
+	 ![[Pasted image 20240923171258.png]]
+
 - Un processo è un programma in esecuzione, composto da task concorrenti (anche detti thread) che condividono uno spazio di memoria comune.
 ---
 ## Task (2/2) 
