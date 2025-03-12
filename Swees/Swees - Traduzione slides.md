@@ -515,18 +515,34 @@ Università di Firenze
 
 ---
 
-# Concetti di base
 
-## Task (1/2)
+# Sistemi Real-time
 
-- Un task è una sequenza di istruzioni che, in assenza di altre attività, viene eseguita continuamente dal processore fino al completamento.
-- Esempio: un singolo task in esecuzione che non subisce preemption.
-
-	 ![[Pasted image 20240923171258.png]]
-
-- Un processo è un programma in esecuzione, composto da task concorrenti (anche detti thread) che condividono uno spazio di memoria comune.
 ---
-## Task (2/2) 
+
+**Outline**
+
+1. Concetti base
+2. Scheduling di task periodici
+3. Protocollo di accesso alle risorse
+4. Crediti e Riferimenti
+
+---
+## Concetti di base
+---
+
+**Task (1/2)**
+
+- Un **task** è una sequenza di istruzioni che, in assenza di altre attività, viene eseguita continuamente dal processore fino al completamento.
+	- Esempio: un singolo task in esecuzione che non subisce preemption.
+
+ ![[Pasted image 20240923171258.png]]
+
+- Un **processo** è un programma in esecuzione, composto da task concorrenti (anche detti **thread**) che condividono uno spazio di memoria comune.
+
+---
+
+**Task (2/2)** 
 
 - Caratteristiche del task:
     - **Tempo di attivazione ($a_i$)**: tempo in cui un task diventa pronto per l'esecuzione.
@@ -535,115 +551,145 @@ Università di Firenze
     - **Tempo di calcolo ($C_i$)**: tempo di esecuzione del task senza interruzioni.
     - **Tempo di Completamento** ($K_{i}$): $K_{i} = f_{i} - s_{i}$, nell'esempio coincide con il tempo di calcolo
     - **Tempo di risposta ($R_i$)**: $R_i = f_i - a_i$.
-    -
+
 ![[Pasted image 20240923171417.png]]
+
 ---
 
-## Stati del task
+**Stati del task**
 
 - Un task è **attivo** se può potenzialmente essere eseguito sul processore.
 	- Un task attivo è **pronto** se è in attesa del processore.
 	- Un task attivo è in **stato running** se è in esecuzione.
+
 - Un task è **bloccato** se è in attesa di utilizzare una risorsa.
 
 ![[Pasted image 20240923171513.png]]
 
 ---
 
-## Dispatching
+**Dispatching**
 
-- I task pronti sono mantenuti in una coda detta **_ready queue_**, gestita da una politica di **scheduling**.
+- I task pronti sono mantenuti in una coda detta **_ready queue_**, gestita da una **politica di scheduling**
 - Un'operazione di **_dispatching_** assegna il processore al primo task nella coda.
-- Se ci sono diversi tipi di task, potrebbero esserci più code pronte.
--![[Pasted image 20240923171944.png]]
+- Se ci sono diversi tipi di task => potrebbero esserci più code pronte.
+
+![[Pasted image 20240923171944.png]]
 
 ---
 
-## Preemption
+**Prelazione**
 
 - Meccanismo del kernel che sospende l'esecuzione del task in esecuzione (che ritorna nella coda dei pronti) a favore di un task più importante.
-- Migliora la concorrenza tra i task :)
-- Riduce il tempo di risposta dei task ad alta priorità, ma introduce overhead di runtime, sul tempo di esecuzione dei task :(
+	- Migliora la concorrenza tra i task :)
+	- Riduce il tempo di risposta dei task ad alta priorità, ma introduce overhead di runtime, sul tempo di esecuzione dei task :(
+
 - Per assicurare task critici può essere disabilitato (temporaneamente o permanentemente)
+
+![[Pasted image 20250308182418.png]]
+
 ---
 
-## Schedulazione
+**Schedulazione**
 
 - Una schedulazione è un'assegnazione dei task al processore, che determina la sequenza di esecuzione dei task considerati.
-- Formalmente, una schedulazione per un insieme di task $\Gamma = {\tau_1, \tau_2, ..., \tau_n}$ è una funzione $\sigma: R+ \to N$, tale che $∀ t ∈ R+ ∃ t1 , t2 ∈ R+$, tale che $t ∈ [t1 , t2)$ e σ(t) = σ(t′ ) ∀ t′ ∈ $[t1 , t2]$  :
-	• σ(t) = 0 se il processore è in idle al tempo t
-	• σ(t) = k ∈ {1, 2, . . . , n} se il processore esegue il task $τ_k$ al tempo t
-- Ogni intervallo $[ti , ti+1 )$, è chiamato _time slice_ $∀ i ∈ N+$
+
+- Formalmente, una schedulazione per un insieme di task $\Gamma = \{\tau_1, \tau_2, ..., \tau_n\}$ è una funzione $\sigma: \mathbb{R}^+ \to \mathbb{N}$, tale che $∀ t ∈ \mathbb{R}^+ \exists \space t_1 , t_2 ∈ \mathbb{R}^+$, tale che $t ∈ [t1 , t2)$ e 
+	- σ(t) = σ(t′ ) ∀ t′ ∈ $[t_1 , t_2]$  :
+		• σ(t) = 0 se il processore è in idle al tempo t
+		• σ(t) = k ∈ {1, 2, . . . , n} se il processore esegue il task $τ_k$ al tempo t
+
+- Ogni intervallo $[t_i , t_{i+1} )$, è chiamato _time slice_ $∀ i ∈ \mathbb{N}^+$
 - Ad ogni istante $t_i$, il processore compie un **_context switch_**
 	
 ![[Pasted image 20240923172113.png]]
 
 ---
 
-### Schedulazione preemptive
+**Schedulazione con prelazione**
 
-Un'immagine mostra una schedulazione preemptive.
 ![[Pasted image 20240923172211.png]]
 
 ---
-### Sistema concorrente
 
-- Più task possono essere attivi simultaneamente (pronti o in esecuzione).
-- Uno e solo un task è in esecuzione in un determinato momento.
-![[Pasted image 20240923172346.png]]
+**Sistema concorrente**
+
+- Più task possono essere **attivi simultaneamente** (pronti o in esecuzione).
+- Uno e solo un task è in **esecuzione** in un determinato momento.
+
+![[Pasted image 20250308183649.png]]
+
 ---
 
-## Task in tempo reale
+**Task in tempo reale**
 
-- Un task in tempo reale è caratterizzato da un vincolo temporale sul tempo di risposta, detto **deadline** (assoluta/relativa).
-- **Deadline assoluta ($d_i$)**: tempo entro il quale un task deve completare l'esecuzione.
-- **Deadline relativa ($D_i$)**: $D_i = d_i - a_i$.
--![[Pasted image 20240923172414.png]]
-- Un task sarà quindi detto **feasible** se completa la sua esecuzione prima della sua deadline assoluta 
+- Un task in tempo reale è caratterizzato da un **vincolo temporale** sul tempo di risposta, detto **deadline** (assoluta/relativa).
+	- **Deadline assoluta ($d_i$)**: tempo entro il quale un task deve completare l'esecuzione.
+	- **Deadline relativa ($D_i$)**: $D_i = d_i - a_i$.
+
+![[Pasted image 20240923172414.png]]
+
+- Un task sarà quindi detto **feasible** se completa la sua esecuzione prima della sua deadline assoluta (o relativa)
 	- dunque $f_i ≤ d_i$ oppure $R_i ≤ D_i$
+
 ---
 ### Laxity
 
-- **Laxity $X_i$**: massimo ritardo che un task può subire dopo la sua attivazione, pur completando entro la sua deadline.
-- Misurato al tempo di attivazione: $X_i = D_i - C_i$.
-- Anche detto "slack time".
--![[Pasted image 20240923172446.png]]
-- La **Residual laxity** $Yi$ di un task, è invece la laxity misurata al completamento del task
-	- Ovvero uguale alla deadline assoluta meno il finishing time
+- *Laxity* $X_i$ del task $\tau_i$: **massimo ritardo** che un task può subire dopo la sua attivazione, pur completando entro la sua deadline.
+	- Misurato al tempo di attivazione, vale: $X_i = D_i - C_i$.
+	- Anche detto ***slack time***.
+
+![[Pasted image 20240923172446.png]]
+
+- La **Residual laxity** $Y_i$ di un task, è invece la laxity misurata **al completamento del task**
+	- Pari alla deadline assoluta meno il *finishing time*, ovvero $Y_i := d_i -f_i$
 
 ---
 ### Lateness e Tardiness
 
-- **Lateness $L_i$**: ritardo del task rispetto alla sua deadline.
+- **Lateness $L_i$**: ritardo del task $\tau_i$ rispetto alla sua deadline.
+	- Pari al tempo di fine meno la deadline assoluta, ovvero $L_i =f_i - d_i$
 	- è negativa se il task finisce prima della sua deadline
--![[Pasted image 20240923172528.png]]
-- **Tardiness $E_i$**: tempo in cui un task rimane attivo oltre la sua deadline.
-	- Definito come: $E_i = max${$0,L_i$}, 
+
+![[Pasted image 20240923172528.png]]
+
+- **Tardiness $E_i$** del task $\tau_i$: tempo in cui un task rimane attivo **oltre la sua deadline**.
+	- Definito come: $E_i = max${$0,L_i$}, (notare è solo positivo)
 	- Detto anche _exceeding time_
 
 ---
 
-## Task e Job
+**Task e Job**
 
-- Un task che viene eseguito più volte su dati diversi genera una sequenza di attività identiche chiamate **job** o istanze di task.
+- Un task che viene eseguito **più volte su dati diversi** genera una sequenza di attività identiche chiamate **job** o **istanze di task** (stesso codice, dati diversi).
+
 ![[Pasted image 20240923172617.png]]
+
 ---
 
-### Modalità di attivazione di un task
+**Modalità di attivazione di un task**
 
-- **Modalità di attivazione a tempo**: il task è automaticamente attivato dal sistema operativo in momenti predefiniti.
-- **Modalità di attivazione evento**: il task è attivato al verificarsi di un evento, da un interrupt o da un altro task tramite una chiamata di sistema esplicita.
+- **Modalità di attivazione a tempo**:
+	- il task è automaticamente attivato dal sistema operativo in momenti predefiniti.
+	- Modo di attivazione dei task **periodici**
+
+- **Modalità di attivazione evento**: 
+	- il task è attivato al verificarsi di un evento, da un interruzione o da un altro task tramite una chiamata di sistema esplicita.
 	- Modalità di attivazione dei task **aperiodici**
 
 ---
 
-### Task periodico 
+**Task periodico** 
 
 - Un **task periodico** $\tau_i$ consiste in una sequenza infinita di job $\tau_{i1}, \tau_{i2}, \dots, \tau_{ik}$, regolarmente attivati con un tasso costante, ossia con periodo $T_i$. 
--  Se $T_i = D_i$, allora l'attività è detta **task periodica pura**.
-- Il **fattore di utilizzazione del task** è $U_i := \frac{C_i}{T_i}$.![[Pasted image 20240923172729.png]]
+	-  Se $T_i = D_i$, allora l'attività è detta **task periodica pura**.
+	- Il **fattore di utilizzo del task** è $U_i := \frac{C_i}{T_i}$.
+
+![[Pasted image 20240923172729.png]]
+
 ---
-#### Task periodico(2/3)
+
+**Task periodico(2/3)**
 
 - Parametri di un'attività periodica $\tau_i$
     - **Periodo** $T_i$, tempo di computazione $C_i$, deadline relativa $D_i$.
@@ -659,139 +705,219 @@ Un'immagine mostra una schedulazione preemptive.
 
 - Supporto per attività periodiche
     - Pseudo-codice che illustra un frammento di una tipica implementazione:
-		*wait for activation(); 
-		while(condition) {   
-			...  
+```bash
+	wait_for_activation();
+	while (condition){
+		...
 		wait_for_next_period();
-		}`
+	}
+```
 
-- Nel periodo che va dall'invocazione di *wait_for_next_period()* fino all'inizio del periodo successivo, l'attività non è né attiva né bloccata, è **inattiva**!
-- ![[Pasted image 20240923174335.png]]
+- Nel periodo che va dall'invocazione di *wait_for_next_period()* fino all'inizio del periodo successivo, l'attività non è né attiva né bloccata, è **inattiva**!(idle)
+ 
+![[Pasted image 20240923174335.png]]
+
 ---
 
-### Stati dei Task
+**Stati dei Task**
 
 ![[Pasted image 20240923174511.png]]
 
 ---
 
-### Task aperiodico
+**Task aperiodico**
 
 - Un task **aperiodico** $\tau_i$ consiste in una sequenza infinita di job $\tau_{i1}, \tau_{i2}, \dots, \tau_{ik}$, che non sono attivati regolarmente.
-- Un task **sporadico** $\tau_i$ è un task aperiodico i cui job consecutivi sono separati da un tempo minimo tra arrivi $T_i$. i.e., $a_{i,k+1} ≥ a_{i,k} + T_i$
--![[Pasted image 20240923174605.png]]
+
+- Un task **sporadico** $\tau_i$ è un task aperiodico i cui job consecutivi **sono separati da un tempo minimo** tra arrivi $T_i$. i.e., $a_{i,k+1} ≥ a_{i,k} + T_i$
+
+![[Pasted image 20240923174605.png]]
 
 ---
 
-### Jitter
+**Jitter**
 
 - Il jitter misura la variazione di un evento periodico.
-	- **Jitter assoluto**: $\max_k {t_k - a_k} - \min_k {t_k - a_k}$ (massima differenza tra i tempi di attivazione effettivi e i tempi di attivazione pianificati.)
-	- **Jitter relativo**: $\max_k {|(t_k - a_k) - (t_{k-1} - a_{k-1})|}$
+	- **Jitter assoluto**: $\max_k \{t_k - a_k\} - \min_k \{t_k - a_k\}$ (massima differenza tra i tempi di attivazione effettivi e i tempi di attivazione pianificati.)
+	- **Jitter relativo**: $\max_k \{|(t_k - a_k) - (t_{k-1} - a_{k-1})|\}$ (relativo fra 2 task)
+
 ![[Pasted image 20240923174623.png]]
+
 ---
-#### Start time jitter 
 
-- **Jitter assoluto del tempo di inizio**: Deviazione massima del tempo di inizio tra tutti i lavori.
-    - $\max_k {s_{i,k} - a_{i,k}} - \min_k {s_{i,k} - a_{i,k}}$
-- **Jitter relativo del tempo di inizio**: Deviazione massima del tempo di inizio tra due lavori consecutivi.
-    - $\max_k {|(s_{i,k} - a_{i,k}) - (s_{i,k-1} - a_{i,k-1})|}$
-    ![[Pasted image 20240923175222.png]]
-#### Finishing time jitter 
+**Start time jitter** 
 
-- **Jitter assoluto del tempo di completamento**: Deviazione massima del tempo di completamento tra tutti i lavori.
-    - $\max_k {f_{i,k} - a_{i,k}} - \min_k {f_{i,k} - a_{i,k}}$
-- **Jitter relativo del tempo di completamento**: Deviazione massima del tempo di completamento tra due lavori consecutivi.
-    - $\max_k {|(f_{i,k} - a_{i,k}) - (f_{i,k-1} - a_{i,k-1})|}$
-    ![[Pasted image 20240923175423.png]]
-#### Completion time jitter 
+- **Jitter assoluto del tempo di inizio**
+	- Deviazione massima del tempo di inizio **tra tutti i lavori**.
+    - $\max_k \{s_{i,k} - a_{i,k}\} - \min_k \{s_{i,k} - a_{i,k}\}$
 
-- **Jitter assoluto del tempo di completamento**: Deviazione massima del tempo di completamento tra tutti i lavori.
-    - $\max_k {f_{i,k} - s_{i,k}} - \min_k {f_{i,k} - s_{i,k}}$
-- **Jitter relativo del tempo di completamento**: Deviazione massima del tempo di completamento tra due lavori consecutivi.
-    - $\max_k {|(f_{i,k} - s_{i,k}) - (f_{i,k-1} - s_{i,k-1})|}$
-    ![[Pasted image 20240923175450.png]]
-## Sintesi dei parametri di task
+- **Jitter relativo del tempo di inizio**:
+	- Deviazione massima del tempo di inizio tra **due lavori consecutivi**.
+    - $\max_k \{|(s_{i,k} - a_{i,k}) - (s_{i,k-1} - a_{i,k-1})|\}$
+
+![[Pasted image 20240923175222.png]]
+
+---
+
+**Finishing time jitter**
+
+- **Jitter assoluto del tempo di completamento**
+	- Deviazione massima del tempo di completamento tra tutti i lavori.
+    - $\max_k \{f_{i,k} - a_{i,k}\} - \min_k \{f_{i,k} - a_{i,k}\}$
+
+- **Jitter relativo del tempo di completamento**
+	- Deviazione massima del tempo di completamento tra due lavori consecutivi.
+    - $\max_k \{|(f_{i,k} - a_{i,k}) - (f_{i,k-1} - a_{i,k-1})|\}$
+
+![[Pasted image 20240923175423.png]]
+
+---
+
+**Completion time jitter** 
+
+- **Jitter assoluto del tempo di completamento** (prendo starting time invece che activation)
+	- Deviazione massima del tempo di completamento tra tutti i lavori.
+    - $\max_k \{ f_{i,k} - s_{i,k}\} - \min_k \{f_{i,k} - s_{i,k}\}$
+
+- **Jitter relativo del tempo di completamento**
+	- Deviazione massima del tempo di completamento tra due lavori consecutivi.
+    - $\max_k \{|(f_{i,k} - s_{i,k}) - (f_{i,k-1} - s_{i,k-1})|\}$
+
+![[Pasted image 20240923175450.png]]
+
+---
+
+**Sintesi dei parametri del task**
 
 - **Parametri conosciuti offline** (specificati dal programmatore): 
-	- periodo $T_i$
+	- Periodo $T_i$
 	- Tempo di calcolo $C_i$
 	- Deadline relativa $D_i$.
+
 - **Parametri conosciuti online** (dipendenti dallo scheduling e dall'attuale esecuzione): 
 	- tempi di arrivo $a_i$ di inizio $s_i$, di completamento $f_i$, tempo di risposta $R_i$
 	- laxity $X_i$ e laxity resuiduale $Yi$
 	- lateness $L_i$, e tardiness $E_i$.
 	- Start time jitter, finishing time jitter e completion time jitter
+
 ![[Pasted image 20240923175713.png]]
----
-
-## Feasibility vs Schedulability (1/2)
-
-Un **programma è fattibile** se tutte le sue constraint sono rispettate:
-- - - **Constraint temporali**: attivazione, periodo, deadline, jitter.
-    - **Constraint espliciti**: specificati direttamente nel sistema.
-    - **Constraint impliciti**: non specificati ma necessari per soddisfare i requisiti prestazionali.
-    - **Constraint di precedenza**: impongono un ordine di esecuzione, espressi tramite un **DAG**.
-    - **Constraint di accesso alle risorse**: gestiscono la sincronizzazione nell’accesso a risorse condivise.
----
-
-### Feasibility vs schedulability (2/2)
-
-- Un insieme di task $\Gamma$ è detto **fattibile** se esiste un algoritmo che genera una schedulazione fattibile per $\Gamma$.
-- Un insieme di task $\Gamma$ è detto **schedulabile** da un algoritmo $A$ se $A$ genera una schedulazione fattibile per $\Gamma$.
-![[Pasted image 20240923180625.png]]
----
-
-### Il problema della schedulazione
-
-- Il problema della schedulazione consiste nel, dato un set di task $Γ$ , un set di processori $P$, un set di risorse $R$ e un set di vincoli $C$, trovare un'assegnazione di risorse che produca una schedulazione fattibile. 
-- Il problema della schedulazione è NP-completo. (gli algoritmi di scheduling hanno un tempo di esecuzione esponenziale, nel numero di tasks)
-- ![[Pasted image 20240923181117.png]]
 
 ---
 
-### Ricapitolazione sulla complessità
+**Fattibilità vs Schedulabiltà (1/2)**
 
-- Un problema decisionale è NP se può essere risolto in tempo polinomiale da una macchina di Turing non deterministica.
-- Un problema decisionale H è NP-hard, se ogni problema di decisione in NP, può essere ridotto in tempo polinomiale ad H
-- Il problema decisionale sarà dunque NP-complete se è sia NP che NP-hard. 
+Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
+-  **Vincoli temporali**: attivazione, periodo, deadline, jitter.
+    - **Vincoli espliciti**: specificati direttamente nei requisiti del sistema.
+    - **Vincoli impliciti**: non specificati nei requisiti ma necessari per soddisfare i requisiti prestazionali.
+
+- **Vincoli di precedenza**: impongono un ordine di esecuzione dei tasks, tipicamente espressi tramite un **DAG**, chiamato **grafo dei task**.
+
+- **Vincoli di accesso alle risorse**: gestiscono la sincronizzazione nell'accesso a risorse condivise (per risolvere conflitti generati da accesso concorrente).
+
+---
+
+**Feasibility vs schedulability (2/2)**
+
+- Un insieme di task $\Gamma$ è detto **fattibile** se esiste un algoritmo che genera **una schedulazione fattibile** per $\Gamma$.
+
+- Un insieme di task $\Gamma$ è detto **schedulabile** ==da un algoritmo== $A$ se $A$ genera una schedulazione fattibile per $\Gamma$.
+
+![[Pasted image 20250308200358.png]]
 
 ---
 
-## Tassonomia degli algoritmi di schedulazione
+**Il problema della schedulazione**
 
-- **Preemptive vs non preemptive**: preemptive, un task può essere interrotto; non preemptive, un task non può essere interrotto.
-- **Statico vs dinamico**:
-	- **statico**, le decisioni sono prese basandosi su parametri fissi; 
-	- **dinamico**, le decisioni sono basate su parametri che cambiano nel tempo.
-- **Offline** vs **online**: 
-	- Offline: decisioni prese prima dell'attivazione del compito (programmazione basata su tabelle)
-	- Online: decisioni prese durante l'esecuzione in base ai compiti 
+- Il problema della schedulazione consiste nel dato:
+	- Un set di task $Γ = \{\tau_1,\space ...\space , \tau_n\}$ 
+	- Un set di processori $P = \{P_1,\space...\space, P_m\}$
+	- Un set di risorse $R = \{R_1, \space ... \space , R_s\}$
+	- Un set di vincoli $C =\{C_1, \space ... \space, C_k\}$
+	trovare un'assegnazione di risorse (P, R a $\Gamma$) che produca una schedulazione fattibile. 
+
+- Il problema della schedulazione è **NP-completo**: 
+	- Gli algoritmi di scheduling hanno un tempo di esecuzione esponenziale, nel numero di tasks
+
+- É possibile trovare algoritmi in tempo polinomiale sotto **assunzioni semplificative**
+	- Singolo processore, task omogenei (solo periodici/aperiodici),  task con possibilità di prelazione, attivazioni simultanee, senza vincoli di precedenza, senza vincoli di risorse
+
+		 ![[Pasted image 20240923181117.png]]
 
 ---
+
+**Ricapitolazione sulla complessità**
+
+- Un problema decisionale è **NP** se può essere risolto in tempo polinomiale da una macchina di Turing non deterministica.
+	- Potrebbe non essere risolto in tempo polinomiale da una macchina di turing deterministica (ovvero da un qualsiasi computer)
+	- Potrebbe essere risolto in tempo sovra-polinomiale da una macchina di turing deterministica
+	- Complessità sovra-polinomiale è tipicamente complessità esponenziale
+
+- Un problema decisionale H è **NP-hard**, se ogni problema di decisione in NP, può essere ridotto in tempo polinomiale ad H
+
+- Il problema decisionale sarà dunque **NP-complete** se è sia NP che NP-hard. 
+
+- Ad esempio: un algortimo con passo elementare che necessità di 1 $\micro s$ e $n=20$ tasks
+	- Complessità lineare $O(n) => 20 \micro s$
+	- Complessità polinomiale $O(n^{10}) => 2844.44 h$
+	- Complessità esponenziale $O(10^n) => 3 \space \text{milioni di anni}$
+
+---
+
+**Tassonomia degli algoritmi di schedulazione(1/2)**
+
+- Prelazione vs non Prelazione: 
+	- **Prelazione**: un task può essere interrotto da un task a maggiore priorità;
+	- **Non Prelazione**: un task non può essere interrotto.
+
+- Statico vs dinamico:
+	- **Statico**: le decisioni sono prese basandosi su parametri fissi; 
+	- **Dinamico**: le decisioni sono basate su parametri che cambiano nel tempo.
+
+- Offline vs online: 
+	- **Offline**: decisioni prese prima dell'attivazione dei task (programmazione basata su tabelle)
+	- **Online**: decisioni prese durante l'esecuzione in base ai tasks 
+
+---
+
+**Tassonomia degli algoritmi di schedulazione(2/2)**
 
 - Ottimale vs euristico:
 	- **Ottimale**: genera una schedulazione che minimizza una funzione di costo definita da un criterio di ottimalità.
 	- **Euristico**: genera una schedulazione secondo una funzione euristica che cerca di soddisfare un criterio di ottimalità, senza garanzia di successo.
 
 - Schedulazione garantita vs best-effort
-	- **Schedulazione garantita**: genera una schedulazione fattibile se esiste; necessaria per task hard real-time.
-	- **Best-effort**: non garantisce una schedulazione fattibile; utile per task soft real-time; ottimizza la performance media.
+	- **Schedulazione garantita**: genera una schedulazione fattibile se esiste; 
+		- necessaria per task hard real-time.
+	- **Best-effort**: non garantisce una schedulazione fattibile;
+		- utile per task soft real-time; ottimizza la performance media.
 
-- Algoritmo chiaroveggente
+- **Algoritmo chiaroveggente**
 	- Conosce tutte le attivazioni future dei task.
-	- Può essere usato per confrontare le performance.
----
-## Classificazione algoritmi di scheduling
+	- Può essere usato per **confrontare** le performance.
 
-![[Pasted image 20240923181801.png]]
-## Anomalie di schedulazione
-
-- **Teorema (Graham, 1976)**: Se un insieme di task è schedulato in modo ottimale su un multiprocessore con assegnazione di priorità fissa, un numero fisso di processori, tempi di esecuzione fissi e vincoli di precedenza, allora aumentare il numero di processori, ridurre i tempi di esecuzione o ridurre i vincoli di precedenza può aumentare la lunghezza della schedulazione.
-![[Pasted image 20240923181830.png]]
 ---
-# Schedulazione di task periodici
-## Schedulazione di task periodici: formulazione del problema (1/2)
+
+**Classificazione algoritmi di scheduling**
+
+![[Pasted image 20250309130836.png]]
+
+---
+
+**Anomalie di schedulazione**
+
+- **Teorema (Graham, 1976)**: Se un insieme di task è schedulato in modo ottimale su un multiprocessore con assegnazione di priorità fissa, un numero fisso di processori, tempi di esecuzione fissi e vincoli di precedenza, allora aumentare il numero di processori, ridurre i tempi di esecuzione o ridurre i vincoli di precedenza **può aumentare la lunghezza della schedulazione**.
+	- Piccole variazione nei parametri possono avere grosse conseguenze inaspettate
+	- Ad esempio: un processo più veloce, ovvero a velocità doppia (in giallo le sezioni critiche)
+
+		![[Pasted image 20240923181830.png]]
+
+---
+
+## Schedulazione di task periodici
+---
+
+**Schedulazione di task periodici: formulazione del problema (1/2)**
 
 - Un insieme di $n$ task periodici $\Gamma = {\tau_1, \dots, \tau_n}$, ciascuno caratterizzato da:
     - Tempo di arrivo iniziale (fase) $\Phi_i = a_{i,1}$
