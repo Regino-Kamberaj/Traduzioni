@@ -515,7 +515,7 @@ Ci sono diversi approcci per affrontare il problema:
 📌 **Valutazione con utenti umani generici (Human-grounded evaluation)**  
 
 - Esperimenti con **non esperti**, su compiti semplificati vicini all’applicazione reale.  
-- Permette di testare un **numero maggiore di utenti**, ma è meno preciso.
+- Permette di testare un **numero maggiore di utenti**, ma è meno preciso (anche se meno costoso)
 
 ---
 **Tipologie di valutazione della spiegabilità**
@@ -524,10 +524,10 @@ Ci sono diversi approcci per affrontare il problema:
 
 - **Non richiede esperimenti con esseri umani**, utile quando non etico o replicabile.  
 - Usa metriche **computazionali di proxy**, come l’importanza delle caratteristiche.  
-- Utile quando il modello è già stato **validato da esperti umani**.
+- Utile quando il modello è già stato **validato da esperti umani**. Oppure quando un metodo non è ancora maturo
 
 ---
-**Tipologie di valutazione della spiegabilità**
+**Valutazione della spiegabilità**
 
 📌 **Metriche di valutazione quantitativa** (Metriche con contributo umano):
 - **Completezza:** La spiegazione è completa per l’utente?
@@ -536,6 +536,9 @@ Ci sono diversi approcci per affrontare il problema:
 - **Plausibilità:** Quanto la spiegazione è convincente per l’utente?
 - **Simulabilità:** L’utente può applicare la spiegazione su nuovi dati?
 - **Rilevanza:** Metodologie specifiche per diversi settori (clinico, giuridico, ecc.).
+
+---
+**Valutazione della spiegabilità**
 
  📌 **Metriche ausiliarie (proxy):**
 - **Sensibilità:** Quanto un modello è influenzato da un determinato attributo?
@@ -546,8 +549,9 @@ Ci sono diversi approcci per affrontare il problema:
 
 ---
 
-## ▶ **Analisi esplorativa dei dati**
+## ▶ Analisi esplorativa dei dati
 
+---
 📌 **Principali tecniche di visualizzazione dati:**
 
 - **Analisi univariata:** statistiche descrittive, istogrammi, box plot, ecc.
@@ -556,45 +560,75 @@ Ci sono diversi approcci per affrontare il problema:
 - **Identificazione di outlier:** rilevamento di dati anomali o rumorosi.
 
 ---
+**Visualizzazione dati**
 
-### **Attenzione alle statistiche descrittive!**
+Attenzione alle statistiche descrittive!
 
 📌 **Esempio: Il quartetto di Anscombe**  
+
+![[Pasted image 20250313144804.png]]
+
 Il quartetto di Anscombe è un insieme di **quattro dataset** creati in modo che abbiano le **stesse statistiche riassuntive (media, varianza, correlazione), ma distribuzioni molto diverse**.
+
+![[Pasted image 20250313144856.png]]
 
 ⚠️ Questo dimostra che **guardare solo le statistiche numeriche può essere fuorviante**: è sempre necessaria un'analisi visiva dei dati.
 
----
+![[Pasted image 20250313144924.png]]
 
-### **Strumenti per la visualizzazione dei dati**
+---
+**Visualizzazione dati**
+
+📌 **Strumenti per la visualizzazione dei dati**
+
+![[Pasted image 20250313145033.png]]
 
 📌 **Librerie Python più utilizzate:**  
-✔️ **Classiche:** `pandas`, `numpy`, `matplotlib`  
-✔️ **Più recenti:** `seaborn`, `plotly`, `vega-altair`  
-✔️ **Specializzate:** `ydata-profiling`, `FACETS`, `KNIME`  
-✔️ **Strumenti interattivi** per l’analisi dinamica dei dati
+- **Classiche:** `pandas`, `numpy`, `matplotlib`  
+- **Più recenti:** `seaborn`, `plotly`, `vega-altair`  
+- **Specializzate:** `ydata-profiling`, `FACETS`, `KNIME`  
+- **Strumenti interattivi** per l’analisi dinamica dei dati
 
 🔗 **Riferimento:** [Distill - Interactive Data Communication](https://distill.pub/2020/communicating-with-interactive-articles/)
 
 ---
 
-## ▶ **Esempi**
+## ▶ Esempi
+
+---
+📌 **Importanza delle caratteristiche (Feature Importance)**  
+
+![[Pasted image 20250313145134.png]]
+
+✔️ Indica quanto ogni variabile contribuisce alla predizione del modello.
+
+--- 
+📌 **Mappe di attenzione (Attention Maps)**  
+
+![[Pasted image 20250313145214.png]]
+
+✔️ Visualizzano quali parti dell’input il modello considera più rilevanti.
 
 ---
 
-📌 **Importanza delle caratteristiche (Feature Importance)**  
-✔️ Indica quanto ogni variabile contribuisce alla predizione del modello.
-
-📌 **Mappe di attenzione (Attention Maps)**  
-✔️ Visualizzano quali parti dell’input il modello considera più rilevanti.
-
 📌 **Mappe di salienza (Saliency Maps)**  
+
+![[Pasted image 20250313145243.png]]
+
 ✔️ Evidenziano le aree più influenti dell’immagine per una predizione.
 
+---
 📌 **LIME (Local Interpretable Model-agnostic Explanations)**  
+
+![[Pasted image 20250313145315.png]]
+
 ✔️ Genera spiegazioni interpretabili per singole predizioni dei modelli _black-box_.
 
+---
 📌 **SHAP (Shapley Additive Explanations)**  
+
+![[Pasted image 20250313145349.png]]
+
 ✔️ Metodo basato sulla teoria dei giochi per assegnare **valori di contributo equi** a ciascuna caratteristica del modello.
 
 ---

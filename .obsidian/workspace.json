@@ -6,23 +6,10 @@
       {
         "id": "37a30ab98ccbe121",
         "type": "tabs",
+        "dimension": 47.06405693950178,
         "children": [
           {
             "id": "197711d3d68cbccc",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Swees/Swees - Traduzione slides.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Swees - Traduzione slides"
-            }
-          },
-          {
-            "id": "79b7a1e0d386112d",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -35,12 +22,12 @@
               "title": "Traduzione Slides XAI - Intelligenza Artificiale Explainable"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       },
       {
         "id": "5f49474bd3a044bd",
         "type": "tabs",
+        "dimension": 52.93594306049822,
         "children": [
           {
             "id": "9bd4012566dfc51d",
@@ -197,23 +184,23 @@
       "command-palette:Apri riquadro comandi": false
     }
   },
-  "active": "79b7a1e0d386112d",
+  "active": "197711d3d68cbccc",
   "lastOpenFiles": [
-    "Pasted image 20250309130836.png",
-    "Pasted image 20250308200358.png",
-    "Pasted image 20250308183649.png",
-    "Pasted image 20250308182418.png",
     "Swees/Immagini Swees/Pasted image 20250309130836.png",
     "Swees/Immagini Swees/Pasted image 20250308200358.png",
     "Swees/Immagini Swees/Pasted image 20250308183649.png",
     "Swees/Immagini Swees/Pasted image 20250308182418.png",
-    "EXAI/Immagini/Pasted image 20250312185203.png",
-    "EXAI/Immagini/Pasted image 20250311175007.png",
-    "EXAI/Immagini/Pasted image 20250311174943.png",
+    "EXAI/Immagini/Pasted image 20250313145349.png",
+    "EXAI/Immagini/Pasted image 20250313145315.png",
+    "EXAI/Immagini/Pasted image 20250313145243.png",
+    "EXAI/Immagini/Pasted image 20250313145214.png",
+    "EXAI/Immagini/Pasted image 20250313145134.png",
+    "EXAI/Immagini/Pasted image 20250313145131.png",
+    "EXAI/Immagini/Pasted image 20250313145033.png",
+    "Swees/Swees - Traduzione slides.md",
+    "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
     "EXAI/Slides/01_Introduction.pdf",
     "EXAI/Slides/00_Administrivia.pdf",
-    "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
-    "Swees/Swees - Traduzione slides.md",
     "Senza nome.md",
     "Swees/Slides/SWEES_realTimeSystems.pdf",
     "QESM",
