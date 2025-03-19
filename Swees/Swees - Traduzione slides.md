@@ -528,7 +528,7 @@ Università di Firenze
 4. Crediti e Riferimenti
 
 ---
-## Concetti di base
+## 1. Concetti di base
 ---
 
 **Task (1/2)**
@@ -914,9 +914,8 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 
 ---
 
-## Schedulazione di task periodici
+## 2. Schedulazione di task periodici
 ---
-
 **Schedulazione di task periodici: formulazione del problema (1/2)**
 
 - Un insieme di $n$ task periodici $\Gamma = {\tau_1, \dots, \tau_n}$, ciascuno caratterizzato da:
@@ -924,72 +923,88 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
     - Tempo di esecuzione nel caso peggiore (WCET) $C_i$
     - Periodo di attivazione $T_i$
     - Deadline relativa $D_i \leq T_i$
-    - Nessun vincolo di precedenza o di risorse.
-    - ![[Pasted image 20240923182020.png]]
-
----
-
-### Schedulazione di task periodici: formulazione del problema (2/2)
-
-- Obiettivo: garantire che ogni job $\tau_{i,k}$ di ciascun task periodico $\tau_i$ sia attivato al tempo $a_{i,k} = \phi_i + (k - 1) T_i$ e completi entro il tempo $d_{i,k} = a_{i,k} + D_i$.
+- Tutti i task sono indipendenti fra loro
+	- Nessun vincolo di precedenza o di risorse.
+	- Nessun task che si autosospende (ad eccezione della sospensione nell'attesa del successivo periodo).
+	- Rilascio del task al suo arrivo.
+	- Nessun o non considerabile overhead del kernel.
 
 ![[Pasted image 20240923182020.png]]
 
 ---
+**Schedulazione di task periodici: formulazione del problema (2/2)**
 
-## Schedulazione di task periodici: parametri aggiuntivi
+- Obiettivo: garantire che ogni job $\tau_{i,k}$ di ciascun task periodico $\tau_i$ sia 
+	- attivato al tempo $a_{i,k} = \phi_i + (k - 1) T_i$ 
+	- completato entro il tempo $d_{i,k} = a_{i,k} + D_i$.
+
+![[Pasted image 20240923182020.png]]
+
+---
+**Schedulazione di task periodici: parametri aggiuntivi**
 
 - **Iper-periodo $H$**: minimo intervallo di tempo dopo il quale la schedulazione si ripete (minimo comune multiplo dei periodi dei task).
-- **Tempo di risposta di un job $R_{i,k}$**: $R_{i,k} = f_{i,k} - a_{i,k}$.
-- **Tempo di risposta di un task** $R_{i} = max_{k}{R_{i,k}}$. 
+- **Tempo di risposta di un job $R_{i,k}$** := $R_{i,k} = f_{i,k} - a_{i,k}$.
+- **Tempo di risposta di un task** $R_{i} := max_{k}\{R_{i,k}\}$. 
 	- Ovvero il massimo tempo di risposta fra tutti i job dei task
+
 ![[Pasted image 20240923182432.png]]
+
 ---
-## Schedulazione di attività periodiche: istante critico di un'attività
+**Schedulazione di attività periodiche: istante critico di un'attività**
 
 - Il tempo di arrivo che produce il massimo tempo di risposta dell'attività.
-- Si verifica quando l'attività arriva insieme ad altre attività con priorità più alta.
-	- Considera l'interferenza di un'attività ad alta priorità $\tau_i$ su un'attività a bassa priorità $\tau_n$.
-	- ![[Pasted image 20240923183243.png]]
-	- Ridurre la fase di $\tau_i$ aumenta il tempo di risposta di $\tau_n$.
-	- ![[Pasted image 20240923183300.png]]
-	- Ridurre la fase di qualsiasi attività con priorità più alta aumenta il tempo di risposta di $\tau_n$.
-## Schedulazione non-preemptive a orologio statico (1/2)
 
-- Per task periodici con deadline relativa **uguale al periodo**.
-- Le decisioni sono prese **offline** in istanti di tempo prestabiliti.
-- ![[Pasted image 20240924222023.png]]
+- Si verifica quando l'attività arriva insieme ad altre attività con priorità più alta.
+	- Considera l'interferenza di un'attività ad alta priorità $\tau_i$, su un'attività a bassa priorità $\tau_n$.
+	 ![[Pasted image 20240923183243.png]]
+	
+	- Ridurre la fase di $\tau_i$ aumenta il tempo di risposta di $\tau_n$. ![[Pasted image 20240923183300.png]]
+
+	- Ridurre la fase di qualsiasi attività con priorità più alta aumenta il tempo di risposta di $\tau_n$.
+
 ---
-### Schedulazione non-preemptive a orologio statico (2/2)
+**Schedulazione non-preemptive a orologio statico (1/2)**
+
+![[Pasted image 20240924222023.png]]
+
+---
+**Schedulazione non-preemptive a orologio statico (2/2)**
+
+- Per task periodici con **deadline relativa uguale al periodo**.
+
+- Le decisioni sono prese **offline** in **istanti di tempo prestabiliti**. (cioè uno scheduling statico calcolato offline e salvato in una tabella per usarlo a runtime da un dispatcher attivato da un timer)
+	- Istanti di tempo regolari: scheduling cyclic executive
+	- Istanti di tempo irregolari: scheduling timer-driven (il timer ha bisogno di essere riprogrammato)
 
 - **Vantaggi**:
     - Implementazione semplice (non è necessario un sistema operativo in tempo reale).
     - Basso overhead a runtime.
     - Jitter molto ridotto.
+
 - **Svantaggi**:
     - Non robusto durante sovraccarichi.
     - Difficile da espandere.
     - Task aperiodici non facili da gestire
 
 ---
-
-## Schedulazione esecutiva ciclica (schedulazione a timeline)
+**Schedulazione esecutiva ciclica (schedulazione a timeline)**
 
 - Uno degli algoritmi di schedulazione più usati nei sistemi militari di difesa e nei sistemi di controllo del traffico (ad esempio, Boeing 777, Space Shuttle).
+
 - **Come funziona**:
-	- Il tempo è diviso in intervalli (**slot temporali**) di uguale durata Δ (ciclo minore).
+	- Il tempo è diviso in intervalli (**slot temporali**) di uguale durata Δ (**ciclo minore**).
 	- Uno o più task sono **allocati staticamente** a ciascuno slot temporale, assicurando che la somma dei tempi di esecuzione nel caso peggiore (WCET) in ciascuno slot non sia maggiore di Δ.
 	- Esecuzione attivata da un **timer** per ciascun slot temporale.
 	- Lo schedule si ripete dopo un intervallo di durata $T$ (**ciclo maggiore**).
 
 **Valori tipici dei parametri**:
 
-- Δ=gcd⁡{$T1,...,Tn$} (minimo comune divisore dei periodi dei task).
-- T=\lcm{$T1,...,Tn$} (massimo comune multiplo dei periodi dei task).
+- Δ= gcd⁡{$T1,...,Tn$} (massimo comune divisore dei periodi dei task).
+- T= lcm{$T1,...,Tn$} (minimo comune multiplo dei periodi dei task).
 
 ---
-
-### Esempio di schedulazione esecutiva ciclica
+**Esempio di schedulazione esecutiva ciclica**
 
 - Esempio con un insieme di tre task con i seguenti parametri:
     - Task $A$: WCET = 10, Periodo = 25
@@ -997,464 +1012,702 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
     - Task $C$: WCET = 10, Periodo = 100
 
  - I parametri sono scelti in modo da garantire $C_A + C_B ≤ ∆$ e $C_A + C_C ≤ ∆$
-	- Con Major cycle $T = 100$
-	- e Minor cycle ∆ $= 25$
-	
-- ![[Pasted image 20240924222135.png]]
+	- Major cycle $T = 100$
+	- Minor cycle ∆ $= 25$
+
+![[Pasted image 20240924222135.png]]
+
 ---
+**Implementazione e codifica della schedulazione esecutiva ciclica**
 
-### Implementazione e codifica della schedulazione esecutiva ciclica
-
-Un'immagine illustra un esempio di implementazione e codifica per la schedulazione esecutiva ciclica.
 ![[Pasted image 20240924222519.png]]
 
 ---
-### Cyclic Executive Scheduling: Svantaggi
+**Cyclic Executive Scheduling: Svantaggi**
 
 - Problemi durante **sovraccarichi** (esecuzione oltre i limiti dei task):
     - Lasciar continuare il task ⇒ possibile effetto domino sugli altri task.
     - Abortire il task ⇒ stato incoerente del sistema.
+
 - Difficoltà nell'espandere lo scheduling in caso di cambiamenti nei **parametri dei task**:
-    - Cambio del WCET: $C_B=20 ⇒ C_A+C_B >$ Δ, quindi occorre dividere $τ_B$ in due sottotask $τ_{B1}$ e $τ_{B2}$ con WCET pari a 15 e 5 rispettivamente, e ridisegnare lo schedule!
+    - **Cambio del WCET**: $C_B=20 \space \text{(il doppio)} ⇒ C_A+C_B >$ Δ, quindi occorre dividere $τ_B$ in due sottotask $τ_{B_1}$ e $τ_{B_2}$ con WCET pari a 15 e 5 rispettivamente, e ridisegnare lo schedule!
 	![[Pasted image 20240924223316.png]]
-    - Cambio del periodo: $T_B=40$ ⇒ Δ=5 $T=200$, il che richiede 40 **sincronizzazioni** per major cycle! Molto difficile ridisegnare lo schedule a mano.
-- ![[Pasted image 20240924223516.png]]
-## Fattore di utilizzo del processore $U$
+	
+    - **Cambio del periodo**: $T_B=40$ ⇒ Δ=5 $T=200$, il che richiede 40 **sincronizzazioni** per major cycle! => Molto difficile ridisegnare lo schedule a mano.
+	![[Pasted image 20240924223516.png]]
+
+---
+**Fattore di utilizzo del processore $U$**
 
 - Frazione del tempo del processore speso nell'esecuzione del task set:
-    - $U = \sum_{i=1}^{n} \frac{C_i}{T_i}$.
-![[Pasted image 20240924223543.png]]
+    - $U = \sum_{i=1}^{n} \frac{C_i}{T_i}$
+
+- Esempio: task set con $U = \frac{10}{25} + \frac{10}{40} +\frac{20}{100} = \frac{35}{40} = 0,85$  
+
+![[Pasted image 20250313185121.png]]
+
 ---
+**Limite superiore $U_{ub}(\Gamma,A)$ del fattore di utilizzo del processore $U$**
 
-### Limite superiore $U_{ub}(\Gamma,A)$ del fattore di utilizzo del processore $U$
-
-- Il **limite superiore** $U_{ub}(\Gamma,A)$ del fattore di utilizzo $U$ per un insieme di task $\Gamma$ sotto un algoritmo di schedulazione $A$.
-	- Se $U = U_{ub}(\Gamma,A)$, l'insieme di task utilizza completamente il processore. Se il WCET aumenta, il set di task diventa infattibile.
+- Definisco il **limite superiore** $U_{ub}(\Gamma,A)$ del fattore di utilizzo $U$ per un insieme di task $\Gamma$ sotto un algoritmo di schedulazione $A$.
+	- Se $U = U_{ub}(\Gamma,A)$, l'insieme di task utilizza completamente il processore.
+		- Se il WCET aumenta, il set di task diventa infattibile!
 	- Ogni set di task può avere un diverso limite superiore.
+
 - Ad esempio: (processore assegnato ai task in ordine crescente per il periodo)
--![[Pasted image 20240924223949.png]]
+
+![[Pasted image 20240924223949.png]]
 
 ---
+**Limite superiore minimo $U_{lub}(A)$**
 
-### Limite superiore minimo $U_{lub}(A)$
+- Limite superiore **minimo** $U_{lub}(A)$ del fattore di utilizzo sotto un algoritmo di schedulazione $A$. (minimo fra i fattori di utilizzo fra tutti i task set che utilizzano al massimo il processore)
+	- Definito come:  $U_{lub}​(A)=min_Γ​ \space U_{ub}​(Γ,A)$
 
-- Limite superiore **minimo** $U_{lub}(A)$ del fattore di utilizzo sotto un algoritmo di schedulazione $A$. Definito come:  $Ulub​(A)=Γmin​Uub​(Γ,A)$
-- Se $U \leq U_{lub}(A)$, l'insieme di task è **schedulabile** dall'algoritmo $A$, altrimenti se $U > 1$ non lo è.
-- ![[Pasted image 20240924224305.png]]
+- Se $U \leq U_{lub}(A)$, l'insieme di task è **schedulabile** dall'algoritmo $A$, 
+	- altrimenti se $U > 1$ non lo è.
+
+![[Pasted image 20240924224305.png]]
 
 ---
-### Massimo Valore di $Ulub(A)$
+**Massimo Valore di $Ulub(A)$**
 
 - **Teorema**: Se $U >1$ su di un task set $Γ$ il set di task non è fattibile.
+
 -  **Dimostrazione**:
-1. Se $U>1$, questo implica che il **tempo richiesto** dal set di task è **maggiore del tempo disponibile** sul processore:
-	    $U>1⇒UH>H$ (dove H eˋ il tempo disponibile per il processore).
-2.  Da qui si deriva: 
-	    $∑(C_i/T_i)H > H$
-    Dove $H/T_i$​ rappresenta il numero di volte che il task $τi$ viene eseguito nel periodo H, e $(H/T_i)C_i$​ è il tempo di computazione richiesto da $τ_i$ nel hyper-periodo.
-    
-3. Quindi: $∑(H/T_i)C_i > H$  rappresenta il tempo totale di computazione richiesto dall’insieme di task nel periodo H
-4. **Conclusione**: Se il **tempo richiesto dal set di task** supera il **tempo disponibile del processore** H, allora il set di task non è fattibile.
+	1. Se $U>1$, questo implica che il **tempo richiesto** dal set di task è **maggiore del tempo disponibile** sul processore:
+		- $U>1⇒UH>H$ 
+		Dove H > 0 è il tempo disponibile per il processore.
+	2.  Da qui si deriva: 
+		- $∑\frac{C_i}{T_i}H > H$
+		Dove:
+		- $\frac{H}{T_i}$​ rappresenta il numero di volte che il task $τ_i$ viene eseguito nel periodo H
+		- $\frac{H}{T_i}C_i$​ è il tempo di computazione richiesto da $τ_i$ nel hyper-periodo.
+	3. Quindi: $∑_{i=1}^n\frac{H}{T_i}C_i > H$  rappresenta il tempo totale di computazione richiesto dall’insieme di task nel periodo H
+	4. Se il **tempo richiesto dal set di task** supera il **tempo disponibile del processore** H, allora il set di task non è fattibile.
 
 - **Osservazione**:
 	Questo risultato vale per **qualsiasi algoritmo di scheduling**: se la domanda eccede il tempo disponibile, nessun algoritmo sarà in grado di produrre uno schedule fattibile.
 	
 ---	
-## Schedulazione basata su priorità
+**Schedulazione basata su priorità**
 
 - Come funziona:
     - Assegna priorità a ciascun task basandosi sui suoi vincoli temporali.
     - Verifica la fattibilità della schedulazione usando tecniche analitiche.
-    - Esegue i task su un kernel priority based.
-- Goal dell'analisi della schedulabilità: costruire un algoritmo di schedulabilità ottimale considerando l'uso del processore e calcolando il tempo di risposta per ogni task.
-		![[Pasted image 20240924230602.png]]
----
+    - Esegue i task su un kernel basati sulla **priorità**.
 
-### Schedulazione Rate Monotonic (RM)
+- Goal dell'analisi della schedulabilità: costruire un **algoritmo di schedulabilità ottimale** considerando **l'uso del processore** e calcolando il **tempo di risposta** per ogni task.
+
+	![[Pasted image 20240924230602.png]]
+
+---
+**Schedulazione Rate Monotonic (RM)**
 
 - Algoritmo di schedulazione online, **statico** e preemptive.
-- Per task puramente periodici
+- Per task puramente periodici (ovvero $D_i = T_i \space \forall  \space \text{task} \space \tau_i$)
 - Viene assegnata una **priorità fissa** inversamente proporzionale al periodo del task.
+- Ad esempio: (con priorità di $τ_A > τ_B > τ_C$ )
 
-Ad esempio: (con priorità di $τ_a > τ_b > τ_c$ )
 	![[Pasted image 20240924230756.png]]
+	
+---
+**RM: teorema di ottimalità (Liu & Layland, 1973)**
+
+- **Teorema**: RM è **ottimale** in termini di **fattibilità** tra tutti gli algoritmi a **priorità fissa** per la schedulazione di task periodici (con deadlines uguali ai periodi).
+	- Se uno scheduling a priorità fissa **è fattibile** per un task set $Γ$ ⇒ Lo schedule Rate Monotic è feasible
+	- Se invece lo scheduling RM **non è fattibile** per un task set $Γ$ ⇒ Nessun algoritmo a priorità fissa è feasible per il $\Gamma$
+
+- Notare che i due enunciati sono equivalenti ($a$ => $b$ se e solo se $\not b$ => $\not a$)
+- Dato che ogni task raggiunge il suo caso peggiore nel caso dell'istante critico sarà sufficiente **dimostrare l'ottimalità nel caso dell'istante critico**.
+
+- **Teorema**: Se uno scheduling a priorità fissa è fattibile per un task set $Γ$ agli istanti critici ⇒ risulta fattibile anche per la schedulazione RM agli istanti critici.
 
 ---
-#### RM: teorema di ottimalità (Liu & Layland, 1973)
+**Dimostrazione di ottimalità per il caso di due task(1/3)**
 
-- RM è **ottimale** in termini di fattibilità tra tutti gli algoritmi a **priorità fissa** per la schedulazione di task periodici con deadline uguale ai periodi.
-	- Se Uno scheduling a priorità fissa è fattibile per un task set $Γ$ ⇒ allora anche risulta fattibile anche per la schedulazione Rate Monotic
-	- Se invece uno scheduling RM non è fattibile per un task set $Γ$ ⇒ allora non sarà schedulabile (e quindi fattibile) per qualsiasi algoritmo a priorità fissa.
-- Fissato che ogni task raggiunge il suo caso peggiore nel caso dell'istante critico sarà sufficiente dimostrare l'ottimalità nel caso dell'istante critico.
-- Se Uno scheduling a priorità fissa è fattibile per un task set $Γ$ agli istanti critci ⇒ allora anche risulta fattibile anche per la schedulazione RM agli istanti critici.
+- Si consideri il caso di un task set $Γ$ composto da 2 task $τ_1$ e $τ_2$ con $T_1 < T_2$ (la dimostrazione può essere estesa facilmente ad un task set fatto di $n$ tasks)
 
----
-#### Dimostrazione di ottimalità per il caso di due task
-- Si consideri il caso di un task set $Γ$ composto da 2 task $τ_1$ e $τ_2$ con $T_1 < T_2$
-- Se le priorità non vengono assegnate con scheduling RM ⇒ priorità $τ_2$  > priorità $τ_1$ 
-	- Il task set sarà schedulabile all'istante critico se $C_1 + C_2 ≤ T_1$
+- Se le priorità **non vengono assegnate** con scheduling RM 
+	 ⇒ priorità $τ_2$  > priorità $τ_1$ 
+	 => Il task set sarà schedulabile all'istante critico se $C_1 + C_2 ≤ T_1$
+
 	![[Pasted image 20240925192958.png]]
-	- Dobbiamo quindi far vedere che se $C_1 + C_2 ≤ T_1$ ⇒ allora lo scheduling RM è fattibile per $Γ$ all'instante critico
+
+- **Obiettivo**: Dobbiamo quindi far vedere che se $C_1 + C_2 ≤ T_1$ ⇒ allora lo scheduling RM è fattibile per $Γ$ all'instante critico
 ---
-- Prendiamo quindi il caso in cui tutti i periodi di $τ_1$ siano tutti contenuti i $T_2$
-	- Definisco un fattore F come $F ∶= ⌊T2 /T1⌋$
+**Dimostrazione di ottimalità per il caso di due task(2/3)**
+
+- Definisco un fattore F come $F ∶= ⌊T_2 /T_1⌋$, ovvero il numero di periodi di $τ_1$  contenuti in $T_2$
 - Assegnando le priorità nel caso RM ⇒ priorità $τ_1$  > priorità $τ_2$ 
+
 - Ho quindi due casi:
-	- Caso 1: $C_1 < T_2 − F T_1$, ovvero tutti i job del primo task rilasciati nell'intervallo $[0, T_2)$  sono completati prima che il secondo job del secondo task sia rilasciato
-					![[Pasted image 20240925194540.png]]
+	- Caso 1: $C_1 + F T_1 < T_2$, ovvero tutti i job del primo task rilasciati nell'intervallo $[0, T_2)$  **sono completati prima del rilascio** del secondo job di $\tau_2$
+
+		![[Pasted image 20240925194540.png]]
+		
 		- Il task set sarà schedulabile se $(F + 1)C_1 + C_2 ≤ T_2$ 
 		- Dimostreremo che $C_1 + C_2 ≤ T_1$ implica $(F + 1)C_1 + C_2 ≤ T_2$
-	- Caso 2: $C_1 ≥ T_2 − F T_1$, ovvero alcuni job del primo task rilasciati nell'intervallo $[0, T_2)$  non sono completati prima che il secondo job del secondo task sia rilasciato
-					- ![[Pasted image 20240925195043.png]]
+	
+	- Caso 2: $C_1 ≥ T_2 − F T_1$, ovvero alcuni job del primo task rilasciati nell'intervallo $[0, T_2)$  **non sono completati prima del rilascio** del secondo job di $\tau_2$
+			
+		![[Pasted image 20240925195043.png]]
+		
 		- ll task set sarà schedulabile se $FC_1 + C_2 ≤ FT_1$ 
 		- Dimostreremo che $C_1 + C_2 ≤ T_1$ implica $FC_1 + C_2 ≤ FT_1$ 
+
 ---
 - Caso 1: Dimostriamo che $C_1 + C_2 ≤ T_1 ⇒ (F + 1)C_1 + C_2 ≤ T_2$
-	• $C_1 + C_2 ≤ T_1 ⇒ F C_1 + F C_2 ≤ F T1$ dato che F ≥ 1 (Possiamo moltiplicare tutto per F senza problemi)
-	⇒ $F C_1 + C_2 ≤ F C_1 + F C_2 ≤ F T_1$ dato sempre che F ≥ 1
-	⇒ $(F + 1)C_1 + C_2 ≤ F T1 + C1$ ⇒
-	⇒ $(F + 1)C_1 + C_2 ≤ F T_1 + C_1 < T_2$ dato che nel caso 1 $C_1 < T_2 − F T_1$ ⇒
-	⇒ $(F + 1)C_1 + C_2 < T_2$
+	• $C_1 + C_2 ≤ T_1 ⇒ F C_1 + F C_2 ≤ F T_1$ dato che F ≥ 1
+		⇒ $F C_1 + C_2 ≤ F C_1 + F C_2 ≤ F T_1$ dato sempre che F ≥ 1
+		⇒ $(F + 1)C_1 + C_2 ≤ F T1 + C_1$  (aggiungo da entrambe le parti $C_1$)
+		⇒ $(F + 1)C_1 + C_2 ≤ F T_1 + C_1 < T_2$ dato che nel caso 1 $C_1 < T_2 − F T_1$
+		⇒ $(F + 1)C_1 + C_2 < T_2$
 
 - Caso 2: Dimostriamo che $C_1 + C_2 ≤ T_1 ⇒ F C_1 + C_2 ≤ F T_1$
-	• $C_1 + C_2 ≤ T_1 ⇒ F C_1 + F C_2 ≤ F T_1 dato che F ≥ 1 ⇒
-	⇒ $F C_1 + C_2 ≤ F C_1 + F C_2 ≤ F T_1$ dato che F ≥ 1 ⇒
-	⇒ $F C_1 + C_2 ≤ F T_1$
+	• $C_1 + C_2 ≤ T_1 ⇒ F C_1 + F C_2 ≤ F T_1$ dato che F ≥ 1 ⇒
+		⇒ $F C_1 + C_2 ≤ F C_1 + F C_2 ≤ F T_1$ dato che F ≥ 1 ⇒
+		⇒ $F C_1 + C_2 ≤ F T_1$
 
 --- 
-#### Test di garanzia RM (Liu & Layland, 1973)
+**Test di garanzia RM (Liu & Layland, 1973)**
 
-- Se $U \leq n(2^{1/n} - 1)$ per un insieme $\Gamma$ di $n$ task periodici puri, allora $\Gamma$ è schedulabile tramite RM.
+- **Teorema**: Se $U \leq n(2^{1/n} - 1)$ per un insieme $\Gamma$ di $n$ task periodici puri, allora $\Gamma$ è schedulabile tramite RM.
 
 - Il test è **solo sufficente**
+
 - La complessità è polinomiale $O(n)$, rispetto al numero $n$ dei tasks
+
 - La metodologia per dimostrarlo sarà:
 	- Assegnare la priorità dei task secondo RM
 	- Assumo che i che task arrivino tutti in modo simultaneo (worst case scenario per il task set)
 	- Aumento i tempi di computazione in modo tale da usare completamente il processore
 	- Calcolo l'upper bound $U_{ub}$ tramite $U$
-	- Minimizzo  l'upper bound $U_{ub}$, rispetto a tutti gli altri parametri in modo da ottenere il $U{lub}$
+	- Minimizzo l'upper bound $U_{ub}$, rispetto a tutti gli altri parametri in modo da ottenere il $U{lub}$
 
 ---
+**Test di garanzia RM: dimostrazione nel caso di 2 tasks (1/5)**
+
 - Considero il caso di un task set $Γ$ composto di 2 task periodici $τ_1$ e $τ_2$ con $T_1 < T_2$
+
 - Il numero di periodi di $τ_1$ interamente contenuti in $τ_2$: $F∶=⌊T2/T1⌋$
+
 - Abbiamo di nuovo i due casi: 
-- Caso 1:
-	 ![[Pasted image 20240925194540.png]] $C_1 < T_2 − F T_1$,
-- Caso 2:
-	- ![[Pasted image 20240925195043.png]] $C_1 ≥ T_2 − F T_1$
-• In entrambi i casi, massimizziamo $C_2$ e deriviamo $Uub$ come funzione di $C_1$.
+	- Caso 1: $C_1 < T_2 − F T_1$ (ovvero tutti i job di $\tau_1$ rilasciati fra $[0,T_2)$ sono completati prima che il secondo job di $\tau_2$ sia rilasciato)
+
+		 ![[Pasted image 20240925194540.png]] 
+			 
+	- Caso 2: $C_1 ≥ T_2 − F T_1$ (ovvero qualche job di $\tau_1$ rilasciato fra $[0,T_2)$ non è completato prima che il secondo job di $\tau_2$ sia rilasciato)
+
+		 ![[Pasted image 20240925195043.png]] 
+			 
+	- In entrambi i casi, massimizziamo $C_2$ e deriviamo $Uub$ come funzione di $C_1$.
+	
 --- 
+**Test di garanzia RM: dimostrazione nel caso di 2 tasks (2/5)**
+
 - Caso 1: $C_1 < T_2 − F T_1$, ovvero tutti i job del primo task rilasciati nell'intervallo $[0, T_2)$  sono completati prima che il secondo job del secondo task sia rilasciato
-![[Pasted image 20240929173424.png]]
--> Guardando il diagramma nel caso 1 $C_2$ sarà al massimo il periodo rimanente fra $T_1$ e l'ultimo periodo di compitazione del primo task.
--> Sostituisco i fattori e con un po' di passaggi noto che la quantità fra le parentesi è negativa dato che prendo la parte intera inferiore dei due Periodi.
-	-> $U{ub}$ diminuisce con l'aumentare di $C_1$
-	-> Il valore minimo di $U{ub}$ sarà per $C_1 = T_2 - FT_1$ (che è anche il valore massimo che può raggiungere per il caso 1)
-	![[Pasted image 20240929174250.png]]
+
+	![[Pasted image 20240925194540.png]]
+
+- $C_2^{max} = T_2 - (F+1)C_1$ (Guarda la figura)
+	=> $C_2$ sarà al massimo il periodo rimanente fra $T_2$ e l'ultimo periodo di computazione del primo task.
+	
+- $U_{ub} = \frac{C_1}{T_1} + \frac{C_2^{max}}{T_2} = \frac{C_1}{T_1} + 1 - \frac{C_1}{T_2}(F+1) = 1 + \frac{C_1}{T_2}(\frac{T_2}{T_1} - (F+1))$
+	=> $\frac{T_2}{T_1} - (F+1) \leq 0$ dato che $F∶=⌊T2/T1⌋$
+		=> $U{ub}$ **diminuisce** con l'aumentare di $C_1$
+		=> Il valore minimo di $U{ub}$ sarà per $C_1 = T_2 - FT_1$ 
+	![[Pasted image 20250317213848.png]]
+	
 ---
+**Test di garanzia RM: dimostrazione nel caso di 2 tasks (3/5)**
+
 - Caso 2: $C_1 ≥ T_2 − F T_1$, ovvero alcuni job del primo task rilasciati nell'intervallo $[0, T_2)$  non sono completati prima che il secondo job del secondo task sia rilasciato
-![[Pasted image 20240929174542.png]]
--> Riguarda figura per $C_2$ (Da $FT_1$ verso sinistra ci sono esattamente F job di tempo $C_1$)
--> Con un po' di calcoli riguardante il fattore di utilizzo, risulta che la quantità fra parentesi è positiva, dunque $U_{ub}$ sale al crescere di $C_1$ e il minimo valore si avrà di nuovo per 
-$C_1 = T_2 - F T_1$
-![[Pasted image 20240929175150.png]]
-___
-- Calcolo infine il minimo valore di $U_{ub}$ rispetto a $C_1$: (Ovvero nel caso di $C_1 = T_2 - FT_1$)
-![[Pasted image 20240929180227.png]]
--> Ripartiamo dal calcolo di Uub nel caso 2... 
+
+	![[Pasted image 20240925195043.png]]
+
+- $C_2^{max} = F (T_1 - C_1)$ (considero fino a $FT_1$ -> ci sono esattamente F job con tempo di computazione $C_2$)
+
+- $U_{ub} = \frac{C_1}{T_1} + \frac{F(T_1 - C_1)}{T_2} = F \frac{T_1}{T_2} + \frac{C_1}{T_2}(\frac{T_2}{T_1} -F)$
+	=> La quantità fra parentesi risulta positiva (F parte intera inferiore), 
+	 => $U_{ub}$ **sale** al crescere di $C_1$ 
+	=> Il minimo valore si avrà di nuovo per $C_1 = T_2 - F T_1$
+	![[Pasted image 20250317213727.png]]
 
 ---
-- Chiamo poi la parte decimale T2/T1: G = T2/T1 - F
-- Per cui ricalcolo la funzione Uub(min C1) in funzione di G:
-![[Pasted image 20240929180718.png]]
--> dove G è compreso fra 0 e 1 (la quantità al numeratore è maggiore o uguale a 0), dunque Uub crescerà al crescere di F (?)
+**Test di garanzia RM: dimostrazione nel caso di 2 tasks (4/5)**
 
-- Se riprendo la formula prima di Uub è vado a calcolarmi il caso di minimo per F allora ottengo ![[Pasted image 20240929183410.png]]
-- Che derivato a sua volta per ottenere il minimo:
-![[Pasted image 20240929183506.png]]
+- Calcolo infine il minimo valore di $U_{ub}$ rispetto a $C_1$: (si prende il caso 2)
+	- $U_{ub}^{min,C1} = U_{ub}|_{C_1 = T_2-FT_1} = F \frac{T_1}{T_2} + \frac{T_2 - FT_1}{T_2} (\frac{T_2}{T_1} - F) =$ 
+		$= F\frac{T_1}{T_2} + (1 - F\frac{T_1}{T_2})(\frac{T_2}{T_1}-F) = F\frac{T_1}{T_2} + \frac{T_1}{T_2}\frac{T_2}{T_1}(1 - F \frac{T_1}{T_2})(\frac{T_2}{T_1}-F) =$
+		$= F\frac{T_1}{T_2} + \frac{T_1}{T_2}(\frac{T_2}{T_1} - F)(\frac{T_2}{T_1} - F) = \frac{T_1}{T_2}(F +(\frac{T_2}{T_1} - F)^2)$
+
+	![[Pasted image 20250317215552.png]]
 
 ---
-#### Test di garanzia RM: Caso particolare di task con periodici armonici
-- Presi due task con periodi armonici, ovvero:
-	- $T_1/T_2 ∈ N$ --> per cui anche il fattore F:= $⌊T_2/T_1⌋ = T_2/T_1$
-	⇒ $U{lub} = T_1/T_2  ( F + (T_2/T_1 - F)^2 ) = 1$
-- Per cui il fattore di utilizzo U = 1 diventa minimo e massimo nel caso di task con periodi armonici:![[Pasted image 20240929184209.png]]
+**Test di garanzia RM: dimostrazione nel caso di 2 tasks (5/5)**
+
+- Chiamo poi la parte decimale $T_2/T_1: G = T_2/T_1 - F$
+
+- Per cui ricalcolo la funzione $U_{ub}^{min,C1}$ in funzione di G:
+
+![[Pasted image 20250317215830.png]]
+
+-> dove G è compreso fra 0 e 1 (la quantità al numeratore è maggiore o uguale a 0), dunque $U_{ub}$ crescerà al crescere di F
+
+- Vado quindi a calcolarmi il valore minimo secondo F: 
+	-  $U_{ub}^{min,C1} = U_{ub}^{min,C1}|_{F=1} = \frac{T_1}{T_2}(F +(\frac{T_2}{T_1} - F)^2) =$
+		$\frac{T_1}{T_2}(1 +(\frac{T_2}{T_1} - 1)^2) = \frac{k^2 -2k+2}{k}$ (1), con $k = \frac{T_2}{T_1}$
+
+- Calcolo $U_{lub}$ come il valore minimo di $U_{ub}^{min,C1,F}$ rispetto a k:
+	- $\frac{dU_{ub}^{min,C1,F}}{dk} = \frac{(2k-2)k - (K^2-2k+2)}{k^2} = \frac{k^2-2}{k^2} = 0$ per $k=\sqrt{2}$
+		=> $U_{lub} = U_{ub}^{min,C1,F}|_{k=\sqrt{2}} = 2(\sqrt{2} -1) = 0,83$ (dove ho risostiuito nell'equazione (1))	=> bound inferiore nel caso di due tasks
+
 ---
-#### Test di Garanzia RM: Dimostrazione per n task
+**Test di garanzia RM: Caso particolare di task con periodici armonici**
+
+- Presi due task  $\tau_1$ e $\tau_2$ con **periodi armonici** $T_1 <T_2$, ovvero:
+	-  $\frac{T_2}{T_1} \in \mathbb{N}$ per definizione di periodici armonici e dal fatto che $T_1 < T_2$ =>
+		=> per cui anche il fattore F:= $⌊T_2/T_1⌋ = T_2/T_1$ è un intero
+		⇒ $U_{lub} = \frac{T_1}{T_2}  ( F + (\frac{T_2}{T_1} - F)^2 ) = 1$
+i
+- Per cui il fattore di utilizzo U = 1 diventa minimo e massimo nel caso di task con periodi armonici => ovvero il test di garanzia RM diventa condizione necessaria e sufficiente alla schedulabilità
+
+![[Pasted image 20240929184209.png]]
+
+---
+**Test di Garanzia RM: Dimostrazione per n task(1/3)**
+
 - Ripartiamo per il caso di 2 tasks con $T_1 < T_2$
-	- $C_1 = T_2 - FT_1$ e F = 1 => $T_2 < 2T_1$
 	![[Pasted image 20240929184807.png]]
-	- $C_1 = T_2 - FT_1 =$ (per F = 1 ) $T_2 - T_1$, $C_2 = F(T_1 - C_1) = T_1 - C_1 = T_1 - T_2 + T_1 = 2T_1 - T_2$
+	- $C_1 = T_2 - FT_1$ e F = 1 => $T_2 < 2T_1$, $C_1 = T_2 - T_1$
+	- $C_2 = F(T_1 - C_1) = T_1 - C_1 = T_1 - T_2 + T_1 = 2T_1 - T_2$
+
 - E lo stesso per n tasks con $T_1 < T_2 < ... < T_n$ 
 	![[Pasted image 20240929185259.png]]
-- Con $T_n < 2T_1, C_1 = T_2 - T_1, C_2 = T_3 - T_2,$  ... $C_n = T_1 - (∑^{n−1}_ {i=1} C_i)= T_1 - (T_2 - T_1) - (T_3 - T_2)$ - ... $(T_n - T_{n-1}) = 2T_1 - T_n$
+
+	- Con $T_n < 2T_1, C_1 = T_2 - T_1, C_2 = T_3 - T_2,$  ... $C_n = T_1 - (∑^{n−1}_ {i=1} C_i)= T_1 - (T_2 - T_1) - (T_3 - T_2)$ - ... $(T_n - T_{n-1}) = 2T_1 - T_n$
+
 ---
-- Mi calcolo ora l'upper bound di U nel caso peggiore delle condizioni di schedulabiltà![[Pasted image 20240929185849.png]]
-- e con un sacco di bei passaggi e anche una derivata parziale ottengo:![[Pasted image 20240929190007.png]]
+**Test di Garanzia RM: Dimostrazione per n task(2/3)**
+
+- Mi calcolo ora l'upper bound di U nel caso peggiore delle condizioni di schedulabiltà
+	- $U_{ub} = \sum_{i=1}^n \frac{C_i}{T_i} = \frac{T_2 - T_1}{T_1}+ \frac{T_3 - T_2}{T_2}+ \space ... \space +\frac{T_n - T_{n-1}}{T_{n-1}}+\frac{2T_1 - T_n}{T_n}$
+		$= \frac{T_2}{T_1}+\frac{T_3}{T_2}+\space ... \space + \frac{T_n}{T_{n-1}}+\frac{2T_1}{T_n} - n$
+
+- Definisci $R_i = \frac{T_{i+1}}{T_i} \space \forall \space i \in \{1,...,n-1\}$ e nota che $\prod_{i=1}^{n-1} R_i = \frac{T_n}{T_1}$
+	- $U_{ub} = \sum_{i=1}^n R_i + \frac{2}{\prod_{i=1}^{n-1} R_i} - n$
+
+- Minimizza $U_{ub}$ rispetto a $R_i \space \forall \space i \in \{1,...,n-1\}$
+	- $\frac{\delta U_{ub}}{\delta R_i} = 1 - \frac{2}{R_i^2} \frac{1}{R_1R_2...R_{i-1}R_{i+1}...R_n} = 1- \frac{2}{R_iP}$ dove $P = \prod_{i=1}^{n-1} R_i$ =>
+		=> $\frac{\delta U_{ub}}{\delta R_i} = 0 \space \text{per} \space R_iP = 2$ 
+		=> $U_{ub}$ è minimo per $R_iP=2 \space \forall \space i \in \{1,...,n-1\}$
+- $R_iP=2 \space \forall \space i \in \{1,...,n-1\}$ se $R_i = 2^{\frac{1}{n}}$ che porta a $P = (2^{\frac{1}{n}})^{n-1}$
+			
 --- 
-- Risostituisco i risultati ottenuti e ottengo: ![[Pasted image 20240929190909.png]]
--> che appunto nel caso a due task -> n = 2 ci dà $U{lub} = 2(2^{1/2} - 1) = 0.83$
+**Test di Garanzia RM: Dimostrazione per n task(3/3)**
+
+- Calcolo il least upper bound su U: 
+	- $U_{ub} = \sum_{i=1}^n R_i + \frac{2}{P} - n|_{R_i = 2^{ \frac{1}{n} }, P = (2^{ \frac{1}{n} })^{n-1}} = (n-1)2^{\frac{1}{n}} + \frac{2}{(2^{\frac{1}{n} })^{n-1} } - n =$ 
+		$= n2^{\frac{1}{n}} - 2^{\frac{1}{n}} + \frac{2}{(2^{\frac{1}{n} })^{n-1} } - n =  n2^{\frac{1}{n}} - 2^{\frac{1}{n}} + \frac{2}{(2^{\frac{n-1}{n}}) } - n =$ $=n2^{\frac{1}{n}} - 2^{\frac{1}{n}} + \frac{2}{(2^{1-\frac{1}{n}}) } - n = n2^{\frac{1}{n}} - 2^{\frac{1}{n}} + 2^{\frac{1}{n}} - n = n(2^{\frac{1}{n}}-1)$ 
+
+-> che appunto nel caso a due task -> n = 2 ci dà 
+	$U{lub} = 2(2^{1/2} - 1) = 0.83$
+
 ![[Pasted image 20240929191513.png]]
 
-#### Test iperbolico RM (Bini et al., 2003)
+---
+**Limite iperbolico RM (Bini et al., 2003)**
 
-- Se $\prod_{i=1}^{n} (U_i + 1) \leq 2$ per un insieme $\Gamma$ di $n$ task periodici puri, allora $\Gamma$ è schedulabile tramite RM.
-	- Sempre nel caso peggiore di schulabilità per n task con  $T_1 < T_2 < ... < T_n$: se ho $T_n < 2T_1$ allora $C_1 = T_2 - T_1, C_2 = T_3 - T_2,$  ... $C_n = T_1 - (∑^{n−1}_ {i=1} C_i)= T_1 - (T_2 - T_1) - (T_3 - T_2)$ - ... $(T_n - T_{n-1}) = 2T_1 - T_n$
-			![[Pasted image 20241001181518.png]]
+**Teorema** 
+- Se $\prod_{i=1}^{n} (U_i + 1) \leq 2$ per un insieme $\Gamma$ di $n$ task periodici puri, allora $\Gamma$ è schedulabile tramite RM
+
+- Sempre nel caso peggiore di schedulabilità per n task con  $T_1 < T_2 < ... < T_n$: se ho $T_n < 2T_1$ 
+	=> $C_1 = T_2 - T_1, C_2 = T_3 - T_2,$  ... 
+	=> $C_n = T_1 - (∑^{n−1}_ {i=1} C_i)= T_1 - (T_2 - T_1) - (T_3 - T_2)$ - ... $(T_n - T_{n-1}) = 2T_1 - T_n$
+
+	![[Pasted image 20241001181518.png]]
+
 ---
-	- Definisco $R_i = T_{i+1}/T_i ∀ i∈ {1, . . . , n − 1}$ 
-		=> aggiungo e tolgo il periodo $T_i$ e per quanto visto sopra $C_i = T_{i+1} - T_i$ dunque ottengo $R_i = U_i + 1$ ma anche $∏^{n-1}_{i=1} R_i =T_n/T_1$ (fare moltiplicazione per controllare)
-	+ Devo dimostrare quindi che la condizione di schedulabilità nel caso peggiore implica $\prod_{i=1}^{n} (U_i + 1) \leq 2$ 
-		$∑^n_{i=1} C_i ≤ T_1$ => $∑^{n-1}_{i=1} C_i + C_n ≤ T_1$ => $C_n \leq T_1 - ∑^{n-1}_{i=1} C_i$ => $C_n \leq 2T_1 - T_n$ siccome $∑^{n-1}_{i=1} C_i = T_n - T_1$ nelle condizioni peggiori di schedulabità 
-		=> Divido quindi il tutto per $T_n$ e ottengo $U_n \leq 2T_1 /T_n - 1 => U_n +1 \leq 2T_1/T_n$ che per la produttoria vista sopra mi fa ottenere $U_n \leq 2/  ∏^{n-1}_{i=1} R_i$ = (sostituisco gli Ri) e ottengo $U_n \leq 2/ ∏^{n-1}_{i=1} (U_i+1)$
-		=> moltiplico da entrambe le parti per la quantità a denominatore e ottengo 
-			$∏^{n}_{i=1} (U_i + 1) \leq 2$ 
+**Limite iperbolico RM: dimostrazione**
+
+- Definisco $R_i = \frac{T_{i+1}}{T_i} \space ∀ \space i ∈ \{1, . . . , n − 1\}$
+	=> $R_i = \frac{T_{i+1} - T_i + T_i}{T_i} = U_i+1$ e  $\prod^{n-1}_{i=1} R_i =\frac{T_n}{T_1}$ 
+
++ Dimostrazione ($\prod_{i=1}^{n} (U_i + 1) \leq 2$ => Task set schedulabile da RM)
+	+ La condizione di schedulabilità nel caso peggiore è $∑^n_{i=1} C_i ≤ T_1$ 
+		=> $∑^{n-1}_{i=1} C_i + C_n ≤ T_1$ => $C_n \leq T_1 - ∑^{n-1}_{i=1} C_i$ => $C_n \leq 2T_1 - T_n$ siccome $∑^{n-1}_{i=1} C_i = T_n - T_1$ nelle condizioni peggiori di schedulabilità 
+		=> Divido quindi il tutto per $T_n$ e ottengo => $U_n \leq \frac{2T_1}{T_n} - 1$ => $U_n +1 \leq \frac{2T_1}{T_n} = \frac{2}{\prod^{n-1}_{i=1} R_i} = \frac{2}{\prod^{n-1}_{i=1} (U_i+1)}$ => $∏^{n}_{i=1} (U_i + 1) \leq 2$ 
 ---
-#### Liu & Layland bound vs hyperbolic bound
+**Liu & Layland bound vs hyperbolic bound**
 
 **Il limite iperbolico è preciso**, cioè, se il limite iperbolico non è soddisfatto ⇒ esiste uno scheduling RM non fattibile con quella utilizzazione del processore.
 
-- **Vantaggio ottenuto dal limite iperbolico (HB)** rispetto al limite di Liu & Layland (LL):
-    - Rapporto tra gli ipervolumi nello spazio U dei set di task che risultano schedulabili utilizzando il limite HB rispetto a quelli schedulabili con il limite LL.
-    - Questo rapporto **aumenta con n** e tende a $\sqrt{2}$​ quando n tende all'infinito.
-			![[Pasted image 20241001184510.png]]
+- Ho un **Vantaggio ottenuto dal limite iperbolico (HB)** rispetto al limite di Liu & Layland (LL):
+    - Il rapporto tra gli ipervolumi nello spazio U dei set di task che risultano schedulabili utilizzando il limite HB rispetto a quelli schedulabili con il limite LL => **aumenta con n** e tende a $\sqrt{2}$​ quando n tende all'infinito.
+
+	![[Pasted image 20250318223244.png]]
+
 ****
-###  Schedulazione Deadline Monotonic (DM)
+**Schedulazione Deadline Monotonic (DM)**
+
+![[Pasted image 20250318223804.png]]
+
+---
+**DM: tratti salienti (Leung & Whitehead, 1982)**
 
 - Estensione di RM per task periodici con deadline vincolate (ossia, $D_i \leq T_i$).
 	- Le deadline non sono più pari ai periodi
-- Algoritmo di scheduling preemptive statico e parametri calcolati *online*
+
+- Algoritmo di scheduling **preemptive statico** e parametri calcolati *online*
+
 - Un task ha un **priorità fissa** inversamente proporzionale alla sua deadline *relativa*
 	- Task con minore deadline relative vengono eseguiti prima
-- Esempio: priorità $t_1 >$ priorità $t_2$![[Pasted image 20241006153448.png]]
+
+- Esempio: priorità $t_1 >$ priorità $t_2$
+
+![[Pasted image 20241006153448.png]]
+
 ---
-#### **DM: ottimalità**  
+**DM: ottimalità**  
 
 Teorema (No dim)
-- DM è ottimale in termini di fattibilità tra tutti gli algoritmi a **priorità fissa** (per la schedulazione di task periodici con deadline vincolate):
+- DM è **ottimale** in termini di **fattibilità** tra tutti gli algoritmi a **priorità fissa** (per la schedulazione di task periodici con deadline vincolate):
 	- Se una schedulazione a priorità fissa è fattibile per un insieme di task $\Gamma$, allora la schedulazione DM è fattibile per $\Gamma$.
-	- Se la schedulazione DM non è fattibile per un insieme di task $\Gamma$, allora nessuna schedulazione a priorità fissa è fattibile per $\Gamma$.
-+ Nota che le due affermazioni sono equivalenti (a $\Rightarrow$ b se e solo se $\neg$b $\Rightarrow$ $\neg$a).
----
-#### **DM: problema con il limite LL e il limite HB**
+	- Se la schedulazione DM non è fattibile per un insieme di task $\Gamma$, allora nessuna schedulazione a priorità fissa è fattibile per $\Gamma$. 
 
-- Usa il limite LL (Liu & Layland) e il limite HB (Hyperbolic Bound) sostituendo i periodi con le deadline: il carico di lavoro del processore è sovrastimato
-	$\Rightarrow$ il risultato del test è troppo pessimista!
++ Nota che le due affermazioni sono equivalenti (a $\Rightarrow$ b se e solo se $\neg$b $\Rightarrow$ $\neg$a).
+
+---
+**DM: problema con il limite LL e il limite HB**
+
+- Usando il limite LL (Liu & Layland) e il limite HB (Hyperbolic Bound) sostituendo i periodi con le deadline: il carico di lavoro del processore è sovrastimato $\Rightarrow$ il risultato del test è troppo pessimista!
 
 - Esempio in cui i test basati sull'utilizzo del processore non sono conclusivi:  
 	- Il limite LL non è soddisfatto:  $\frac{C_1}{D_1} + \frac{C_2}{D_2} = \frac{2}{3} + \frac{3}{6} = \frac{7}{6} > 1$
 	- Il limite HB non è soddisfatto:  $\left( \frac{C_1}{D_1} + 1 \right) \left( \frac{C_2}{D_2} + 1 \right) = \left( \frac{2}{3} + 1 \right) \left( \frac{3}{6} + 1 \right) = \frac{5}{2} > 2$
-- Ma l'insieme dei task è schedulabile!
-	![[Pasted image 20241006153448.png]]
+	- Ma l'insieme dei task è schedulabile!
+	
+![[Pasted image 20241006153448.png]]
 
 ---
-#### **DM: analisi del tempo di risposta (Audlsey et al, 1993)**  
+**DM: analisi del tempo di risposta (Audlsey et al, 1993)**  
+
 - Per ogni task $\tau_i$:
-	1. Si calcola l'interferenza $I_i$ dovuta ai task a priorità più alta nell'intervallo $[0, R_i]$: $I_i = \sum_{\tau_k | D_k < D_i} z_{ik} C_k$​ dove $z_{ik}$ è il numero di rilasci di $\tau_k$ in $[0, R_i]$. $\Rightarrow$ 
-	   $\Rightarrow I_i = \sum_{k=1}^{i-1} \left\lceil \frac{R_i}{T_k} \right\rceil C_k​$ supponendo che i compiti siano ordinati per deadline relativa crescente 
-	2. Calcola il tempo di risposta $R_i$:
-		$R_i = C_i + I_i = C_i + \sum_{k=1}^{i-1} \left\lceil \frac{R_i}{T_k} \right\rceil C_k$ (1)
+	1. Si calcola l'**interferenza** $I_i$ dovuta ai task a priorità più alta nell'intervallo $[0, R_i]$: 
+		- $I_i = \sum_{\tau_k | D_k < D_i} z_{ik} C_k$​ dove $z_{ik}$ è il **numero di rilasci** di $\tau_k$ in $[0, R_i]$
+		   $\Rightarrow I_i = \sum_{k=1}^{i-1} \left\lceil \frac{R_i}{T_k} \right\rceil C_k​$ supponendo che i compiti siano ordinati per deadline relativa crescente 
+	2. Calcola il **tempo di risposta** $R_i$:
+		$R_i = C_i + I_i = C_i + \sum_{k=1}^{i-1} \left\lceil \frac{R_i}{T_k} \right\rceil C_k$ (2)
 	3. Verifica che $R_i \leq D_i$ 
-- Il tempo di risposta nel caso peggiore è il più piccolo valore che soddisfa l'equazione
+
+- Il tempo di risposta nel caso peggiore è il **più piccolo** valore che soddisfa l'equazione
 
 ---
-##### **DM: Analisi del tempio di risposta - soluzione iterativa**
+**DM: Analisi del tempio di risposta - soluzione iterativa**
 
-- La soluzione iterativa per derivare il più piccolo $R_i$ che soddisfa (1)
-	- Passo 0: $R_i^{(0)} = \sum_{k=1}^{i}C_k$ (minimo tempo di risposta con l'arrivo dei task) 
+- La soluzione iterativa per derivare il più piccolo $R_i$ che soddisfa (2,)
+	- Passo 0: $R_i^{(0)} = \sum_{k=1}^{i}C_k$ (minimo tempo di risposta con l'arrivo dei task sincroni) 
 	- Passo j: $R_i^{(j)} = C_i + I_i = C_i + \sum_{k=1}^{i-1} \left\lceil \frac{R_i^{(j-1)}}{T_k} \right\rceil C_k$ 
-- Itera fino a che $R_i^{(j)} > R_i^{(j-1)}$ && $R_i^{(j)} \leq D_i$ $\forall j > 0$![[Pasted image 20241006162643.png]]
+- Itera fino a che $R_i^{(j)} > R_i^{(j-1)}$ && $R_i^{(j)} \leq D_i$ $\forall j > 0$
+	- **Input**: Un set $\Gamma$ di $n$ task periodi $\tau_1,...,\tau_n$ con deadline vincolate
+	- **Output**: $\texttt{TRUE}$ se il task set $\Gamma$ è schedulabile da DM, $\texttt{FALSE}$ altrimenti
+	1. **foreach** task $\tau_i \in \Gamma$ **do**
+	2.       $I_i = \sum_{k=1}^{i-1}C_k$
+	3.       **do**
+	4.             $R_i = C_i + I_i$
+	5.             **if** $R_i > D_i$ **then**
+	6.                  **return** $\texttt{FALSE}$
+	7.             **end**
+	8.             $I_i = \sum_{k=1}^{i-1}\left\lceil \frac{R_i}{T_k} \right\rceil C_k$
+	9.       **while** $I_i+C_i > R_i$
+	10. **end**
+	11. **return** $\texttt{TRUE}$
+
 ---
-##### DM: Analisi del tempo di risposta - complessità
-- L'algoritmo ha complessità **Pseudo-polinomiale** $O(n * N)$, rispetto al numero di elementi di un set di input per i valori del set di input
-	- Complessità polinomiale nel numero $n$ di task 
-	- Complessità polinomiale nel massimo numero $N$ di iterazioni per task, che dipendono principalmente dalla relazione fra i periodi dei task
+**DM: Analisi del tempo di risposta - complessità**
+
+- L'algoritmo ha complessità **Pseudo-polinomiale** $O(n * N)$, rispetto al 
+	- Numero di elementi di un set di input 
+	- I valori del set di input
+- Complessità polinomiale nel numero $n$ di task 
+- Complessità polinomiale nel massimo numero $N$ di iterazioni per task, che dipendono principalmente dalla relazione fra i periodi dei task
+
 --- 
-#### **DM: esempio di un insieme di compiti non schedulabile**
+**DM: esempio di un insieme di compiti non schedulabile (1/2)**
+
 ![[Pasted image 20241006163226.png]]
+
 - $R_1^{(0)} = C_1 = 2 < D_1$; $R_1^{(1)} = C_1 = 2 < D_1$; $\Rightarrow R_1 = 2$
-- $R_2^{(0)} = C_1 + C_2 = 4 < D_2$; $R_2^{(1)} = C_2 + \left\lceil \frac{R_2^{(0)}}{T_1} \right\rceil C_1  = C_2 + C_1 = 4 < D_2$; $\Rightarrow R_2 = 4$
+- $R_2^{(0)} = C_1 + C_2 = 4 < D_2$; $R_2^{(1)} = C_2 + \left\lceil \frac{R_2^{(0)}}{T_1} \right\rceil C_1  = C_2 + C_1 = 4 < D_2$; 
+	$\Rightarrow R_2 = 4$ (occhio si prende parte intera superiore)
 - $R_3^{(0)} = C_1 + C_2 + C_3 = 8 = D_3$; $R_3^{(1)} = C_3 + \left\lceil \frac{R_3^{(0)}}{T_1} \right\rceil C_1 + \left\lceil \frac{R_3^{(0)}}{T_2} \right\rceil C_2 = C_3 + C_1 + 2 C_2 = 10 > D_3$
+	=> lo schedule DM è **unfeasible** per il task set
 
 ---
-##### **DM: esempio di un insieme di compiti non schedulabile (2/2)**
-- Il tempo di risposta stimato aumenta a ogni rilascio del compito: $R_3 = 12$.              ![[Pasted image 20241006164325.png]]
+**DM: esempio di un insieme di compiti non schedulabile (2/2)**
+
+- Il tempo di risposta stimato aumenta **a ogni rilascio del compito**: $R_3 = 12$.
+	
+	![[Pasted image 20241006164325.png]]
 
 ---
-#### **DM: esempio di un insieme di compiti schedulabile**
+**DM: esempio di un insieme di compiti schedulabile(1/2)**
+
 ![[Pasted image 20241006170652.png]]
+
 - I tempi di risposta di $\tau_1$ e $\tau_2$ rimangono gli stessi: $R_1 = 2 < D_1$, $R_2 = 4 < D_2$
 - $R_3^{(0)} = C_1 + C_2 + C_3 = 6 < D_3$
 - $R_3^{(1)} = C_3 + \left\lceil \frac{R_3^{(0)}}{T_1} \right\rceil C_1 + \left\lceil \frac{R_3^{(0)}}{T_2} \right\rceil C_2 = C_3 + C_1 + C_2 = 6 < D_3$
 ---
-							![[Pasted image 20241006170938.png]]
+**DM: esempio di un insieme di compiti schedulabile(2/2)**
+
+![[Pasted image 20250319145804.png]]
+
+![[Pasted image 20241006170938.png]]
+
 ---
-### Schedulazione Earliest Deadline First (EDF)
+ **Schedulazione Earliest Deadline First (EDF)**
 	 
-	 ![[Pasted image 20241006172843.png]]
- 
-- Algoritmo di schedulazione online, dinamico e preemptive.
-- Scheduling per la gestione di task puramente periodici ($D_i = T_i$ per ogni task $\tau_i$)
-- Ogni task ha una **priorità dinamica** inversamente proporzionale alla sua deadline assoluta.
+ ![[Pasted image 20241006172843.png]]
+
+---
+**EDF: tratti salienti**
+
+- Algoritmo di schedulazione online, **dinamico** e preemptive.
+- Scheduling per la gestione di task puramente periodici ($D_i = T_i$ $\forall$ task $\tau_i$)
+- Ogni task ha una **priorità dinamica** inversamente proporzionale alla sua deadline **assoluta**.
+
 - Esempio $C_1 = 3, T_1 = D_1 = 6; C_2 = 4, T_1 = D_1 = 9$
 	![[Pasted image 20241006173836.png]]
+(notare a t=6 $\tau_2$ continua la sua esecuzione perchè ha deadline assoluta più piccola)
 ---
-#### Scheduling EDF vs Scheduling RM
+**Scheduling EDF vs Scheduling RM**
+
 - Se lo schedule EDF è fattibile per il task set precedente
-- Per lo schedule RM, lo stesso task set non è fattibile ![[Pasted image 20241006174155.png]]
+
+- Per lo schedule RM, lo stesso task set non è fattibile 
+
+	![[Pasted image 20241006174155.png]]
+	
 - I test basati su Liu & Layland e gli hyperbolic bounds sono inconclusivi, in quanto non consento di valutare la fattibilità di uno scheduling RM:
-	- $U = C_1 / T_1 + C_2/T_2 = 3/6 + 4/9 = 0.944 > 2 (\sqrt2 - 1) = 0.028$
+	- $U = C_1 / T_1 + C_2/T_2 = 3/6 + 4/9 = 0.944 > 2 (\sqrt2 - 1) = 0.828$
 	- $(U_1 + 1)(U_2 +1) = (3/6+1)(4/9+1) = 13/6 > 2$
 
 ---
-#### Test di garanzia EDF (Liu & Layland, 1973)
+**Test di garanzia EDF (1/2) (Liu & Layland, 1973)**
 
-- Un insieme di task periodici puri è schedulabile tramite EDF se e solo se $U \leq 1$.
+- **Teorema**: Un insieme di task periodici puri è schedulabile tramite EDF se e solo se $U \leq 1$.
 	- Il test è **necessario e sufficiente**
 	- Complessità polinomiale $O(n)$ rispetto al numero $n$ di compiti
-	- Necessità: se un insieme di task periodici è schedulabile con EDF $\Rightarrow U \leq 1$
-	- Sufficienza: se  $U \leq 1 \Rightarrow$ un insieme di task puramente periodici è schedulabile tramite EDF
+	- Necessità: se un insieme di task periodici è schedulabile con EDF $\Rightarrow U \leq 1$ (ovvero se $U>1$ => un insieme di tasks puramente periodici non è schedulabile da EDF)
+	- Sufficienza: se  $U \leq 1 \Rightarrow$ un insieme di task puramente periodici è schedulabile tramite EDF (ovvero se un insieme di task puramente periodici non è schedulabile da EDF => $U > 1$)
 
-**Dimostrazione necessità**
-- Se $U > 1$ allora $U \cdot T > T$ poiché $T = T_1 T_2 \dots T_n > 0$,
-	=>  $\sum_{i=1}^{n} \frac{C_i}{T_i} T > T$ per definizione di $U$ => $\sum_{i=1}^{n} \frac{T}{T_i} C_i > T$
-    => la domanda totale di risorse nel periodo $[0, T)$ è maggiore del tempo disponibile $T$,  => l'insieme dei task non è fattibile.
+- **Dimostrazione necessità**
+	- Se $U > 1$ allora $U \cdot T > T$ poiché $T = T_1 T_2 \dots T_n > 0$,
+		=>  $\sum_{i=1}^{n} \frac{C_i}{T_i} T > T$ per definizione di $U$ => $\sum_{i=1}^{n} \frac{T}{T_i} C_i > T$
+	    => la domanda totale di risorse nel periodo $[0, T)$ è maggiore del tempo disponibile $T$,  => l'insieme dei task non è fattibile.
+
 ---
-**Dimostrazione sufficienza (Per assurdo)**
-- Si assume che l'insieme dei compiti non sia schedulabile con EDF e che $U < 1$:
-	- $t_2$: il primo istante di tempo in cui una scadenza viene mancata.
-	- $[t_1,t_2]$: è il più grande intervallo continuo di utilizzazione prima di $t_2$, nel quale sono eseguiti solo i job $\tau_{i,k}$ con tempo di arrivo $a_{i,k} \geq t_1$ e deadline assoluta $d_{i,k} \leq t_2$ 
-	- $C_p(t_1, t_2)$: la richiesta del processore durante l'intervallo di tempo $[t_1,t_2]$ =>![[Pasted image 20241006181055.png]]
-	- $C_p(t_1, t_2) > t_2 - t_1$ dato che una scadenza viene mancata a $t_2$
+**Test di garanzia EDF (2/2) (Liu & Layland, 1973)**
+
+- **Dimostrazione sufficienza (Per assurdo)**
+	- Si assume che l'insieme dei compiti **non** sia schedulabile con EDF e che $U < 1$:
+		- $t_2$:= il primo istante di tempo in cui una scadenza viene mancata.
+		- $[t_1,t_2]$: è il più grande intervallo continuo di utilizzazione prima di $t_2$, nel quale sono eseguiti **solo i job** $\tau_{i,k}$ con:
+			- tempo di arrivo $a_{i,k} \geq t_1$ 
+			- deadline assoluta $d_{i,k} \leq t_2$ 
+		- $C_p(t_1, t_2)$:= la **richiesta del processore** durante l'intervallo di tempo $[t_1,t_2]$ 
+			=> $C_p(t_1,t_2) = \sum_{\tau_{i,k} | a_{i,k} \geq t_1 \space ∧ \space d_{i,k} \leq t_2 } C_i =$ 
+			$= \sum_{i=1}^n \lfloor \frac{t_2-t_1}{T_i} \rfloor C_i \leq \sum_{i=1}^n \frac{t_2-t_1}{T_i} C_i = (t_2-t_1)U$
+			 
+	- $C_p(t_1, t_2) > t_2 - t_1$ dato che una scadenza viene mancata a $t_2$ =>
+		$\Rightarrow t_2 - t_1 < C_p(t_1,t_2) \leq (t_2-t_1)U \Rightarrow U > 1$, che è una contraddizione.
+	
 	![[Pasted image 20241006181152.png]]
-	- $\Rightarrow t_2 - t_1 < C_p(t_1,t_2) \leq (t_2-t_1)U \Rightarrow U > 1$, che è una contraddizione.
+
 --- 
-#### Ottimalità EDF (Dertouzos, 1974)
+**Ottimalità EDF (Dertouzos, 1974)**
 
-- EDF è ottimale in termini di fattibilità tra **tutti gli algoritmi**.
-	- Se uno schedule è fattibile per un task set $\Gamma$ => Anche lo scheduling EDF è fattibile per $\Gamma$ 
-	- Se lo schedule EDF non è fattibile per un task $\Gamma$ => non esiste schedule fattibile per $\Gamma$
-- Risultato indipendente dalla periodicità dei task
+- **Teorema**: EDF è **ottimale** in termini di **fattibilità** tra **tutti gli algoritmi**.
+	- Se uno schedule è fattibile per un task set $\Gamma$
+		=> Anche lo scheduling EDF è fattibile per $\Gamma$ 
+	- Se lo schedule EDF non è fattibile per un task $\Gamma$ 
+		=> Non esiste schedule fattibile per $\Gamma$
+
++ Nota che le due affermazioni sono equivalenti (a $\Rightarrow$ b se e solo se $\neg$b $\Rightarrow$ $\neg$a).
+- Risultato **indipendente dalla periodicità** dei task
+
 ---
-##### Dimostrazione Ottimalità EDF:
+**Ottimalità EDF: dimostrazione(1/3)**
 
-- Una schedulazione fattibile $\sigma$ per l'insieme di compiti $\Gamma$ è divisa in intervalli di tempo di un'unità di tempo:
+- Una schedulazione fattibile $\sigma$ per l'insieme di compiti $\Gamma$ è divisa in intervalli di un'unità di tempo (notare che la durata dell'intervallo di tempo può essere arbitrariamente piccola):
 	- $\sigma(t)$: compito eseguito durante l'intervallo $[t, t + 1)$
 	- $E(t)$: indice del compito con la scadenza assoluta minima a $t$
-	- fasads
-	- sdasdas
-- Lo schedule $\sigma$ è trasformato in uno schedule EDF $\sigma_{EDF}$![[Pasted image 20241006182210.png]]
+	- $t_E :=$ tempo $\geq t$ al quale $\tau_{E(t)}$ è eseguito per primo 
+	- $d_max:=$ $max_{i \in \{1,...,n\}}\{d_i\}$ (massima deadline assoluta)
+
+- Lo schedule $\sigma$ è trasformato in uno schedule EDF $\sigma_{EDF}$:
+	- **Input**: Uno schedule fattibile $\sigma$ per un task set $\Gamma$
+	- **Output**: Uno schedule EDF $\sigma_{EDF}$ per il task set $\Gamma$
+	1. **foreach**: $t \in \{0,1,..., d_{max} -1\}$ **do**
+	2.     **if** $\sigma(t) \neq \sigma_{EDF}(t)$ **then**
+	3.             $\sigma(t_E) = \sigma(t)$ // $[t_E, t_E +1]$ allocato al task che eseguiva durante $[t,t+1]$
+	4.             $\sigma(t) = E(t)$ // $[t,t+1]$ allocato al task con la minore deadline assoluta a t
+	5.    **end**
+	6. **end**
+	7. **return** $\texttt{TRUE}$
+
 ---
-			![[Pasted image 20241006182238.png]]
+**Ottimalità EDF: dimostrazione(2/3)**
+
+![[Pasted image 20241006182238.png]]
+
 --- 
-- Una trasposizione conserva la schedulabilità, cioè $\sigma_{EDF}$ è fattibile per $\Gamma$.
-	- Se un intervallo di tempo di un task $\tau_i$ viene anticipato => la fattibilità di $\tau_i$ è preservata.
-	-  Se un intervallo di tempo di un task $\tau_i$ viene posticipato a $t_E$ =>
+**Ottimalità EDF: dimostrazione(3/3)**
+
+- Una trasposizione conserva la schedulabilità, cioè $\sigma_{EDF}$ è fattibile per $\Gamma$
+	- Se un intervallo di tempo di un task $\tau_i$ viene **anticipato** => la fattibilità di $\tau_i$ è preservata.
+	- Se un intervallo di tempo di un task $\tau_i$ viene **posticipato** a $t_E$ =>
 		=> $t_E +1 \leq d_E$ con $d_E$ la più vicina deadline assoluta al tempo t
-		=> siccome $\sigma$ è fattibile => $t_E +1 \leq d_E \leq d_i - \forall \tau_i$ per definizione di $d_E$ =>
+		=> siccome $\sigma$ è fattibile => $t_E +1 \leq d_E \leq d_i \space \forall \space \tau_i$ per definizione di $d_E$ =>
 		=> l'intervallo di tempo posticipato a $t_E$ è schedulabile. 
+
 --- 
-#### Ottimalità EDF rispetto alla minimizzazione del ritardo massimo (Jackson, 1955)
+**Ottimalità EDF rispetto alla minimizzazione del ritardo massimo (Jackson, 1955)**
 
-**Teorema**: Un insieme di $n$ task indipendenti, schedulato in ordine di deadline crescenti, minimizza la massima lateness $L_{max} = \max_{i \in {1,\dots,n}} {L_i}$.
+- **Teorema**:
+	Dato un insieme di $n$ task indipendenti, un qualsiasi algoritmo che esegue i task in ordine di deadline assolute crescenti, è ottimo rispetto al minimo della **massima lateness** $L_{max} := \max_{i \in \{1,\dots,n\}} \{L_i\}$.
 
-- Risultato anche lui indipendente dalla periodicità
+- Risultato anche lui **indipendente dalla periodicità** (valido anche per task con deadline vincolate)
 - Se l'algoritmo minimizza $L_{max}$ => è ottimale nel senso di feasibility (l'opposto non è sempre vero) 
 - ![[Pasted image 20241006183331.png]]
 --- 
-Spazio per la dimostrazione... WIP
+**Ottimalità EDF rispetto alla minimizzazione del ritardo massimo: dimostrazione** 
+
+- Riconsideriamo la trasposizione di *Dertouzos* (vedi dimostrazione ottimalità EDF)
+
+- Una trasposizione fra due intervalli $\sum_a$ e $\sum_b$ non può aumentare $L_{max}$
+	- Sia $\sum_a$ ad essere anticipato (ovvero $f'_a < f_a$) e $\sum_b$ postposto (ovvero $f'_b > f_a$)
+	- Se $L'_a \geq L'_b$ => $L'_{max} = L'_a = f'_a - d_a < f_a -d_a = L_{max}$ dato che $f'_a < f_a$
+	- Se $L'_a \leq L'_b$ => $L'_{max} = L'_b = f'_b - d_b < f_b -d_b = L_{max}$ dato che $d_a < d_b$
+
+- In un numero finito di trasposizioni, $\sigma$ può essere trasformato in $\sigma_{EDF}$ e, dato che la massima lateness non può aumentare, $\sigma_{EDF}$ è ottimale
+
+![[Pasted image 20250319215702.png]]
 
 ---
+**EDF con deadline vincolate (Baruah et al., 1990)**
 
-#### EDF con deadline vincolate (Baruah et al., 1990)
+- **Criterio della domanda del processore**:
+	Un insieme di task periodici $\{\tau_1, \dots, \tau_n\}$ con $D_i \leq T_i$ per ogni task $\tau_i$ è schedulabile da EDF se e solo se, in ogni intervallo di tempo $[t_1, t_2]$, la **domanda del processore** $g(t_1, t_2)$ **non supera il tempo disponibile**, cioè $g(t_1, t_2) \leq t_2 - t_1$ per ogni $t_1 < t_2$.
 
-**Criterio della domanda del processore**:
-Un insieme di task periodici ${\tau_1, \dots, \tau_n}$ con $D_i \leq T_i$ per ogni task $\tau_i$ è schedulabile da EDF se e solo se, in ogni intervallo di tempo $[t_1, t_2]$, la domanda del processore $g(t_1, t_2)$ non supera il tempo disponibile, cioè $g(t_1, t_2) \leq t_2 - t_1$ per ogni $t_1 < t_2$.
-
-- La domanda del processore nell'intervallo $[t_1, t_2]$, è il tempo per processare richiesto dai job attivati in $[t_1, t_2]$, con una deadline assoluta $\leq t_2$:
+- La domanda del processore nell'intervallo $[t_1, t_2]$, è il tempo di processamento richiesto dai job attivati in $[t_1, t_2]$, con una deadline assoluta $\leq t_2$:
 	- $g(t_1,t_2) = \sum_{i-1}^{n}\eta_i(t_1,t_2)C_i$
-- Con $\eta_i(t_1,t_2)$ che è il numero di job di $\tau_i$ che contribuisce alla richiesta in $[t_1,t_2]$:
-	- $\eta_i(t_1,t_2) =  ∣{τ_{i,k} ∣ a_{i,k} ∈ [t_1 , t_2 ] ∧ d{i,k} ≤ t_2 }∣ = max(0, K_2^i − K_1^i )$
-	- $K_2^i = ∣{τ_{i,k} ∣ a_{i,k} ∈ [\phi , t_2 ] ∧ d{i,k} ≤ t_2 }∣ = ⌊t_2 + T_i − D_i − \phi_i /Ti ⌋$
-	- $K_1^i = ∣{τ_{i,k} ∣ a_{i,k} ∈ [\phi , t_1 ]}∣ = ⌈t_1 − \phi_i /T_i ⌉$
+- Dove $\eta_i(t_1,t_2)$ è il numero di job di $\tau_i$ che contribuisce alla richiesta in $[t_1,t_2]$:
+	- $\eta_i(t_1,t_2): =  ∣\{τ_{i,k} ∣ a_{i,k} ∈ [t_1 , t_2 ] ∧ d_{i,k} ≤ t_2 \}∣\space = max\{0, K_2^i − K_1^i\}$
+	- $K_2^i := ∣\{τ_{i,k} ∣ a_{i,k} ∈ [\phi , t_2 ] ∧ d_{i,k} ≤ t_2 \}∣ = ⌊t_2 + T_i − D_i − \phi_i /Ti ⌋$
+	- $K_1^i = ∣\{τ_{i,k} ∣ a_{i,k} ∈ [\phi , t_1 ]\}∣ = ⌈t_1 − \phi_i /T_i ⌉$
+	![[Pasted image 20250319220450.png]]
+
 ---
-- $K_1^i = ∣{τ_{i,k} ∣ a_{i,k} ∈ [\phi , t_1 ]}∣ = ⌈t_1 − \phi_i /T_i ⌉$
+**EDF con deadlines vincolate: valutazione di $K_1$**
+
+- $K_1^i = ∣\{τ_{i,k} ∣ a_{i,k} ∈ [\phi , t_1 ]\}∣ = ⌈t_1 − \phi_i /T_i ⌉$
+
 ![[Pasted image 20241007222057.png]]
+
 --- 
-- $K_2^i = ∣{τ_{i,k} ∣ a_{i,k} ∈ [\phi , t_2 ] ∧ d{i,k} ≤ t_2 }∣ = ⌊t_2 + T_i − D_i − \phi_i /Ti ⌋$
+**EDF con deadlines vincolate: valutazione di $K_2$**
+
+- $K_2^i := ∣\{τ_{i,k} ∣ a_{i,k} ∈ [\phi , t_2 ] ∧ d_{i,k} ≤ t_2 \}∣ = ⌊t_2 + T_i − D_i − \phi_i /Ti ⌋$
+
 ![[Pasted image 20241007222140.png]]
+
 --- 
-##### EDF con deadline vincolate: funzione di domanda vincolata
+**EDF con deadline vincolate: funzione di domanda vincolata**
 
 - **Scenario peggiore**: tutti i task sono attivati al tempo $t = 0$ (cioè $\phi_i = 0$ per ogni task $\tau_i$):
     - $dbf(t) = g(0,t) = \sum_{i-1}^{n}\eta_i(0,t)C_i = \sum_{i=1}^{n} \left\lfloor \frac{t + T_i - D_i}{T_i} \right\rfloor C_i$.
 
-- Un set $n$ di task periodici sincronizzati(?)  con $D_i \leq T_i$ $\forall$ task $\tau_i$ è schedulabile da EDF se e solo se $dbf(t) \leq t$ $\forall t > 0$
-			![[Pasted image 20241007222551.png]]
+- **Osservazione**
+	Un set $n$ di task periodici sincroni $\{\tau_1,...,\tau_n\}$  con $D_i \leq T_i$ $\forall$ task $\tau_i$ è schedulabile da EDF se e solo se $dbf(t) \leq t$ $\forall t > 0$
+
+	![[Pasted image 20241007222551.png]]
 
 ---
-##### EDF con deadline vincolate: complessità sui bound
+**EDF con deadline vincolate: complessità sui bound(1/2)**
 
-1.  Preso un insieme sincrono di task periodici => Verifico il criterio solo per  $t \leq H$ (dove $H$ è l'iper-periodo dell'insieme di compiti).
-2. $dbf(t)$ è una funzione a gradino che aumenta quando $t$ è uguale a una deadline assoluta ⇒ se $dbf(t) < t$ per $t = d_i$ allora $dbf(t) < t$ $\forall t \mid d_i \leq t < d_{i+1}$ 
-   ⇒ Verifico il criterio solo per i valori di $t$ uguali alle deadline assolute.
-3. Verifico il criterio almeno fino a $d_{max} := \max_i {d_i} \leq H$.
+1. Preso un insieme sincrono di task periodici => Verifico il criterio solo per  $t \leq H$ (dove $H$ è l'iper-periodo dell'insieme di compiti).
+2. La $dbf(t)$ è una funzione a gradino che aumenta quando $t$ è uguale a una deadline assoluta ⇒ se $dbf(t) < t$ per $t = d_i$ allora $dbf(t) < t$ $\forall t \mid d_i \leq t < d_{i+1}$ =>
+   ⇒ Verifico il criterio ==solo per i valori di $t$ uguali alle deadline assolute.==
+3. Verifico il criterio almeno fino a $d_{max} := \max_i \{d_i\} \leq H$.
 
 ---
-4.  $dbf(t) = \sum_{i=1}^{n} \left\lfloor \frac{t + T_i - D_i}{T_i} \right\rfloor C_i \leq  \sum_{i=1}^{n}  \frac{t + T_i - D_i}{T_i} C_i = \sum{i=1}^{n}(T_i - D_i)U_i + tU$ => 
-=> $G(0,t) = \sum{i=1}^{n}(T_i - D_i)U_i + tU$ è una funzione crescente con la pendenza $U$
-=> se U < 1 allora $∃ t^⋆ ∣ G(0, t^⋆ ) = t^⋆$ dove $t^* = \sum_{i=1}^{n}(T_i - D_i)U_i/(1-U)$
-=> $dbf(t) \leq G(0,t) \leq t$ $\forall t \geq t^*$ => mi basta verificare quindi il criterio solo per $t < t^*$
+**EDF con deadline vincolate: complessità sui bound(2/2)**
+
+4.  $dbf(t) = \sum_{i=1}^{n} \left\lfloor \frac{t + T_i - D_i}{T_i} \right\rfloor C_i \leq  \sum_{i=1}^{n}  \frac{t + T_i - D_i}{T_i} C_i =$
+	$= \sum_{i=1}^{n}(T_i - D_i)U_i + tU$ => 
+	=> $G(0,t) = \sum_{i=1}^{n}(T_i - D_i)U_i + tU$ è una funzione crescente con la pendenza $U$
+	=> se U < 1 (altrimenti ho un numero negativo => guarda denominatore) allora $∃ t^⋆ ∣ G(0, t^⋆ ) = t^⋆$ dove $t^* = \sum_{i=1}^{n}(T_i - D_i)U_i/(1-U)$
+	=> $dbf(t) \leq G(0,t) \leq t$ $\forall t \geq t^*$ => mi basta verificare quindi il criterio solo per $t < t^*$
 		![[Pasted image 20241007224836.png]]
+
 ---
+**EDF con deadline vincolate: processor demand test**
+
 - Riassumendo: come limitare la complessità?  
 	- Verifico il criterio solo per $t \leq H$
 	- Verifico il criterio solo per valori di t uguali alla sua deadline assoluta
-	- Verifico il criterio almeno fino a $d_{max} = max_i(d_i) \leq H$
+	- Verifico il criterio almeno fino a $d_{max} := max_i\{d_i\} \leq H$
 	- Verifico il criterio solo per $t < t^*$
 	
-**Test di domanda del processore**
-Un insieme sincrono di $n$ task periodici {$\tau_1$, ... , $\tau_n$} con $D_i \leq T_i$ $\forall$ task $\tau_i$ è schedulabile da EDF se e solo se $U < 1$ e $dbf(t) \leq t$ $\forall t ∈ D$ con $D = \{d_i \mid d_i \leq \min \{d_{\text{max}}, t^*\}\}$ e $t^* = \sum{i=1}^{n}(T_i - D_i)U_i/(1-U)$
+- **Test di domanda del processore**
+	Un insieme sincrono di $n$ task periodici {$\tau_1$, ... , $\tau_n$} con $D_i \leq T_i$ $\forall$ task $\tau_i$ è schedulabile da EDF se e solo se $U < 1$ e $dbf(t) \leq t$ $\forall t ∈ D$ con $D = \{d_i \mid d_i \leq \min \{d_{\text{max}}, t^*\}\}$ e $t^* = \sum_{i=1}^{n}(T_i - D_i)U_i/(1-U)$
 
 --- 
-
-### RM vs EDF
+**RM vs EDF**
 
 - **Schedulazione RM**:
     - Meno efficiente in termini di utilizzo del processore. (nel caso peggiore vicino al 69%)
     - Più facile da implementare in Sistemi Operativi Real-Time commerciali
-    - Politiche di priorità fisse, più semplici da predirre durante periodi di *overloads* ma meno flessibili.
+    - Politiche di priorità fisse, più semplici da predirre durante periodi di *overloads* ma meno flessibili. (task a priorità bassa sono bloccati mentre quelli a priorità alta eseguiti ad un giusto rate)
+
 - **Schedulazione EDF**:
     - Maggiore efficienza nell'utilizzo del processore (l'uso del processore e pari al 100%)
     - Minore numero di prelazioni => minore overhead dovuto ai cambi di contesto
     - Più flessibile durante periodi di overload (tutti i task sono eseguiti ad un ritmo più lento)
-    - Richiede una gestione delle priorità dinamica, più complessa da implementare, ma che porta a un migliore capacità di risposta nel gestire task aperiodi e un controllo del jitter più uniforme.
+    - Richiede una gestione delle priorità dinamica, più complessa da implementare, ma che porta a un migliore capacità di risposta nel gestire task aperiodici e un controllo del jitter più uniforme.
 
 ---
-### Scheduling dei task periodici: 
+**Scheduling dei task periodici: riassunto (1/2)** 
 
 - 3 tipologie di scheduling
 	1. Offline (scheduling pianificato temporalmente)
 	2. Online static priority (RM, DM)
 	3. Online dynamic priority (EDF)
+
 - 3 tecniche di analisi di scheduling
 	1. Basate sull'uso del processore
-		- Bound di Liu & Layland (LL) per RM: $U \leq n(2^{1/n} - 1)$ (condizione sufficiente)
-		- Hyperbolic bound (HB) per RM: $\prod_{i=1}^n(U_i + 1) \leq 2$ (condizione sufficiente)
-		- Bound LL per task armonici: $U \leq 1$ (condizione necessaria e sufficente)
-		- Bound EDF:  $U \leq 1$ (condizione necessaria e sufficente)
+		- Bound di Liu & Layland (LL) per RM: $U \leq n(2^{1/n} - 1)$ (condizione **sufficiente**)
+		- Hyperbolic bound (HB) per RM: $\prod_{i=1}^n(U_i + 1) \leq 2$ (condizione **sufficiente**)
+		- Bound LL per task armonici: $U \leq 1$ (condizione **necessaria e sufficiente**)
+		- Bound EDF:  $U \leq 1$ (condizione **necessaria e sufficiente**)
 		- Complessità polinomiale $O(n)$ sul numero di task
 	2. Response time analysis
 		- $R_i \leq D_i$ $\forall i ∈\{1, ... , n\}$ con $R_i = C_i + \sum_{k=1}^{i-1}\left\lceil R_i/T_k \right\rceil C_k$ (necessaria e sufficiente)
-		- Complessità Pseudo-polinomiale
-	3. Processor demand alaysis
-		- $dbf(t)\leq t$ $\forall t \in D$ (Necessario e sufficiente)
-		- Complessità Pseudo-polinomiale
+		- Complessità **Pseudo-polinomiale**
+	3. Processor demand analysis
+		- $dbf(t)\leq t$ $\forall t \in D$ (**Necessario e sufficiente**)
+		- Complessità **Pseudo-polinomiale**
 		
 ![[Pasted image 20241009083217.png]]
+- Notare che basta solo un task che non sia puramente periodico che tutti i test visti per task puramente periodici non siano più validi => perdo la possibilità di eseguire il test con complessità polinomiale :(
+
 ---
-# Protocolli di accesso alle risorse
+## 3. Protocolli di accesso alle risorse
+---
+
 ## Risorse
 
 - Una **risorsa** è una qualsiasi struttura software usata da un task per far avanzare la sua esecuzione (ad esempio variabili, file, device, aree di memoria)

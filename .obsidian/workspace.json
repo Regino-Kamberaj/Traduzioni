@@ -6,7 +6,7 @@
       {
         "id": "37a30ab98ccbe121",
         "type": "tabs",
-        "dimension": 47.06405693950178,
+        "dimension": 54.982206405693944,
         "children": [
           {
             "id": "197711d3d68cbccc",
@@ -14,12 +14,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
+                "file": "Swees/Swees - Traduzione slides.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Traduzione Slides XAI - Intelligenza Artificiale Explainable"
+              "title": "Swees - Traduzione slides"
             }
           }
         ]
@@ -27,7 +27,7 @@
       {
         "id": "5f49474bd3a044bd",
         "type": "tabs",
-        "dimension": 52.93594306049822,
+        "dimension": 45.01779359430605,
         "children": [
           {
             "id": "9bd4012566dfc51d",
@@ -35,10 +35,10 @@
             "state": {
               "type": "pdf",
               "state": {
-                "file": "EXAI/Slides/01_Introduction.pdf"
+                "file": "Swees/Slides/SWEES_realTimeSystems.pdf"
               },
               "icon": "lucide-file-text",
-              "title": "01_Introduction"
+              "title": "SWEES_realTimeSystems"
             }
           }
         ]
@@ -186,35 +186,34 @@
   },
   "active": "197711d3d68cbccc",
   "lastOpenFiles": [
-    "Swees/Immagini Swees/Pasted image 20250309130836.png",
-    "Swees/Immagini Swees/Pasted image 20250308200358.png",
-    "Swees/Immagini Swees/Pasted image 20250308183649.png",
-    "Swees/Immagini Swees/Pasted image 20250308182418.png",
-    "EXAI/Immagini/Pasted image 20250313145349.png",
-    "EXAI/Immagini/Pasted image 20250313145315.png",
-    "EXAI/Immagini/Pasted image 20250313145243.png",
-    "EXAI/Immagini/Pasted image 20250313145214.png",
-    "EXAI/Immagini/Pasted image 20250313145134.png",
-    "EXAI/Immagini/Pasted image 20250313145131.png",
-    "EXAI/Immagini/Pasted image 20250313145033.png",
+    "Swees/Slides/SWEES_realTimeSystems.pdf",
     "Swees/Swees - Traduzione slides.md",
+    "Pasted image 20250319220450.png",
+    "Pasted image 20250319220407.png",
+    "Pasted image 20250319215702.png",
+    "Pasted image 20250319145804.png",
+    "Pasted image 20250319083830.png",
+    "Net Sec/README.md",
+    "Opt/Traduzione Pdf Optimization.md",
+    "Opt/notes_2024_lapucci_R3.pdf",
+    "Pasted image 20250318223804.png",
+    "Pasted image 20250318223621.png",
+    "Pasted image 20250318223244.png",
+    "Pasted image 20250318223203.png",
+    "Pasted image 20250317215830.png",
+    "Senza nome.md",
     "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
     "EXAI/Slides/01_Introduction.pdf",
     "EXAI/Slides/00_Administrivia.pdf",
-    "Senza nome.md",
-    "Swees/Slides/SWEES_realTimeSystems.pdf",
     "QESM",
     "EXAI",
     "Swees/Slides/SWEES_introduction.pdf",
     "Swees/Slides/SWEES_advancedTopics.pdf",
     "Senza nome 3.md",
     "Senza nome 2.md",
-    "Opt/Traduzione Pdf Optimization.md",
-    "Opt/notes_2024_lapucci_R3.pdf",
     "Opt/Tabella di Marcia Optimization.md",
     "appunti_studenti/notes_senoner_2024.pdf",
     "appunti_studenti/notes_palchetti_2023.pdf",
-    "Net Sec/README.md",
     "Welcome.md",
     "Untitled 1.md",
     "Untitled.md",
