@@ -519,13 +519,11 @@ Università di Firenze
 # Sistemi Real-time
 
 ---
-
 **Outline**
 
 1. Concetti base
 2. Scheduling di task periodici
 3. Protocollo di accesso alle risorse
-4. Crediti e Riferimenti
 
 ---
 ## 1. Concetti di base
@@ -1707,8 +1705,7 @@ Teorema (No dim)
 ---
 ## 3. Protocolli di accesso alle risorse
 ---
-
-## Risorse
+**Risorse**
 
 - Una **risorsa** è una qualsiasi struttura software usata da un task per far avanzare la sua esecuzione (ad esempio variabili, file, device, aree di memoria)
 	- Risorsa **privata**: dedicata ad un singolo task
@@ -1721,7 +1718,7 @@ Teorema (No dim)
 ![[Pasted image 20241009083859.png]]
 
 --- 
-## Inversione di priorità
+**Inversione di priorità(1/2)**
 
 - L'inversione di priorità è un fenomeno che accade quando un **task ad alta priorità** è bloccato da un **task a bassa priorità** per un intervallo di ==durata indefinita==
 	- Il **tempo di blocco** di un task è un ritardo causato da task a priorità minore
@@ -1731,20 +1728,24 @@ Teorema (No dim)
 	![[Pasted image 20241009084459.png]]
 	
 ---
+**Inversione di priorità(2/2)**
+
 - Il tempo di blocco del task ad alta priorità non può essere ristretto dalla durata della sezione critica eseguita dal task a bassa priorità
 	- Ad esempio se aggiungo un **task a media priorità** $\tau_2$ ($P_1 > P_2 > P_3$)
 	- Il massimo tempo di blocco di $\tau_1$ dipende non solo dalla durata della sezione critica di $\tau_3$ ma anche dal WCET di $\tau_2$
+
+![[Pasted image 20250323131919.png]]
+
 - La soluzione al *blocco unbounded* è usare protocolli di accesso alle risorse.
 --- 
-## Protocolli di accesso alle risorse
-### La formulazione del problema
+**Protocolli di accesso alle risorse: La formulazione del problema(1/2)**
 
 - Preso un **Set di $n$ task periodici** $\Gamma = \{\tau_1, \ldots, \tau_n\}$, con ciascun compito $\tau_i$ caratterizzato da:
-    - Fase $\Phi_i$, WCET $C_i$, periodo $T_i$, scadenza relativa $D_i \leq T_i$
+    - Fase $\Phi_i$, WCET $C_i$, periodo $T_i$, deadline relativa $D_i \leq T_i$
     - Priorità **nominale** (statica, fissa) $P_i$ (assegnata dal programmatore)
     - Priorità **dinamica** (attiva) $p_i \geq P_i$ (inizializzata a $P_i$)
 
-- **Set di $m$ risorse condivise** $\Psi = {R_1, \ldots, R_m}$
+- **Set di $m$ risorse condivise** $\Psi = \{R_1, \ldots, R_m\}$
     - Ciascuna risorsa $R_k$ protetta da un diverso **semaforo binario** $S_k$
     
 - **Assunzioni:**
@@ -1756,10 +1757,12 @@ Teorema (No dim)
         - Per aspettare l’inizio del prossimo periodo.
         - Su semafori bloccati.
     - Le sezioni critiche sono protette da semafori binari e ==correttamente annidate==.
-        - $z_{i,k}$: sezione critica del compito $\tau_i$ protetta dal semaforo binario $S_k$.
+        - $z_{i,k}$ := sezione critica del compito $\tau_i$ protetta dal semaforo binario $S_k$.
         - Per ogni coppia $z_{i,h}, z_{i,k}$, vale che $z_{i,h} \subset z_{i,k}$ o $z_{i,k} \subset z_{i,h}$ o $z_{i,h} \cap z_{i,k} = \emptyset$
 
 ---
+**Protocolli di accesso alle risorse: La formulazione del problema(2/2)**
+
 - **Obiettivo:** derivare il **tempo massimo di blocco** $B_i$ che un compito $\tau_i$ può sperimentare.
     
 - **Aspetti chiave del protocollo:**
@@ -1767,7 +1770,7 @@ Teorema (No dim)
     - **Regola di avanzamento:** decide come eseguire all'interno di una sezione critica.
     - **Regola di rilascio:** decide come ordinare le richieste pendenti dei compiti bloccati.
 ---
-### Protocollo di Ereditarietà delle Priorità (PIP) (Sha et al., 1990)
+**Protocollo di Ereditarietà delle Priorità (PIP) (Sha et al., 1990)**
 
 - **Regola di accesso**: un task $\tau_i$ viene bloccato all'entrata di una sezione critica $z_{i,k}$ se la risorsa $R_k$ è già posseduta da un task di priorità inferiore $\tau_j$.
 	- Il task $\tau_i$ si dice **bloccato** da $\tau_j$.
@@ -1777,102 +1780,148 @@ Teorema (No dim)
 - **Regola di avanzamento**: all'interno di una sezione critica associata alla risorsa $R_k$, un task esegue con la priorità più alta dei task bloccati su $R_k$.
     - $\tau_j$ **eredita** la priorità più alta dei compiti che blocca: 
 	    - $p_j=max⁡\{P_j,max⁡\{P_i∣τ_i$ bloccato su $R_k\}\}$
-    - Proprietà di **transitività**: se $\tau_3$ blocca $\tau_2$ e $\tau_2$ blocca $\tau_1$, allora $p_3 = P_1$.
+    - Proprietà di **transitività**: se $\tau_3$ blocca $\tau_2$ e $\tau_2$ blocca $\tau_1$, allora $p_3 = P_1$(anche se non ne condivide la risorsa!)
     
 - **Regola di rilascio**: quando $\tau_j$ esce dalla sezione critica associata alla risorsa $R_k$:
     - Il semaforo $S_k$ viene sbloccato.
     - Il task con priorità più alta bloccato su $S_k$ (se presente) viene risvegliato.
     - Se nessun altro task è bloccato da $\tau_j$, allora $p_j = P_j$; altrimenti $\tau_j$ eredita la priorità più alta dei task che blocca.
 ---
-#### Tipi di Blocco nel PIP
+**PIP: Tipi di Blocco**
 
 - **Blocco diretto**: si verifica quando un task ad alta priorità si blocca all'entrata della sezione critica di una risorsa già posseduta da un task a priorità inferiore.
     - È necessario per garantire la consistenza delle risorse condivise.
     
-- **Push-through blocking**: si verifica quando un task a priorità media è bloccato da un task a bassa priorità che ha ereditato una priorità più alta da un compito.
+- **Push-through blocking**: si verifica quando un task a priorità media è bloccato da un task a bassa priorità che ha ereditato una priorità più alta da un task.
     - È necessario per evitare inversione di priorità.
     
 - Presi ad esempio $\tau_1$, $\tau_2$ ,$\tau_3$ con $P_1 > P_2 > P_3$ e $\tau_1$ e $\tau_3$ condividono la risorsa $R$
+
 ![[Pasted image 20241013220530.png]]
+
 ---
-- 3 task $\tau_1$, $\tau_2$ ,$\tau_3$: $\tau_1$ e $\tau_3$ condividono la risorsa $R_a$ ;$\tau_2$ e $\tau_3$ condividono la risorsa $R_b$
+**PIP: Sezioni critiche annidate**
+
+- 3 task $\tau_1$, $\tau_2$ ,$\tau_3$:
+	- $\tau_1$ e $\tau_3$ condividono la risorsa $R_a$ 
+	- $\tau_2$ e $\tau_3$ condividono la risorsa $R_b$
+
 ![[Pasted image 20241013220705.png]]
 
 ---
-- 3 task $\tau_1$, $\tau_2$ ,$\tau_3$: $\tau_1$ e $\tau_3$ condividono la risorsa $R_a$ ;$\tau_2$ e $\tau_3$ condividono la risorsa $R_b$
+**PIP: Eredità transitoria della priorità** (Transient priority inheritance)
+
+- 3 task $\tau_1$, $\tau_2$ ,$\tau_3$: 
+	- $\tau_1$ e $\tau_2$ condividono la risorsa $R_a$ 
+	- $\tau_2$ e $\tau_3$ condividono la risorsa $R_b$
+
 ![[Pasted image 20241013220857.png]]
-- Al tempo $t_4$, il task $\tau_3$ eredita la priorità del task $\tau_1$ tramite il task $\tau_2$
+
+- Al tempo $t_4$, il task $\tau_3$ eredita la priorità del task $\tau_1$ tramite il task $\tau_2$, perchè tiene la risorsa $R_b$ sulla quale $\tau_2$ è bloccata
 ---
-#### Proprietà PIP
-##### PIP: Proprietà (1/5)
+**PIP: Proprietà (1/5)**
 
-**Quando si verifica il blocco?**
-- **Lemma 1**: Un semaforo $S_k$ può causare un push-through block a un task $\tau_i$ solo se $S_k$ è stato acquisito da un task con priorità inferiore a $P_i$ e da un task con priorità superiore a $P_i$.
+- **Quando si verifica il blocco?**
 
-- **Dimostrazione**: Assumiamo per assurdo che $S_k$ sia utilizzato da un compito $\tau_l$ con priorità inferiore a $P_i$, ma non da un compito con priorità superiore a $P_i$. In tal caso, $\tau_l$ non può ereditare una priorità superiore a $P_i$ e quindi $\tau_i$ farà prelazione su $\tau_l$.
+- **Lemma 1**: 
+	Un semaforo $S_k$ può causare un push-through blocking a un task $\tau_i$ solo se $S_k$ è stato acquisito da un task con priorità inferiore a $P_i$ e (richiesto) da un task con priorità superiore a $P_i$.
+
+- **Dimostrazione**:
+	Assumiamo per assurdo che $S_k$ sia utilizzato da un compito $\tau_l$ con priorità inferiore a $P_i$, ma non da un compito con priorità superiore a $P_i$. In tal caso, $\tau_l$ non può ereditare una priorità superiore a $P_i$ e quindi $\tau_i$ farà prelazione su $\tau_l$.
 
 --- 
-##### PIP: Proprietà (2/5)
+**PIP: Proprietà (2/5)**
 
- **Quando si verifica l’ereditarietà transitoria della priorità?
-- **Lemma 2**: L'ereditarietà transitoria della priorità può verificarsi solo nel caso di sezioni critiche annidate.
+ - **Quando si verifica l’ereditarietà transitoria della priorità?
+ 
+- **Lemma 2**: 
+	L'eredità transitoria della priorità può verificarsi solo nel caso di sezioni critiche annidate.
 
-- **Dimostrazione**: L'ereditarietà transitoria si verifica quando un task ad alta priorità $\tau_h$ è bloccato da un task di priorità media $\tau_m$, che a sua volta è bloccato da un task di bassa priorità $\tau_l$. 
-  => $\tau_m$ detiene un semaforo $S_a$ (dato che blocca $\tau_h$) e $\tau_l$ detiene un altro semaforo $S_b$ (dato che blocca $\tau_m$) 
-  => $\tau_m$ ha tentato di bloccare $S_b$ all'interno della sezione critica protetta da $S_a$, quindi le due sezioni critiche sono annidate.
-
----
-##### PIP: Proprietà (3/5)
-
-**Quante volte può essere bloccato un task?**
-- **Lemma 3**: Se ci sono $l_i$ task a priorità inferiore che possono bloccare un task $\tau_i$, 
-	=> allora $\tau_i$ può essere bloccato per **al massimo** la durata di $l_i$ sezioni critiche (una per ciascun task a priorità inferiore, indipendentemente dal numero di semafori utilizzati da $\tau_i$).
-
-- **Dimostrazione**: $\tau_i$ può essere bloccato da un compito di priorità inferiore $\tau_j$ solo se $\tau_i$ ha prelazionato $\tau_j$ all'interno di una sezione critica $z_{j,k}$ che può bloccare $\tau_i$. 
-	=> Una volta che $\tau_j$ esce da $z_{j,k}$, => $\tau_i$ non può essere bloccato di nuovo da $\tau_j$. Pertanto, $\tau_i$ può essere bloccato al massimo $l_i$ volte.
+- **Dimostrazione**: 
+	L'eredità transitoria si verifica quando un task ad alta priorità $\tau_h$ è bloccato da un task di priorità media $\tau_m$, che a sua volta è bloccato da un task di bassa priorità $\tau_l$. 
+	  => $\tau_m$ detiene un semaforo $S_a$ (dato che blocca $\tau_h$) e $\tau_l$ detiene un altro semaforo $S_b$ (dato che blocca $\tau_m$) 
+	  => $\tau_m$ ha tentato di bloccare $S_b$ all'interno della sezione critica protetta da $S_a$, quindi le due sezioni critiche sono annidate.
 
 ---
-##### PIP: Proprietà (4/5)
-
- **Quante volte può essere bloccato un task?**
-- **Lemma 4**: Se ci sono $s_i$ semafori distinti che possono bloccare un task $\tau_i$
-	=> allora $\tau_i$ può essere bloccato per al massimo la durata di $s_i$ sezioni critiche (una per ciascun semaforo, indipendentemente dal numero di sezioni critiche utilizzate da $\tau_i$).
-
-- **Dimostrazione**: I semafori sono binari, quindi solo ==uno dei task a priorità inferiore==  $\tau_j$ può trovarsi in una sezione critica di blocco. Una volta che $\tau_j$ esce dalla sezione critica, $\tau_i$ non può essere bloccato di nuovo da $\tau_j$. 
-  Pertanto, $\tau_i$ può essere bloccato al massimo $s_i$ volte.
----
-##### PIP: Proprietà (5/5)
+**PIP: Proprietà (3/5)**
 
 - **Quante volte può essere bloccato un task?**
-    - **Teorema 1**: Sotto il Protocollo di Ereditarietà delle Priorità (PIP), un compito $\tau_i$ può essere bloccato per al massimo la durata di $\alpha_i = \min\{l_i, s_i\}$ sezioni critiche, dove:
+
+- **Lemma 3**:
+	Se ci sono $l_i$ task a priorità inferiore che possono bloccare un task $\tau_i$, 
+	=> allora $\tau_i$ può essere bloccato per **al massimo** la durata di $l_i$ sezioni critiche (una per ciascun task a priorità inferiore, indipendentemente dal numero di semafori utilizzati da $\tau_i$).
+
+- **Dimostrazione**: 
+	$\tau_i$ può essere bloccato da un task di priorità inferiore $\tau_j$ solo se $\tau_i$ ha prelazionato $\tau_j$ all'interno di una sezione critica $z_{j,k}$ che può bloccare $\tau_i$. 
+	=> $\tau_j$ può essere prelazionato da $\tau_i$ una volta che  $\tau_j$ esce da $z_{j,k}$,
+	=> $\tau_i$ non può essere bloccato di nuovo da $\tau_j$.
+	=> Pertanto, $\tau_i$ può essere bloccato al massimo $l_i$ volte.
+
+---
+**PIP: Proprietà (4/5)**
+
+ - **Quante volte può essere bloccato un task?**
+ 
+- **Lemma 4**: 
+	Se ci sono $s_i$ semafori distinti che possono bloccare un task $\tau_i$
+	=> allora $\tau_i$ può essere bloccato per al massimo la durata di $s_i$ sezioni critiche (una per ciascun semaforo, indipendentemente dal numero di sezioni critiche utilizzate da $\tau_i$).
+
+- **Dimostrazione**:
+	I semafori sono binari 
+	=> Solo ==uno dei task a priorità inferiore==  $\tau_j$ può trovarsi in una sezione critica bloccante.
+	=> Una volta che $\tau_j$ esce dalla sezione critica, $\tau_i$ non può essere bloccato di nuovo da $\tau_j$. 
+	=>  Pertanto, $\tau_i$ può essere bloccato al massimo $s_i$ volte.
+	
+---
+**PIP: Proprietà (5/5)**
+
+- **Quante volte può essere bloccato un task?**
+
+- **Teorema 1**: Sotto il Protocollo di Ereditarietà delle Priorità (PIP), un compito $\tau_i$ può essere bloccato per al massimo la durata di $\alpha_i = \min\{l_i, s_i\}$ sezioni critiche, dove:
         - $l_i$ è il numero di compiti a priorità inferiore che possono bloccare $\tau_i$.
         - $s_i$ è il numero di semafori che possono bloccare $\tau_i$.
-    - **Dimostrazione**: La tesi segue direttamente dai Lemmi 3 e 4.
 
-- Non riusciamo a predirre bound stretti sui tempi di blocco tramite questo teorema.
-##### Protocollo di Ereditarietà delle Priorità (PIP): Riepilogo
+- **Dimostrazione**: La tesi segue direttamente dai Lemmi 3 e 4.
+
+- Non riusciamo a predire bound stretti sui tempi di blocco tramite questo teorema.
+
+---
+**Protocollo di Ereditarietà delle Priorità (PIP): Riepilogo(1/2)**
 
 - **Vantaggi:**    
     - Basso pessimismo (un compito viene bloccato ==solo quando necessario==).
     - Trasparenza per il programmatore.
     - Tempo di blocco limitato (al massimo la durata delle sezioni critiche $\alpha_i$).
     
-- **Svantaggi:**
+- **Svantaggi(1/2):**
     - Il calcolo dei tempi di blocco è complesso (a causa di blocchi diretti, blocchi push-through, ereditarietà prioritaria transitiva).
+	    => Non abbiamo un numero preciso ma solo una stima
     - Implementazione complicata (richiede modifiche alle strutture dati del kernel).
     - Suscettibile a **blocchi concatenati** (ogni compito $\tau_i$ bloccato $\alpha_i$ volte nel peggiore dei casi).
-    - Non previene da casi di **deadlocks** causati da un uso errato dei semafori![[Pasted image 20241014084028.png]]
----
-### Protocollo Priority Ceiling  (PCP)
 
-- Il **priorità ceiling** $C(S_k)$ di un semaforo $S_k$ è la priorità massima tra quelle dei task che possono bloccare $S_k$, cioè $C(S_k) := \max_{i \in \{1, \ldots, n\}} \{P_i \mid \tau_i \text\{ utilizza \} S_k\}$.
+		![[Pasted image 20250324181219.png]]
+---
+
+**Protocollo di Ereditarietà delle Priorità (PIP): Riepilogo(2/2)**
+
+- **Svantaggi(2/2)**
+	- Non previene da casi di **deadlocks** causati da un uso errato dei semafori
+	    ![[Pasted image 20241014084028.png]]
+	    
+---
+**Protocollo Priority Ceiling  (PCP) (1/2)** 
+
+- La **priorità ceiling** $C(S_k)$ di un semaforo $S_k$ è la priorità massima tra quelle dei task che possono bloccare $S_k$, cioè $C(S_k) := \max_{i \in \{1, \ldots, n\}} \{P_i \mid \tau_i \text\{ utilizza \} S_k\}$.
     
 - **Regola di accesso:** Un compito $\tau_i$ si blocca all'entrata di una sezione critica se la sua priorità non è superiore al massimo ceiling dei semafori bloccati da altri compiti, cioè $P_i \leq \max\{C(S_k) \mid S_k \text\{$ bloccato da compiti$\} \neq \tau_i\}$.
 	- **Test di accesso per il PCP** per garantire una richiesta di blocco su un semaforo libero
 	- Un task non può entrare in una sezione critica bloccata da un semaforo libero se sono presenti semafori bloccati che lo possono bloccare => una volta che un task entra nella sua sezione critica, non può essere bloccato da un task a bassa priorità fino al suo completamento
 
-- La regola di avanzamento e di rilascio è la stessa di PIP (ripetuta sotto)
+- La regola di **avanzamento** e di **rilascio** è la stessa di PIP
+
 ---
+**Protocollo Priority Ceiling  (PCP) (2/2)** 
+
 **Regola di avanzamento**: all'interno di una sezione critica associata alla risorsa $R_k$, un task esegue con la priorità più alta dei task bloccati su $R_k$.
     - $\tau_j$ **eredita** la priorità più alta dei compiti che blocca: 
 	    - $p_j=max⁡\{P_j,max⁡\{P_i∣τ_i$ bloccato su $R_k\}\}$
@@ -1886,52 +1935,65 @@ Teorema (No dim)
 ---
 #### (PCP): Ceiling blocking
 
-- Il *Ceiling blocking* si verifica quando un task viene bloccato poiché non passa il test di accesso del PCP, cioè $P_i \leq \max\{C(S_k) \mid S_k \text\{$ bloccato da compiti $\} \neq \tau_i\}$.
+- Il *Ceiling blocking* si verifica quando un task viene bloccato poiché non passa il test di accesso del PCP, cioè 
+	- $P_i \leq \max\{C(S_k) \mid S_k \text\{$ bloccato da compiti $\} \neq \tau_i\}$.
 	- Necessario per evitare deadlock e blocchi concatenati.
 
-- L'esempio è come al solito di 3 task $\tau_1$, $\tau_2$ ,$\tau_3$: $\tau_1$ usa la risorsa $R_a$ e $R_b$ ;$\tau_2$ usa la risorsa $R_c$ e  $\tau_3$ usa la risorsa $R_b$ e $R_c$
+- L'esempio è come al solito di 3 task $\tau_1$, $\tau_2$ ,$\tau_3$: 
+	- $\tau_1$ usa la risorsa $R_a$ e $R_b$ 
+	- $\tau_2$ usa la risorsa $R_c$ 
+	- $\tau_3$ usa la risorsa $R_b$ e $R_c$
+
 ![[Pasted image 20241014225850.png]]
----
-#### Proprietà del PCP
-##### Lemma 1
-Se un task $\tau_k$ subisce preemption nella sua sezione critica da un task $\tau_i$ che entra nella sezione critica $z_{i,b} => \tau_k$ non può ereditare una priorità maggiore di $\tau_i$ fino a che $\tau_i$ finisce
-
-**Dimostrazione**: 
-- Se $\tau_k$ eredita una priorità maggiore di $\tau_i$ prima che $\tau_i$ completi => esisterà un task $\tau_h$ bloccato da $\tau_k \mid P_h \geq P_i$
-- Se $\tau_i$ entra nella sua sezione critica => $P_i > C^*$ dove $C^*$ è per definizione il max ceiling dei semafori bloccati da task a priorità minore.
-- Dunque, $P_h \geq P_i > C^*$ => $\tau_h$ non può essere bloccato da $\tau_k$ che è una contraddizione.
----
-##### Lemma 2
-Il Protocollo Priority ceiling previene i blocchi transitivi
-
-**Dimostrazione**:
-Se accade un blocco transitivo => esistono dei task $\tau_1, \tau_2, \tau_3 \mid P_1 > P_2 > P_3$ dove $\tau_1$ è bloccato da $\tau_2$, mentre $\tau_2$ è bloccato da $\tau_3$ 
-=> $\tau_3$ dunque erediterà la priorità di $\tau_1$ => che contraddice il Lemma 1
 
 ---
-##### Teorema 1:
-Il PCP previene i deadlock.
+**Proprietà del PCP(1/4)**
 
- **Dimostrazione**: 
- Se si verifica un deadlock $\Rightarrow$ esistono task $\tau_1, \tau_2, \ldots, \tau_n$ con $P_1 > P_2 > \ldots > P_n$, dove $\tau_1$ è bloccato da $\tau_2$, $\tau_2$ è bloccato da $\tau_3$ e così via $\Rightarrow$ $\tau_n$ erediterà la priorità di $\tau_1$, contraddicendo il Lemma 1.
+ - **Lemma 1**
+	Se un task $\tau_k$ subisce preemption nella sua sezione critica da un task $\tau_i$ che entra nella sezione critica $z_{i,b}$ => $\tau_k$ non può ereditare una priorità maggiore di $\tau_i$ fino a che $\tau_i$ finisce
+
+- **Dimostrazione**: 
+	- Se $\tau_k$ eredita una priorità maggiore di $\tau_i$ prima che $\tau_i$ completi => esisterà un task $\tau_h$ bloccato da $\tau_k \mid P_h \geq P_i$
+	- Se $\tau_i$ entra nella sua sezione critica => $P_i > C^*$ dove $C^*$ è per definizione il max ceiling dei semafori bloccati da task a priorità minore.
+	- Dunque, $P_h \geq P_i > C^*$ => $\tau_h$ non può essere bloccato da $\tau_k$ che è una contraddizione. 
+---
+**Proprietà del PCP(2/4)**
+
+- **Lemma 2**
+	Il Protocollo Priority ceiling previene i blocchi transitivi
+
+- **Dimostrazione**:
+	Se accade un blocco transitivo => esistono dei task $\tau_1, \tau_2, \tau_3 \mid P_1 > P_2 > P_3$ dove $\tau_1$ è bloccato da $\tau_2$, mentre $\tau_2$ è bloccato da $\tau_3$ 
+	=> $\tau_3$ dunque erediterà la priorità di $\tau_1$ => che contraddice il Lemma 1
 
 ---
-##### Teorema 2:
-Un task sotto PCP può essere bloccato per al massimo la durata di una singola sezione critica.
+**Proprietà del PCP(3/4)**
+
+- **Teorema 1**:
+	Il PCP previene i deadlock.
+
+- **Dimostrazione**: 
+	 Se si verifica un deadlock $\Rightarrow$ esistono task $\tau_1, \tau_2, \ldots, \tau_n$ con $P_1 > P_2 > \ldots > P_n$, dove $\tau_1$ è bloccato da $\tau_2$, $\tau_2$ è bloccato da $\tau_3$ e così via $\Rightarrow$ $\tau_n$ erediterà la priorità di $\tau_1$, contraddicendo il Lemma 1.
+
+---
+**Proprietà del PCP(4/4)**
+
+- Teorema 2:
+	Un task sotto PCP può essere bloccato per al massimo la durata di una singola sezione critica.
     
-**Dimostrazione**: 
-- Sia $\tau_i$ un task bloccato da $\tau_1$ e da $\tau_2$ con $P_i > P_1 > P_2$
-- Supponiamo $\tau_2$ entra per primo nella sua sezione critica bloccante
-- Sia $C_2^*$ il massimo ceiling fra i semafori bloccati da $\tau_2$
-- Se $\tau_1$ entra nella sua sezione critica $P_1 > C_2^*$
-- Ma se $\tau_i$ può essere bloccato da $\tau_2$ => $P_i \leq C_2^*$
-- Quindi $P_i \leq C_2^* < P_1$ che contraddice la prima assunzione.
+- **Dimostrazione**: 
+	- Sia $\tau_i$ un task bloccato da $\tau_1$ e da $\tau_2$ con $P_i > P_1 > P_2$
+	- Supponiamo $\tau_2$ entra per primo nella sua sezione critica bloccante
+	- Sia $C_2^*$ il massimo ceiling fra i semafori bloccati da $\tau_2$
+	- Se $\tau_1$ entra nella sua sezione critica $P_1 > C_2^*$
+	- Ma se $\tau_i$ può essere bloccato da $\tau_2$ => $P_i \leq C_2^*$
+	- Quindi $P_i \leq C_2^* < P_1$ che contraddice la prima assunzione.
 
 - Il massimo tempo di blocco per ogni task è derivato in base al Teorema 2 
 
 ---
+**Riepilogo del PCP**
 
-#### Riepilogo del PCP
 - **Vantaggi:**
     - Limita il blocco alla durata di una sezione critica.
     - Previene deadlock e blocchi transitivi.
@@ -1942,37 +2004,57 @@ Un task sotto PCP può essere bloccato per al massimo la durata di una singola s
     - Non trasparente per il programmatore (i ceiling devono essere specificati nel codice sorgente).
 
 ---
-### Analisi di Schedulabilità per Task Periodici con Risorse Condivise
+**Analisi di Schedulabilità per Task Periodici con Risorse Condivise**
 
 - **Blocchi senza limite** $\Rightarrow$ Task set non schedulabile.
+
 - **Blocchi limitati** $\Rightarrow$ Estendere i test di schedulabilità per task indipendenti.
 	- Garantisco un task alla volta
 	- Prelazione da task con più alta priorità e blocco da task con bassa priorità
-	- Le condizioni di blocco derivate nel caso peggiore che differisce per ogni task e non possono accadere simultaneamente => I test sono **solo sufficienti**
+	- Le condizioni di blocco derivate nel caso peggiore che differisce per ogni task e non possono accadere simultaneamente 
+		=> I test sono **solo sufficienti**
+
 ---
+**Test di scheduling estesi(1/3)**
 
-#### Test di scheduling estesi
-
-- Analisi in base all'uso 
-	- Test LL (Liu & Layland) per RM: Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco  e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per RM se 	![[Pasted image 20241016080141.png]]
+- **Analisi in base all'uso** 
+	- **Test LL (Liu & Layland) per RM**:
+		Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per RM se 
+		- $\sum_{k|_{P_k > P_i}} \frac{C_k}{T_k} + \frac{C_i+B_i}{T_i} \leq i(2^{\frac{1}{i}} -1)$
 		
-	- Test HB (Hyperbolic bound) per RM: Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco  e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per RM se ![[Pasted image 20241016080305.png]]
+	- **Test HB (Hyperbolic bound) per RM:** 
+		Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per RM se 
+		- $\prod_{k|_{P_k > P_i}} (\frac{C_k}{T_k} +1) (\frac{C_i+B_i}{T_i}+1) \leq 2$
 
-	- Test LL per EDF: Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco  e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per EDF se 
-	 ![[Pasted image 20241016080531.png]]
+	- Test LL per EDF: Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per EDF se 
+		- $\sum_{k|_{P_k > P_i}} \frac{C_k}{T_k} + \frac{C_i+B_i}{T_i} \leq 1$
+	 
 ---
-	- Response time analysis
-		- Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco  e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per DM(Deadline Monotonic) se ![[Pasted image 20241016080901.png]]
-		- La soluzione iterativa per calcolare $R_i$ ![[Pasted image 20241016081127.png]]
+**Test di scheduling estesi(2/3)**
+	
+- **Response time analysis**
+	- Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco  e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per **DM(Deadline Monotonic)** se 
+		- $R_i = C_i + B_i+ \sum_{k|_{P_k > P_i}} \lceil \frac{R_i}{T_k} \rceil C_k \leq D$
+	
+	- La soluzione iterativa per calcolare $R_i$ 
+	 ![[Pasted image 20241016081127.png]]
 	
 ---
-	- Processor demand analysis 
-		- Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco  e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per EDF se $U < 1$ e $dbf(t) + B(t) \leq t$ $\forall t \in D$
+**Test di scheduling estesi(3/3)**
+	
+- **Processor demand analysis** 
+	- Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco  e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per EDF se :
+		- $U < 1$ 
+		- $dbf(t) + B(t) \leq t$ $\forall t \in D$
+	
+	- Dove:
 		- $dbf(t) = \sum_i ⌊ \frac{t + T_i - D_i}{T_i} C_i ⌋$
 		- $B(t) = max_{i,j \mid i \ne j} \{ \beta_{ij} \mid D_i > t ∧ D_j \leq t\}$ è chiamato **funzione di blocco**
 		- $\beta{ij}$ è il massimo tempo per il quale $t_i$ tiene una risorsa che è anche necessaria per $\tau_j$
 		- $D = \{d_i \mid d_i \leq max \{D_{max}, min \{H, t^*\}\}\}$, $D_max = max_i\{D_i\}$
 		- $H = lcm(T_1, ..., T_n)$, $t^* = \sum_i (T_i-D_i)U_i /(1-U)$
+
+---
 
 # Sistemi operativi Real-time
 ## Standard per RTOSs

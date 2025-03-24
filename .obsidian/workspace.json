@@ -4,12 +4,12 @@
     "type": "split",
     "children": [
       {
-        "id": "37a30ab98ccbe121",
+        "id": "5f49474bd3a044bd",
         "type": "tabs",
-        "dimension": 54.982206405693944,
+        "dimension": 58.362989323843415,
         "children": [
           {
-            "id": "197711d3d68cbccc",
+            "id": "9bd4012566dfc51d",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -25,12 +25,12 @@
         ]
       },
       {
-        "id": "5f49474bd3a044bd",
+        "id": "0c6bd528bfa3fa42",
         "type": "tabs",
-        "dimension": 45.01779359430605,
+        "dimension": 41.637010676156585,
         "children": [
           {
-            "id": "9bd4012566dfc51d",
+            "id": "8917daabab6dba20",
             "type": "leaf",
             "state": {
               "type": "pdf",
@@ -184,10 +184,17 @@
       "command-palette:Apri riquadro comandi": false
     }
   },
-  "active": "197711d3d68cbccc",
+  "active": "9bd4012566dfc51d",
   "lastOpenFiles": [
+    "Swees/Immagini Swees/Pasted image 20250324181219.png",
+    "Swees/Immagini Swees/Pasted image 20250324181159.png",
+    "Swees/Immagini Swees/Pasted image 20250323131919.png",
+    "Pasted image 20250324181219.png",
+    "Pasted image 20250324181159.png",
+    "Pasted image 20250323131919.png",
     "Swees/Slides/SWEES_realTimeSystems.pdf",
     "Swees/Swees - Traduzione slides.md",
+    "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
     "Pasted image 20250319220450.png",
     "Pasted image 20250319220407.png",
     "Pasted image 20250319215702.png",
@@ -196,13 +203,7 @@
     "Net Sec/README.md",
     "Opt/Traduzione Pdf Optimization.md",
     "Opt/notes_2024_lapucci_R3.pdf",
-    "Pasted image 20250318223804.png",
-    "Pasted image 20250318223621.png",
-    "Pasted image 20250318223244.png",
-    "Pasted image 20250318223203.png",
-    "Pasted image 20250317215830.png",
     "Senza nome.md",
-    "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
     "EXAI/Slides/01_Introduction.pdf",
     "EXAI/Slides/00_Administrivia.pdf",
     "QESM",
