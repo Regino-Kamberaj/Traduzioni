@@ -6,7 +6,7 @@
       {
         "id": "5f49474bd3a044bd",
         "type": "tabs",
-        "dimension": 58.362989323843415,
+        "dimension": 59.7864768683274,
         "children": [
           {
             "id": "9bd4012566dfc51d",
@@ -27,7 +27,7 @@
       {
         "id": "0c6bd528bfa3fa42",
         "type": "tabs",
-        "dimension": 41.637010676156585,
+        "dimension": 40.213523131672595,
         "children": [
           {
             "id": "8917daabab6dba20",
@@ -35,10 +35,10 @@
             "state": {
               "type": "pdf",
               "state": {
-                "file": "Swees/Slides/SWEES_realTimeSystems.pdf"
+                "file": "Swees/Slides/SWEES_advancedTopics.pdf"
               },
               "icon": "lucide-file-text",
-              "title": "SWEES_realTimeSystems"
+              "title": "SWEES_advancedTopics"
             }
           }
         ]
@@ -184,22 +184,23 @@
       "command-palette:Apri riquadro comandi": false
     }
   },
-  "active": "9bd4012566dfc51d",
+  "active": "8917daabab6dba20",
   "lastOpenFiles": [
+    "Swees/Swees - Traduzione slides.md",
+    "Swees/Immagini Swees/Pasted image 20250326081656.png",
+    "Swees/Immagini Swees/Pasted image 20250325081847.png",
+    "Swees/Slides/SWEES_advancedTopics.pdf",
+    "Swees/Slides/SWEES_realTimeOperatingSystems.pdf",
+    "Pasted image 20250326081656.png",
+    "Pasted image 20250325081847.png",
+    "Swees/Slides/SWEES_realTimeSystems.pdf",
     "Swees/Immagini Swees/Pasted image 20250324181219.png",
     "Swees/Immagini Swees/Pasted image 20250324181159.png",
     "Swees/Immagini Swees/Pasted image 20250323131919.png",
     "Pasted image 20250324181219.png",
     "Pasted image 20250324181159.png",
     "Pasted image 20250323131919.png",
-    "Swees/Slides/SWEES_realTimeSystems.pdf",
-    "Swees/Swees - Traduzione slides.md",
     "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
-    "Pasted image 20250319220450.png",
-    "Pasted image 20250319220407.png",
-    "Pasted image 20250319215702.png",
-    "Pasted image 20250319145804.png",
-    "Pasted image 20250319083830.png",
     "Net Sec/README.md",
     "Opt/Traduzione Pdf Optimization.md",
     "Opt/notes_2024_lapucci_R3.pdf",
@@ -209,12 +210,10 @@
     "QESM",
     "EXAI",
     "Swees/Slides/SWEES_introduction.pdf",
-    "Swees/Slides/SWEES_advancedTopics.pdf",
     "Senza nome 3.md",
     "Senza nome 2.md",
     "Opt/Tabella di Marcia Optimization.md",
     "appunti_studenti/notes_senoner_2024.pdf",
-    "appunti_studenti/notes_palchetti_2023.pdf",
     "Welcome.md",
     "Untitled 1.md",
     "Untitled.md",

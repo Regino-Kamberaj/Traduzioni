@@ -2057,61 +2057,85 @@ Teorema (No dim)
 ---
 
 # Sistemi operativi Real-time
-## Standard per RTOSs
-### **Sistemi operativi**: kernel e chiamate di sistema
+
+---
+**Outline**
+
+1. Standard per RTOSs
+2. VxWorks
+3. Introduzione alla programmazione RT: recap sul linguaggio c
+
+---
+## 1. Standard per RTOSs
+
+---
+**Sistemi operativi: kernel e chiamate di sistema**
 
 - Il kernel è il cuore del sistema operativo (OS).
-	  - È la parte del codice dell'OS sempre residente in memoria.
-	  - Funziona come interfaccia tra le applicazioni a livello utente e le risorse hardware.
+	- È la parte del codice dell'OS sempre residente in memoria.
+	- Funziona come interfaccia tra le applicazioni a livello utente e le risorse hardware.
+	  
 - Non deve essere confuso con il BIOS (Basic Input/Output System), il software di base del processore responsabile dell'avvio del sistema.
+
 - Fornisce le **chiamate di sistema** che permettono ai programmi a livello utente di accedere ai servizi dell'OS.
-	  - Esse costituiscono un'interfaccia di programmazione delle applicazioni (API) e rappresentano l'unico punto di ingresso nel kernel.
-			![[Pasted image 20241020231435.png]]
+	- Forniscono servizi dell'OS alle applicazioni a livello utente 
+	- Costituiscono un'interfaccia di programmazione delle applicazioni (API) 
+	- Rappresentano l'unico punto di ingresso nel kernel.
+   
+		![[Pasted image 20241020231435.png]]
+
 ---	
-### **Memoria**: spazio del kernel vs spazio utente
+**Memoria: spazio del kernel vs spazio utente**
 
 - **Spazio del kernel**: area di memoria dove è memorizzato ed eseguito il codice del kernel.
-	  - Il kernel ha accesso a tutta la memoria (sia spazio del kernel che spazio utente).
-	  - La modalità kernel è una modalità operativa privilegiata della CPU.
+	- Il kernel ha accesso a tutta la memoria (sia spazio del kernel che spazio utente).
+	- La modalità kernel è una modalità operativa privilegiata della CPU.
+
 - **Spazio utente**: area di memoria dove è memorizzato ed eseguito il codice a livello utente.
-	  - I programmi a livello utente hanno accesso solo allo spazio utente e possono accedere a una parte limitata del kernel tramite le chiamate di sistema.
-	  - Se un programma a livello utente invoca una chiamata di sistema, viene inviato un **interrupt** software al kernel, che esegue il gestore appropriato e restituisce il controllo al programma utente.
+	- I programmi a livello utente hanno accesso solo allo spazio utente.
+	- La modalità utente non è una modalità privilegiata dalla CPU per i programmi a livello utente e questi possono accedere a una parte limitata del kernel tramite le chiamate di sistema.
+	- Se un programma a livello utente invoca una chiamata di sistema, viene inviato un **interruzione software** al kernel, che esegue il gestore appropriato(in modalità kernel) e restituisce il controllo al programma utente.
+
+![[Pasted image 20250325081847.png]]
 
 ---
-### Sistemi operativi in tempo reale (RTOS)
+**Sistemi operativi in tempo reale (RTOS)**
 
 - **OS di uso generale (GPOS)**: un sistema operativo non adatto per applicazioni in tempo reale.
+
 - **Sistema operativo in tempo reale (RTOS)**: un OS adatto per applicazioni in tempo reale.
-	  - **Hard Real-time**: mancare una scadenza può avere effetti catastrofici sul sistema (gestisce task RT rigidi, con tempo di reazione dell'ordine di $1 \text{ms}$ o meno).
-	  - **Soft Real-time**: mancare una scadenza comporta una riduzione delle prestazioni (gestisce task RT morbidi, con tempo di reazione dell'ordine di $\leq 100 \text{ms}$ o meno).
+	- **Hard Real-time**: mancare una scadenza può avere effetti catastrofici sul sistema (gestisce task RT rigidi, con tempo di reazione dell'ordine di $1 \text{ms}$ o meno).
+	- **Soft Real-time**: mancare una scadenza comporta una riduzione delle prestazioni (gestisce task RT morbidi, con tempo di reazione dell'ordine di $\leq 100 \text{ms}$ o meno).
 
 - **Caratteristiche principali di un RTOS**
-  - **Predicibilità**
-  - Determinismo
-  - Alte prestazioni
-  - Funzionalità di sicurezza e protezione
-  - Pianificazione basata su priorità
-  - Ridotta impronta di memoria
+	- **Predicibilità**
+	- Determinismo
+	- Alte prestazioni
+	- Funzionalità di sicurezza e protezione
+	- Pianificazione basata su priorità
+	- Ridotta impronta di memoria
 
 ---
-### Standard per GPOS (General Purpose OS) e RTOS
+**Standard per GPOS (General Purpose OS) e RTOS**
 
 - Definiscono (sintassi e semantica delle) chiamate di sistema.
+
 - Forniscono **portabilità** delle applicazioni da una piattaforma all'altra.
-	- Promuovono la competizione tra fornitori di kernel, aumentando la qualità delle piattaforme.
-	- La portabilità è specificata a livello di codice sorgente, richiedendo la ricompilazione per ogni piattaforma.
+	- Promuovono la competizione tra fornitori di kernel => aumentando la qualità delle piattaforme.
+	- La portabilità è specificata a livello di codice sorgente => richiedendo la ricompilazione per ogni piattaforma.
 
 - **Principali standard per GPOS e RTOS**
-	  - POSIX
-	  - RT-POSIX
-	  - OSEK/VDX
-	  - ARINC-APEX
-	  - µITRON
+	- POSIX
+	- RT-POSIX
+	- OSEK/VDX
+	- ARINC-APEX
+	- µITRON
 
 ---
-### POSIX (Portable Operating System Interface per UniX)
+**POSIX (Portable Operating System Interface per UniX)**
 
 - Famiglia di standard intesi a garantire la portabilità delle applicazioni a livello di codice sorgente e mantenere la compatibilità tra diversi OS.
+
 - Sviluppato dal Portable Applications Standards Committee (PSSC) della IEEE Computer Society e formalmente indicato come IEEE Std 1003.
 	  - **IEEE Std 1003.1**: servizi di base
 	  - **IEEE Std 1003.1b**: estensioni per il tempo reale (pianificazione delle priorità, orologi e timer, semafori, ...).
@@ -2121,38 +2145,50 @@ Teorema (No dim)
 - Supporta vari livelli di **conformità** e il paradigma "**programmare per contratto**".
 
 ---
-### RT-POSIX
+**RT-POSIX**
 
 - Estensione real-time di POSIX, che consente la portabilità delle applicazioni in tempo reale.
+
 - Fornisce servizi per la **programmazione concorrente** e la **prevedibilità temporale**.
-	  - Sincronizzazione di mutua esclusione tramite eredità di priorità.
-	  - Code di messaggi prioritari per la comunicazione tra task.
-	  - Pianificazione preemptiva a priorità fissa.
+	- Sincronizzazione di mutua esclusione tramite eredità di priorità.
+	- Code di messaggi prioritari per la comunicazione tra task.
+	- Scheduling preemptive a priorità fissa.
 
 - Profili real-time definiti da POSIX.13:
-  - **PSE51**: per piccoli sistemi embedded, supporta i thread ma non i processi.
-  - **PSE52**: estende PSE51 con supporto per un file system semplificato.
-  - **PSE53**: per grandi sistemi embedded, con supporto per processi multipli con sistema di protezione.
-  - **PSE54**: per sistemi multiuso, supporta applicazioni composte da task real-time e non.
+  - **Minimal Real-Time System (PSE51)**: per piccoli sistemi embedded, supporta i thread ma non i processi.
+  - **Real-Time Controller (PSE52)**: estende PSE51 con supporto per un file system semplificato.
+  - **Dedicated Real-Time System profile (PSE53)**: per grandi sistemi embedded, con supporto per processi multipli con sistema di protezione.
+  - **Multi-Purpose Real-Time System profile (PSE54)**: per sistemi multiuso, supporta applicazioni composte da task real-time e non.
 
 ---
-### Altri standard
+**Altri standard**
 
 - **OSEK/VDX**: standard per software applicativo automobilistico.
-- **ARINC-APEX**: standard per software applicativo avionico, che descrive sistemi avionici e di cabina.
-- **µITRON**: famiglia di standard per software applicativo embedded. (massimizza portabilità mantenendo scalabilità)
+	- Sviluppato insieme da diverse industrie automobilistiche
+	-  È possibile la portabilità e la riusabilità di software di controllo distribuito nei veicoli.
+
+- **ARINC-APEX**: standard per software applicativo avionico
+	- Descrive sistemi avionici e di cabina, protocolli e interfacce usate in più di 10000 trasporti arei e arei di business in tutto il mondo.
+	- La memoria fisica è divisa in partizioni, ognuna allocata ad un applicazione e isolata temporalmente da altre partizioni.
+	- Comunicazione fra processi in diverse partizioni è fatta tramite messaggi che passano sopra porte logiche e canali fisici.
+
+- **µITRON**: famiglia di standard per software applicativo embedded.
+	- Massimizza portabilità mantenendo scalabilità (ad esempio migliorando la portabilità di gestori delle interruzioni limitando l'overhead)
 
 ---
-### Tipi di RTOS
+**Tipi di RTOS**
 
-- **RTOS commerciali**: VxWorks, QNX, Neutrino, OSE.
-- **RTOS basati su Linux**: RTLinux, RTAI.
-- **RTOS open-source e di ricerca**: SHARK, MaRTE, ERIKA.
+- **RTOS commerciali**: VxWorks, QNX, Neutrino, OSE, ...
+ 
+- **RTOS basati su Linux**: RTLinux, RTAI, ...
+
+- **RTOS open-source e di ricerca**: SHARK, MaRTE, ERIKA, ...
 
 ---
-## VxWorks
+## 2. VxWorks
 
-### **Caratteristiche principali di VxWorks**
+---
+**Caratteristiche principali di VxWorks**
 
 - Sviluppato da WindRiver (sede centrale a Alameda, CA, USA)
 - Supporto per 32/64 bit su Arm/Intel/MIPS/PowerPC
@@ -2165,36 +2201,41 @@ Teorema (No dim)
 - IDE basato su Eclipse, con supporto per host Windows/Linux
 
 ---
-### Esempi di applicazioni industriali che utilizzano VxWorks
+**Esempi di applicazioni industriali che utilizzano VxWorks**
+
 ![[Pasted image 20241020233243.png]]
 
 ---
-### Orologio e pianificazione
+**Clock e scheduling**
 
-- **L'orologio del kernel** determina la risoluzione delle azioni di pianificazione.
+- **L'orologio del kernel** determina la risoluzione delle azioni di scheduling.
 	- La frequenza predefinita dell'orologio del kernel è di $60 \text{Hz}$.
 	- La frequenza minima e massima del kernel dipende dall'hardware.
+
 - VxWorks supporta:
-	  - Pianificazione preemptiva basata su priorità
-	  - Pianificazione a turni (round-robin)
-	  - Fino a $256$ livelli di priorità
+	- Scheduling preemptive basato su priorità
+	- Scheduling a Round-Robin
+	- Fino a $256$ livelli di priorità
 
 ---
-### Comunicazione tra task
+**Comunicazione tra task**
 
 - VxWorks supporta:
-	  - Memoria condivisa tra task (simile ai thread)
-	  - Semafori binari e semafori contatori
-	  - Mutex (interfacce POSIX)
-	  - Code di messaggi e pipe (tubi?)
-	  - Socket e chiamate di procedura remota (RPC)
-	  - Segnali
+	- Memoria condivisa tra task (simile ai thread)
+	- Semafori binari e semafori contatori
+	- Mutex (interfacce POSIX)
+	- Code di messaggi e pipes (tubi?)
+	- Socket e chiamate di procedura remota (RPCs)
+	- Segnali
+
 - I semafori mutex supportano il Protocollo di Eredità delle Priorità (PIP)
 
 ---
-## Introduzione alla programmazione in tempo reale: ripasso del linguaggio C
+## 3. Introduzione alla programmazione in tempo reale: ripasso del linguaggio C
+(skip this)
 
-### **Il linguaggio di programmazione C**
+---
+**Il linguaggio di programmazione C**
 
 - Un programma in C specifica una computazione attraverso 3 costrutti:
   - Variabili
@@ -2202,8 +2243,7 @@ Teorema (No dim)
   - Istruzioni
 
 ---
-
-### 1/3: Variabili
+**1/3: Variabili**
 
 - Una **Variabile** contiene un **Valore** di un certo **Tipo**
   - Il valore varia durante la computazione
@@ -2217,8 +2257,7 @@ Teorema (No dim)
   - Riferimento
 
 ---
-
-### 2/3: Espressioni
+**2/3: Espressioni**
 
 - La **sintassi** di un'espressione combina costanti e riferimenti a variabili tramite operatori.
 - La **semantica** di un'espressione consiste in due elementi:
@@ -2226,36 +2265,60 @@ Teorema (No dim)
   - Un'espressione produce effetti collaterali sulle variabili
 
 ---
-
-### 2/3: Espressioni - Funzioni
+**2/3: Espressioni - Funzioni**
 
 - Le funzioni sono un tipo di espressione
   - Sintassi: sono una combinazione di un nome costante con valori restituiti da espressioni (i parametri effettivi) tramite un operatore (`(...)`).
   - Semantica: restituiscono un valore e producono effetti collaterali.
 
 ---
-
-### 3/3: Istruzioni
+**3/3: Istruzioni**
 
 - Un'istruzione specifica due aspetti:
   - Le espressioni da valutare
   - La prossima istruzione da eseguire, che può dipendere dai valori restituiti dalle espressioni
 
 ---
-
-### Sommario del linguaggio C
+**Sommario del linguaggio C - 1/3**
 
 - Una storia serializzata (un percorso ragionevole per apprendere il linguaggio)
-  - Tipi, valori e costanti
-  - Variabili
-  - Espressioni, effetti collaterali e valori restituiti
-  - Puntatori
-  - Array, allocazione statica o dinamica
-  - Funzioni
-  - Istruzioni
-  - Tipi strutturati
+	- Tipi, valori e costanti
+	- Variabili
+	- Espressioni, effetti collaterali e valori restituiti
+	- Puntatori
+	- Array, allocazione statica o dinamica
+	- Funzioni
+	- Istruzioni
+	- Tipi strutturati
 
 ---
+**Sommario del linguaggio C - 2/3**
+
+- La vera storia dietro
+	- Tipi e valori
+		- Tipi elementari
+		- Tipi definiti dall'utente(struct); definizione dei tipi
+	- Variabili
+		- Dichiarazione e referenziazione
+		- Puntatori; Arrays; allocazione statica o dinamica
+	- Espressioni
+		- Operatori; side-effects a valori ritornati
+		- Funzioni; tecnica di binding; definizioni; dichiarazioni e riferimento
+	- Istruzioni
+		- Struttura del programma
+
+---
+**Sommario del linguaggio C - 3/3**
+
+- Un meccanisco con 3 parti
+	- Variabili contengono valori (di qualche tipo)
+	- Espressioni ritornano un valore e producono side-effects su variabili
+	- Le istruzioni controllano il flow di esecuzione delle espressioni; valori ritornati da una espressione inficiano istruzioni
+
+![[Pasted image 20250326081656.png]]
+
+---
+
 # Temi avanzati sull'analisi della schedulabilità 
 
 **Indice**
@@ -2266,59 +2329,70 @@ Teorema (No dim)
 5. Utilizzo delle reti di Petri temporali preemptive nel ciclo di vita software V-Model
 6. Automi temporizzati
 ---
-## Introduzione
+## 1. Introduzione
 
+---
 **Approcci analitici vs metodi basati su spazio degli stati**
 
 - **Approcci analitici**
-	  - Presuppongono task con un Tempo di Esecuzione nel Peggior Caso (WCET) deterministico.
-	  - Forniscono risultati esatti per insiemi di task periodici e indipendenti.
-	  - Forniscono risultati pessimisti per insiemi di task che includono task sporadici e dipendenze inter-task (e.g., sincronizzazioni tramite semaforo, precedenze di flusso di dati).
-	  - Offrono test di schedulabilità efficienti.
+	- Presuppongono task con un Tempo di Esecuzione nel Peggior Caso (WCET) **deterministico**.
+	- Forniscono risultati esatti per insiemi di task periodici e indipendenti.
+	- Forniscono risultati pessimistici per insiemi di task che includono task sporadici e dipendenze inter-task (e.g., sincronizzazioni tramite semaforo, precedenze di flusso di dati).
+	- Offrono test di schedulabilità efficienti.
 
 - **Metodi basati su spazio degli stati**
-	  - Considerano parametri temporali che variano all'interno di un intervallo minimo-massimo.
-	  - Supportano la modellazione e l'analisi di una vasta classe di sistemi in tempo reale (e.g., insiemi di task in tempo reale, protocolli di comunicazione).
-	  - Forniscono risultati esatti per qualsiasi insieme di task che può essere modellato e analizzato.
-	  - Richiedono una complessità computazionale maggiore rispetto agli approcci analitici.
+	- Considerano parametri temporali che variano all'interno di un intervallo minimo-massimo.
+	- Supportano la modellazione e l'analisi di una vasta classe di sistemi real-time (e.g., insiemi di task real-time, protocolli di comunicazione, ...)
+	- Forniscono risultati esatti per qualsiasi insieme di task che può essere modellato e analizzato.
+	- Richiedono una **complessità computazionale maggiore** rispetto agli approcci analitici.
 
 ---
-## Reti di Petri
+## 2. Reti di Petri
 
+---
 **Sintassi delle Reti di Petri (1/2)**
 
 - Le Reti di Petri (PN) supportano la rappresentazione di sistemi **concorrenti**.
+
 - Una PN è una tupla $\langle P, T, A^-, A^+\rangle$ dove:
     - $P$ è l'insieme dei **posti** (cerchi), $T$ è l'insieme delle **transizioni** (barre), $P \cap T = \emptyset$
     - $A^- \subseteq P \times T$ è l'insieme delle **precondizioni** (archi diretti dai cerchi alle barre)
     - $A^+ \subseteq T \times P$ è l'insieme delle **postcondizioni** (archi diretti dalle barre ai cerchi)
-- Una PN è un grafo bipartito diretto dove:
+
+- Una PN è un grafo *bipartito* diretto dove:
     - l'insieme dei vertici è $P \cup T$
     - l'insieme degli archi è $A^- \cup A^+$
     
 		![[Pasted image 20241021164257.png]] 
+
 ---
 **Sintassi delle Reti di Petri (2/2)**
 
 - Un posto $p$ è detto un **posto di input** per una transizione $t$ se $(p,t) \in A^-$ (Ovvero se esiste un arco diretto da p a t)
 	- Ad esempio $p0$ è un posto di input per $t0$
+
 -  Un posto $p$ è detto un **posto di output** per una transizione $t$ se $(p,t) \in A^+$ (Ovvero se esiste un arco diretto da p a t)
 	- Ad esempio $p1$ è un posto di input per $t0$
 		
-		![[Pasted image 20241021164257.png]] 
 ---
 **Stato di una PN**
+
 - Una **marcatura** $m: P \rightarrow \mathbb{N}$ assegna un numero naturale di **token** a ciascun posto.
 	- I tokens non hanno identità
 	- Ad esempio $p0$ e $p1$ contengono un token ciascuno
-- Una transizione $t$ è **abilitata** da una marcatura $m$ se $m(p) > 0 \, \forall p \in P \mid (p, t) \in A^-$ (ovvero se e solo se $m$ assegna almeno un token a ogni posto di input di $t$)
-	- Le transizioni abilitate rappresentano **eventi concorrenti**
-	- Ad esempio $t0$ e $t2$ sono abilitati, $t1$ non è abilitato
-- Lo **stato** di una PN è una tupla(singleton) $s = \langle m \rangle$ dove $m$ è una marcatura.
+
+- Una transizione $t$ è **abilitata** da una marcatura $m$ se e solo se:
+	- $m(p) > 0 \, \forall p \in P \mid (p, t) \in A^-$ (ovvero se e solo se $m$ assegna almeno un token **a ogni posto di input** di $t$)
+		- Le transizioni abilitate rappresentano **eventi concorrenti**
+		- Ad esempio $t0$ e $t2$ sono abilitati, $t1$ non è abilitato
+
+- Lo **stato** di una PN è un singleton $s = \langle m \rangle$ dove $m$ è una marcatura.
 	- Una transizione è abilitata nello stato $s = \langle m \rangle$ se e solo se è abilitato da una marcatura $m$
 	- Una transizione abilitata eventualmente spara o è disabilitata
 	- Ad esempio lo stato corrente in questa PN è $s = \langle p0,p2 \rangle$
+
 		![[Pasted image 20241021170229.png]]
+
 ---
 **Semantica delle PN (1/2)**
 
@@ -2328,77 +2402,85 @@ Teorema (No dim)
   - $s_i = \langle m_i \rangle$ è lo stato raggiunto dopo lo sparo di $\gamma_i$.
   - $\gamma_i$ è selezionata tra le transizioni abilitate nello stato $s_{i-1} = \langle m_{i-1}\rangle$.
   - Dopo lo sparo di $\gamma_i$, la nuova marcatura $m_i$ è derivata da $m_{i-1}$ da
-	  1. Aver rimosso un token da ogni posto di input di $\gamma_i$ (ovvero $m_{tmp} = m_{i−1} (p) − 1 ∀ p | (p, γ_i ) ∈ A^− )$
-	  2. Aver aggiunto un toker ad ogni posto di output di $\gamma_i$ (ovvero $m_i = m{tmp}(p) +11 ∀ p | (γ_i,p ) ∈ A^+$)
+	  1. Aver rimosso un token da ogni posto di input di $\gamma_i$ (ovvero $m_{tmp} = m_{i−1} (p) − 1 \space ∀ \space p | (p, γ_i ) ∈ A^− )$
+	  2. Aver aggiunto un token ad ogni posto di output di $\gamma_i$ (ovvero $m_i = m_{tmp}(p) +1 \space ∀ \space p | (γ_i,p ) ∈ A^+$)
   - $\omega$ è un percorso finito o infinito
+
 - Ad esempio: $\langle p0 p2\rangle →^{t0} \langle p1 p2\rangle →^{t2} \langle p1 p3\rangle →^{t1} \langle p0 p2\rangle$ è una sequenza finita
-- 
-			![[Pasted image 20241021170229.png]]
+ 
+	 ![[Pasted image 20241021170229.png]]
+
 ---
 **Semantica delle PN (2/2)**
 
-- Esempio 1: Rete di Petri che ammette infinite esecuzioni
+- Esempio 1: Rete di Petri che ammette infinite esecuzioni (figura sopra)
 	- Ad esempio: $\langle p0 p2\rangle →^{t0} \langle p1 p2\rangle →^{t2} \langle p1 p3\rangle →^{t1} \langle p0 p2\rangle$ è una sequenza finita
-	- Ma la infinita ripetizione di $\omega$ è una esecuzione infinita
+	- Ma la infinita ripetizione di $\omega$ è una **esecuzione infinita**
 	
 - Esempio 2: Rete di Petri che non ammette infinite esecuzioni
 	- Ad esempio: $\langle p0 p2\rangle →^{t0} \langle p1 p2\rangle →^{t2} \langle p1 p3\rangle →^{t1} \langle\rangle$
 	- Ad esempio: $\langle p0 p2\rangle →^{t2} \langle p0 p3\rangle →^{t0} \langle p1 p3\rangle →^{t1} \langle\rangle$
 	
 		![[Pasted image 20241021202840.png]]
+
 ---
 **Grafo di raggiunbilità di un PN**
 
-- L'insieme $R(m_0)$ delle marcatura che può essere raggiunto dalla marcatura iniziale $m_0$ è il minimo insieme delle marcature tale che:
+- L'insieme $R(m_0)$ delle marcatura che può essere raggiunto dalla marcatura iniziale $m_0$ è il **minimo insieme delle marcature** tale che:
 	- $m_0 \in R(m_0)$
 	- se $m_0 \in R(m_0) ∧ \langle m \rangle →^t \langle m' \rangle$ con $t\in T$ allora $m' \in R(m_0)$
+
 - Se il **grafo di raggiungibilità** è un grafo diretto tale che:
 	- $R(m_0)$ è l'insieme di vertici
 	- L'insieme degli archi, include l'arco da $m_i$ a $m_j$ se e solo $\exists t \in T | \langle m_i \rangle →^t \langle m_j \rangle$ 
+
 - Un percorso nel grafo raggiungibile identifica un esecuzione del PN 
  ![[Pasted image 20241021220706.png]] 
 ---
 **Enumerazione del grafo di raggiungibilità**
 
 ![[Pasted image 20241021220804.png]]
-Ecco la traduzione delle formule con il simbolo `$`:
 
 ---
 **Il problema del produttore/consumatore (1/4)**
 
-• Definizione del problema  
-	• Un produttore produce oggetti e li inserisce in un buffer  
-	• Un consumatore consuma oggetti e li rimuove dal buffer  
-	• Il buffer può avere una capacità limitata  
-	• Produzione e consumo sono in mutua esclusione (requisito di **sicurezza**)  
-	• La produzione e il consumo si verificheranno eventualmente(requisito di **liveness**)   -> si intende che non ci può essere solo produzione o solo consumo
+• **Definizione del problema**  
+- Un produttore produce oggetti e li inserisce in un buffer  
+- Un consumatore consuma oggetti e li rimuove dal buffer  
+- Il buffer può avere una capacità limitata  
+- Produzione e consumo sono in mutua esclusione (requisito di **sicurezza**)  
+- La produzione e il consumo eventualmente si verificheranno (requisito di **liveness**)   -> si intende che non ci può essere solo produzione o solo consumo
 	   
-• Soluzione del problema  
-	• Utilizzare un semaforo binario per garantire la mutua esclusione  
+• **Soluzione del problema**  
+- Utilizzare un semaforo binario per garantire la mutua esclusione  
 
 ---
 **Il problema del produttore/consumatore (2/4)**
 
 • Invarianti di posto  
-	• $m(pWaiting) + m(pProducing) + m(pSignalling) = 1$ ∀ $m \in M$  
-	• $m(cWaiting) + m(cProducing) + m(cSignalling) = 1$ ∀ $m \in M$  
-	• $m(free) + m(busy) = 4$ ∀ $m \in M$ (4 è la **capacità del buffer**)  
-	
+-  $m(pWaiting) + m(pProducing) + m(pSignalling) = 1$ ∀ $m \in M$  
+- $m(cWaiting) + m(cProducing) + m(cSignalling) = 1$ ∀ $m \in M$  
+- $m(free) + m(busy) = 4$ ∀ $m \in M$ (4 è la **capacità del buffer**)  
+
 • Il modello garantisce la mutua esclusione (requisito di sicurezza soddisfatto)  
-• Il modello è però soggetto a **deadlock** (requisito di liveness non soddisfatto)  
-	• Nessuna transizione abilitata in un qualsiasi marcatura nel caso $m | m(pProducing) = 1 \land m(busy) = 4$  (4 tokens in busy e 1 in producing)
-	• Nessuna transizione abilitata in un qualsiasi marcatura nel caso $m | m(cConsuming) = 1 \land m(free) = 4$  (4 tokens in free e 1 in consuming)
+• Il modello è però soggetto a **deadlock** (requisito di *liveness* non soddisfatto)  
+- Nessuna transizione abilitata in un qualsiasi marcatura nel caso $m | m(pProducing) = 1 \land m(busy) = 4$  (4 tokens in busy e 1 in producing)
+- Nessuna transizione abilitata in un qualsiasi marcatura nel caso $m | m(cConsuming) = 1 \land m(free) = 4$  (4 tokens in free e 1 in consuming)
 	
 ![[Pasted image 20241021223042.png]]
 
 ---
 **Il problema del produttore/consumatore (3/4)**
 
-• Il modello garantisce la mutua esclusione (requisito di sicurezza soddisfatto)  
-• Il modello previene il deadlock (requisito di liveness soddisfatto)  
+• Il modello garantisce la mutua esclusione (requisito di sicurezza soddisfatto)
+	=> tramite mutex
+	
+• Il modello previene il deadlock (requisito di *liveness* soddisfatto)  
+
 • Il modello non può essere tradotto in codice real-time  
-	• Il numero di prodotti correnti potrebbe essere rappresentato da una variabile condivisa $sv$  
-	• Potrebbe verificarsi uno switch di contesto (a causa del semaforo occupato)  dopo che il produttore/consumatore ha letto la variabile e prima di modificarla  
+- Il numero di prodotti correnti potrebbe essere rappresentato da una variabile condivisa $sv$  
+- Potrebbe verificarsi uno switch di contesto (a causa del semaforo occupato) dopo che il produttore/consumatore ha letto la variabile e prima di modificarla  => può capitare che una volta che mi sono assicurato di poter produrre/consumare venga fatta l'operazione opposta a quella di controllo e quindi leggere un valore errato della variabile
+
 ![[Pasted image 20241021223215.png]]
 
 ---
@@ -2406,8 +2488,9 @@ Ecco la traduzione delle formule con il simbolo `$`:
 	
 • Il modello garantisce la mutua esclusione (requisito di sicurezza soddisfatto)  
 • Il modello previene il deadlock (requisito di liveness soddisfatto)  
+
 • Il modello può essere tradotto in codice real-time  
-	• La variabile condivisa è prima testata dal produttore/consumatore e poi modificata  
+	• La variabile condivisa è prima testata (gettone che viene subito restituito) dal produttore/consumatore e poi modificata  
 
 ![[Pasted image 20241021223528.png]]
 
@@ -2415,10 +2498,12 @@ Ecco la traduzione delle formule con il simbolo `$`:
 **Reti di Petri con archi inibitori (1/2)**
 
 • Le reti di Petri con archi inibitori hanno l'espressività della macchina di Turing (le reti di Petri no)  
+
 • Una rete di Petri con archi inibitori è una tupla $\langle P, T , A^- , A^+ , A^\bullet \rangle$ dove:  
-	• $P$, $T$, $A^-$, $A^+$ sono gli elementi di una rete di Petri  
-	• $A^\bullet \subseteq P \times T$ è l'insieme degli archi inibitori  (archi diretti con frecce a pallino da cerchi a barre)  
-• Un posto $p$ è detto un posto inibitore per una transizione $t$ se $(p, t) \in A^\bullet$  
+-  $P$, $T$, $A^-$, $A^+$ sono gli elementi di una rete di Petri  
+- $A^\bullet \subseteq P \times T$ è l'insieme degli **archi inibitori** (archi diretti con frecce a pallino da cerchi a barre)  
+
+• Un posto $p$ è detto un *posto inibitore* per una transizione $t$ se $(p, t) \in A^\bullet$  
 (i.e., se c'è un arco con pallino da $p$ a $t$)  
 	• es.: la *lettura* è un posto inibitore per la transizione *writeWait*  
 	• es.: la *scrittura* è un posto inibitore per la transizione *readWait*  
@@ -2426,58 +2511,59 @@ Ecco la traduzione delle formule con il simbolo `$`:
 ![[Pasted image 20241021223747.png]]
 
 ---
-
 **Reti di Petri con archi inibitori (2/2)** 
 
 • Una transizione $t$ è **abilitata** da una marcatura $m$ se e solo se:  
-	• $m(p) > 0$ ∀ $p \in P | (p, t) \in A^-$  (i.e., $m$ assegna almeno un token a ogni posto di input di $t$)  
-	• $m(p) = 0$ ∀ $p \in P | (p, t) \in A^\bullet$  (i.e., $m$ non assegna alcun token a ogni posto inibitore di $t$)  
+- $m(p) > 0$ ∀ $p \in P | (p, t) \in A^-$  (i.e., $m$ assegna almeno un token a ogni posto di input di $t$)  
+- $m(p) = 0$ ∀ $p \in P | (p, t) \in A^\bullet$  (i.e., $m$ non assegna alcun token a ogni posto inibitore di $t$) => condizione aggiunta
+	
 • Esempio: sincronizzazione lettura-scrittura  
-	• La transizione *readWait* non può avvenire se il posto *writing* contiene un token (i.e., un processo non è autorizzato a leggere se un altro processo sta scrivendo)  
-	• La transizione *writeWait* non può avvenire se il posto *reading* contiene un token  (i.e., un processo non è autorizzato a scrivere se un altro processo sta leggendo)  
+-  La transizione *readWait* non può avvenire se il posto *writing* contiene un token (i.e., un processo non è autorizzato a leggere se un altro processo sta scrivendo)  
+- La transizione *writeWait* non può avvenire se il posto *reading* contiene un token  (i.e., un processo non è autorizzato a scrivere se un altro processo sta leggendo)  
 
 ![[Pasted image 20241021223747.png]]
 
 ---
-
 **Reti di Petri con priorità (1/2)**
 
-• Le reti di Petri con priorità hanno l'espressività della macchina di Turing (le reti di Petri no)  
-• Una rete di Petri con priorità è una tupla $\langle P, T , A^- , A^+ , Z \rangle$ dove:  
-	• $P$, $T$, $A^-$, $A^+$ sono gli elementi di una rete di Petri  
-	• $Z : T \to N$ associa a ogni transizione una **priorità** (possibilmente annotata accanto alla barra che rappresenta la transizione)  
-	• Più basso è il numero di priorità, più alta è la priorità della transizione  
-• Esempio: $t_0$ ha un livello di priorità maggiore di $t_2$  
+• Le reti di Petri con priorità hanno l'espressività della macchina di Turing (le reti di Petri no)
 
+• Una rete di Petri con priorità è una tupla $\langle P, T , A^- , A^+ , Z \rangle$ dove:  
+- $P$, $T$, $A^-$, $A^+$ sono gli elementi di una rete di Petri  
+- $Z : T \to N$ associa a ogni transizione una **priorità** (possibilmente annotata accanto alla barra che rappresenta la transizione)  
+- Più basso è il numero di priorità, più alta è la priorità della transizione  
+
+ • Esempio: $t_0$ ha un livello di priorità maggiore di $t_2$  
+ 
 ![[Pasted image 20241021224221.png]]
 
 ---
-
 **Reti di Petri con priorità (2/2)**
 
 • Una transizione $t$ è **abilitata** da un marking $m$ se e solo se:  
 	• $m(p) > 0$ ∀ $p \in P | (p, t) \in A^-$ (i.e., $m$ assegna almeno un token a ogni posto di input di $t$)  
 	• ∀ $t' \in T | t \neq t'$, se $m(p) > 0$ ∀ $p \in P | (p, t') \in A^-$ allora $Z(t) < Z(t')$  (i.e., $t$ ha un livello di priorità maggiore rispetto a qualsiasi altra transizione con posti di input non vuoti)  
 	
-• Esempio: una singola transizione è abilitata in ogni marking raggiungibile  
+• Esempio: una singola transizione è abilitata in ogni marking raggiungibile
+
 ![[Pasted image 20241021224334.png]]
 
 ---
-
 **Reti di Petri con funzioni di abilitazione e aggiornamento (1/2)**  
 
 • Migliorano la comodità di modellazione rispetto alle reti di Petri con archi inibitori  
+
 • Non aumentano l'espressività del modello rispetto alle reti di Petri con archi inibitori
 
 • Una rete di Petri con funzioni di abilitazione e aggiornamento è una tupla $\langle P, T , A^- , A^+ , E , U \rangle$:  
-	• $P$, $T$, $A^-$, $A^+$ sono gli elementi di una rete di Petri  
-	• $E$ associa a ciascuna transizione $t \in T$ una **funzione di abilitazione**  
-	$E(t) : M \to \{true, false\}$, con $M$ l'insieme delle marcature raggiungibili  
-	• $U$ associa a ciascuna transizione $t \in T$ una **funzione di aggiornamento** $U(t) : M \to M$  
-	• $E(t)$ e $U(t)$ possono essere annotate accanto alla barra che rappresenta la transizione  
+- $P$, $T$, $A^-$, $A^+$ sono gli elementi di una rete di Petri  
+- $E$ associa a ciascuna transizione $t \in T$ una **funzione di abilitazione**   $E(t) : M \to \{true, false\}$, con $M$ l'insieme delle marcature raggiungibili  
+- $U$ associa a ciascuna transizione $t \in T$ una **funzione di aggiornamento** $U(t) : M \to M$  
+- $E(t)$ e $U(t)$ possono essere annotate accanto alla barra che rappresenta la transizione  
+
 • Esempio  
-	• $t_0$ ha una funzione di abilitazione che valuta a true se $p_0$ contiene un token  
-	• $t_1$ ha una funzione di aggiornamento che assegna a una marcatura $m$ un' altra marcatura $m_0$  ottenuto da $m$ assegnando un token al posto $p_0$  
+	• $t_0$ ha una *funzione di abilitazione* che valuta a true se $p_0$ contiene un token  
+	• $t_1$ ha una *funzione di aggiornamento* che assegna a una marcatura $m$ un' altra marcatura $m'$  ottenuto da $m$ assegnando un token al posto $p_0$  
 
 ![[Pasted image 20241021224824.png]]
 
@@ -2485,17 +2571,20 @@ Ecco la traduzione delle formule con il simbolo `$`:
 **Reti di Petri con funzioni di abilitazione e aggiornamento (2/2)**
 
 • Una transizione $t$ è **abilitata** da una marcatura $m$ se e solo se:  
-	• $m(p) > 0$ ∀ $p \in P | (p, t) \in A^-$ (i.e., $m$ assegna almeno un token a ogni posto di input di $t$)  
-	• $E(t)(m) = true$ (i.e., la funzione di abilitazione di $t$ valuta a true in $m$)  
+-  $m(p) > 0$ ∀ $p \in P | (p, t) \in A^-$ (i.e., $m$ assegna almeno un token a ogni posto di input di $t$)  
+- $E(t)(m) = true$ (i.e., la funzione di abilitazione di $t$ valuta a true in $m$)  
 	
 • Data una marcatura  $m_{i-1}$ e una transizione $\gamma_i$ abilitata da $m_{i-1}$,  la marcatura $m_i$ raggiunta dopo l'esecuzione di $\gamma_i$ è derivata da $m_{i-1}$ attraverso  
 1. la rimozione di un token da ogni posto di input di $\gamma_i$  (i.e., $m_{tmp} = m_{i-1}(p) - 1$ ∀ $p | (p, \gamma_i) \in A^-$)  
 2. l'aggiunta di un token a ogni posto di output di $\gamma_i$  (i.e., $m_{tmp2} = m_{tmp}(p) + 1$ ∀ $p | (\gamma_i, p) \in A^+$)  
 3. l'applicazione della funzione di aggiornamento di $\gamma_i$ (i.e., $m_i = U(\gamma_i)(m_{tmp2})$)  
 ![[Pasted image 20241021225203.png]]
+(notare sono stati tolti gli archi dove non necessario)
 
 ---
-## Reti di Petri Temporali
+## 3. Reti di Petri Temporali
+
+---
 
 **Sintassi delle Reti di Petri Temporali (TPN)**
 
