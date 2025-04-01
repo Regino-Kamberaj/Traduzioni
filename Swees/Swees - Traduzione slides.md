@@ -1,4 +1,4 @@
-# Introduzione al corso - Ingegneria del Software per Sistemi Embedded
+# 1. Introduzione al corso - Ingegneria del Software per Sistemi Embedded
 
 **Ingegneria del Software per Sistemi Embedded**  
 **Introduzione al corso**
@@ -516,7 +516,7 @@ Università di Firenze
 ---
 
 
-# Sistemi Real-time
+# 2. Sistemi Real-time
 
 ---
 **Outline**
@@ -2056,7 +2056,7 @@ Teorema (No dim)
 
 ---
 
-# Sistemi operativi Real-time
+# 3. Sistemi operativi Real-time
 
 ---
 **Outline**
@@ -2319,15 +2319,18 @@ Teorema (No dim)
 
 ---
 
-# Temi avanzati sull'analisi della schedulabilità 
+# 4. Temi avanzati sull'analisi della schedulabilità 
 
+---
 **Indice**
+
 1. Introduzione
 2. Reti di Petri
 3. Reti di Petri temporali
 4. Reti di Petri temporali preemptive
 5. Utilizzo delle reti di Petri temporali preemptive nel ciclo di vita software V-Model
 6. Automi temporizzati
+
 ---
 ## 1. Introduzione
 
@@ -2585,108 +2588,134 @@ Teorema (No dim)
 ## 3. Reti di Petri Temporali
 
 ---
-
 **Sintassi delle Reti di Petri Temporali (TPN)**
 
 - Le TPN (Time Petri Nets) estendono le PN (con archi inibitori) con il **tempo**.
+
 - Una TPN è una tupla $\langle P, T, A^-, A^+, A^{\bullet}, EFT, LFT \rangle$ dove:
 	- $P, T, A^-, A^+, A^{\bullet}$ sono gli elementi di una PN con archi inibitori
     - $EFT$ associa a ciascuna transizione $t$ un **tempo minimo di attivazione** $EFT(t) \in \mathbb{Q}_{\geq 0}$.
     - $LFT$ associa a ciascuna transizione $t$ un **tempo massimo di attivazione** $LFT(t) \in \mathbb{Q}_{\geq 0}$.
     - $EFT(t) \leq LFT(t)$ $\forall t \in T$
+
 - Ad esempio
 	- $t0$ ha il tempo minimo di attivazione uguale a 0 e il tempo massimo uguale a 1
 	- $t1$ ha il tempo minimo di attivazione uguale a 2 e il tempo massimo uguale a 3
-	- $t2$ ha il tempo minimo e massimo di attivazione uguale a zero![[Pasted image 20241022080721.png]]
+	- $t2$ ha il tempo minimo e massimo di attivazione uguale a zero
+	
+		![[Pasted image 20241022080721.png]]
 
 ---
 **Stato di una TPN**
 
-- Lo stato di una TPN è una coppia $\langle m, \tau \rangle$ dove:
-	  - $m$ è una marcatura (rappresenta la posizione logica del sistema).
-	  - $\tau$ associa a ciascuna transizione abilitata $t$ un **tempo di attivazione** $\tau(t) \in \mathbb{R}_{\geq 0}$.
-  - Ad esempio:
-	  - $t0$ può essere associato con il tempo di attivazione $\tau(t0) \in [0,1]$
-	  - $t2$ può essere associato con il tempo di attivazione $\tau(t2) \in [2,3]$
+- Lo **stato** di una TPN è una coppia $\langle m, \tau \rangle$ dove:
+	- $m$ è una *marcatura* (rappresenta la posizione logica del sistema).
+	- $\tau$ associa a ciascuna transizione abilitata $t$ un **tempo di attivazione** $\tau(t) \in \mathbb{R}_{\geq 0}$.
+
+- Ad esempio:
+	- $t0$ può essere associato con il tempo di attivazione $\tau(t0) \in [0,1]$
+	- $t2$ può essere associato con il tempo di attivazione $\tau(t2) \in [2,3]$
   
 - **Esempio**:  
   - $t_0$ può essere associata a un tempo di attivazione $\tau(t_0) \in [0, 1]$.
   - $t_1$ può essere associata a un tempo di attivazione $\tau(t_1) \in [2, 3]$.
-![[Pasted image 20241022080721.png]]
+	
+	![[Pasted image 20241022080721.png]]
+
 ---
  **Semantica delle TPN (1/5)**
 
 - Semantica **forte** dei vincoli temporali
-	  - Una transizione $t$ **non può essere attivata prima** che sia stata abilitata continuamente per un tempo $T_{min}$ non inferiore al suo tempo minimo di attivazione ($T_{min} \geq EFT(t)$).
-	  - Una transizione $t$ **deve essere attivata** quando è stata abilitata continuamente per un tempo $T_{max}$ pari al suo tempo massimo di attivazione ($T_{max} = LFT(t)$).
-- Una semantica debole dei vincoli temporali (non implementata dai TPNs)
-	- Indica che una transizione non attivata entro il suo tempo massimo di attivazione non sarà in grado di attivarsi fino a quando sarà abilitata nuovamente
+	- Una transizione $t$ **non può essere attivata prima** che sia stata abilitata continuamente per un tempo $T_{min}$ non inferiore al suo tempo **minimo** di attivazione ($T_{min} \geq EFT(t)$).
+	- Una transizione $t$ **non può evitare di essere attivata** quando è stata abilitata continuamente per un tempo $T_{max}$ pari al suo tempo massimo di attivazione ($T_{max} = LFT(t)$, ovvero il tempo non può avanzare prima che t spari oppure che sia disabilitato da un altro firing).
+	- Le attivazione delle transizioni accadono in tempo zero.
+
+- Una semantica **debole** dei vincoli temporali (non implementata dalle TPNs)
+	- Indica che una transizione non attivata entro il suo tempo **massimo** di attivazione non sarà in grado di attivarsi fino a quando sarà abilitata nuovamente
 
 ---
 **Semantica delle TPN (2/5)**
 
 - Come nelle PN con archi inibitori, una transizione $t$ è **abilitata** da una marcatura $m$ se:
-	  - $m(p) > 0 \, \forall p \in P \mid (p, t) \in A^-$. (ogni token nei posti di input di t)
-	  - $m(p) = 0 \, \forall p \in P \mid (p, t) \in A^{\bullet}$. (nessun token per ogni posto inibitore di t)
+	- $m(p) > 0 \, \forall p \in P \mid (p, t) \in A^-$. (ogni token nei posti di input di t)
+	- $m(p) = 0 \, \forall p \in P \mid (p, t) \in A^{\bullet}$. (nessun token per ogni posto inibitore di t)
 
 - Una transizione $t$ è **attivabile** in uno stato $s = \langle m, \tau \rangle$ se:
-	  - $t$ è abilitata da $m$.
-	  - $\tau(t) \leq \tau(t') \, \forall t' \in T$ abilitata da $m$. (ovvero il tempo di attivazione di t è non più grande del tempo di attivazione di qualsiasi altra transizione abilitata)
+	- $t$ è abilitata da $m$.
+	- $\tau(t) \leq \tau(t') \, \forall \space t' \in T$ abilitata da $m$. (ovvero il tempo di attivazione di t è non più grande del tempo di attivazione di qualsiasi altra transizione abilitata)
 
- - In qualsiasi possibile stato iniziale della TPN in esempio abbiamo:
+ - In qualsiasi possibile **stato iniziale** della TPN in esempio abbiamo:
 	 - $t0$ e $t2$ entrambi abilitati
 	 - $t0$ è attivabile mentre $t2$ non lo è
+
 	![[Pasted image 20241022080721.png]]
+
 ---
 **Semantica delle TPN (3/5)**
 
 - L'attivazione di una transizione $t$ sostituisce $s_0 = \langle m_0, \tau_0 \rangle$ con $s_1 = \langle m_1, \tau_1 \rangle$.
-	  - Come nelle PN, $m_1$ è derivata da $m_0$:
-	    1. Rimuovendo un token da ciascun posto di ingresso di $t$.
-	    2. Aggiungendo un token a ciascun posto di uscita di $t$.
+	- Come nelle PN, $m_1$ è derivata da $m_0$:
+		1. Rimuovendo un token da ciascun **posto di ingresso** di $t$. 
+			=> $m_{tmp} = m_0(p) -1 \, \forall \, p|(p,t) \in A^-$
+		2. Aggiungendo un token a ciascun **posto di uscita** di $t$. 
+			=> $m_1= m_{tmp}(p) +1 \, \forall \, p|(t,p) \in A^+$
 
 - Una transizione $t'$ abilitata da $m_1$ è chiamata:
 	- **Persistente** se abilitata da entrambe $m_0$ e $m_{tmp}$
-	- **Attivata nuovamente(?)** se non è abilitata da $m_0$ oppure da $m_{tmp}$ , oppure se è la transizione attivata t ed è stata abilitata da $m_1$
+	- **Newly enabled** se non è abilitata da $m_0$ oppure da $m_{tmp}$ , oppure se è la transizione attivata t, ma stata abilitata da $m_1$
+
 - Una transizione sarà **disabilitata** se è abilitata da $m_0$ ma non da $m_1$
+
 - $\tau_1$ è derivata da $\tau$:
-	- Riducendo il tempo di attivazione di ogni transizione persistente del valore di $\tau_0(t)$ (ovvero $\tau_1(t') = \tau_0(t') - \tau_0(t)$ $\forall t' \in T \mid t'$ sia persistente in $m_1$)
-	- Eliminando il tempo di attivazione di ogni transizione disabilitata dall'attivazione di t 
-	- Campionando il tempo di attivazione di ogni nuova transizione abilitata $t'$ nel suo intervallo di attivazione(ovvero $\tau_1(t') \in [EFT(t'), LFT(t')]$ $\forall t' \in T \mid t'$ sia una nuova transizione abilitata in $m_1$)
+	1. Riducendo il tempo di attivazione di ogni transizione **persistente** del valore di $\tau_0(t)$ 
+		=> $\tau_1(t') = \tau_0(t') - \tau_0(t)$ $\forall t' \in T \mid t'$ sia persistente in $m_1$
+	2. Eliminando il tempo di attivazione di ogni transizione **disabilitata** dall'attivazione di t 
+	3. Campionando il tempo di attivazione di ogni **nuova transizione abilitata** $t'$ nel suo intervallo di attivazione
+		=> $\tau_1(t') \in [EFT(t'), LFT(t')]$ $\forall t' \in T \mid t'$ sia una nuova transizione abilitata in $m_1$
+
 ---
 **Semantica delle TPN (4/5)**
 
 - Esempio TPN
 	- $t0$ è l'unica transizione attivabile nello stato iniziale con la marcatura $p0p2$
-	- L'attivazione di $t0$ in $\langle p0p2, \tau_0\rangle$ porta a $\langle p1p2, \tau_1\rangle$ con $\tau_1(t2) = \tau_0(t2) - \tau_0(t0)$ ![[Pasted image 20241022080721.png]]
+	- L'attivazione di $t0$ in $\langle p0p2, \tau_0\rangle$ porta a $\langle p1p2, \tau_1\rangle$ con 
+		=> $\tau_1(t2) = \tau_0(t2) - \tau_0(t0)$ ($t2$ transizione persistente)
+	
+	![[Pasted image 20241022080721.png]]
+	
 ---
 **Semantica delle TPN (5/5)**
 
 - Un'esecuzione di una TPN è un percorso $\omega = s_0 \xrightarrow{\gamma_1} s_1 \xrightarrow{\gamma_2} s_2 \xrightarrow{\gamma_3} \ldots$ tale che:
-	  - $s_0 = \langle m_0, \tau_0 \rangle$ è lo stato iniziale.
-	  - $\gamma_i$ è la $i$-esima transizione attivata.
-	  - $s_i = \langle m_i, \tau_i \rangle$ è lo stato raggiunto dopo l'attivazione di $\gamma_i$.
-	  - $\gamma_i$ è selezionata tra le transizioni abilitate nello stato $s_{i-1} = \langle m_{i-1}\rangle$.
-	  - Dopo lo sparo di $\gamma_i$, la nuova marcatura $m_i$ è derivata da $m_{i-1}$ da
-		  1. Aver rimosso un token da ogni posto di input di $\gamma_i$ (ovvero $m_{tmp} = m_{i−1} (p) − 1$  $∀ p | (p, γ_i ) ∈ A^− )$
-		  2. Aver aggiunto un token ad ogni posto di output di $\gamma_i$ (ovvero $m_i = m_{tmp}(p) +1$ $∀ p | (γ_i,p ) ∈ A^+$)
-	  - $\tau_i$ sarà derivata da $\tau_{i-1} da:
-		 1. Aver ridotto il tempo di ogni transizione **persistente** del valore di $\tau_{i-1}(\gamma_i)$ (ovvero $\tau_i(t') = \tau_{i-1}(t')-\tau_{i-1}(\gamma_i)$ $\forall t' \in T\mid t'$ è persistente in $m_1$)
-		 2. Eliminando il tempo di attivazione di ogni transizione **disabilitata** dall'attivazione di t 
-		 3. Campionando il tempo di attivazione di ogni **nuova transizione abilitata** $t'$ nel suo intervallo di attivazione (ovvero $\tau_1(t') \in [EFT(t'), LFT(t')]$ $\forall t' \in T \mid t'$ sia una nuova transizione abilitata in $m_1$)
-	  - $\omega$ è un percorso finito o infinito
+	- $s_0 = \langle m_0, \tau_0 \rangle$ è lo stato iniziale.
+	- $\gamma_i$ è la $i$-esima **transizione attivata**.
+	- $s_i = \langle m_i, \tau_i \rangle$ è lo stato raggiunto **dopo l'attivazione** di $\gamma_i$.
+	- $\gamma_i$ è selezionata tra le **transizioni abilitate** nello stato $s_{i-1} = \langle m_{i-1}\rangle$.
+
+	- Dopo lo sparo di $\gamma_i$, la nuova marcatura $m_i$ è derivata da $m_{i-1}$ da
+	   1. Aver rimosso un token da ogni posto di input di $\gamma_i$ (ovvero $m_{tmp} = m_{i−1} (p) − 1 \, ∀ \, p | (p, γ_i ) ∈ A^− )$
+	   2. Aver aggiunto un token ad ogni posto di output di $\gamma_i$ (ovvero $m_i = m_{tmp}(p) +1 \, ∀ \, p | (γ_i,p ) ∈ A^+$)
+
+	- $\tau_i$ sarà derivata da $\tau_{i-1}$ da
+	  1. Aver ridotto il tempo di ogni transizione **persistente** del valore di $\tau_{i-1}(\gamma_i)$ (ovvero $\tau_i(t') = \tau_{i-1}(t')-\tau_{i-1}(\gamma_i) \, \forall \, t' \in T\mid t'$ è persistente in $m_1$)
+	  2. Eliminando il tempo di attivazione di ogni transizione **disabilitata** dall'attivazione di t 
+	  3. Campionando il tempo di attivazione di ogni **nuova transizione abilitata** $t'$ nel suo intervallo di attivazione (ovvero $\tau_1(t') \in [EFT(t'), LFT(t')]$ $\forall t' \in T \mid t'$ sia una nuova transizione abilitata in $m_1$)
+
+	- $\omega$ è un percorso finito o infinito
 
 ---
  **Estensione della sintassi e semantica delle TPN**
 
 - Le TPN potrebbero essere estese con funzioni di abilitazione, funzioni di aggiornamento e priorità.
-	- Queste caratteristiche migliorerebbero la comodità di modellazione senza aumentare l'espressività del modello rispetto alle TPN.
-![[Pasted image 20241022085550.png]]
+	- Queste caratteristiche migliorerebbero la comodità di modellazione **senza aumentare l'espressività** del modello rispetto alle TPN.
+
+	![[Pasted image 20241022085550.png]]
+
 ---
  **Modellazione di insiemi di task in tempo reale con TPN: un esempio (1/4)**
 
 - 3 task $P_1, P_2, P_3$ che contendono 3 risorse **non preemptabili** $R_1, R_2, R_3$:
-	  - $P_1$ e $P_2$ sono hard real-time (obbligatori), $P_3$ è soft real-time (opzionale).
+   - $P_1$ e $P_2$ sono hard real-time (obbligatori), $P_3$ è soft real-time (opzionale).
 
   - $P_1$ è periodico:
     - Periodo $T_1 = 9$
@@ -2694,37 +2723,41 @@ Teorema (No dim)
     - Jitter di avvio assoluto $J_1 \leq 1$
     - Computazione 1: $WCET \, C_{11} \in [2, 3]$, utilizza $R_1$
     - Computazione 2: $WCET \, C_{12} \in [1, 2]$, utilizza $R_1, R_2$![[Pasted image 20241022085722.png]]
+  
   - $P_2$ è sporadico:
     - Tempo tra gli arrivi $T_2 \geq 8$
     - Scadenza relativa $D_2 = 8$
     - Computazione: $WCET \, C_{21} \in [1, 2]$, utilizza $R_1, R_3$![[Pasted image 20241022085756.png]]
+  
   - $P_3$ è sporadico:
     - Tempo tra gli arrivi $T_3 \geq 6$
     - Scadenza relativa $D_3 = 6$
-    - Computazione: $WCET \, C_{31} \in [1, 2]$, utilizza $R_2, R_3$
-    - ![[Pasted image 20241022085823.png]]
+    - Computazione: $WCET \, C_{31} \in [1, 2]$, utilizza $R_2, R_3$ ![[Pasted image 20241022085823.png]]
 
 ---
 **Modellazione di insiemi di task in tempo reale con TPN: un esempio (2/4)**
 
 - La TPN può essere derivata automaticamente dalla timeline dei task.
+
 ![[Pasted image 20241022085857.png]]
+
 ---
 **Modellazione di insiemi di task in tempo reale con TPN: un esempio (3/4)
 
 - Remarks: 
-	- Le TPN non riescono a catturare le deadline relative (proprietà da verificare)
+	- Le TPN ==non riescono a catturare le deadline relative== (proprietà da verificare)
 	- Il modello include due tipi di non determinismo:
-		- Nella selezione dei tempi di attivazione (non sotto controllo del designer)
-		- Nel rifiuto dei job di $P_3$ (sotto controllo del designer )
+		- Nella selezione dei tempi da attivare (non sotto controllo del designer)
+		- Nel rifiuto/accettazione dei job di $P_3$ (sotto controllo del designer)
 		
 ****
 **Modellazione di insiemi di task in tempo reale con TPN: un esempio (4/4)**
 
 - A che domande l'analisi della modello del TPN può rispondere?
-	- Se i job di $P_3$ vengono sempre rifiutati, i job di $P_1$ e $P_2$ rispettano sempre la scadenza?
-	- Se i job di $P_3$ vengono sempre accettati, i job di $P_1$ e $P_2$ rispettano sempre la scadenza?
-	- Esiste una strategia di accettazione rifiuto che garantisca le scadenza di $P_1$ e $P_2$
+	- Se i job di $P_3$ vengono sempre **rifiutati**, i job di $P_1$ e $P_2$ rispettano sempre la scadenza?
+	- Se i job di $P_3$ vengono sempre **accettati**, i job di $P_1$ e $P_2$ rispettano sempre la scadenza?
+	- Esiste una strategia di accettazione rifiuto che garantisca le scadenza di $P_1$ e $P_2$?
+
 - A quali domande in generale un analisi della TPN può rispondere?
 	- **Raggiungibilità temporizzata**: quali ordinamenti tra le transizioni sono realizzabili sotto i vincoli temporali del modello?
 	- **Durata min/max**: qual è il tempo minimo e massimo per completare una sequenza di firing di transizioni?
@@ -2732,9 +2765,10 @@ Teorema (No dim)
 ---
 **Analisi delle TPN: Preliminari(1/3)**
 
-- I tempi di firing assumono valori in insiemi densi =>
-    - La relazione di raggiungibilità tra stati non è esplicitamente enumerabile.
+- I tempi di firing assumono valori in **insiemi densi** =>
+    - La relazione di raggiungibilità tra stati **non è esplicitamente enumerabile.**
     - Lo spazio degli stati viene coperto attraverso **classi di equivalenza**, ognuna delle quali raccoglie una varietà continua di stati con la stessa marcatura ma un diverso vettore dei tempi di firing.
+
 ![[Pasted image 20241029134103.png]]
 
 ---
@@ -2742,84 +2776,90 @@ Teorema (No dim)
 
 - Una **classe di stato** è una coppia $S=⟨m,D⟩$ in cui:
     - $m$ è una marcatura (che rappresenta la posizione logica del sistema).
-    - $D$ è un insieme continuo di valori per i tempi di firing delle transizioni abilitate, denominato **dominio di firing**.
+    - $D$ è un insieme continuo di valori per i tempi di firing delle transizioni abilitate, denominato **dominio di firing**. 
     
 - Uno stato $s = \langle m_s, \overrightarrow{\tau_s} \rangle$ è incluso in una classe di stato $S = \langle m, D \rangle$ se:
     - possiedono la stessa marcatura (ossia, $m_s = m$).
     - il vettore dei tempi di firing $\overrightarrow{\tau_s}$​​ soddisfa i vincoli di $D$ (ossia, $\overrightarrow{\tau_s} \in D$).
+
 - La forma dei vincoli di $D$ dipendono da:
 	- Il modo in cui i tempi di fire sono avanzati nella semantica della TPN
-	- La semantica delle relazioni di raggiungibilità da stabilire sulle classi di stato
-	- La forma dei vincoli nella classe d stato iniziale
+	- La semantica delle relazioni di raggiungibilità da stabilire sulle classi di stato (nel senso di quale stato si vuole raggiungere)
+	- La forma dei vincoli nella classe di stato iniziale
+
 ---
 **Analisi delle TPN: Preliminari(3/3)**
 
-- Una classe di stato $S′$ è **raggiungibile** dalla classe $S$ attraverso la transizione $t (S\xrightarrow{t} S′)$  se e solo se contiene tutti e solo gli stati raggiungibili da qualche stato raccolto in $S$ tramite un firing fattibile di $t$, ovvero:
+- Una classe di stato $S′$ è **raggiungibile** dalla classe $S$ attraverso la transizione $t$ $(S\xrightarrow{t} S′)$  se e solo se contiene **tutti e solo gli stati raggiungibili** da qualche stato raccolto in $S$ tramite un firing fattibile di $t$, ovvero:
     - $S′$ è raggiungibile da $S$ attraverso $t$ se e solo se:
-        - $\forall s' \in S', \exists s \in S \, | \, s \xrightarrow{t} s'$.
-        - $s \in S \land s \xrightarrow{t} s' \Rightarrow s' \in S'$
+        - $\forall s' \in S', \exists s \, \text{(almeno uno)} \in S \, | \, s \xrightarrow{t} s'$. (raggiungo ogni classe di stato da almeno una classe di stato)
+        - $s \in S \land s \xrightarrow{t} s' \Rightarrow s' \in S'$ (ci stanno solo gli stati raggiungibili)
 
-- Relazione di raggiungibilità debole, detta **raggiungibilità AE**.
-    - Non garantisce che ogni stato $s' \in S'$ sia raggiungibile da ogni stato $s \in S$.
-    - Garantisce che per qualsiasi stato $s' \in S'$ esista almeno uno stato $s \in S$ e un tempo $\tau$ tale che $t$ possa essere fired da $s$ con tempo di firing $\tau$ producendo lo stato $s'$.
+- La relazione di raggiungibilità è **debole**, detta **raggiungibilità AE**. (for All Exists)
+    - Non garantisce che **ogni** stato $s' \in S'$ sia raggiungibile da ogni stato $s \in S$.
+    - Garantisce che per qualsiasi stato $s' \in S'$ (classe figlia) esista **almeno uno** stato $s \in S$ (classe padre) e un tempo $\tau$ tale che:
+	    => $t$ possa essere attivato da $s$ con tempo di firing $\tau$ producendo lo stato $s'$.
+	=> Sostanzialmente nella classe di stato figlia ci mettiamo tutti e soli gli stati che sono raggiungibili da almeno uno stato della classe padre.
 
-- Sufficiente per decidere proprietà di raggiungibilità sotto vincoli temporali.
-    - Uno stato $s′$ è raggiungibile da qualche stato nella classe iniziale $S_0$ se e solo se $s′$ è contenuto in una classe $S$ raggiungibile da $S_0$​.
-    - Un sequenza di firing $\rho$ è firable se e solo se esiste una classe $S'$ raggiungibile da $S_0$ dalla quale esiste un percorso che riproduce gli stessi eventi di $\rho$
+- Questo è sufficiente per decidere proprietà di raggiungibilità sotto vincoli temporali => ad esempio rispetto delle deadlines. 
+	=> Inoltre permette di enumerare in modo efficiente lo spazio degli stati e rispondere alle domande dell'analisi di un modello TPN.
+
+(Skippable)
+- Uno stato $s′$ è raggiungibile da qualche stato nella classe iniziale $S_0$ se e solo se $s′$ è contenuto in una classe $S$ raggiungibile da $S_0$​.
+- Un sequenza di firing $\rho$ è firable se e solo se esiste una classe $S'$ **raggiungibile** da $S_0$ dalla quale esiste un percorso che riproduce gli stessi eventi di $\rho$
     
 ---
  **Analisi del TPN - Introduzione intuitiva (1/5)**
 
 - Modello TPN con 3 transizioni concorrenti.
-		![[Pasted image 20241029141157.png]]
 
-	- I tempi di firing delle transizioni abilitate inizialmente variano in un iper-rettangolo. 
-	
+	![[Pasted image 20241029141157.png]]
+
+- I tempi di firing delle transizioni abilitate inizialmente variano in un iper-rettangolo. 
+
 		$D = \begin{cases} 0 \leq \tau_1 \leq 10 \\ 5 \leq \tau_2 \leq 15 \\ 12 \leq \tau_3 \leq 22 \end{cases}$​
 	
 ---
-
 **Analisi del TPN - Introduzione intuitiva (2/5)**
 
 - L'ipotesi che $t_2$​ sia la prima a essere attivata restringe il dominio di firing:
+	- $D_{t_2}= \begin{cases} D \\ \tau_2 \leq \tau_1 \\ \tau_2 \leq \tau_3 \end{cases} = \begin{cases} 0 \leq \tau_1 \leq 10 \\ 5 \leq \tau_2 \leq 15 \\ 12 \leq \tau_3 \leq 22 \\ \tau_2 - \tau_1 \leq 0 \\ \tau_2 - \tau_3 \leq 0 \end{cases}$​
 
-	$D_{t_2} = \begin{cases} 0 \leq \tau_1 \leq 10 \\ 5 \leq \tau_2 \leq 15 \\ 12 \leq \tau_3 \leq 22 \\ \tau_2 - \tau_1 \leq 0 \\ \tau_2 - \tau_3 \leq 0 \end{cases}$​
-
+- Sparo $t2$ in modo tale da mantenere entrambi i vincoli sulle altre transizioni => non ho vincoli superflui
 ---
-
 **Analisi del TPN - Introduzione intuitiva (3/5)**
 
-- Sia $t_1$ che $t_3$ sono persistenti, quindi i loro tempi di firing sono traslati di $\tau_2$​:
+- Sia $t_1$ che $t_3$ sono **persistenti**, quindi i loro tempi di firing sono traslati di $\tau_2$​:
 	- $\tau'_1 = \tau_1 - \tau_2 \Rightarrow \tau_1 = \tau'_1 + \tau_2$
 	- $\tau'_3 = \tau_3 - \tau_2 \Rightarrow \tau_3 = \tau'_3 + \tau_2$​
 
-- Sostituendo le variabili $D_{t_2}$ può essere scritto in modo equivalente come:
+- Sostituendo le variabili, $D_{t_2}$ può essere scritto in modo equivalente come:
 	- $D_{t_2} = \begin{cases} 0 \leq \tau_1' + \tau_2 \leq 10  \space (a) \\ 5 \leq \tau_2 \leq 15 \space (b) \\ 12 \leq \tau_3' + \tau_2 \leq 22  \space (c) \\   0 \leq  \tau_1' \space (d) \\  0 \leq \tau_3'  \space(e) \end{cases}$
-
+	
 ---
-
 **Analisi del TPN - Introduzione intuitiva (4/5)**
 
 - $\tau_2$​ viene eliminato per ottenere un dominio $D'$che dipende solo dai tempi di firing delle transizioni abilitate, ovvero:
 	- $\langle \tau'_1, \tau'_3 \rangle \in D'$ se e solo se esiste $\tau_2$​ tale che $\langle \tau'_1, \tau_2, \tau'_3 \rangle \in D_{t_2}$ 
-		- $D_{t_2} = \begin{cases} -15 \leq \tau_1' \leq 5  \space (a+ (-b))  \\ -3 \leq \tau_3' + \tau_2 \leq 17  \space (c+(-b)) \\ -22 \leq \tau_1' - \tau_3' \leq -2 \space (a+(-c)) \\ 0 \leq  \tau_1' \space (d) \\  0 \leq \tau_3'  \space(e) \\ \\ 5 \leq \tau_2 \leq 15 \space (b)\end{cases}$
+		- $D'_{t_2} = \begin{cases} -15 \leq \tau_1' \leq 5  \space (a+ (-b))  \\ -3 \leq \tau_3' + \tau_2 \leq 17  \space (c+(-b)) \\ -22 \leq \tau_1' - \tau_3' \leq -2 \space (a+(-c)) \\ 0 \leq  \tau_1' \space (d) \\  0 \leq \tau_3'  \space(e) \\ \\ 5 \leq \tau_2 \leq 15 \space (b)\end{cases}$
 
 		- $D' = \begin{cases} -15 \leq \tau'_1 \leq 5 \\ -3 \leq \tau'_3 \leq 17 \\ -22 \leq \tau'_1 - \tau'_3 \leq -2 \\ 0 \leq \tau'_1 \\ 0 \leq \tau'_3 \end{cases}$
 
----
+- Il vincolo (a+(-c)) è un vincolo diagonale ad indicare che è passato lo stesso tempo per $\tau_1$ e $\tau_3$ => le due variabili diventano variabli aleatorie **dipendenti**.
 
+---
 **Analisi del TPN - Introduzione intuitiva (5/5)**
 
-- Cosa significa il l'insieme $D'$ ?
-	- La classe successore contiene tutti e i soli stati raggiungibili dalla classe iniziale:
-		- $\forall \langle \tau_1', \tau_2' \rangle \in D'$ $\exists \langle \tau_1, \tau_2, \tau_3 \rangle \in D$ tale che $\tau_1' = \tau_1 - \tau_2 \land \tau_3' = \tau_3 - \tau_2$
+- Cosa significa l'insieme $D'$ ?
+	- La classe successore contiene **tutti e i soli stati raggiungibili** dalla classe iniziale:
+		- $\forall \langle \tau_1', \tau_3' \rangle \in D'$ $\exists \langle \tau_1, \tau_2, \tau_3 \rangle \in D$ tale che $\tau_1' = \tau_1 - \tau_2 \land \tau_3' = \tau_3 - \tau_2$
 		- Questa è la relazione di raggiungibilità AE
 
-- Mentre per quanto riguarda la forma dei vincoli di 
+- Mentre per quanto riguarda la forma dei vincoli di $D'$?
 	- Il dominio di firing $D$ della classe iniziale è un iper-rettangolo.
 	- $D′$ è un insieme di disuguaglianze che vincolano le differenze tra i tempi di firing.
 	- La forma di $D$′ è detta **Difference Bounds Matrix (DBM)**.
-	- La derivazione ripetuta porta a un poliedro convesso lineare generale? No.(supercazzola) 
+	- La derivazione ripetuta porta generalmente a un poliedro convesso lineare? No. => Se inizialmente le transizioni sono tra loro indipendenti, a seconda di quella che spara le altre rimangono dipendenti da questa => per tutte le transizioni rimaste vale il fatto che **sia passato lo stesso tempo** per far attivare una transizione.
 
 ---
 **Difference Bounds Matrix: definizione**
@@ -2831,36 +2871,42 @@ Teorema (No dim)
     - convertire i vincoli della forma $\tau_i \leq b_{i\star}$​ in vincoli diagonali  $\tau_i - \tau_\star \leq b_{i\star}$
     - convertire i vincoli della forma $\tau_i \geq b_{i\star}$​ in vincoli diagonali  $\tau_i - \tau_\star \geq b_{i\star}$
     
-- L'insieme delle soluzioni di un insieme di disuguaglianze in forma DBM è chiamato **zona DBM**
+- L'insieme delle *soluzioni* di un insieme di disuguaglianze in forma DBM è chiamato **zona DBM**
+
 ![[Pasted image 20241029163332.png]]
+
+=> Nell'ultimo caso si ha una sincronizzazione fra transionzioni => queste sparano con stesso TTF. 
 
 ---
 **Difference Bounds Matrix: Forma Normale(1/2)**
 
 - Possono insiemi di disequazioni differenti rappresentare lo stesso insieme di soluzioni?
 	- Alcuni vincoli possono essere implicati dalla combinazione di altri vincoli
-	- Lo stesso insieme di soluzioni può essere rappresentato da diversi coefficienti $b_{ij}$
+	- Lo **stesso** insieme di soluzioni può essere rappresentato da **diversi** coefficienti $b_{ij}$
+
 ![[Pasted image 20241029163807.png]]
-- Una **Forma Normale** è introdotta quando ogni coefficiente $b_{ij}$ è massivamente stretto
-	- Ovvero non può essere ridotto senza cambiare l'insieme delle soluzioni
+
+- Una **Forma Normale** è introdotta quando ogni coefficiente $b_{ij}$ è *massivamente stretto*
+	=> Ovvero non può essere ridotto senza cambiare l'insieme delle soluzioni
 
 ---
 **Difference Bounds Matrix: Forma Normale(2/2)**
 
 - Una DBM in è in **forma normale** se $b_{ij}$ è il massimo valore di $\tau_i - \tau_j$ che può essere ottenuto dall'insieme $\forall i, j \in \{0, 1, \ldots, N - 1\} \cup \{\star\} \mid i \neq j$
-		![[Pasted image 20241029164330.png]]
 
-- Una DBM non vuota è rappresentata come un **grafo** per dimostrate che la forma normale:
+	![[Pasted image 20241029164330.png]]
+
+- Una DBM non vuota è rappresentata come un **grafo** per dimostrare che la forma normale:
 	- Esiste ed è unica
 	- Sia calcolata come la soluzione del problema del _shortest path_ in tempo $O(N^3)$
 
 ---
 **Difference Bounds Matrix: Rappresentazione grafica**
 
-- La DBM identificata dalla matrice dei coefficiente $b{ij} è biunivocamente associata ad un **grafo completo diretto segnato** $\langle V, E, b \rangle$ dove:
+- La DBM identificata dalla matrice dei coefficiente $b{ij}$ è biunivocamente associata ad un **grafo completo diretto segnato** $\langle V, E, b \rangle$ dove:
 	- Il set dei vertici V, consiste dei valori non conosciuti $\tau_i$
 	- Un arco diretto esiste tra ogni due vertici ovvero $E = V$ x $V$ 
-	- L'arco dal vertice $\tau_j$ fino al vertice $\tau_i$ è segnato come $b_{ij}$
+	- L'arco dal vertice $\tau_j$ fino al vertice $\tau_i$ è **segnato** come $b_{ij}$
 
 	![[Pasted image 20241029165410.png]]
 
@@ -2874,7 +2920,7 @@ Teorema (No dim)
 **Difference Bounds Matrix: Proprietà (2/4)**
 
 - **Lemma 2**
-	Una DBM è in forma normale se e solo se $b_{ij}$ è il percorso più breve nel grafo dal vertice $\tau_j$ al vertice $\tau_i$   $\forall i, j \in \{0, 1, \ldots, N - 1\} \cup \{\star\} \mid i \neq j$
+	Una DBM è in forma normale se e solo se $b_{ij}$ **è il percorso più breve** nel grafo dal vertice $\tau_j$ al vertice $\tau_i$   $\forall i, j \in \{0, 1, \ldots, N - 1\} \cup \{\star\} \mid i \neq j$
 	
 ---
 **Difference Bounds Matrix: Proprietà (3/4)**
@@ -2891,40 +2937,43 @@ Teorema (No dim)
 ---
 **Difference Bounds Matrix: Come calcolare la forma normale?**
 
-- La forma normale può essere calcolata tramite l'algoritmo di **Floyd-Warshall**
+- La forma normale può essere calcolata tramite l'algoritmo di **Floyd-Warshall** (Dijkstra per ogni percorso)
 	- N iterazioni indicizzate da $k = 0,1, ... , N-1$
-	- All'iterazione k si deriva $b_{ij}^{k+1}$ definita come il percorso più breve da $\tau_j$ a $\tau_i$ che non visita nessun nodo intermedio con indice più grande di k
+	- All'iterazione k si deriva $b_{ij}^{k+1}$ definita come **il percorso più breve** da $\tau_j$ a $\tau_i$ che non visita nessun nodo intermedio con indice più grande di k
 		- **Inizializzazione**: $b_{ij}^0$ è il valore iniziale del coefficiente $b_{ij}$
 		- **Prima iterazione**(k = 0): $b_{ij}^1$ è  il percorso più breve da $\tau_j$ a $\tau_i$ che non visita nessun nodo intermedio con indice più grande di 0
-		- **Ultima iterazione** (k = N- 1): $b_{ij}^N$ è  il percorso più breve da $\tau_j$ a $\tau_i$ 
--![[Pasted image 20241029173429.png]]
+		- **Ultima iterazione** (k = N- 1): $b_{ij}^N$ è  il percorso più **breve** da $\tau_j$ a $\tau_i$ (dopo aver visitato tutti i nodi)
+
+![[Pasted image 20241029173429.png]]
 
 ---
 **Difference Bounds Matrix: decidere se vuoto**
 
 - **Lemma 5**
-	Se il grafo corrispondente a una DBM non è vuota, non include nessun cicli negativo, allora la zona DBM non è vuota
+	Se il **grafo** corrispondente a una DBM non include nessun ciclo negativo, allora la zona DBM **non è vuota**
 	
 - **Lemma 6**
-	Una zona DBM e non è vuota, se e solo se il grafo corrispondente non include nessun ciclo negativo
+	Una zona DBM è non vuota, se e solo se il grafo corrispondente non include nessun ciclo negativo
 
 ---
 **Difference Bounds Matrix: Proiezione**
 
 - Data una DBM $D$ nello spazio dei valori sconosciuti $\tau = \langle \tau_0, \tau_1, ...,  \tau_{N-1} \rangle$, la **proiezione** di $D$ sullo spazio di valori sconosciuti  $\tau_{↓0} = \langle \tau_1, ...,  \tau_{N-1} \rangle$, è 
-	- $D_{↓0} = \{ \langle \tau_1, ...,  \tau_{N-1} \rangle \mid  \exists \tau_0 \in R \cup \{∞\} \text{tale che} \langle \tau_0, \tau_1, ...,  \tau_{N-1} \rangle \in D\}$ 
-- La proiezione è usata nell'enumerazione della relazione di raggiungibilità fra le classi di stati
+	- $D_{↓0} = \{ \langle \tau_1, ...,  \tau_{N-1} \rangle \mid  \exists \tau_0 \in R \cup \{∞\}$ tale che $\langle \tau_0, \tau_1, ...,  \tau_{N-1} \rangle \in D\}$ 
+
+- La proiezione è usata nell'enumerazione della relazione di raggiungibilità fra le classi di stato
+
 - La proiezione è implementata in modo efficiente su una zona DBM in forma normale
 
-- Lemma 7
-	Se una DBM $D$ nello spazio dei valori sconosciuti $\tau = \langle \tau_0, \tau_1, ...,  \tau_{N-1} \rangle$ è in forma normale, allora la matrice dei coefficienti della proiezione $D_{↓0}$ è ottenuta tramite la matrice dei coefficienti di $D$ eliminando la riga e la colonna degli zeri, ovvero il grafo $D_{↓0}$ è ottenuto dal grafo $D$ eliminando il nodo $\tau_0$ (senza cambiare i vincoli fra gli altri nodi)
+- **Lemma 7**
+	Se una DBM $D$ nello spazio dei valori sconosciuti $\tau = \langle \tau_0, \tau_1, ...,  \tau_{N-1} \rangle$ è in forma normale, allora la matrice dei coefficienti della proiezione $D_{↓0}$ è ottenuta tramite la matrice dei coefficienti di $D$ **eliminando la riga e la colonna zero**, ovvero il grafo $D_{↓0}$ è ottenuto dal grafo $D$ eliminando il nodo $\tau_0$ (senza cambiare i vincoli fra gli altri nodi)
 
 --- 
 **Analisi del TPN - Classe di stato iniziale**
 
-- Assumiamo che il dominio di abilitazione $D$ della classe di stato iniziale $S=⟨m,D⟩$ sia rappresentato come un insieme di disuguaglianze lineari in forma normale DBM, cioè: $D=\{τ(t_i​)−τ(t_j​)≤b_{ij} ​∀ t_i​, t_j​∈T_e(m) ∪ \{t_∗\}$ con $i \neq j\}$ dove:
+- Assumiamo che il dominio di firing $D$ della classe di stato iniziale $S=⟨m,D⟩$ sia rappresentato come un insieme di disuguaglianze lineari, in forma normale DBM, cioè: $D=\{τ(t_i​)−τ(t_j​)≤b_{ij} \, ​∀ \, t_i​, t_j​∈T_e(m) ∪ \{t_∗\}$ con $i \neq j\}$ dove:
 	- $b_{ij} \in R∪\{∞\}$
-	- $T_e(m)$ è l'insieme delle transizioni abilitate dalla marcatura $m$
+	- $T_e(m)$ è l'insieme delle **transizioni abilitate** dalla marcatura $m$
 	- $\tau(t_i)$ è il tempo di attivazione della transizione $t_i$ $\forall t_i \in T_e(m)$
 	- $t^*$ è l'evento fittizio di ingresso nella classe
 	- $\tau(t^*)$ è il **ground** time al quale la classe è entrata
@@ -2932,58 +2981,74 @@ Teorema (No dim)
 ---
 **Analisi del TPN: esistenza del successore**
 
-- Una classe di stato $S = \langle m, D \rangle$ con $D$ in forma normale DBM ha un **successore** attraverso la transizione $t_0$ se e solo se $t_0$ è abilitata da $m$ e $D$ accetta soluzioni in cui $\tau(t_0)$ non è maggiore del tempo di attivazione di qualsiasi altra transizione abilitata, cioè, il **dominio di attivazione ristretto** $D_{t_0}$ ha un insieme di soluzioni non vuoto:
+- Una classe di stato $S = \langle m, D \rangle$ con $D$ in forma normale DBM ha un **successore** attraverso la transizione $t_0$ se e solo se $t_0$ è abilitata da $m$ e $D$ accetta soluzioni in cui $\tau(t_0)$ ==non è maggiore del tempo di attivazione di qualsiasi altra transizione abilitata,== cioè il **dominio di attivazione ristretto** $D_{t_0}$ ha un insieme di soluzioni non vuoto:
+
 - $D_{t_0} = \begin{cases} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq 0 \\ \forall \, t_i, t_j \in T_e(m) \cup \{t^*\} \, \text{con} \, t_i \neq t_j, \, \forall \, t_h \in T_e(m) \setminus \{t_0\} \end{cases}$
 
 - **Lemma 8**  
 	Una classe di stato  $S = \langle m, D \rangle$ con $D$ in forma normale DBM ha un successore attraverso la transizione $t_0$ se e solo se $t_0 \in T_e(m)$ e $b_{h0} \geq 0 \space \forall \space t_h \in T_e(m)$.
 
 - **Rilevamento del successore**: complessità lineare rispetto al numero di transizioni abilitate.
+
 - Come calcolare il dominio di attivazione $D'$ del successore $S'$ di $S$ attraverso $t_0$?
  
 ---
 **Analisi TPN: calcolo del successore - condizionamento**
 
-- Condiziona $D$ al fatto che $t_0$ si attivi per prima:
-	- $D_{t_0} = \begin{cases} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq 0 \\ \forall \, t_i, t_j \in T_e(m) \cup \{t^*\} \, | \, t_i \neq t_j, \\ \forall \, t_h \in T_e(m) \setminus \{t_0\} \end{cases}$ 
+- Condiziono $D$ al fatto che $t_0$ si attivi per prima:
+	- $D_{t_0} = \begin{cases} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq 0 \\ \forall \, t_i, t_j \in T_e(m) \cup \{t^*\} \, | \, t_i \neq t_j, \\ \forall \, t_h \in T_e(m) \setminus \{t_0\} \end{cases}$
+	
 	     $= \begin{cases} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq \min \{0, b_{0h} \} \\ \forall \, t_i, t_j \in T_e(m) \cup \{t^*\} \, | \, t_i \neq t_j, \\ \forall \, t_h \in T_e(m) \setminus \{t_0\} \end{cases}$
 
-- Rappresenta $D_{t_0}$ in forma normale e siano $B_{ij}$ i suoi coefficienti (complessità quadratica rispetto al numero di transizioni abilitate): 
+- Rappresento $D_{t_0}$ in forma normale e siano $B_{ij}$ i suoi coefficienti (complessità quadratica rispetto al numero di transizioni abilitate): 
+
 - $D_{t_0} = \begin{cases} \tau(t_i) - \tau(t_j) \leq B_{ij} \\ \tau(t_0) - \tau(t_i) \leq B_{0i} \\ \forall \, t_i, t_j \in T_e(m) \cup \{t^*\} , t_i \neq t_j, \, t_i \neq t_0 \end{cases}$
 
 ---
 **Analisi TPN: calcolo del successore - avanzamento temporale**
 
-- Si riduce i tempi di fire delle transizioni persistenti in $S_0$ del tempo trascorso in $S$, cioè, $\tau'(t_i) = \tau(t_i) - \tau(t_0)$ $\forall t_i \in T_e(m) \cap T_p(S_0) \setminus \{t_0\}$, dove $T_p(S_0)$ è l’insieme delle transizioni persistenti in $S_0$: ![[Pasted image 20241029231440.png]]
+- Si riduce i TTF delle transizioni persistenti in $S_0$ del **tempo trascorso** in $S$, cioè, $\tau'(t_i) = \tau(t_i) - \tau(t_0)$ $\forall t_i \in T_e(m) \cap T_p(S_0) \setminus \{t_0\}$, dove $T_p(S_0)$ è l’insieme delle transizioni **persistenti** in $S_0$: 
+
+![[Pasted image 20241029231440.png]]
 
 ---
 **Analisi del TPN - Successione di Computazione (Proiezione)**
 
-- Eliminare il tempo di firing della transizione attivata tramite una proiezione: 
+- Elimino il tempo di firing della transizione attivata tramite una proiezione: 
 	- $D''_{t_0} = \begin{cases} \tau'(t_i) - \tau'(t_j) \leq B_{ij} \\ \tau'(t_i) \leq B_{i0} \\ -\tau'(t_i) \leq B_{0i} \\ \forall t_i, t_j \in T_e(m) \cup \{t_*\} \mid t_i \neq t_j, t_i \neq t_0 \end{cases}$
+
 - Siano $C_{ij}$ i coefficiente in forma normale ovvero $C_{ij} = B_{ij}, C_{i*} = B_{i0}, C_{*i} = B_{0i}$:
-	- $D''_{t_0} = \begin{cases} \tau'(t_i) - \tau'(t_j) \leq C_{ij} \\ \tau'(t_i) - \tau'(t_*) \leq C_{i*} \\ -\tau'(t_*) - \tau'(t_i) \leq C_{*i} \\ \forall t_i, t_j \in T_e(m) \cap T_p(S') \cup \{t_*\} \mid t_i \neq t_j, t_i \neq t_0 \end{cases}$
-	(Con $T_p(S')$ insieme delle transizioni persistenti in S')
+
+	- $D''_{t_0} = \begin{cases} \tau'(t_i) - \tau'(t_j) \leq C_{ij} \\ \tau'(t_i) - \tau'(t_*) \leq C_{i*} \\ \tau'(t_*) - \tau'(t_i) \leq C_{*i} \\ \forall t_i, t_j \in T_e(m) \cap T_p(S') \cup \{t_*\} \mid t_i \neq t_j, t_i \neq t_0 \end{cases}$
+
 - I times-to-fire delle transizioni non abilitate da $m'$ possono essere eliminate in modo simile
+
 ---
 **Analisi del TPN : Computazione delle Successioni - newly enabling
 
-- Aggiungere il tempo di firing di ogni transizione appena abilitata:
+- Aggiungo il tempo di firing di ogni transizione appena abilitata:
 	- $D' = \begin{cases} D''_{t_0} \\ \tau'(t_j) - \tau'(t_*) \leq LFT(t_j) \\ \tau'(t_*) - \tau'(t_j) \leq -EFT(t_j) \\ \forall t_j \in T_n(S') \end{cases}$
-		Dove $T_n(S')$ è l'insieme delle transizione newly-enable in $S'$
 
-- Il dominio di firing di $D'$ della classe successore $S'$ è sempre in forma normale! 
-	- => La forma della DBM è chiusa rispetto ai passi per il calcolo del successore
-	- => La relazione di raggiungibilità fra gli della classe può essere enumerata![[Pasted image 20241030082330.png]]
+	=> Dove $T_n(S')$ è l'insieme delle transizione newly-enable in $S'$
 
+- Il dominio di firing di $D'$ della classe successore $S'$ ==è sempre in forma normale!== 
+	=> La forma della DBM è chiusa rispetto ai passi per il calcolo del successore
+	=> La relazione di raggiungibilità fra i della classe può essere enumerata
+	![[Pasted image 20241030082330.png]]
+
+	56/154
 ---
 **Analisi del TPN : enumerazione spazio degli stati**
 
 - L'enumerazione risiede nel **grafo della classe degli stati**
+
 - Una **corsa simbolica** è un percorso nel grafo della classe degli stati
-	- Rappresenta la varietà densa di corse firing dato un set di transizioni in un dato ordine qualitativo, con una varietà densa di timings fra due firings successivi
+	- Rappresenta la varietà densa di corse firing dato un set di transizioni secondo un ordine qualitativo, con una varietà densa di timings fra due firings successivi
 	- Ad esempio $S_0 \rightarrow^{t_0}  S_1 \rightarrow^{t_2} S_4 \rightarrow^{t_1} S_6$ 
+
 ![[Pasted image 20241030082856.png]]
+
+	57/154
 ---
 **Dominio dei tempi di una corsa simbolica**
 
@@ -2993,30 +3058,37 @@ Teorema (No dim)
 	- $f(n)$ è l'indice della transizione fired nella classe stato $S_n$ $\forall n \in {0,1,..., N-1}$
 	- $t_h^k$ è il tempo di fire della trasizione $t_h$ nella classe stato $S_k$ 
 - Il dominio dei timings di $\rho$ è nella forma DBM:
+
 	- $D_{\rho} = \begin{cases} D_{n} \\ \tau(t_{f(n)}^n) - \tau(t_i^n) \leq 0 \\ \tau(t^n_{f(n)}) = \tau(t^{n+1}_*) \\ \forall n \in \{0,1, ..., N-1\}, \forall t_i^n \in T_e(m) \end{cases}$
-- I tempi di soggiorno in classi non sono indipendenti => Il caso peggiore  di completamento di $\rho$ può non essere la somma casi peggiori di soggiorno in $S_0, ..., S_{N-1}$
+
+- I tempi di soggiorno in classi **non sono indipendenti** => Il caso peggiore di completamento di $\rho$ può non essere la somma casi peggiori di soggiorno in $S_0, ..., S_{N-1}$
+
 - Computazione di $D_{\rho}$: complessità $O(N^3)$
 	- Notare che N è il numero di transizioni fired tra $\rho$
 	- Il numero di transizione abilitate fra $\rho$ può essere $>> N$
+
+	58/154
 ---
 **Modellazione di insiemi di task in tempo reale con TPN: un esempio (3/3)**
 
-- Le 2 slide prima sono di riepilogo
+- Le 2 slide prima sono di riepilogo dell'esempio
 - Entrambi i task hard real-time possono perdere la loro deadline:
-- ![[Pasted image 20241030150031.png]]
+	![[Pasted image 20241030150031.png]]
 
 - Come decidere l'accettazione rifiuto dei job di $P_3$ a runtime? Usando i tempi **attuali** di esecuzione per determinare se il fallimento simbolico delle runs sono fattibili!
 	- Un Job di $P_3$ sarà rifiutato se un job di $P_1/P_2$ può perdere la sua deadline.
 
+	59-60-61/154
 ---
 **Scheduling online in un sistema di analisi biologica (1/5)**
 
-- Preso un sistema elettromeccanico per l'analisi immunoenzimatica
+- Preso un sistema elettromeccanico per l'analisi immuno-enzimatica
 	- Ogni slot comprende diverse provette
 	- Una pipetta e una testina può agire in modo simultaneo sulle provette
 	
 ![[Pasted image 20241108175709.png]]	
 
+	62/154
 ---
 **Scheduling online in un sistema di analisi biologica (2/5)**
 
@@ -3029,14 +3101,17 @@ Teorema (No dim)
 
 ![[Pasted image 20241108180149.png]]
 
+	63/154
 ---
 **Scheduling online in un sistema di analisi biologica (3/5)**
 
 - Uno scheduling che minimizza il tempo di completamento totale
+
 ![[Pasted image 20241108180425.png]]
 
 - Come ottenere tale schedule?
 
+	64/154
 ---
 **Scheduling online in un sistema di analisi biologica (4/5)**
 
@@ -3047,6 +3122,7 @@ Teorema (No dim)
 
 ![[Pasted image 20241108180735.png]]
 
+	65/154
 ---
 **Scheduling online in un sistema di analisi biologica (5/5)**
 
@@ -3056,8 +3132,11 @@ Teorema (No dim)
 - Più veloce comparato ad un tradizionale di model checking 
 - Implementazione software su un sistema reale.
 
+![[Pasted image 20250401221802.png]]
+
+	66/154
 ---
-## Reti di Petri Temporali Preemptive (PTPN) (TBD - da riguardare)
+## 4. Reti di Petri Temporali Preemptive (PTPN) (TBD - da riguardare)
 
 - **Sintassi delle PTPN**
   - Le PTPN estendono le TPN con risorse.
@@ -3109,8 +3188,620 @@ Teorema (No dim)
     2. Aggiungendo un token a ciascun posto di uscita di $t$.
 
 ---
+### **Slide 71 — PTPN semantics (3/5)**
 
-## Utilizzo delle PTPN nel ciclo di vita software V-Model
+**Semantica dei PTPN (3/5)**
+
+- Come nei PN con archi inibitori, una transizione $t$ è abilitata da una marcatura $m$ se e solo se:
+    
+    - $m(p) > 0 \quad \forall p \in P \mid (p, t) \in A^-$  
+        (cioè, $m$ assegna almeno un token a ciascun posto di input di $t$)
+        
+    - $m(p) = 0 \quad \forall p \in P \mid (p, t) \in A^\bullet$  
+        (cioè, $m$ assegna nessun token a ciascun posto inibitore di $t$)
+        
+- Una transizione $t$ è in esecuzione in una marcatura $m$ se:
+    
+    - è abilitata da $m$
+        
+    - $Req(t) \cap Req(t') \neq \emptyset \Rightarrow Prio(t) < Prio(t') \quad \forall t' \in Te(m)$  
+        (cioè, ogni risorsa richiesta non è richiesta da un’altra transizione abilitata con livello di priorità più alto)
+        
+- Una transizione $t$ è sospesa in una marcatura $m$ se:
+    
+    - è abilitata da $m$
+        
+    - non è in esecuzione in $m$
+        
+- Una transizione $t$ è pronta a scattare (firable) in uno stato $s = \langle m, \tau \rangle$ se:
+    
+    - è in esecuzione in $m$
+        
+    - $\tau(t) \leq \tau(t') \quad \forall t' \in T \mid t' \text{ è in esecuzione in } m$  
+        (cioè, il tempo di scatto di $t$ non è maggiore del tempo di scatto di alcun’altra transizione in esecuzione)
+        
+
+---
+
+### **Slide 72 — PTPN semantics (4/5)**
+
+**Semantica dei PTPN (4/5)**
+
+- Esempio di PTPN
+    
+- $t_{11}$ è l’unica transizione pronta a scattare in qualsiasi stato iniziale con marcatura $p_{11}, p_{21}, p_{31}$
+    
+
+_(L’immagine mostra una rete con transizioni $t_{10}, t_{11}, t_{20}, t_{21}, t_{30}, t_{31}$ e risorsa `cpu` assegnata a ciascuna con priorità diverse)_
+
+---
+
+### **Slide 73 — PTPN semantics (5/5)**
+
+**Semantica dei PTPN (5/5)**
+
+- Un’esecuzione di un PTPN è un percorso:
+    
+    ω=s0→γ1s1→γ2s2→γ3…\omega = s_0 \xrightarrow{\gamma_1} s_1 \xrightarrow{\gamma_2} s_2 \xrightarrow{\gamma_3} \dots
+    
+    tale che:
+    
+    - $s_0 = \langle m_0, \tau_0 \rangle$ è lo stato iniziale
+        
+    - $\gamma_i$ è la $i$-esima transizione che scatta
+        
+    - $s_i = \langle m_i, \tau_i \rangle$ è lo stato raggiunto dopo lo scatto di $\gamma_i$
+        
+- Come nei PN, $m_i$ è derivata da $m_{i-1}$ come segue:
+    
+    1. rimuovendo un token da ciascun posto di input di $\gamma_i$  
+        (cioè, $m_{tmp} = m_{i-1}(p) - 1 \quad \forall p \mid (p, \gamma_i) \in A^-$)
+        
+    2. aggiungendo un token a ciascun posto di output di $\gamma_i$  
+        (cioè, $m_i = m_{tmp}(p) + 1 \quad \forall p \mid (\gamma_i, p) \in A^+$)
+        
+- Come nei TPN, una transizione $t'$ abilitata da $m_i$ è detta:
+    
+    - **persistente** se non è $\gamma_i$ ed è abilitata sia da $m_0$ che da $m_{tmp}$
+        
+    - **abilitata ex-novo** se non è abilitata da $m_0$ o da $m_{tmp}$, oppure se è $\gamma_i$ e abilitata da $m_i$
+        
+    - **disabilitata** se è abilitata da $m_0$ ma non da $m_i$
+        
+- $\tau_i$ è derivata da $\tau$ come segue:
+    
+    1. riducendo il tempo di scatto per ogni transizione persistente e in esecuzione:  
+        τi(t′)=τi−1(t′)−τi−1(γi)∀t′∈T∣t′ persistente e in esecuzione in mi\tau_i(t') = \tau_{i-1}(t') - \tau_{i-1}(\gamma_i) \quad \forall t' \in T \mid t' \text{ persistente e in esecuzione in } m_i
+        
+    2. mantenendo invariato il tempo per ogni transizione persistente e sospesa:  
+        τi(t′)=τi−1(t′)∀t′∈T∣t′ persistente e sospesa in mi\tau_i(t') = \tau_{i-1}(t') \quad \forall t' \in T \mid t' \text{ persistente e sospesa in } m_i
+        
+    3. eliminando il tempo di scatto di ogni transizione disabilitata
+        
+    4. assegnando il tempo di scatto di ogni transizione abilitata ex-novo nel proprio intervallo di scatto:  
+        τi(t′)∈[EFT(t′),LFT(t′)]∀t′ abilitata ex-novo in mi\tau_i(t') \in [EFT(t'), LFT(t')] \quad \forall t' \text{ abilitata ex-novo in } m_i
+        
+
+---
+Ecco la traduzione letterale del testo che hai fornito:
+
+---
+
+**Estensione della sintassi e della semantica dei PTPN**
+
+- I PTPN potrebbero essere estesi con funzioni di abilitazione, funzioni di aggiornamento, priorità (intese per risolvere il non-determinismo, non associate alle risorse)
+    
+- Queste caratteristiche migliorerebbero la comodità di modellazione rispetto ai PTPN
+    
+- Queste caratteristiche **non** aumenterebbero l’espressività del modello rispetto ai PTPN
+    
+
+---
+
+Se vuoi tradurre anche la parte grafica della slide (ad esempio le etichette o le formule), incollamela pure!
+
+Ecco la traduzione letterale del testo:
+
+---
+
+**Modellazione di insiemi di task real-time con PTPN: un esempio (1/4)**
+
+- 3 task indipendenti $P1$, $P2$, $P3$ in competizione per una risorsa preemptable `cpu`
+    
+- $P1$, $P2$, $P3$ sono eseguiti sotto schedulazione preemptive a priorità fissa
+    
+- $P1$ è periodico:  
+    periodo $T1 = 5$,  
+    scadenza relativa $D1 = 5$,  
+    WCET $C11 \in [1, 2]$,  
+    richiede la risorsa `cpu` con priorità 1
+    
+- $P2$ è sporadico:  
+    tempo minimo tra arrivi $T2 = 15$,  
+    scadenza relativa $D2 = 15$,  
+    WCET $C11 \in [1{,}8, 2{,}8]$,  
+    richiede la risorsa `cpu` con priorità 2
+    
+- $P3$ è periodico:  
+    periodo $T3 = 15$,  
+    scadenza relativa $D3 = 15$,  
+    WCET $C11 \in [2, 2{,}8]$,  
+    richiede la risorsa `cpu` con priorità 3
+    
+- Rappresentazione temporale (timeline) dell’insieme di task
+    
+
+---
+
+Pronto per il prossimo blocco quando vuoi!
+
+Ecco la traduzione letterale del secondo blocco:
+
+---
+
+**Modellazione di insiemi di task real-time con PTPN: un esempio (2/4)**
+
+- Modello PTPN corrispondente
+    
+- Le scadenze sono rispettate?
+    
+- Qual è il tempo minimo/massimo di completamento di ciascun task?
+    
+- Se le scadenze non fossero rispettate, cosa potrebbe fare il progettista software?
+    
+- Come potrebbe essere modellata la schedulazione preemptive Earliest Deadline First (EDF)?
+    
+
+---
+
+Procedi pure con la prossima parte!
+
+Ecco la traduzione letterale del terzo blocco:
+
+---
+
+**Modellazione di insiemi di task real-time con PTPN: un esempio (3/4)**
+
+- Una variante dell’insieme di task in cui i task $P1$ e $P3$ condividono una risorsa esclusiva protetta contro accessi concorrenti da un semaforo binario `mutex`
+    
+- Rappresentazione temporale (timeline) dell’insieme di task
+    
+
+---
+
+Puoi mandarmi anche l'ultima parte (4/4) quando vuoi!
+
+
+Ecco la traduzione letterale del quarto e ultimo blocco:
+
+---
+
+**Modellazione di insiemi di task real-time con PTPN: un esempio (4/4)**
+
+- Modello PTPN corrispondente
+    
+- Le scadenze sono rispettate?
+    
+- Qual è il tempo minimo/massimo di completamento di ciascun task?
+    
+- Se le scadenze non fossero rispettate, cosa potrebbe fare il progettista software?
+    
+- Come potrebbe essere modellata la schedulazione preemptive Earliest Deadline First (EDF)?
+    
+
+---
+
+Fammi sapere se vuoi continuare con altre slide o se ti serve una revisione generale!
+
+Ecco la traduzione letterale del testo:
+
+---
+
+**Analisi dei PTPN: premesse**
+
+- Come nei TPN, una classe di stato è una coppia $S = \langle m, D \rangle$ dove:
+    
+    - $m$ è una marcatura (che rappresenta la posizione logica del sistema)
+        
+    - $D$ è un insieme continuo di valori per i tempi di scatto delle transizioni abilitate
+        
+- Come nei TPN, uno stato $s = \langle m_s, \vec{\tau}_s \rangle$ è incluso in una classe di stato $S = \langle m, D \rangle$ se:
+    
+    - hanno la stessa marcatura (cioè, $m_s = m$)
+        
+    - il vettore dei tempi di scatto $\vec{\tau}_s$ soddisfa i vincoli di $D$ (cioè, $\vec{\tau}_s \in D$)
+        
+- Come nei TPN, una classe di stato $S'$ è raggiungibile dalla classe $S$ tramite la transizione $t$ (cioè, $S \xrightarrow{t} S'$) se e solo se essa contiene **tutti e soli** gli stati che sono raggiungibili da qualche stato contenuto in $S$ tramite uno scatto fattibile di $t$, cioè $S'$ è raggiungibile da $S$ tramite $t$ se e solo se:
+    
+    - $\forall s' \in S' \ \exists s \in S \mid s \xrightarrow{t} s'$
+        
+    - $s \in S \wedge s \xrightarrow{t} s' \Rightarrow s' \in S'$
+        
+
+---
+
+Fammi sapere se vuoi tradurre anche la slide successiva!
+Ecco la traduzione letterale del testo:
+
+---
+
+**Analisi dei PTPN: classe di stato iniziale**
+
+- Come nei TPN, si assume che il dominio di scatto $D$ della classe di stato iniziale $S = \langle m, D \rangle$ sia rappresentato come un insieme di disuguaglianze lineari in **forma normale DBM**, cioè:
+    
+    D={τ(ti)−τ(tj)≤bij∀ ti,tj∈Te(m)∪{t?}∣i≠j}D = \{ \tau(t_i) - \tau(t_j) \leq b_{ij} \quad \forall \ t_i, t_j \in Te(m) \cup \{t?\} \mid i \ne j \}
+    
+    dove:
+    
+    - $b_{ij} \in \mathbb{R} \cup {\infty}$
+        
+    - $Te(m)$ è l’insieme delle transizioni abilitate dalla marcatura $m$
+        
+    - $\tau(t_i)$ è il tempo di scatto della transizione $t_i$, per ogni $t_i \in Te(m)$
+        
+    - $t?$ è l’evento fittizio di ingresso nella classe
+        
+    - $\tau(t?)$ è il tempo di riferimento in cui la classe viene raggiunta (tempo base)
+        
+
+---
+
+Fammi sapere quando vuoi continuare con la prossima!
+
+Ecco la traduzione **letterale** del testo che mi hai fornito:
+
+---
+
+**Analisi dei PTPN: esistenza del successore**
+
+- Una classe di stato $S = \langle m, D \rangle$, con $D$ in forma normale DBM, ha un successore attraverso la transizione $t_0$ **se e solo se** $t_0$ è in esecuzione in $m$ (progressing) e $D$ accetta soluzioni in cui $\tau(t_0)$ non è maggiore del tempo di scatto di alcuna altra transizione in esecuzione, cioè il dominio di scatto ristretto $D_{t_0}$ è non vuoto:
+    
+    Dt0={τ(ti)−τ(tj)≤bijτ(t0)−τ(th)≤0∀ ti,tj∈Te(m)∪{t?} con i≠j,∀ th∈Tpr(m)∖{t0}D_{t_0} = \left\{ \begin{array}{l} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq 0 \\ \forall \ t_i, t_j \in Te(m) \cup \{t?\} \text{ con } i \ne j, \\ \forall \ t_h \in Tpr(m) \setminus \{t_0\} \end{array} \right.
+    
+    dove $Tpr(m)$ è l’insieme delle transizioni che sono in esecuzione (progressing) in $m$.
+    
+
+---
+
+**Lemma 9**
+
+Una classe di stato $S = \langle m, D \rangle$ con $D$ in forma normale DBM ha un successore attraverso la transizione $t_0$ **se e solo se** $t_0 \in Tpr(m)$ e $b_{h0} \geq 0$ $\forall t_h \in Tpr(m)$.
+
+---
+
+- **Rilevamento del successore**: complessità **lineare** rispetto al numero di transizioni abilitate
+    
+- Data $ \langle m, D \rangle \xrightarrow{t_0} \langle m', D' \rangle $, come si calcola la DBM minima che ingloba (min embedding) $D'$?
+    
+
+---
+
+Fammi sapere se vuoi che prosegua con la prossima slide o blocco di testo!
+
+Ecco la **traduzione letterale** di questo blocco con la corretta formattazione delle formule:
+
+---
+
+**Analisi dei PTPN: calcolo del successore – condizionamento**
+
+- Si condiziona $D$ al fatto che $t_0$ scatti per primo:
+    
+
+Dt0={Dτ(t0)−τ(th)≤0∀th∈Tpr(m)∖{t0}D_{t_0} = \left\{ \begin{array}{l} D \\ \tau(t_0) - \tau(t_h) \leq 0 \quad \forall t_h \in Tpr(m) \setminus \{t_0\} \end{array} \right.
+
+Ovvero:
+
+Dt0={τ(ti)−τ(tj)≤bijτ(t0)−τ(th)≤0∀ ti,tj∈Te(m)∪{t?}∣ti≠tj,∀ th∈Tpr(m)∖{t0}D_{t_0} = \left\{ \begin{array}{l} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq 0 \\ \forall \ t_i, t_j \in Te(m) \cup \{t?\} \mid t_i \ne t_j, \\ \forall \ t_h \in Tpr(m) \setminus \{t_0\} \end{array} \right.
+
+E quindi anche:
+
+Dt0={τ(ti)−τ(tj)≤bijτ(t0)−τ(th)≤min⁡{0,b0h}∀ ti,tj∈Te(m)∪{t?}∣ti≠tj,∀ th∈Tpr(m)∖{t0}D_{t_0} = \left\{ \begin{array}{l} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq \min\{0, b_{0h}\} \\ \forall \ t_i, t_j \in Te(m) \cup \{t?\} \mid t_i \ne t_j, \\ \forall \ t_h \in Tpr(m) \setminus \{t_0\} \end{array} \right.
+
+---
+
+- Si rappresenta $D_{t_0}$ in forma normale e si indichino con $B_{ij}$ i suoi coefficienti  
+    (**complessità quadratica** rispetto al numero di transizioni abilitate):
+    
+
+Dt0={τ(ti)−τ(tj)≤Bijτ(t0)−τ(ti)≤B0i∀ ti,tj∈Te(m)∪{t?}∣ti≠tj, ti≠t0D_{t_0} = \left\{ \begin{array}{l} \tau(t_i) - \tau(t_j) \leq B_{ij} \\ \tau(t_0) - \tau(t_i) \leq B_{0i} \\ \forall \ t_i, t_j \in Te(m) \cup \{t?\} \mid t_i \ne t_j, \ t_i \ne t_0 \end{array} \right.
+
+---
+
+Fammi sapere se vuoi che continui con la prossima sezione!
+
+Ecco la **traduzione letterale** della slide, con notazione matematica in formato $...$:
+
+---
+
+**Analisi dei PTPN: calcolo del successore – avanzamento del tempo (1/4)**
+
+- Ridurre, del tempo trascorso in $S$, il tempo di scatto delle transizioni che sono **in esecuzione** in $m$ e **persistenti** in $S'$, cioè:
+    
+    τ′(ti)=τ(ti)−τ(t0)∀ ti∈Tpr(m)∩Tp(S′)∖{t0}\tau'(t_i) = \tau(t_i) - \tau(t_0) \quad \forall \ t_i \in Tpr(m) \cap Tp(S') \setminus \{t_0\}
+- **Non modificare** il tempo di scatto delle transizioni che sono **sospese** in $m$ e **persistenti** in $S'$, cioè:
+    
+    τ′(tx)=τ(tx)∀ tx∈Ts(m)∩Tp(S′)∖{t0}\tau'(t_x) = \tau(t_x) \quad \forall \ t_x \in Ts(m) \cap Tp(S') \setminus \{t_0\}
+    
+    dove $Ts(m)$ è l’insieme delle transizioni che sono sospese in $m$
+    
+
+---
+
+- Prima di sostituire le variabili, riscrivere le disuguaglianze in modo da:
+    
+    - rendere **espliciti** i vincoli che coinvolgono $t_0$ (transizione che scatta) e $t?$ (tempo di riferimento)
+        
+    - **distinguere** le transizioni in esecuzione da quelle sospese
+        
+
+---
+Ecco la **traduzione letterale** di questo blocco, con la formattazione completa e chiara delle disuguaglianze:
+
+---
+
+**Analisi dei PTPN: calcolo del successore – avanzamento del tempo (2/4)**
+
+- Riscrivere le disuguaglianze in $D_{t_0}$:
+    
+
+Dt0={τ(ti)−τ(tj)≤Bij(progr, progr)τ(ti)−τ(t?)≤Bi?(progr, ?)τ(t?)−τ(ti)≤B?i(?, progr)τ(ti)−τ(t0)≤Bi0(progr, 0)τ(t0)−τ(ti)≤B0i(0, progr)τ(ti)−τ(tx)≤Bix(progr, susp)τ(ty)−τ(tj)≤Byj(susp, progr)τ(tx)−τ(t?)≤Bx?(susp, ?)τ(t?)−τ(tx)≤B?x(?, susp)τ(ty)−τ(t0)≤By0(susp, 0)τ(t0)−τ(tx)≤B0x(0, susp)τ(tx)−τ(ty)≤Bxy(susp, susp)τ(t0)−τ(t?)≤B0?(0, ?)τ(t?)−τ(t0)≤B?0(?, 0)D_{t_0} = \left\{ \begin{array}{ll} \tau(t_i) - \tau(t_j) \leq B_{ij} & \text{(progr, progr)} \\ \tau(t_i) - \tau(t?) \leq B_{i?} & \text{(progr, ?)} \\ \tau(t?) - \tau(t_i) \leq B_{?i} & \text{(?, progr)} \\ \tau(t_i) - \tau(t_0) \leq B_{i0} & \text{(progr, 0)} \\ \tau(t_0) - \tau(t_i) \leq B_{0i} & \text{(0, progr)} \\ \tau(t_i) - \tau(t_x) \leq B_{ix} & \text{(progr, susp)} \\ \tau(t_y) - \tau(t_j) \leq B_{yj} & \text{(susp, progr)} \\ \tau(t_x) - \tau(t?) \leq B_{x?} & \text{(susp, ?)} \\ \tau(t?) - \tau(t_x) \leq B_{?x} & \text{(?, susp)} \\ \tau(t_y) - \tau(t_0) \leq B_{y0} & \text{(susp, 0)} \\ \tau(t_0) - \tau(t_x) \leq B_{0x} & \text{(0, susp)} \\ \tau(t_x) - \tau(t_y) \leq B_{xy} & \text{(susp, susp)} \\ \tau(t_0) - \tau(t?) \leq B_{0?} & \text{(0, ?)} \\ \tau(t?) - \tau(t_0) \leq B_{?0} & \text{(?, 0)} \\ \end{array} \right.
+
+Con:
+
+- $\forall \ t_i, t_j \in Tpr(m) \cap Tp(S') \setminus {t_0}$ tali che $t_i \ne t_j$, $t_i, t_j \ne t_0$, $t_i, t_j \ne t?$
+    
+- $\forall \ t_x, t_y \in Ts(m) \cap Tp(S')$ tali che $t_x \ne t_y$, $t_x, t_y \ne t_0$, $t_x, t_y \ne t?$
+    
+
+---
+
+Fammi sapere se vuoi che prosegua con la parte **(3/4)**!
+Fammi sapere se procedo con il punto **(2/4)**!
+Ecco la **traduzione letterale** della slide **PTPN analysis: successor computation – time adv. (3/4)**, con formattazione completa e mantenimento della struttura delle disuguaglianze:
+
+---
+
+**Analisi dei PTPN: calcolo del successore – avanzamento del tempo (3/4)**
+
+- **Sostituire le variabili** in $D_{t_0}$:
+    
+
+### Prima della sostituzione (dominio originale $D_{t_0}$):
+
+Dt0={τ(ti)−τ(tj)≤Bijτ(ti)−τ(t?)≤Bi?τ(t?)−τ(ti)≤B?iτ(ti)−τ(t0)≤Bi0τ(t0)−τ(ti)≤B0iτ(ti)−τ(tx)≤Bixτ(ty)−τ(tj)≤Byjτ(tx)−τ(t?)≤Bx?τ(t?)−τ(tx)≤B?xτ(ty)−τ(t0)≤By0τ(t0)−τ(tx)≤B0xτ(tx)−τ(ty)≤Bxyτ(t0)−τ(t?)≤B0?τ(t?)−τ(t0)≤B?0D_{t_0} = \left\{ \begin{array}{ll} \tau(t_i) - \tau(t_j) \leq B_{ij} \\ \tau(t_i) - \tau(t?) \leq B_{i?} \\ \tau(t?) - \tau(t_i) \leq B_{?i} \\ \tau(t_i) - \tau(t_0) \leq B_{i0} \\ \tau(t_0) - \tau(t_i) \leq B_{0i} \\ \tau(t_i) - \tau(t_x) \leq B_{ix} \\ \tau(t_y) - \tau(t_j) \leq B_{yj} \\ \tau(t_x) - \tau(t?) \leq B_{x?} \\ \tau(t?) - \tau(t_x) \leq B_{?x} \\ \tau(t_y) - \tau(t_0) \leq B_{y0} \\ \tau(t_0) - \tau(t_x) \leq B_{0x} \\ \tau(t_x) - \tau(t_y) \leq B_{xy} \\ \tau(t_0) - \tau(t?) \leq B_{0?} \\ \tau(t?) - \tau(t_0) \leq B_{?0} \end{array} \right.
+
+- con $\forall \ t_i, t_j \in \dots$, $\forall \ t_x, t_y \in \dots$
+    
+
+---
+
+### Dopo la sostituzione (dominio trasformato $D'_{t_0}$):
+
+Dt0′={τ′(ti)−τ′(tj)≤Bijτ(t0)−τ(t?)≤Bi?−(τ′(ti)−τ′(t?))τ(t?)−τ(t0)≤B?i+(τ′(ti)−τ′(t?))τ′(ti)−τ′(t?)≤Bi0τ′(t?)−τ′(ti)≤B0iτ(t0)−τ(t?)≤Bix−(τ′(ti)−τ′(tx))τ(t?)−τ(t0)≤Bxi+(τ′(ti)−τ′(tx))τ′(tx)−τ′(t?)≤Bx?τ′(t?)−τ′(tx)≤B?xτ(t?)−τ(t0)≤By0+(τ′(t?)−τ′(ty))τ(t0)−τ(t?)≤B0x−(τ′(t?)−τ′(t0))τ′(tx)−τ′(ty)≤Bxyτ(t0)−τ(t?)≤B0?τ(t?)−τ(t0)≤B?0D'_{t_0} = \left\{ \begin{array}{ll} \tau'(t_i) - \tau'(t_j) \leq B_{ij} \\ \tau(t_0) - \tau(t?) \leq B_{i?} - (\tau'(t_i) - \tau'(t?)) \\ \tau(t?) - \tau(t_0) \leq B_{?i} + (\tau'(t_i) - \tau'(t?)) \\ \tau'(t_i) - \tau'(t?) \leq B_{i0} \\ \tau'(t?) - \tau'(t_i) \leq B_{0i} \\ \tau(t_0) - \tau(t?) \leq B_{ix} - (\tau'(t_i) - \tau'(t_x)) \\ \tau(t?) - \tau(t_0) \leq B_{xi} + (\tau'(t_i) - \tau'(t_x)) \\ \tau'(t_x) - \tau'(t?) \leq B_{x?} \\ \tau'(t?) - \tau'(t_x) \leq B_{?x} \\ \tau(t?) - \tau(t_0) \leq B_{y0} + (\tau'(t?) - \tau'(t_y)) \\ \tau(t_0) - \tau(t?) \leq B_{0x} - (\tau'(t?) - \tau'(t_0)) \\ \tau'(t_x) - \tau'(t_y) \leq B_{xy} \\ \tau(t_0) - \tau(t?) \leq B_{0?} \\ \tau(t?) - \tau(t_0) \leq B_{?0} \end{array} \right.
+
+- con $\forall \ t_i, t_j \in \dots$, $\forall \ t_x, t_y \in \dots$
+    
+
+---
+
+Fammi sapere se vuoi che continui con la parte **(4/4)**!
+
+Ecco la **traduzione letterale** della parte finale:  
+**PTPN analysis: successor computation – time advancement (4/4)**, con le disuguaglianze riordinate e formattate correttamente:
+
+---
+
+### **Analisi dei PTPN: calcolo del successore – avanzamento del tempo (4/4)**
+
+- **Riordinare** le equazioni in $D'_{t_0}$:
+    
+
+---
+
+#### Forma iniziale:
+
+Dt0′={τ′(ti)−τ′(tj)≤Bijτ(t0)−τ(t?)≤Bi?−(τ′(ti)−τ′(t?))τ(t?)−τ(t0)≤B?i+(τ′(ti)−τ′(t?))τ′(ti)−τ′(t?)≤Bi0τ′(t?)−τ′(ti)≤B0iτ(t0)−τ(t?)≤Bix−(τ′(ti)−τ′(tx))τ(t?)−τ(t0)≤Bxi+(τ′(ti)−τ′(tx))τ′(tx)−τ′(t?)≤Bx?τ′(t?)−τ′(tx)≤B?xτ(t?)−τ(t0)≤By0+(τ′(t?)−τ′(ty))τ(t0)−τ(t?)≤B0x−(τ′(t?)−τ′(t0))τ′(tx)−τ′(ty)≤Bxyτ(t0)−τ(t?)≤B0?τ(t?)−τ(t0)≤B?0D'_{t_0} = \left\{ \begin{array}{ll} \tau'(t_i) - \tau'(t_j) \leq B_{ij} \\ \tau(t_0) - \tau(t?) \leq B_{i?} - (\tau'(t_i) - \tau'(t?)) \\ \tau(t?) - \tau(t_0) \leq B_{?i} + (\tau'(t_i) - \tau'(t?)) \\ \tau'(t_i) - \tau'(t?) \leq B_{i0} \\ \tau'(t?) - \tau'(t_i) \leq B_{0i} \\ \tau(t_0) - \tau(t?) \leq B_{ix} - (\tau'(t_i) - \tau'(t_x)) \\ \tau(t?) - \tau(t_0) \leq B_{xi} + (\tau'(t_i) - \tau'(t_x)) \\ \tau'(t_x) - \tau'(t?) \leq B_{x?} \\ \tau'(t?) - \tau'(t_x) \leq B_{?x} \\ \tau(t?) - \tau(t_0) \leq B_{y0} + (\tau'(t?) - \tau'(t_y)) \\ \tau(t_0) - \tau(t?) \leq B_{0x} - (\tau'(t?) - \tau'(t_0)) \\ \tau'(t_x) - \tau'(t_y) \leq B_{xy} \\ \tau(t_0) - \tau(t?) \leq B_{0?} \\ \tau(t?) - \tau(t_0) \leq B_{?0} \end{array} \right.
+
+- con $\forall\ t_i, t_j \in \dots$, $\forall\ t_x, t_y \in \dots$
+    
+
+---
+
+#### Forma riordinata:
+
+Dt0′={τ′(ti)−τ′(tj)≤Bijτ′(tx)−τ′(ty)≤Bxyτ′(tx)−τ′(t?)≤Bx?τ′(t?)−τ′(tx)≤B?xτ′(ti)−τ′(t?)≤Bi0τ′(t?)−τ′(ti)≤B0iτ(t0)−τ(t?)≤B0?τ(t0)−τ(t?)≤Bi?−(τ′(ti)−τ′(t?))τ(t0)−τ(t?)≤Bix−(τ′(ti)−τ′(tx))τ(t0)−τ(t?)≤B0x−(τ′(t?)−τ′(t0))τ(t?)−τ(t0)≤B?0τ(t?)−τ(t0)≤B?i+(τ′(ti)−τ′(t?))τ(t?)−τ(t0)≤Bxi+(τ′(ti)−τ′(tx))τ(t?)−τ(t0)≤By0+(τ′(t?)−τ′(ty))D'_{t_0} = \left\{ \begin{array}{ll} \tau'(t_i) - \tau'(t_j) \leq B_{ij} \\ \tau'(t_x) - \tau'(t_y) \leq B_{xy} \\ \tau'(t_x) - \tau'(t?) \leq B_{x?} \\ \tau'(t?) - \tau'(t_x) \leq B_{?x} \\ \tau'(t_i) - \tau'(t?) \leq B_{i0} \\ \tau'(t?) - \tau'(t_i) \leq B_{0i} \\ \tau(t_0) - \tau(t?) \leq B_{0?} \\ \tau(t_0) - \tau(t?) \leq B_{i?} - (\tau'(t_i) - \tau'(t?)) \\ \tau(t_0) - \tau(t?) \leq B_{ix} - (\tau'(t_i) - \tau'(t_x)) \\ \tau(t_0) - \tau(t?) \leq B_{0x} - (\tau'(t?) - \tau'(t_0)) \\ \tau(t?) - \tau(t_0) \leq B_{?0} \\ \tau(t?) - \tau(t_0) \leq B_{?i} + (\tau'(t_i) - \tau'(t?)) \\ \tau(t?) - \tau(t_0) \leq B_{xi} + (\tau'(t_i) - \tau'(t_x)) \\ \tau(t?) - \tau(t_0) \leq B_{y0} + (\tau'(t?) - \tau'(t_y)) \end{array} \right.
+
+- con $\forall\ t_i, t_j \in \dots$, $\forall\ t_x, t_y \in \dots$
+    
+
+---
+
+Fammi sapere se vuoi procedere con le prossime slide o se ti serve supporto per interpretare o applicare queste equazioni!
+
+Ecco la **traduzione letterale** e formattata della slide:
+
+---
+
+### **Analisi dei PTPN: calcolo del successore – proiezione**
+
+- **Eliminare** il tempo di scatto della transizione scattata $t_0$ attraverso una **proiezione**:
+    
+
+Dt0′′={τ′(ti)−τ′(tj)≤Cij=Bijτ′(tx)−τ′(ty)≤Cxy=Bxyτ′(tx)−τ′(t?)≤Cx?=Bx?τ′(t?)−τ′(tx)≤C?x=B?xτ′(ti)−τ′(t?)≤Ci?=Bi0τ′(t?)−τ′(ti)≤C?i=B0iτ′(ti)−τ′(tx)≤Cix=Bix+B?0τ′(tx)−τ′(ti)≤Cxi=Bxi+B0?(τ′(ti)−τ′(tx))+(τ′(ty)−τ′(tj))≤Cix+Cyj−cixyj,con cixyj=B?0+B0?(τ′(t?)−τ′(tx))+(τ′(ty)−τ′(tj))≤C?x+Cyj−c?xyj,con c?xyj=B0?+B?x−B0x(τ′(ti)−τ′(t?))+(τ′(ty)−τ′(tj))≤Ci?+Cyj−ci?yj,con ci?yj=Bi0+B0?−Bi?(τ′(ti)−τ′(tx))+(τ′(t?)−τ′(tj))≤Cix+C?j−cix?j,con cix?j=B?0+B0j−B?j(τ′(ti)−τ′(tx))+(τ′(ty)−τ′(t?))≤Cix+Cy?−cixy?,con cixy?=By?+B?0−By0(τ′(t?)−τ′(tx))+(τ′(t?)−τ′(tj))≤C?x+C?j−c?x?j,con c?x?j=B0j+B?x−B?j−(τ′(ti)−τ′(t?))+(τ′(ty)−τ′(t?))≤Ci?+Cy?−ci?y?,con ci?y?=Bi0+By?−B?jD''_{t_0} = \left\{ \begin{array}{ll} \tau'(t_i) - \tau'(t_j) \leq C_{ij} = B_{ij} \\ \tau'(t_x) - \tau'(t_y) \leq C_{xy} = B_{xy} \\ \tau'(t_x) - \tau'(t?) \leq C_{x?} = B_{x?} \\ \tau'(t?) - \tau'(t_x) \leq C_{?x} = B_{?x} \\ \tau'(t_i) - \tau'(t?) \leq C_{i?} = B_{i0} \\ \tau'(t?) - \tau'(t_i) \leq C_{?i} = B_{0i} \\ \tau'(t_i) - \tau'(t_x) \leq C_{ix} = B_{ix} + B_{?0} \\ \tau'(t_x) - \tau'(t_i) \leq C_{xi} = B_{xi} + B_{0?} \\ \\ (\tau'(t_i) - \tau'(t_x)) + (\tau'(t_y) - \tau'(t_j)) \leq C_{ix} + C_{yj} - c_{ixyj}, \\ \quad \text{con } c_{ixyj} = B_{?0} + B_{0?} \\ \\ (\tau'(t?) - \tau'(t_x)) + (\tau'(t_y) - \tau'(t_j)) \leq C_{?x} + C_{yj} - c_{?xyj}, \\ \quad \text{con } c_{?xyj} = B_{0?} + B_{?x} - B_{0x} \\ \\ (\tau'(t_i) - \tau'(t?)) + (\tau'(t_y) - \tau'(t_j)) \leq C_{i?} + C_{yj} - c_{i?yj}, \\ \quad \text{con } c_{i?yj} = B_{i0} + B_{0?} - B_{i?} \\ \\ (\tau'(t_i) - \tau'(t_x)) + (\tau'(t?) - \tau'(t_j)) \leq C_{ix} + C_{?j} - c_{ix?j}, \\ \quad \text{con } c_{ix?j} = B_{?0} + B_{0j} - B_{?j} \\ \\ (\tau'(t_i) - \tau'(t_x)) + (\tau'(t_y) - \tau'(t?)) \leq C_{ix} + C_{y?} - c_{ixy?}, \\ \quad \text{con } c_{ixy?} = B_{y?} + B_{?0} - B_{y0} \\ \\ (\tau'(t?) - \tau'(t_x)) + (\tau'(t?) - \tau'(t_j)) \leq C_{?x} + C_{?j} - c_{?x?j}, \\ \quad \text{con } c_{?x?j} = B_{0j} + B_{?x} - B_{?j} \\ \\ - (\tau'(t_i) - \tau'(t?)) + (\tau'(t_y) - \tau'(t?)) \leq C_{i?} + C_{y?} - c_{i?y?}, \\ \quad \text{con } c_{i?y?} = B_{i0} + B_{y?} - B_{?j} \end{array} \right.
+
+Con:
+
+- $\forall \ t_i, t_j \in Tpr(m) \cap Tp(S') \setminus {t_0}$ tali che $t_i \ne t_j$, $t_i, t_j \ne t_0$, $t_i, t_j \ne t?$
+    
+- $\forall \ t_x, t_y \in Ts(m) \cap Tp(S')$ tali che $t_x \ne t_y$, $t_x, t_y \ne t_0$, $t_x, t_y \ne t?$
+    
+
+---
+
+- Se i coefficienti $B$ sono in **forma normale** ⇒ anche i coefficienti $C$ risultanti sono in **forma normale**
+    
+
+---
+
+Fammi sapere se hai bisogno di chiarimenti o vuoi passare alla prossima slide!
+
+Ecco la **traduzione letterale** con corretta formattazione matematica:
+
+---
+
+### **Analisi dei TPN: approssimazione del successore**
+
+- $D'$ è approssimato dalla sua **più stretta DBM inglobante** $\bar{D'}$:
+    
+
+D′ˉ={τ′(ti)−τ′(tj)≤Cijτ′(tx)−τ′(ty)≤Cxyτ′(tx)−τ′(t?)≤Cx?τ′(t?)−τ′(tx)≤C?xτ′(ti)−τ′(t?)≤Ci?τ′(t?)−τ′(ti)≤C?iτ′(ti)−τ′(tx)≤Cixτ′(tx)−τ′(ti)≤Cxiτ′(tn)−τ′(t?)≤LFT(tj)τ′(t?)−τ′(tn)≤−EFT(tj)\bar{D'} = \left\{ \begin{array}{ll} \tau'(t_i) - \tau'(t_j) \leq C_{ij} \\ \tau'(t_x) - \tau'(t_y) \leq C_{xy} \\ \tau'(t_x) - \tau'(t?) \leq C_{x?} \\ \tau'(t?) - \tau'(t_x) \leq C_{?x} \\ \tau'(t_i) - \tau'(t?) \leq C_{i?} \\ \tau'(t?) - \tau'(t_i) \leq C_{?i} \\ \tau'(t_i) - \tau'(t_x) \leq C_{ix} \\ \tau'(t_x) - \tau'(t_i) \leq C_{xi} \\ \tau'(t_n) - \tau'(t?) \leq LFT(t_j) \\ \tau'(t?) - \tau'(t_n) \leq -EFT(t_j) \end{array} \right.
+
+Con:
+
+- $\forall\ t_i, t_j \in Tpr(m) \cap Tp(S') \setminus {t_0}$, con $t_i \ne t_j$, $t_i, t_j \ne t_0$, $t_i, t_j \ne t?$
+    
+- $\forall\ t_x, t_y \in Ts(m) \cap Tp(S')$, con $t_x \ne t_y$, $t_x, t_y \ne t_0$, $t_x, t_y \ne t?$
+    
+- $\forall\ t_n \in T_n(S')$
+    
+
+---
+
+Fammi sapere se vuoi proseguire con la prossima!
+Ecco la **traduzione letterale** con la formattazione matematica corretta:
+
+---
+
+### **Dominio dei tempi di un’esecuzione simbolica (1/2)**
+
+- Si consideri un’esecuzione simbolica $\rho = S_0 \xrightarrow{t_0\ f(0)} S_1 \xrightarrow{t_1\ f(1)} S_2 \dots S_{N-1} \xrightarrow{t_{N-1}\ f(N-1)} S_N$
+    
+- $S_0 = \langle m_0, D_0 \rangle$ è la classe di stato iniziale
+    
+- $S_n = \langle m_n, D_n \rangle$ è la $n$-esima classe di stato visitata da $\rho$ per ogni $n \in {1, \dots, N}$
+    
+- $f(n)$ è l’indice della transizione che scatta nella classe di stato $S_n$ per ogni $n \in {0, 1, \dots, N-1}$
+    
+- $t^k_i$ è una transizione abilitata ex-novo nella classe di stato $S_k$  
+    (è denotata come $t^k_i$ in ogni classe $S_h$ in cui è persistente da $S_k$ a $S_h$)
+    
+- $\ell(t^k_i)$ è l’indice dell’ultima classe in cui $t^k_i$ è persistente
+    
+- $c_n(t_i)$ vale 1 o 0 a seconda che $t_i$ sia in esecuzione o sospesa in $S_n$, rispettivamente
+    
+- $\sigma_n$ è il tempo di permanenza in $S_n$ per ogni $n \in {1, \dots, N}$
+    
+
+---
+
+- Il **dominio dei tempi** di $\rho$ soddisfa i seguenti vincoli:
+    
+
+Dρ={−b?ik≤∑n=kℓ(tik)cn(ti) σn≤bi?k∀ tik che scatta lungo ρ∑n=kℓ(twk)cn(tw) σn≤bw?k∀ twk abilitata ma non scattata lungo ρ∑n=0ℓ(tj0)cn(tj) σn−∑n=0ℓ(tz0)cn(tz) σn≤bij0∀ tj0,tz0 abilitate in S0 e scattate lungo ρ−bi?k≤∑n=0ℓ(tw0)cn(tw) σn−∑n=0ℓ(ti0)cn(ti) σn≤bwi0∀ ti0 abilitata in S0 e scattata lungo ρ, ∀ twk abilitata ma non scattataD_\rho = \left\{ \begin{array}{ll} -b^k_{?i} \leq \sum_{n=k}^{\ell(t^k_i)} c_n(t_i)\ \sigma_n \leq b^k_{i?} & \forall\ t^k_i\ \text{che scatta lungo } \rho \\ \\ \sum_{n=k}^{\ell(t^k_w)} c_n(t_w)\ \sigma_n \leq b^k_{w?} & \forall\ t^k_w\ \text{abilitata ma non scattata lungo } \rho \\ \\ \sum_{n=0}^{\ell(t^0_j)} c_n(t_j)\ \sigma_n - \sum_{n=0}^{\ell(t^0_z)} c_n(t_z)\ \sigma_n \leq b^0_{ij} & \forall\ t^0_j, t^0_z\ \text{abilitate in } S_0\ \text{e scattate lungo } \rho \\ \\ -b^k_{i?} \leq \sum_{n=0}^{\ell(t^0_w)} c_n(t_w)\ \sigma_n - \sum_{n=0}^{\ell(t^0_i)} c_n(t_i)\ \sigma_n \leq b^0_{wi} & \forall\ t^0_i\ \text{abilitata in } S_0\ \text{e scattata lungo } \rho,\ \forall\ t^k_w\ \text{abilitata ma non scattata} \end{array} \right.
+
+---
+
+Fammi sapere quando vuoi procedere con la **parte 2/2**!
+
+Ecco la **traduzione letterale** della slide **Domain of timings of a symbolic run (2/2)** con notazione matematica corretta:
+
+---
+
+### **Dominio dei tempi di un’esecuzione simbolica (2/2)**
+
+- Se $D_\rho$ **non ammette soluzioni** ⇒ $\rho$ è un **comportamento falso**
+    
+- Se $D_\rho$ **ammette soluzioni** ⇒ ogni **limite minimo/massimo** sul tempo trascorso tra **qualsiasi coppia** (non necessariamente consecutiva) di scatti di transizioni può essere calcolato risolvendo un **problema di programmazione lineare** (es. con il **metodo del simplesso**) al fine di **eliminare i comportamenti falsi** introdotti dall’approssimazione
+    
+
+---
+
+- **Calcolare il tempo minimo** trascorso in una qualunque esecuzione ammissibile di $\rho$:
+    
+
+min⁡Dρ{∑n=0N−1σn}\min_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}
+
+---
+
+- **Calcolare il tempo massimo** trascorso in una qualunque esecuzione ammissibile di $\rho$:
+    
+
+max⁡Dρ{∑n=0N−1σn}\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}
+
+---
+
+Fammi sapere se ti serve anche la formattazione in un file o se vuoi andare avanti con altre slide!
+
+Ecco la **traduzione letterale** dell’ultima slide:
+
+---
+
+### **ORIS 1: uno strumento per la modellazione e l’analisi di TPN e PTPN**
+
+- Sviluppato dal laboratorio Software Technologies dell’Università di Firenze
+    
+- Pagina web: [https://stlab.dinfo.unifi.it/oris1.0](https://stlab.dinfo.unifi.it/oris1.0)
+    
+
+---
+
+**Funzionalità principali**
+
+- **Modellazione**: editing grafico di TPN e PTPN
+    
+- **Analisi dello spazio degli stati**: enumerazione dello spazio degli stati per TPN e PTPN
+    
+- **Analisi dei tracciati**: valutazione del profilo temporale più stretto (tight timing profile) di qualsiasi esecuzione simbolica selezionata nello spazio degli stati di un TPN o di un PTPN
+    
+
+---
+
+Fammi sapere se ti serve un riepilogo, l’esportazione in un formato particolare o altro!
+
+Ecco la **traduzione letterale** della slide:
+
+---
+
+### **ORIS 1: come installare e usare lo strumento**
+
+---
+
+**Come installare ORIS 1**
+
+- Installare **VirtualBox** (un hypervisor gratuito e open-source per la virtualizzazione dell’architettura x86):  
+    [https://www.virtualbox.org](https://www.virtualbox.org/)
+    
+- Scaricare la macchina virtuale di ORIS 1:  
+    [https://stlab.dinfo.unifi.it/carnevali/misc/WinXP.ova](https://stlab.dinfo.unifi.it/carnevali/misc/WinXP.ova)
+    
+- Avviare **VirtualBox** e aprire la macchina virtuale ORIS 1
+    
+
+---
+
+**Come usare ORIS 1**
+
+- Manuale:  
+    [https://stlab.dinfo.unifi.it/carnevali/misc/Oris1.pdf](https://stlab.dinfo.unifi.it/carnevali/misc/Oris1.pdf)
+    
+- **Nota**: per i PTPN, **più alto è il numero di priorità, più alta è la priorità**
+    
+
+---
+
+**Una nuova versione dello strumento: ORIS 2**
+
+- Pagina web: [http://www.oris-tool.org](http://www.oris-tool.org/)
+    
+- Supporto per l’analisi di **TPN** e **Stochastic Time Petri Nets (STPN)**
+    
+- Porting in corso delle funzionalità **PTPN** da ORIS 1 a ORIS 2
+    
+
+---
+
+Hai completato anche questa! Fammi sapere se vuoi un file con tutte le traduzioni oppure altro supporto.
+## 5. Utilizzo delle PTPN nel ciclo di vita software V-Model
 
 ---
 **Slide 96**  
@@ -3628,7 +4319,7 @@ $$
 ![[Pasted image 20241109153811.png]]
 
 ---
-## Automati Temporizzati
+## 6. Automati Temporizzati
 
 ---
 
@@ -3867,7 +4558,7 @@ $$
 
 ---
 
-# Introduzione al System Modeling Language
+# 5. Introduzione al System Modeling Language
 
 **Indice**
 
@@ -4177,7 +4868,7 @@ $$
 ![[Pasted image 20241119183752.png]]
 
 ---
-# Testing del Software
+# 6. Testing del Software
 
 **Indice**
 
@@ -4187,7 +4878,7 @@ $$
 4. Test degli stati finiti
 
 ---
-## Concetti di base
+## 1. Concetti di base
 
 **Natura e obiettivi del test del software**
 
@@ -4372,7 +5063,7 @@ $$
 	- Un esempio: seleziono dei test case dagli use case, e poi valuto la coverage su un astrazione basata sul codice (es. RTCA-DO/178B, RTCA-DO/178C)
 
 ---
-## Test del flusso di controllo
+## 2. Test del flusso di controllo
 
 **Introduzione**
 
@@ -4515,7 +5206,7 @@ $$
 ![[Pasted image 20241120195725.png]]
 
 ---
-## Test del flusso dei dati
+## 3. Test del flusso dei dati
 
 **Test del flusso di dati**
 
@@ -4760,7 +5451,7 @@ $$
 	- Spesso ha un intento contrattuale, come nel test di accettazione
 
 ---
-## Test degli stati finiti
+## 4. Test degli stati finiti
 
 **Sistemi reattivi**
 
@@ -4892,5 +5583,103 @@ $$
 - La copertura delle transizioni rivelerà qualsiasi difetto di trasferimento o di output in ogni bordo della specifica
 
 ---
+### **WP-method: mitigare la complessità (1/2)**
 
-Se vuoi continuare o approfondire altri aspetti, fammi sapere!
+- **Concetto semplice**  
+    Dopo la _state cover_ $Q \times W$, la _transition cover_ $P \times W$  
+    può essere semplificata in $(P \setminus Q) \times W$
+    
+- **Concetto più raffinato**  
+    Dopo qualsiasi prefisso di test in $Q$ o in $(P \setminus Q)$,  
+    il suffisso dell'intero insieme di caratterizzazione $W$ può essere sostituito con  
+    un _insieme di identificazione_ **ristretto** allo stato raggiunto previsto
+    
+- Si sostituisce il concetto di **un singolo insieme di caratterizzazione** $W$,  
+    con una **collezione di insiemi di caratterizzazione di stato**,  
+    uno per ciascuno stato della specifica
+    
+
+---
+
+### **WP-method: mitigare la complessità (2/2)**
+
+- **Insiemi di caratterizzazione di stato**  
+    Esempio: $WP = {W_0; W_1; W_2} = {{a}; {a, b}; {b}}$
+    
+- Tutti i **prefissi di test** che terminano in $S_0$ o $S_1$  
+    saranno estesi da **un solo prefisso** invece che da due
+    
+- La complessità si riduce da $O(N^3)$ a $O(N^2)$
+    
+
+---
+
+### **WP-method: sulle ipotesi (1/2)**
+
+- **Specifiche**:
+    
+    - _Deterministiche_: nella pratica, va da sé  
+        (ma, in ogni caso, può essere ottenuto tramite determinizzazione)
+        
+    - _Osservabili_: può essere ottenuto con un **simbolo muto**
+        
+    - _Completamente specificate_: può essere ottenuto con un **auto-ciclo muto**
+        
+- Tuttavia, ciascuna di queste condizioni aumenta la complessità:  
+    nel numero di stati, nella lunghezza o dimensione degli insiemi di caratterizzazione
+    
+
+---
+
+### **WP-method: sulle ipotesi (2/2)**
+
+- **Implementazione**:
+    
+    - _Deterministica_: è un vincolo per la programmazione
+        
+    - _Osservabile_: può essere ottenuta con un simbolo muto
+        
+    - _Completamente specificata_: l’IUT deve gestire qualsiasi input in ogni stato,  
+        possibilmente con un’operazione nulla (**NOP**)
+        
+    - _Funzione di reset corretta_: richiede che non venga mantenuta memoria,  
+        può non essere banale da implementare, ma può essere testata
+        
+    - **Nessuno stato extra**: il vero limite!
+        
+
+---
+
+### **WP-method: sugli stati extra (1/2)**
+
+- **Qual è il problema con gli stati extra?**
+    
+    - Stati extra **equivalenti** non sono un errore
+        
+    - Ma, uno stato extra può **sostituire** uno stato, e l’IUT può produrre  
+        gli stessi output della specifica attraversando **stati extra**…
+        
+    - …per un numero di passi **più lungo** dei casi di test previsti nell’insieme di caratterizzazione
+        
+
+---
+
+### **WP-method: sugli stati extra (2/2)**
+
+- **La soluzione**:
+    
+    - L’assenza di stati extra **non è facile da garantire** nell’implementazione
+        
+    - I test nell’insieme di caratterizzazione $W$ possono essere **estesi** per garantire  
+        la copertura completa fino a $k$ stati extra, sostituendo $W$ con $I_k \times W$,  
+        dove $I_k$ è l’insieme di tutte le **sequenze di input di lunghezza $k$**
+        
+- **Compromesso** tra **complessità** e **copertura dei guasti**
+    
+- Richiederebbe una **stima del numero di stati extra**
+    
+- La copertura completa dei guasti è un **obiettivo ambizioso**
+    
+
+---
+
