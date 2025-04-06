@@ -4331,47 +4331,59 @@ $$
 ---
 # 5. Introduzione al System Modeling Language
 
+---
 **Indice**
 
 1. System Modeling Language
 2. Un esempio nell'area dei sistemi cyber-physical
 
+	**Slide 1/37**
 ---
-## System Modeling Language
+## 1. System Modeling Language
 
-**Cos'è l'ingegneria dei sistemi?**
+---
+**Cos'è l'ingegneria dei sistemi?** (diverso da software engineering)
 
 - L'ingegneria dei sistemi è una disciplina che si concentra sulla progettazione e sull'applicazione dell'**intero sistema**, distinto dalle sue parti. Si occupa del problema nella sua totalità, considerando tutte le variabili e le sfaccettature (Federal Aviation Agency FAA-USA, Systems Engineering Manual, Definition by Simon Ramo, 2006 )
 
-- L'ingegneria dei sistemi è un processo iterativo di sintesi, sviluppo e operatività di un **sistema reale** che soddisfa, in modo quasi ottimale, tutti i requisiti richiesti per il sistemaa (Howard Eisner, Essentials of Project and Systems Engineering Management, Wiley, 2002)
-
+- L'ingegneria dei sistemi è un processo iterativo di sintesi, sviluppo e operatività di un **sistema reale** che soddisfa, in modo quasi ottimale, tutti i requisiti richiesti per il sistemaa (Howard Eisner, Essentials of Project and Systems Engineering Management, Wiley, 2002) => Tipo V-model
+	
+	**Slide 2/37**
 ---
- **Modellazione dei Sistemi**
- 
-![[Pasted image 20241119162804.png]]
+**Modellazione dei Sistemi**
 
+- Modelli funzionali descrivono ciò che il sistema deve fare
+	=> Modelli strutturali invece dicono da quali parti è fatto il sistema e le loro relazioni
+	=> Infine modelli di performance per tutto ciò che riguardano requisiti non funzionali
+	=> Altri modelli possono riguardare ad esempio costo oppure safety
+	![[Pasted image 20241119162804.png]]
+
+	**Slide 3/37**
 ---
  **Vantaggi della Modellazione Basata sui Sistemi**
 
-- Comprensione condivisa dei requisiti e del design del sistema
-	- Validazione dei requisiti
+- Comprensione **condivisa** dei requisiti e del design del sistema
+	- Validazione dei requisiti (e rischi)
 	- Base comune per analisi e progettazione
 	- Facilitazione nell'identificazione dei rischi
 
-- Aiuto nella gestione di sistemi complessi
-	- Separazione dei lavori secondo diverse visioni del modello integrato
-	- Supporta la tracciabilità tramite modelli di sistemi gerarchici
-	- Facilita l'impatto dell'analisi dei requisiti e cambiamenti del design
-	- Supporto per lo sviluppo incrementale e acquisizione evoluzionaria
+- Aiuto nella gestione di **sistemi complessi**
+	- Separazione dei lavori secondo diverse visioni del modello integrato => *separation of responsiblities*
+	- Supporta la tracciabilità tramite modelli di sistemi *gerarchici* => sia da un punto vista strutturale ma anche funzionale
+	- Facilita l'**impatto** dell'analisi dei requisiti e cambiamenti del design => riesco a tracciare su quali componenti si riflette un problema
+	- Supporto per lo sviluppo incrementale e acquisizione evoluzionaria => anche in momenti diversi!
 
 - Migliorata qualità del design
-	- Riduzione degli errori e delle ambiguità
-	-  Rappresentazione più completa 
+	- Riduzione degli errori e delle ambiguità => prima di arrivare all'implementazione
+	- Rappresentazione più completa 
 	
-- Supporta la verifica e validazione anticipata e continua per ridurre il rischio
+- Supporta la verifica e validazione **anticipata** e **continua** per ridurre il rischio => oggetto viene accompagnato durante tutto il suo ciclo di vita
+
 - Fornisce valore attraverso il ciclo di vita (ad esempio formazione)
+
 - Migliora acquisizione della conoscenza
 
+	**Slide 4/37**
 ---
 **Linguaggio di Modellazione dei Sistemi (SysML)**
 
@@ -4380,34 +4392,54 @@ $$
 - Supporta specifica, analisi, progettazione, verifica e validazione di sistemi che includono hardware, software, dati, personale, procedure e strutture.
 
 - è un liguaggio visuale di modellazione che fornisce:
-    - **Semantica**: regole per creare modelli.
+    - **Semantica**: regole per creare modelli => nel senso di specifiche per descrivere altri modelli (meta-modelli => insieme dei modelli che posso andare a produrre)
     - **Notazione**: rappresentazioni grafiche o testuali.
-- Non è una metodologia o un tool (SysML è indipendente dalla metodologia e i tool)
+
+- **Non è una metodologia** o un tool (SysML è indipendente dalla metodologia e i tool)
+
 - Estende un sottoinsieme di UML2
 	- L'UML è un modello di linguaggio general-purpose, per lo sviluppo di applicazioni software (**Ingegneria del software**)
 
+	**Slide 4/37**
 ---
 **SysML vs UML**
 
-![[Pasted image 20241119164136.png]]
+- Diagrammi:
+	=> Comportamentali => ciò che il sistema deve fare 
+	=> Strutturali
+	=> Dei requisiti
+	![[Pasted image 20241119164136.png]]
 
+	=> Tutto quello chè in grassetto sono i diagrammi modificati/aggiunti rispetto a UML
+	=> Lo stesso per quelli tratteggiati => solamente aggiunti
+
+	**Slide 5/37**
 ---
 **I Quattro Pilastri di SysML**
 
 - Un esempio di modellazione di un sistema ABS 
+	![[Pasted image 20241119164337.png]]
 
-![[Pasted image 20241119164337.png]]
+	=> I *parametrics* vanno ad indicare delle relazioni esistenti fra quelli che sono i parametri del sistema => si rappresentano vincoli che riguardano le feature del sistema sia in prospettiva funzionale che non => ad esempio equazioni riguardante velocità di un veicolo!
 
+	**Slide 7/32**
 ---
 **Diagrammi strutturali**
 
-![[Pasted image 20241119180405.png]]
+- Divisi in
+	- *Package diagram*
+	- *Internal block diagram*
+	- *Block definition diagram*
 
+	![[Pasted image 20241119180405.png]]
+
+	**Slide 8/32**
 ---
 **Package diagrams**
 
 - Gli stessi di UML2
-- Usati per organizzare il modello
+
+- Usati **per organizzare il modello**
 	- Raggruppano i modelli in spazi di nomi
 	- Spesso rappresentati in tool browser
 	- Supportano la gestione della configurazione dei modelli (check-in/out)
@@ -4417,12 +4449,16 @@ $$
     - Tipi di diagrammi (requisiti, casi d'uso, comportamento)
     - Usare punti di vista per aumentare l'organizzazione del modello
 
+	**Slide 9/32**
 ---
 **Blocchi**
 
 - Elemento strutturale di base
-- Definisce un insieme di features strutturali e funzionali per descrivere un sistema o elemento (software, hardware, dati, procedure, ...)
-- Utilizzato sia nella progettazione fisica che logica
+
+- Definisce un insieme di features **strutturali e funzionali** per descrivere un sistema o elemento (software, hardware, dati, procedure, ...)
+
+- Utilizzato sia nella progettazione fisica che logica => ovvero qualsiasi cosa di concreto => anche persone
+
 - Le sue caratteristiche possono essere descritte per diversi compartimenti standard
 	- Proprietà (parti, riferimenti, valori, porte)
 	- Operazione
@@ -4430,17 +4466,19 @@ $$
 	- Allocazioni da/per un altro elemento del modello (es. attività)
 	- Requisiti che il blocco soddisfa
 	- Compartimenti definiti dall'utente
+
 - Può essere usato per specificate gerarchie e interconnessioni
 
+	**Slide 10/32**
 ---
 **Diagrammi di Definizione dei Blocchi (BDD) e Diagrammi Interni dei Blocchi (IBD) (1/2)**
 
-- Block Definition Diagram **BDD**: Mostra relazioni tra blocchi (composizione, associazione, specializzazione).
+- Block Definition Diagram **BDD**: Mostra relazioni tra blocchi (*composizione*, *associazione*, *specializzazione*).
 	- Stesso della definizione dei tipi (corrisponde al class diagram dell'UML)
 	- Riusato in più contesti
-	- Non può definire completamente le dipendenze di comunicazione è la struttura di composizione (no topologia)
+	- Non può definire completamente le **dipendenze** di comunicazione è la struttura di composizione (no topologia) => ad esempio nel caso dei fallimenti questi possono non seguire la struttura di composizione
 	
-- Un Internal Block Diagram **IBD**: Mostra la struttura interna di un blocco in termini di proprietà e connettori
+- Un Internal Block Diagram **IBD**: Mostra la **struttura interna di un blocco** in termini di proprietà (come caratteristiche funzionali) e connettori (come relazioni fra elementi di un blocco)
 	- Una parte è l'uso del blocco nel contesto di una composizione di blocchi (conosciuto come ruolo)
 	- La struttura interna e la comunicazione & la topologia del segnalamento diventano esplicite
 
@@ -4449,17 +4487,24 @@ $$
 	- Le porte standard specificano le operazioni richieste o apportate e o i segnali (componenti software usati)
 	- Le porte dei flussi specificano cosa può transitare dentro/fuori di un blocco/porta (usati per i segnali e i flussi fisici)
 
+	**Slide 11/32**
 ---
 **Diagrammi di Definizione dei Blocchi (BDD) e Diagrammi Interni dei Blocchi (IBD) (2/2)**
 
-![[Pasted image 20241119173356.png]]
+- Fra le relazioni:
+	- Piene sono relazioni di *associazione* fra elementi
+	- Vuote sono relazioni di *specializzazione* (vale "è un...")
+	![[Pasted image 20241119173356.png]]
 
+	=> A destra si fa vedere come i blocchi comunicano fra loro
+	
+	**Slide 12/32**
 ---
 **Diagrammi Parametrici (Parametrci diagram) (1/2)**
 
-- Utilizzati per esprimere vincoli (equazioni) tra proprietà di valore
+- Utilizzati per **esprimere vincoli** (equazioni) tra proprietà di valore
 	- Forniscono supporto per analisi ingegneristiche, (es. prestazioni, affidabilità)
-	- Facilitano l'identificazione delle proprietà critiche delle prestazioni
+	- Facilitano l'identificazione delle proprietà critiche delle prestazioni => identificazione dei problemi e componenti coinvolti
 
 - Rappresentano l'uso dei vincoli nel contesto di un'analisi.
 	- I vincoli sono definiti tramite blocchi di vincolo che catturano equazioni.
@@ -4467,27 +4512,38 @@ $$
 	- Il motore computazionale è fornito da strumenti di analisi specifici, non da SysML.
 	- I parametri di vincolo sono associati alle proprietà di valore dei blocchi.
 
+	**Slide 13/32**
 ---
 **Diagrammi Parametrici (2/2)**
 
-![[Pasted image 20241119173758.png]]
+- Ad esempio:
+	![[Pasted image 20241119173758.png]]
 
+	**Slide 14/32**
 ---
 **Diagrammi comportamentali**
 
-![[Pasted image 20241119180506.png]]
+- Divisi in:
+	- Diagramma di attività
+	- Diagramma di sequenze
+	- Diagramma a stati della macchina
+	- Diagramma dei casi d'uso
 
+	![[Pasted image 20241119180506.png]]
+
+	**Slide 15/32**
 ---
 **Diagrammi di Attività (Activity Diagrams)**
 
-- Specificano la trasformazione degli input in output attraverso una sequenza controllata di azioni
+- Specificano la trasformazione degli **input** in **output** attraverso una sequenza controllata di azioni => tipo diagramma di flusso
 
 - Simili ai flussi di dati, ma con estensioni per rappresentare una semantica più generale, inclusi modelli di flussi fisici continui
 
-- Mostrano le responsabilità tramite partizioni di attività (swimlanes).
+- Mostrano le responsabilità tramite partizioni di attività (swimlanes => una per ogni attore).
 	- SysML supporta la modellazione del flusso continuo (sistemi a tempo continuo).
 	- Allineati con tecniche classiche dell'ingegneria dei sistemi, come i diagrammi EFFBD (Enhanced Functional Flow Block Diagrams)
 
+	**Slide 16/32**
 ---
 **Diagrammi di Sequenza (Sequence Diagram)**
 
@@ -4496,16 +4552,18 @@ $$
 	- Descrivono le interazioni tra parti
 
 - Forniscono strumenti per rappresentare scenari complessi, come:
-	  - Sequenze di riferimento
-	  - Logica di controllo
-	  - Decomposizione delle linee di vita
+	- Sequenze di riferimento
+	- Logica di controllo
+	- Decomposizione delle linee di vita
 
-- Conosciuti anche come Diagrammi di Interazione o Interazioni
-
+- Conosciuti anche come **Diagrammi di Interazione** o Interazioni
+	=>Si possono definire diversi eventi di input, oppure descrivere interazioni in concorrenza/parallelo
+	 
+	**Slide 17/32**
 ---
 **Diagrammi a Stati (State Machine Diagram)**
 
-- Utilizzati per rappresentare il ciclo di vita di un blocco
+- Utilizzati per rappresentare il **ciclo di vita** di un blocco => per sintetizzare storia del sistema e evoluzione futura => come evolve nel tempo
 
 - Supportano la rappresentazione del comportamento basato su eventi (generalmente asincrono).
 	- Transizione con trigger, guardia e azione.
@@ -4514,37 +4572,46 @@ $$
 	- Possono inviare/ricevere segnali tra blocchi durante le transizioni di stato
 	- Cambiano eventi, eventi del tempo, eventi dei segnali
 
+	**Slide 18/34**
 ---
 **Diagrammi dei Casi d'Uso (Use Case Diagrams)**
 
-- Portano gli strumenti per descrivere le funzionalità di base del sistema in termini di utilizzi/obiettivi da parte degli attori
+- Portano gli strumenti per descrivere **le funzionalità di base del sistema in termini di utilizzi/obiettivi** da parte degli attori
 	- Il loro uso dipende dalla metodologia
 	- Spesso accompagnati da descrizioni dei casi d'uso
-
+	=> Non hanno a che fare con architettura del sistema ma con i requisiti
+	
 - Le funzionalità comuni possono essere estese tramite relazioni "include" e "extend"
 
 - Elaborati con altre rappresentazioni comportamentali per descrivere scenari dettagliati
 
 - Non subiscono modifiche rispetto all'UML
 
+	**Slide 19/32**
 ---
 **Costrutti cross-cutting**
 
-![[Pasted image 20241119180603.png]]
+- Nuovi elementi rispetto al'uml base
+	
+	![[Pasted image 20241119180603.png]]
 
+	**Slide 20/32**
 ---
 **Allocazioni**
 
-- Rappresentano relazioni generali che mappano un elemento del modello su un altro
+- Rappresentano relazioni generali che **mappano un elemento** del modello su un altro => componenti del sistema capaci di fare certe cose...
 
 - Tipi di allocazione:
-	  - Comportamentale (funzione a componente)
-	  - Strutturale (logico a fisico)
-	  - Software a hardware
+	- **Comportamentale** (funzione a componente)
+	- Strutturale (logico a fisico)
+	- Software a hardware
+	- ...
 
 - Esplicitano allocazioni di attività delle strutture tramite swimlanes (cioè partizioni delle attività)
+
 - Supportano rappresentazioni grafiche e tabellari
 
+	**Slide 21/32**
 ---
 **Requisiti**
 
@@ -4552,54 +4619,71 @@ $$
 	- Include proprietà dell'ID e del testo
 	- Può aggiungere proprietà definite dall'utente come metodi di verifica
 	- Può aggiungere categorie di requisiti definiti dall'utente (es. funzionali, di interfaccia, di performance)
+
 - La gerarchia dei requisiti descrive i requisiti contenuti in una specifica
 
 - Le relazioni tra requisiti includono:
-	  - DeriveReqt, Satisfy, Verify, Refine, Trace, Copy
+	- *DeriveReqt*, *Satisfy*, *Verify*, *Refine*, *Trace*, *Copy*
 
+	**Slide 22/32**
 ---
 **Diagramma dei requisiti**
 
-![[Pasted image 20241119181451.png]]
+- Esempio 
+	![[Pasted image 20241119181451.png]]
 
+	=> Posso specificare quali sono i blocchi che dovrebbero andare a soddisfare certi requisiti => ad esempio requisito di potenza dovrebbe essere soddisfatto dal *powerSubsystem*
+
+	**Slide 23/32**	
 ---
-**Papyrus**
+**Papyrus** (fratello di sans)
 
-- Uno strumento open source basato su Eclipse che fornisce un ambiente integrato per l'editing di modelli UML e SysML.
+- Uno strumento open source **basato su Eclipse** che fornisce un ambiente integrato per l'editing di modelli UML e SysML.
 	- Sviluppato dal laboratorio di ingegneria dei sistemi della Commissione francese per l'energia atomica e le energie alternative.
-- **Pagina ufficiale**: [https://www.eclipse.org/papyrus](https://www.eclipse.org/papyrus).
-- Può essere utilizzato come strumento autonomo o come plugin per Eclipse.
-![[Pasted image 20241119181757.png]]
 
+- **Pagina ufficiale**: [https://www.eclipse.org/papyrus](https://www.eclipse.org/papyrus).
+
+- Può essere utilizzato come strumento autonomo o come plugin per Eclipse.
+
+	![[Pasted image 20241119181757.png]]
+
+	**Slide 24/32**
 ---
 **Papyrus: Come installare lo strumento**
 
 1. Selezionare **Help → Install New Software**.
 2. Nella sezione **Work with**, aggiungere il seguente link:
-    - [http://download.eclipse.org/modeling/mdt/papyrus/updates/releases/2019-09](http://download.eclipse.org/modeling/mdt/papyrus/updates/releases/2019-09).
+    - (http://download.eclipse.org/modeling/mdt/papyrus/updates/releases/2019-09).
 3. Selezionare **Add → Papyrus for UML** e avviare l'installazione.
 4. Ripetere il processo per **SysML** aggiungendo il link:
-    - [http://download.eclipse.org/modeling/mdt/papyrus/components/sysml14](http://download.eclipse.org/modeling/mdt/papyrus/components/sysml14).
+    - (http://download.eclipse.org/modeling/mdt/papyrus/components/sysml14).
+
+	**Slide 25/32**
+---
+## 2. Un esempio nell'area dei sistemi cyber-physical (also skip this)
 
 ---
-## Un esempio nell'area dei sistemi cyber-physical
-
 **Reti di distribuzione del gas**:
 
-- Combinano l'analisi fisico-dinamica dei fluidi con procedure di gestione cibernetica.
-- Obiettivo: valutare il rischio di **bassa pressione** nella fase transitoria dopo una riparazione.
+- Combinano l'analisi **fisico**-dinamica dei fluidi con procedure di gestione **cibernetica** => quando si voleva ripare un componente
+
+- Obiettivo: valutare il rischio di **bassa pressione** nella fase transitoria dopo una riparazione. => abbassare pressione gas può portare a problemi per i dispositivi attaccati alla rete e quindi alle persone
+
 - Analisi:
     - Analisi dinamica del comportamento del gas.
-    - Analisi stocastica delle azioni di riparazione.
-![[Pasted image 20241119182036.png]]
+    - Analisi *stocastica* delle azioni di riparazione.
+
+	![[Pasted image 20241119182036.png]]
+
+	**Slide 26/32**
 ---
 **Soluzione che combina analisi fluidodinamiche e stocastiche**
 
 - Analisi fluido-dinamica del comportamento del gas
-	- Deriva il rischio di bassa pressione (LPR) sperimentato in ogni stato fluido-dinamico
+	- Deriva il **rischio di bassa pressione** (LPR) sperimentato in ogni stato fluido-dinamico => ad ogni stato è associato un rischio di bassa pressione a cui si va incontro
 
 - L'analisi transitoria della procedura di riparazione
-	- Deriva la probabilità transitoria  di ogni stato dinamico
+	- Deriva la **probabilità transitoria** di ogni stato dinamico
 	- Calcolo del rischio transitorio istantaneo:    
 	    $∑_{γ∈Γ} If(e(m,γ),LPR_γ,0)$, dove:
 	    - $\Gamma$ è insieme degli stati fluidodinamici.
@@ -4607,37 +4691,50 @@ $$
 	    - $e(m,γ)$ è *vero* se la marcatura $m$ rappresenta lo stato γ, *falso* altrimenti
 
 - La soluzione fornisce il **rischio di bassa pressione** atteso nel tempo.
-    
 	![[Pasted image 20241119182726.png]]
 	![[Pasted image 20241119182914.png]]
+	=>  Viene mostrato il rischio di bassa pressione nel tempo => a destra quello cumulativo a seconda di quando viene eseguita la procedura
+	
+	**Slide 27/32**
 ---
 **SysML: Diagrammi dei Casi d'Uso e Requisiti**
 
 - Use Case Diagram dello scenario del tubo
-![[Pasted image 20241119183108.png]]
+	![[Pasted image 20241119183108.png]]
 
 - Tabella dei requisiti
-![[Pasted image 20241119183140.png]]
+	![[Pasted image 20241119183140.png]]
 
+	**Slide 28/32**
 ---
 **SysML: Diagrammi di Definizione dei Blocchi delle risolse coinvolte**
 
-![[Pasted image 20241119183238.png]]
+- Vado a caratterizzare le risorse coinvolte 
+	![[Pasted image 20241119183238.png]]
 
+	**Slide 29/32**
 ---
 **SysML: Diagrammi a Stati della rete e del personale**
 
-![[Pasted image 20241119183334.png]]
-
-![[Pasted image 20241119183411.png]]
-
+- Esempio diagramma a stati
+	![[Pasted image 20241119183334.png]]
+	=> Gli intervalli temporali corrispondono ai diversi modi di lavorare del personali
+	=> Faccio dei time per valutare ad ognuno i *time step* della rete => a procedura terminata si può tornare allo stato nominale della pressione
+	
+	 ![[Pasted image 20241119183411.png]]
+ 
+	 **Slide 30/32**
 ---
 **SysML: Diagrammi di Attività della procedura di riparazione**
 
-![[Pasted image 20241119183832.png]]
-![[Pasted image 20241119183628.png]]
-![[Pasted image 20241119183752.png]]
+- Esempio diagramma di attività
+	![[Pasted image 20241119183832.png]]
+	![[Pasted image 20241119183628.png]]
+	![[Pasted image 20241119183752.png]]
 
+	=> Una volta che la rete è stata sezionata si cominciano due attività in parallelo => fatto secondo tutti i controlli riporto la rete allo stato originale facendo alcune operazioni conclusive
+	
+	 **Slide 31/32**
 ---
 # 6. Testing del Software
 

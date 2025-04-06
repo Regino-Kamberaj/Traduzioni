@@ -6,7 +6,7 @@
       {
         "id": "5f49474bd3a044bd",
         "type": "tabs",
-        "dimension": 58.31111111111112,
+        "dimension": 55.64444444444444,
         "children": [
           {
             "id": "9bd4012566dfc51d",
@@ -27,7 +27,7 @@
       {
         "id": "4ac0835801a0e29e",
         "type": "tabs",
-        "dimension": 41.68888888888888,
+        "dimension": 44.355555555555554,
         "children": [
           {
             "id": "d273edcc236aa3b7",
@@ -35,10 +35,10 @@
             "state": {
               "type": "pdf",
               "state": {
-                "file": "Swees/Slides/4. SWEES_advancedTopics.pdf"
+                "file": "Swees/Slides/5. SWEES_sysml.pdf"
               },
               "icon": "lucide-file-text",
-              "title": "4. SWEES_advancedTopics"
+              "title": "5. SWEES_sysml"
             }
           }
         ]
@@ -186,6 +186,9 @@
   },
   "active": "9bd4012566dfc51d",
   "lastOpenFiles": [
+    "Swees/Slides/5. SWEES_sysml.pdf",
+    "Swees/Swees - Traduzione slides.md",
+    "Swees/Slides/4. SWEES_advancedTopics.pdf",
     "Swees/Immagini Swees/Pasted image 20250405002322.png",
     "Swees/Immagini Swees/Pasted image 20250405001513.png",
     "Swees/Immagini Swees/Pasted image 20250405001148.png",
@@ -196,12 +199,8 @@
     "Swees/Immagini Swees/Pasted image 20250403153717.png",
     "Swees/Immagini Swees/Pasted image 20250403153405.png",
     "Swees/Immagini Swees/Pasted image 20250403152914.png",
-    "Swees/Immagini Swees/Pasted image 20250403152838.png",
-    "Swees/Slides/4. SWEES_advancedTopics.pdf",
-    "Swees/Swees - Traduzione slides.md",
     "Swees/Slides/3. SWEES_realTimeOperatingSystems.pdf",
     "Swees/Slides/6. SWEES_testing.pdf",
-    "Swees/Slides/5. SWEES_sysml.pdf",
     "Swees/Slides/SWEES_VxWorks.pdf",
     "Senza nome.md",
     "Swees/Slides/2. SWEES_realTimeSystems.pdf",
