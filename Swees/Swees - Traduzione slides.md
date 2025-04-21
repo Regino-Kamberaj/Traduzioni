@@ -12,33 +12,35 @@ Università di Firenze
 [laura.carnevali@unifi.it](mailto:laura.carnevali@unifi.it)
 
 ---
-
 **Struttura del corso**
 
 1. Crediti
 2. Contenuti del corso
 3. Organizzazione del corso
 
+	**Slide 1/35**
 ---
+## 1. Crediti
 
-## Crediti
+---
+**Crediti**
 
 - Gran parte del materiale presentato in queste slide è tratto da:
-    
     - Le slide del corso “Real-Time Systems” tenuto dal Prof. Giorgio Buttazzo:  
         [http://retis.sssup.it/~giorgio/rts-MECS.html](http://retis.sssup.it/~giorgio/rts-MECS.html)
     - Le slide del corso “Real-Time Systems” tenuto dal Prof. Tullio Vardanega:  
         [https://www.math.unipd.it/~tullio/RTS/2019](https://www.math.unipd.it/~tullio/RTS/2019)
+    
 - Queste slide sono autorizzate solo per uso personale.
     
 - Qualsiasi altro uso, redistribuzione o vendita a scopo di lucro delle slide (in qualsiasi forma) richiede il consenso dei titolari del copyright.
-    
+
+	**Slide 2/35**
+---
+## 2. Contenuti del corso
 
 ---
-
-## Contenuti del corso
-
-**Il corso tratta** di:
+**Di cosa parla il corso** 
 
 - Progettazione, implementazione e testing del **software embedded**
 	- Cos’è un sistema embedded?
@@ -47,38 +49,35 @@ Università di Firenze
 	- Quali sono le linee guida per la programmazione e l’implementazione del software?
 	- Quali sono le strategie per il testing del software?
 
+	**Slide 3/35**
 ---
-
 **Sistemi Embedded**
 
-- Un **sistema embedded** è un sistema di elaborazione dedicato progettato per funzioni specifiche all'interno di un sistema più grande, spesso con vincoli di elaborazione in tempo reale.
+- Un **sistema embedded** è un sistema di elaborazione ==dedicato progettato per funzioni specifiche== all'interno di un sistema più grande, spesso con **vincoli** di elaborazione **in tempo reale**.
 	- Possono essere **autonomi, in rete, mobili o real-time**.
 	- Sono dotati di **microcontrollori, microprocessori o chip progettati su misura**.
 	- Possono includere **interfacce utente, anche complesse e grafiche**.
 
-**Sistemi embedded vs sistemi generici**
+- **Sistemi embedded vs sistemi generici**
+	- **Sistemi embedded**: progettati per uno scopo specifico o per pochi scopi.
+	- **Sistemi generici**: progettati per molteplici utilizzi.
 
-- **Sistemi embedded**: progettati per uno scopo specifico o per pochi scopi.
-- **Sistemi generici**: progettati per molteplici utilizzi.
+- **Sistemi embedded vs sistemi cyber-fisici**
+	- **Sistemi embedded**: essenzialmente **chiusi**.
+	- **Sistemi cyber-fisici**: essenzialmente **aperti**.
+	![[Pasted image 20250306184601.png]]
 
-**Sistemi embedded vs sistemi cyber-fisici**
-
-- **Sistemi embedded**: essenzialmente **chiusi**.
-- **Sistemi cyber-fisici**: essenzialmente **aperti**.
-
-![[Pasted image 20250306184601.png]]
-
+	**Slide 4/35**
 ---
-
 **Sistemi embedded in tempo reale**
 
 - Un **sistema in tempo reale** è un sistema informatico soggetto a **vincoli temporali**.
-	- **I tempi di risposta e l’interferenza tra i task devono essere limitati in tutti gli scenari**.
+	- **I tempi di risposta e l’interferenza tra i task devono essere limitati in tutti gli scenari**
 	- Il **tempo** non è un attributo intrinseco, ma dipende strettamente dall’ambiente.
 
 - Il **rispetto dei vincoli temporali deve essere dimostrato**.
 
-- La correttezza dipende sia dal **risultato logico** (correttezza funzionale) sia dal **tempo in cui il risultato è prodotto** (correttezza non funzionale).
+- La correttezza dipende sia dal **risultato logico** (correttezza *funzionale*) sia dal **tempo in cui il risultato è prodotto** (correttezza *non funzionale*).
 	- **Una risposta tardiva, anche se logicamente corretta, può essere dannosa quanto una risposta errata**.
 
 - Un sistema in tempo reale è tipicamente **incorporato** in un sistema più grande per:
@@ -86,36 +85,36 @@ Università di Firenze
     - **Gestire le risorse disponibili**
     - **Semplificare l’interazione con l’utente**
 
-![[Pasted image 20250306184843.png]]
+	![[Pasted image 20250306184843.png]]
 
+	**Slide 5/35**
 ---
-
 **Un po’ di storia sui sistemi embedded (1/3)**
 
 - **Primi anni ‘60**: **Apollo Guidance Computer** (MIT Instrumentation Lab)
     - **Primo sistema embedded in tempo reale** usato per guida, navigazione e controllo delle missioni Apollo.
     - Uno dei **primi computer con circuiti integrati**.
     - Uso di **simulatori software e hardware per la verifica e la validazione**.
-![[Pasted image 20250306185021.png]]
+	![[Pasted image 20250306185021.png]]
 
+	**Slide 6/35**
 ---
-
 **Un po’ di storia sui sistemi embedded (2/3)**
 
 - **Metà anni ‘60**: sistemi di guida missilistica (Autonetics, ora Boeing)
     - **D-17B**: primo sistema embedded prodotto su larga scala.
     - **NS-17**: primo sistema embedded con un uso massiccio di circuiti integrati.
+
 - **Fine anni ‘60**: **microprocessore per il controllo dell'iniezione elettronica di carburante** (Bosch)
     - Primo sistema embedded nel settore **automobilistico**.
+	![[Pasted image 20250306185117.png]]
 
-![[Pasted image 20250306185117.png]]
-
+	**Slide 7/35**
 ---
-
 **Un po’ di storia sui sistemi embedded (3/3)**
 
 - **Fine anni ‘60 - inizio anni ‘70**: **Calo del costo dei circuiti integrati**, maggiore diffusione.
-    - **TMS1000** (Texas Instruments): primo microcontrollore commerciale.
+    - **TMS1000** (Texas Instruments): primo micro-controllore commerciale.
     - **Intel 4004**: primo microprocessore commerciale.
 
 - **Anni ‘80 e ‘90**:
@@ -124,32 +123,33 @@ Università di Firenze
     - **Embedded Linux**: sistemi operativi embedded basati su Linux.
     - **RTLinux**: sistema operativo real-time basato su Linux.
 
-![[Pasted image 20250306185229.png]]
-
+	![[Pasted image 20250306185229.png]]
+	
+	**Slide 8/35**
 ---
-
 **Evoluzione dei sistemi embedded (1/3)**
 
 - **Numero di transistor nei circuiti integrati (1971-2018)**. 
+	![[Pasted image 20250306185258.png]]
 
-![[Pasted image 20250306185258.png]]
-
+	**Slide 9/35**
 ---
 
  **Evoluzione dei sistemi embedded (2/3)**
 
 - **Numero di dispositivi connessi (1992-2020)**.
+	![[Pasted image 20250306185621.png]]
 
-![[Pasted image 20250306185621.png]]
-
+	**Slide 10/35**
 ---
 
  **Evoluzione dei sistemi embedded (3/3)**
 
-- **Ricavi globali del mercato dei sistemi embedded (2015-2021)**. ![[Pasted image 20250306185753.png]]
+- **Ricavi globali del mercato dei sistemi embedded (2015-2021)**. 
+	![[Pasted image 20250306185753.png]]
 
+	**Slide 11/35**
 ---
-
 **I sistemi embedded sono ovunque**
 
 - **Oggi il 98% dei processori nel mondo è utilizzato nei sistemi embedded**.  Applicazioni in:
@@ -165,41 +165,42 @@ Università di Firenze
     - **Sistemi di trasporto intelligenti**
     - ... e molti altri settori.
 
-![[Pasted image 20250306190210.png]]
+	![[Pasted image 20250306190210.png]]
 
+	**Slide 12/35**
 ---
 
 **Aumento della complessità nei sistemi embedded**
 
 - **Numero medio di Unità di Controllo Elettronico (ECU) in un'auto**.
     - Un'auto di lusso moderna può avere fino a **100 ECU**.
-![[Pasted image 20250306190232.png]]
+	![[Pasted image 20250306190232.png]]
 
+	**Slide 13/35**
 ---
-
 **Dove viene utilizzato il software embedded?**
 
 - Il **software embedded controlla quasi tutto in un'auto**.
-![[Pasted image 20250306190248.png]]
 
+	![[Pasted image 20250306190248.png]]
+
+	**Slide 14/35**
 ---
-
 **Complessità del software embedded (1/2)**
 
 - **Numero medio di linee di codice (LOC) in un'auto**.
+	![[Pasted image 20250306190458.png]]
 
-![[Pasted image 20250306190458.png]]
-
+	**Slide 15/35**
 ---
-
  **Complessità del software embedded (2/2)**
 
 - **Confronto della complessità del software**:
     - Le auto sono tra i **sistemi più intensivi dal punto di vista software**.
-![[Pasted image 20250306190805.png]]
+	![[Pasted image 20250306190805.png]]
 
+	**Slide 16/35**
 ---
-
 **Cosa rende speciali i sistemi embedded?**
 
 - **Caratteristiche**
@@ -217,13 +218,15 @@ Università di Firenze
 	- **Rispetto dei vincoli temporali** e isolamento per limitare le interferenze tra i task.
 	- **Alta prevedibilità** nel rispondere a eventi ambientali e temporali.
 	- **Adattabilità (robustezza)** per gestire situazioni di sovraccarico.
-![[Pasted image 20250306190917.png]]
----
 
+	![[Pasted image 20250306190917.png]]
+
+	**Slide 17/35**
+---
 **Fonti di non determinismo nei sistemi embedded (1/2)**
 
 - **Multitasking** (chiamate di sistema per la programmazione concorrente)
-    - Può introdurre **ritardi imprevedibili** nell'esecuzione dei task.
+    - Può introdurre **ritardi imprevedibili** nell'esecuzione dei task. => se guadagno in efficienza perdo di predicibilità
 
 - **Scheduling basato sulle priorità**
     - Supporta la gestione avanzata dei task, ma può richiedere **riassegnazione delle priorità** in caso di nuovi task in arrivo.
@@ -232,15 +235,15 @@ Università di Firenze
     - Elevata priorità delle interruzioni rispetto ai task può migliorare la reattività del sistema, ma può anche causare **ritardi imprevedibili**.
 
 - **Accesso diretto alla memoria (DMA)**
-    - Il trasferimento dati indipendente dalla CPU può bloccare il processore, causando ritardi non prevedibili.(fenomeno del cycle stealing dove la CPU rimane ferma un numero di cicli indefinito se la DMA eseguo un trasferimento dati)
-    - **Metodo time-slice**: riduce l'efficienza ma garantisce una maggiore prevedibilità.
+    - Il trasferimento dati indipendente dalla CPU può bloccare il processore, causando ritardi non prevedibili.(fenomeno del *cycle stealing* dove la CPU rimane ferma un numero di cicli indefinito se la DMA esegue un trasferimento dati)
+    - **Metodo time-slice**:  affido ai task solo determinati time slots => riduce l'efficienza ma garantisce una maggiore prevedibilità
 
+	**Slide 18/35**
 ---
-
 **Fonti di non determinismo nei sistemi embedded (2/2)**
 
 - **Cache**
-    - Accelera l’esecuzione del processore ma è influenzata dal numero di **preemption**, che distruggono la **località dei dati**.
+    - Accelera l’esecuzione del processore ma è influenzata dal numero di **preemption**, che distruggono la **località dei dati**. 
 
 - **Chiamate di sistema**
     - Devono essere **preemptabili** e avere **tempo di esecuzione limitato**.
@@ -251,21 +254,21 @@ Università di Firenze
         - **Blocchi e deadlock**.
 
 - **Gestione della memoria**
-    - L’**allocazione statica** migliora la prevedibilità ma riduce la flessibilità.
+    - L’**allocazione statica** migliora la predicibilità ma riduce la flessibilità.
 
 - **Kernel leggero e cambio di contesto veloce**
     - Riduce il **tempo medio di risposta**, ma **non garantisce il rispetto dei vincoli temporali**.
 
 - Scarso supporto per le specifiche di vincoli temporali sui tasks.
 
+	**Slide 19/35**
 ---
-
  **Soddisfare i requisiti: miti da sfatare**
 
-- **La programmazione real-time non è empirica**.
-    - Le tecniche empiriche possono rendere il comportamento del software **imprevedibile**.
+- **La programmazione real-time ==non è empirica==**.
+    - Le tecniche empiriche possono rendere il comportamento del software **imprevedibile** => blocchi di codice non considerati empiricamente.
 
-- **La programmazione real-time non è a basso livello**.
+- **La programmazione real-time ==non è a basso livello==**.
     - La programmazione a basso livello è **complicata** e il codice è **difficile da mantenere**.
     - L'uso di linguaggi di alto livello semplifica la **verifica dei requisiti**.
 
@@ -274,14 +277,13 @@ Università di Firenze
 	- **Il real-time computing non è ==sinonimo di velocità di elaborazione**.==
 
 - **Il testing è essenziale, ma non è sufficiente**:
-    - Il comportamento del software dipende dai dati di input → il testing fornisce solo una **verifica parziale**.
+    - Il comportamento del software dipende dai dati di input => il testing fornisce solo una **verifica parziale**.
 
 - **La simulazione hardware/software è utile, ma non basta**.
+	![[Pasted image 20250306191745.png]]
 
-![[Pasted image 20250306191745.png]]
-
+	**Slide 20/35**
 ---
-
 **Soddisfare i requisiti: prevedibilità**
 
 - **La ==prevedibilità== a livello di sistema è essenziale**.
@@ -292,10 +294,10 @@ Università di Firenze
     - Sono necessari **test di schedulabilità e fattibilità efficienti**.
     - È essenziale **stimare il tempo di esecuzione nel peggior caso (WCET)**.
     - Anche **l’hardware deve essere progettato per migliorare la prevedibilità** (fuori dall'ambito di questo corso).
-    - 
-![[Pasted image 20250306192253.png]]
----
+	![[Pasted image 20250306192253.png]]
 
+	**Slide 21/35**
+---
 **Soddisfare i requisiti: la stima del WCET non è facile (1/3)**
 
 - **Stima analitica**:
@@ -304,18 +306,17 @@ Università di Firenze
     - **Stimare i cache miss massimi**.
     - **Determinare il tempo di esecuzione delle istruzioni più critiche**.
 
+	**Slide 22/35**
 ---
-
 **Soddisfare i requisiti: la stima del WCET non è facile (2/3)**
 
 - **Stima basata su misurazioni**:
     - **Eseguire il task più volte con input diversi**.
     - **Raccogliere statistiche sui tempi di esecuzione**.
+	![[Pasted image 20250306192441.png]]
 
-![[Pasted image 20250306192441.png]]
-
+	**Slide 23/35**
 ---
-
 **Soddisfare i requisiti: la stima del WCET non è facile (3/3)**
 
 - **Combinazione di analisi e misurazioni**:
@@ -323,32 +324,29 @@ Università di Firenze
     - **AOET (Average Observed Execution Time)**.
     - **WOET (Worst Observed Execution Time)**.
     - **WCET (Worst Case Execution Time)**.
+	![[Pasted image 20250306192543.png]]
 
-![[Pasted image 20250306192543.png]]
-
+	**Slide 24/35**
 ---
-
-**Soddisfare i requisiti: prevedibilità vs efficienza**
+**Soddisfare i requisiti: predicibilità vs efficienza**
 
 - **Criticità del software embedded (basata sugli effetti di un mancato rispetto della scadenza)**:
-    - **Soft**: il mancato rispetto della scadenza riduce le prestazioni.
+    - **Soft**: il mancato rispetto della scadenza **riduce le prestazioni**.
     - **Firm**: il mancato rispetto della scadenza invalida il task.
     - **Hard**: il mancato rispetto della scadenza può avere effetti **catastrofici**.
+	![[Pasted image 20250306192729.png]]
 
-![[Pasted image 20250306192729.png]]
-
+	**Slide 25/35**
 ---
-
 **Obiettivi del corso**
 
 - Studiare le **metodologie software** che migliorano la **prevedibilità** nei sistemi embedded.
 	- Imparare a **modellare applicazioni critiche dal punto di vista temporale** e **analizzarne le proprietà temporali**.
 	- Progettare, programmare e testare **applicazioni software con vincoli temporali**.
+	![[Pasted image 20250306193027.png]]
 
-![[Pasted image 20250306193027.png]]
-
+	**Slide 26/35**
 ---
-
 **Panoramica del programma**
 
 - **Parte 1: Sistemi embedded e in tempo reale**
@@ -387,11 +385,12 @@ Università di Firenze
 - **Parte 3: Ingegneria dei sistemi**
 	- **Elementi di ingegneria dei sistemi basata su modelli (MBSE - Model-Based Systems Engineering)** **SysML (Systems Modeling Language)**
 
+	**Slide 27/35**
 ---
+## 3. Organizzazione del corso
 
-## Organizzazione del corso
-
- **Lezioni**
+---
+**Lezioni**
 
 - **Pagina Moodle del corso**:  
     [https://e-l.unifi.it/course/view.php?id=42580](https://e-l.unifi.it/course/view.php?id=42580)  
@@ -410,8 +409,8 @@ Università di Firenze
     - Domande e richieste di chiarimenti possono essere inviate via email.
     - È possibile fissare incontri in orario di ricevimento o in altri orari su richiesta.
 
+	**Slide 28/35**
 ---
-
 **Esame**
 
 - **Valutazione delle competenze teoriche e pratiche** acquisite nel corso.
@@ -428,8 +427,8 @@ Università di Firenze
     - **Date d'esame** disponibili sulla pagina del corso.
     - **Iscrizione all'esame**: [http://sol.unifi.it/prenot/prenot](http://sol.unifi.it/prenot/prenot)
 
+	**Slide 29/35**
 ---
-
 **Esame orale con self-assignment (6 CFU)**
 
 - **Lo sviluppo di un self-assignment è facoltativo**.
@@ -442,8 +441,8 @@ Università di Firenze
 	- **Uso di ORIS 1.0 o Uppaal** per verificare i requisiti di un sistema concorrente temporizzato.
 	- **Sviluppo di diagrammi SysML** per modellare un sistema embedded.
 
+	**Slide 30/35**
 ---
-
 **Project Work (3 CFU)**
 
 - Formare un gruppo di **1-3 studenti** e **concordare il tema via email** prima di iniziare.
@@ -457,8 +456,8 @@ Università di Firenze
 	- **Analisi del log temporale** di eventi di un modello PTPN.
 	- **Fault injection** e testing di sistemi real-time.
 
+	**Slide 31/35**
 ---
-
 **Esempi di progetti passati**: **Real-Time Programming su Linux-RTAI**
 
 - Implementazione e testing di **task-set real-time**:
@@ -467,9 +466,9 @@ Università di Firenze
 
 - **RTAI (Real-Time Application Interface for Linux)**.
     - Set di task Real-time sono implementati come moduli Kernel eseguiti su un *Intel NUC NUC10i3FNHN.
+	![[Pasted image 20250307082401.png]]
 
-![[Pasted image 20250307082401.png]]
-
+	**Slide 32/35**
 ---
 **Un assignment su generazione e prioritizzazione dei test case**
 
@@ -477,10 +476,10 @@ Università di Firenze
 	- Simulazione di **sistemi cyber-physical complessi**.
 	- **Uso di algoritmi genetici per la generazione di test reattivi**.
 
-![[Pasted image 20250307082543.png]]
+	![[Pasted image 20250307082543.png]]
 
+	**Slide 33/35**
 ---
-
 **Un assignment su scheduling di grafi di task**
 
 - **Scheduling di task nel settore tessile**:
@@ -493,29 +492,26 @@ Università di Firenze
 	- Si evitano prelazioni del task per costi pratici
 	- **Schedulazione con Earliest Deadline First (EDF)** e spinti al massimo senza violare le precedenze 
 
-![[Pasted image 20250307083055.png]]
+	![[Pasted image 20250307083055.png]]
 
+	**Slide 34/35**
 ---
 **Altri esempi di temi di assignment**
 
 - **Analisi della schedulabilità** in sistemi real-time. (sistemi di scheduling a gerarchie)
-
-![[Pasted image 20250307083209.png]]
+	![[Pasted image 20250307083209.png]]
 
 - **Testing di sistemi real-time**.
 
 - **Analisi delle prestazioni nei sistemi ferroviari**.
-
-![[Pasted image 20250307083253.png]]
+	![[Pasted image 20250307083253.png]]
 
 - **Manutenzione predittiva in sistemi distribuiti**. 
 	- **Allocazione delle risorse nei sistemi edge-cloud**.
+	![[Pasted image 20250307083400.png]]
 
-![[Pasted image 20250307083400.png]]
-
+	**Slide 35/35**
 ---
-
-
 # 2. Sistemi Real-time
 
 ---
@@ -527,179 +523,179 @@ Università di Firenze
 
 ---
 ## 1. Concetti di base
----
 
+---
 **Task (1/2)**
 
-- Un **task** è una sequenza di istruzioni che, in assenza di altre attività, viene eseguita continuamente dal processore fino al completamento.
+- Un **task** è una sequenza di istruzioni che, in assenza di altre attività, ==viene eseguita continuamente dal processore fino al completamento==.
 	- Esempio: un singolo task in esecuzione che non subisce preemption.
 
- ![[Pasted image 20240923171258.png]]
+	 ![[Pasted image 20240923171258.png]]
 
 - Un **processo** è un programma in esecuzione, composto da task concorrenti (anche detti **thread**) che condividono uno spazio di memoria comune.
 
+	**Slide 2/128**
 ---
-
 **Task (2/2)** 
 
 - Caratteristiche del task:
     - **Tempo di attivazione ($a_i$)**: tempo in cui un task diventa pronto per l'esecuzione.
     - **Tempo di inizio ($s_i$)**: tempo in cui un task inizia la sua esecuzione.
     - **Tempo di completamento ($f_i$)**: tempo in cui un task termina la sua esecuzione.
-    - **Tempo di calcolo ($C_i$)**: tempo di esecuzione del task senza interruzioni.
-    - **Tempo di Completamento** ($K_{i}$): $K_{i} = f_{i} - s_{i}$, nell'esempio coincide con il tempo di calcolo
-    - **Tempo di risposta ($R_i$)**: $R_i = f_i - a_i$.
+    - **Tempo di calcolo ($C_i$)**: tempo di esecuzione del task senza interruzioni. (intervallo di tempo)
+    - **Tempo di Completamento** ($K_{i}$): $K_{i} = f_{i} - s_{i}$, nell'esempio coincide con il tempo di calcolo *(computation time*)
+    - **Tempo di risposta ($R_i$)**: $R_i = f_i - a_i$. 
 
-![[Pasted image 20240923171417.png]]
+	![[Pasted image 20240923171417.png]]
 
+	**Slide 3/128**
 ---
-
 **Stati del task**
 
-- Un task è **attivo** se può potenzialmente essere eseguito sul processore.
+- Un task è **attivo** se può ==potenzialmente essere eseguito sul processore.==
 	- Un task attivo è **pronto** se è in attesa del processore.
 	- Un task attivo è in **stato running** se è in esecuzione.
 
 - Un task è **bloccato** se è in attesa di utilizzare una risorsa.
 
-![[Pasted image 20240923171513.png]]
+	![[Pasted image 20240923171513.png]]
 
+	**Slide 4/128**
 ---
-
 **Dispatching**
 
 - I task pronti sono mantenuti in una coda detta **_ready queue_**, gestita da una **politica di scheduling**
-- Un'operazione di **_dispatching_** assegna il processore al primo task nella coda.
-- Se ci sono diversi tipi di task => potrebbero esserci più code pronte.
+- Un'operazione di **_dispatching_** ==assegna il processore al primo task nella coda==.
+- Se ci sono diversi tipi di task => potrebbero esserci più ready queue.
+	![[Pasted image 20240923171944.png]]
 
-![[Pasted image 20240923171944.png]]
-
+	**Slide 5/128**
 ---
-
 **Prelazione**
 
-- Meccanismo del kernel che sospende l'esecuzione del task in esecuzione (che ritorna nella coda dei pronti) a favore di un task più importante.
+- Meccanismo del kernel che sospende l'esecuzione del task in esecuzione (che ritorna nella coda dei pronti) **a favore di un task più importante.**
 	- Migliora la concorrenza tra i task :)
-	- Riduce il tempo di risposta dei task ad alta priorità, ma introduce overhead di runtime, sul tempo di esecuzione dei task :(
+	- Riduce il tempo di risposta dei task ad alta priorità, ma introduce *overhead* di runtime, sul tempo di esecuzione dei task :( (tempo per eseguire vari *context switch*)
 
 - Per assicurare task critici può essere disabilitato (temporaneamente o permanentemente)
+	![[Pasted image 20250308182418.png]]
 
-![[Pasted image 20250308182418.png]]
-
+	**Slide 6/128**
 ---
-
 **Schedulazione**
 
 - Una schedulazione è un'assegnazione dei task al processore, che determina la sequenza di esecuzione dei task considerati.
 
 - Formalmente, una schedulazione per un insieme di task $\Gamma = \{\tau_1, \tau_2, ..., \tau_n\}$ è una funzione $\sigma: \mathbb{R}^+ \to \mathbb{N}$, tale che $∀ t ∈ \mathbb{R}^+ \exists \space t_1 , t_2 ∈ \mathbb{R}^+$, tale che $t ∈ [t1 , t2)$ e 
-	- σ(t) = σ(t′ ) ∀ t′ ∈ $[t_1 , t_2]$  :
-		• σ(t) = 0 se il processore è in idle al tempo t
-		• σ(t) = k ∈ {1, 2, . . . , n} se il processore esegue il task $τ_k$ al tempo t
+	- $σ(t) = σ(t′ )$ ∀ $t′ ∈ [t_1 , t_2]$  :
+		• $σ(t) = 0$ se il processore è in idle al tempo t
+		• $σ(t) = k ∈ \{1, 2, . . . , n\}$ se il processore esegue il task $τ_k$ al tempo t
 
 - Ogni intervallo $[t_i , t_{i+1} )$, è chiamato _time slice_ $∀ i ∈ \mathbb{N}^+$
+
 - Ad ogni istante $t_i$, il processore compie un **_context switch_**
 	
-![[Pasted image 20240923172113.png]]
+	![[Pasted image 20240923172113.png]]
 
+	**Slide 7/128**
 ---
-
 **Schedulazione con prelazione**
 
-![[Pasted image 20240923172211.png]]
+- Esempio di scheduling con *preemption*
 
+	![[Pasted image 20240923172211.png]]
+
+	**Slide 8/128**
 ---
 
 **Sistema concorrente**
 
 - Più task possono essere **attivi simultaneamente** (pronti o in esecuzione).
-- Uno e solo un task è in **esecuzione** in un determinato momento.
+- Uno e solo un task è in **esecuzione** in un determinato momento => il resto dei task si contende l'uso della CPU per la prossima esecuzione
+	![[Pasted image 20250308183649.png]]
 
-![[Pasted image 20250308183649.png]]
-
+	**Slide 9/128**
 ---
-
 **Task in tempo reale**
 
 - Un task in tempo reale è caratterizzato da un **vincolo temporale** sul tempo di risposta, detto **deadline** (assoluta/relativa).
 	- **Deadline assoluta ($d_i$)**: tempo entro il quale un task deve completare l'esecuzione.
 	- **Deadline relativa ($D_i$)**: $D_i = d_i - a_i$.
-
-![[Pasted image 20240923172414.png]]
+	![[Pasted image 20240923172414.png]]
 
 - Un task sarà quindi detto **feasible** se completa la sua esecuzione prima della sua deadline assoluta (o relativa)
-	- dunque $f_i ≤ d_i$ oppure $R_i ≤ D_i$
+	- dunque $f_i ≤ d_i$ oppure $R_i ≤ D_i$ (Response time infatti relativo al tempo di attivazione)
 
+	**Slide 10/128**
 ---
-### Laxity
+**Laxity**
 
 - *Laxity* $X_i$ del task $\tau_i$: **massimo ritardo** che un task può subire dopo la sua attivazione, pur completando entro la sua deadline.
 	- Misurato al tempo di attivazione, vale: $X_i = D_i - C_i$.
-	- Anche detto ***slack time***.
+	- Anche detto ***slack time***. => sostanzialmente tempo in cui task non è in esecuzione considerando fino alla sua deadline assoluta
 
-![[Pasted image 20240923172446.png]]
+	![[Pasted image 20240923172446.png]]
 
 - La **Residual laxity** $Y_i$ di un task, è invece la laxity misurata **al completamento del task**
 	- Pari alla deadline assoluta meno il *finishing time*, ovvero $Y_i := d_i -f_i$
 
+	**Slide 11/128**
 ---
-### Lateness e Tardiness
+**Lateness e Tardiness**
 
-- **Lateness $L_i$**: ritardo del task $\tau_i$ rispetto alla sua deadline.
+- **Lateness $L_i$**: ritardo del task $\tau_i$ **rispetto alla sua deadline**.
 	- Pari al tempo di fine meno la deadline assoluta, ovvero $L_i =f_i - d_i$
 	- è negativa se il task finisce prima della sua deadline
 
-![[Pasted image 20240923172528.png]]
+	![[Pasted image 20240923172528.png]]
 
 - **Tardiness $E_i$** del task $\tau_i$: tempo in cui un task rimane attivo **oltre la sua deadline**.
 	- Definito come: $E_i = max${$0,L_i$}, (notare è solo positivo)
 	- Detto anche _exceeding time_
 
+	**Slide 12/128**
 ---
-
 **Task e Job**
 
 - Un task che viene eseguito **più volte su dati diversi** genera una sequenza di attività identiche chiamate **job** o **istanze di task** (stesso codice, dati diversi).
+	![[Pasted image 20240923172617.png]]
 
-![[Pasted image 20240923172617.png]]
-
+	**Slide 13/128**
 ---
-
 **Modalità di attivazione di un task**
 
 - **Modalità di attivazione a tempo**:
-	- il task è automaticamente attivato dal sistema operativo in momenti predefiniti.
-	- Modo di attivazione dei task **periodici**
+	- Il task è automaticamente attivato dal sistema operativo **in momenti predefiniti**.
+	- Modalità di attivazione dei task **periodici**
 
 - **Modalità di attivazione evento**: 
-	- il task è attivato al verificarsi di un evento, da un interruzione o da un altro task tramite una chiamata di sistema esplicita.
+	- Il task è attivato **al verificarsi di un evento**, da un interruzione o da un altro task tramite una chiamata di sistema esplicita.
 	- Modalità di attivazione dei task **aperiodici**
 
+	**Slide 14/128**
 ---
-
 **Task periodico** 
 
 - Un **task periodico** $\tau_i$ consiste in una sequenza infinita di job $\tau_{i1}, \tau_{i2}, \dots, \tau_{ik}$, regolarmente attivati con un tasso costante, ossia con periodo $T_i$. 
 	-  Se $T_i = D_i$, allora l'attività è detta **task periodica pura**.
 	- Il **fattore di utilizzo del task** è $U_i := \frac{C_i}{T_i}$.
 
-![[Pasted image 20240923172729.png]]
+	![[Pasted image 20240923172729.png]]
 
+	**Slide 15/128**
 ---
-
 **Task periodico(2/3)**
 
 - Parametri di un'attività periodica $\tau_i$
     - **Periodo** $T_i$, tempo di computazione $C_i$, deadline relativa $D_i$.
     - Tempo di attivazione del primo job: $\Phi_i := a_{i,1}$ (detto ***fase*** del task).
-    - Tempo di attivazione del k-esimo job con $k > 1$: $a_{i,k} := \Phi_i + (k-1) T_i$.
-    - Deadline assoluta del k-esimo lavoro con $k > 1$: $d_{i,k} := a_{i,k} + D_i$.
-    
-![[Pasted image 20240923173855.png]]
+    - Tempo di attivazione del k-esimo job con $k > 1$: $a_{i,k} := \Phi_i + (k-1) T_i$. (alla fase iniziale aggiungo il k-esimo periodo)
+    - Deadline assoluta del k-esimo job con $k > 1$: $d_{i,k} := a_{i,k} + D_i$.
+	![[Pasted image 20240923173855.png]]
 
+	**Slide 16/128**
 ---
-
-#### Task periodico (3/3)
+**Task periodico (3/3)**
 
 - Supporto per attività periodiche
     - Pseudo-codice che illustra un frammento di una tipica implementazione:
@@ -712,79 +708,64 @@ Università di Firenze
 ```
 
 - Nel periodo che va dall'invocazione di *wait_for_next_period()* fino all'inizio del periodo successivo, l'attività non è né attiva né bloccata, è **inattiva**!(idle)
- 
-![[Pasted image 20240923174335.png]]
+	![[Pasted image 20240923174335.png]]
 
+	**Slide 17/128**
 ---
-
 **Stati dei Task**
 
-![[Pasted image 20240923174511.png]]
+- Aggiunto anche il caso di stato *idle*
+	![[Pasted image 20240923174511.png]]
 
+	**Slide 18/128**
 ---
-
 **Task aperiodico**
 
-- Un task **aperiodico** $\tau_i$ consiste in una sequenza infinita di job $\tau_{i1}, \tau_{i2}, \dots, \tau_{ik}$, che non sono attivati regolarmente.
+- Un task **aperiodico** $\tau_i$ consiste in una sequenza infinita di job $\tau_{i1}, \tau_{i2}, \dots, \tau_{ik}$, che ==non sono attivati regolarmente.==
 
 - Un task **sporadico** $\tau_i$ è un task aperiodico i cui job consecutivi **sono separati da un tempo minimo** tra arrivi $T_i$. i.e., $a_{i,k+1} ≥ a_{i,k} + T_i$
+	![[Pasted image 20240923174605.png]]
 
-![[Pasted image 20240923174605.png]]
-
+	**Slide 19/128**
 ---
-
 **Jitter**
 
 - Il jitter misura la variazione di un evento periodico.
-	- **Jitter assoluto**: $\max_k \{t_k - a_k\} - \min_k \{t_k - a_k\}$ (massima differenza tra i tempi di attivazione effettivi e i tempi di attivazione pianificati.)
-	- **Jitter relativo**: $\max_k \{|(t_k - a_k) - (t_{k-1} - a_{k-1})|\}$ (relativo fra 2 task)
+	- **Jitter assoluto**: $$\max_k \{t_k - a_k\} - \min_k \{t_k - a_k\}$$ => Massima differenza tra i tempi di attivazione effettivi e i tempi di attivazione pianificati.
+	- **Jitter relativo**: $$\max_k \{|(t_k - a_k) - (t_{k-1} - a_{k-1})|\}$$![[Pasted image 20240923174623.png]]
 
-![[Pasted image 20240923174623.png]]
-
+	**Slide 20/128**
 ---
-
 **Start time jitter** 
 
 - **Jitter assoluto del tempo di inizio**
-	- Deviazione massima del tempo di inizio **tra tutti i lavori**.
-    - $\max_k \{s_{i,k} - a_{i,k}\} - \min_k \{s_{i,k} - a_{i,k}\}$
-
+	- Deviazione massima del tempo di inizio(*starting time*) **tra tutti i lavori**.  $$\max_k \{s_{i,k} - a_{i,k}\} - \min_k \{s_{i,k} - a_{i,k}\}$$
 - **Jitter relativo del tempo di inizio**:
-	- Deviazione massima del tempo di inizio tra **due lavori consecutivi**.
-    - $\max_k \{|(s_{i,k} - a_{i,k}) - (s_{i,k-1} - a_{i,k-1})|\}$
-
-![[Pasted image 20240923175222.png]]
-
+	- Deviazione massima del tempo di inizio tra **due lavori consecutivi**. $$\max_k \{|(s_{i,k} - a_{i,k}) - (s_{i,k-1} - a_{i,k-1})|\}$$
+	![[Pasted image 20240923175222.png]]
+	
+	**Slide 21/128**
 ---
-
 **Finishing time jitter**
 
 - **Jitter assoluto del tempo di completamento**
-	- Deviazione massima del tempo di completamento tra tutti i lavori.
-    - $\max_k \{f_{i,k} - a_{i,k}\} - \min_k \{f_{i,k} - a_{i,k}\}$
-
+	- Deviazione massima del tempo di completamento tra tutti i lavori.	$$\max_k \{f_{i,k} - a_{i,k}\} - \min_k \{f_{i,k} - a_{i,k}\}$$
 - **Jitter relativo del tempo di completamento**
-	- Deviazione massima del tempo di completamento tra due lavori consecutivi.
-    - $\max_k \{|(f_{i,k} - a_{i,k}) - (f_{i,k-1} - a_{i,k-1})|\}$
+	- Deviazione massima del tempo di completamento tra due lavori consecutivi. $$\max_k \{|(f_{i,k} - a_{i,k}) - (f_{i,k-1} - a_{i,k-1})|\}$$![[Pasted image 20240923175423.png]]
 
-![[Pasted image 20240923175423.png]]
-
+	**Slide 22/128**
 ---
-
 **Completion time jitter** 
 
 - **Jitter assoluto del tempo di completamento** (prendo starting time invece che activation)
-	- Deviazione massima del tempo di completamento tra tutti i lavori.
-    - $\max_k \{ f_{i,k} - s_{i,k}\} - \min_k \{f_{i,k} - s_{i,k}\}$
-
+	- Deviazione massima del tempo di completamento tra tutti i lavori. $$\max_k \{ f_{i,k} - s_{i,k}\} - \min_k \{f_{i,k} - s_{i,k}\}$$
 - **Jitter relativo del tempo di completamento**
 	- Deviazione massima del tempo di completamento tra due lavori consecutivi.
-    - $\max_k \{|(f_{i,k} - s_{i,k}) - (f_{i,k-1} - s_{i,k-1})|\}$
+	$$\max_k \{|(f_{i,k} - s_{i,k}) - (f_{i,k-1} - s_{i,k-1})|\}$$
+	![[Pasted image 20240923175450.png]]
 
-![[Pasted image 20240923175450.png]]
-
+	**Slide 23/128**
 ---
-
 **Sintesi dei parametri del task**
 
 - **Parametri conosciuti offline** (specificati dal programmatore): 
@@ -796,35 +777,33 @@ Università di Firenze
 	- tempi di arrivo $a_i$ di inizio $s_i$, di completamento $f_i$, tempo di risposta $R_i$
 	- laxity $X_i$ e laxity resuiduale $Yi$
 	- lateness $L_i$, e tardiness $E_i$.
-	- Start time jitter, finishing time jitter e completion time jitter
+	- *Start time jitter*, *finishing time jitter* e *completion time jitter*
+	![[Pasted image 20240923175713.png]]
 
-![[Pasted image 20240923175713.png]]
-
+	**Slide 24/128**
 ---
-
 **Fattibilità vs Schedulabiltà (1/2)**
 
-Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
+Uno **schedule è fattibile** se tutti i suoi vincoli sono rispettate:
 -  **Vincoli temporali**: attivazione, periodo, deadline, jitter.
     - **Vincoli espliciti**: specificati direttamente nei requisiti del sistema.
     - **Vincoli impliciti**: non specificati nei requisiti ma necessari per soddisfare i requisiti prestazionali.
 
-- **Vincoli di precedenza**: impongono un ordine di esecuzione dei tasks, tipicamente espressi tramite un **DAG**, chiamato **grafo dei task**.
+- **Vincoli di precedenza**: impongono un ordine di esecuzione dei task, tipicamente espressi tramite un **DAG**, chiamato **grafo dei task**.
 
 - **Vincoli di accesso alle risorse**: gestiscono la sincronizzazione nell'accesso a risorse condivise (per risolvere conflitti generati da accesso concorrente).
 
+	**Slide 25/128**
 ---
-
 **Feasibility vs schedulability (2/2)**
 
 - Un insieme di task $\Gamma$ è detto **fattibile** se esiste un algoritmo che genera **una schedulazione fattibile** per $\Gamma$.
 
 - Un insieme di task $\Gamma$ è detto **schedulabile** ==da un algoritmo== $A$ se $A$ genera una schedulazione fattibile per $\Gamma$.
+	![[Pasted image 20250308200358.png]]
 
-![[Pasted image 20250308200358.png]]
-
+	**Slide 26/128**
 ---
-
 **Il problema della schedulazione**
 
 - Il problema della schedulazione consiste nel dato:
@@ -832,18 +811,18 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 	- Un set di processori $P = \{P_1,\space...\space, P_m\}$
 	- Un set di risorse $R = \{R_1, \space ... \space , R_s\}$
 	- Un set di vincoli $C =\{C_1, \space ... \space, C_k\}$
-	trovare un'assegnazione di risorse (P, R a $\Gamma$) che produca una schedulazione fattibile. 
+	=> trovare un'assegnazione di risorse (P, R a $\Gamma$) che produca una **schedulazione fattibile**
 
 - Il problema della schedulazione è **NP-completo**: 
 	- Gli algoritmi di scheduling hanno un tempo di esecuzione esponenziale, nel numero di tasks
 
-- É possibile trovare algoritmi in tempo polinomiale sotto **assunzioni semplificative**
+- É possibile trovare algoritmi **in tempo polinomiale** sotto **assunzioni semplificative**
 	- Singolo processore, task omogenei (solo periodici/aperiodici),  task con possibilità di prelazione, attivazioni simultanee, senza vincoli di precedenza, senza vincoli di risorse
 
 		 ![[Pasted image 20240923181117.png]]
 
+	**Slide 27/128**
 ---
-
 **Ricapitolazione sulla complessità**
 
 - Un problema decisionale è **NP** se può essere risolto in tempo polinomiale da una macchina di Turing non deterministica.
@@ -860,147 +839,168 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 	- Complessità polinomiale $O(n^{10}) => 2844.44 h$
 	- Complessità esponenziale $O(10^n) => 3 \space \text{milioni di anni}$
 
+	**Slide 28/128**
 ---
-
 **Tassonomia degli algoritmi di schedulazione(1/2)**
 
-- Prelazione vs non Prelazione: 
+- **Prelazione vs non Prelazione**: 
 	- **Prelazione**: un task può essere interrotto da un task a maggiore priorità;
 	- **Non Prelazione**: un task non può essere interrotto.
 
-- Statico vs dinamico:
-	- **Statico**: le decisioni sono prese basandosi su parametri fissi; 
-	- **Dinamico**: le decisioni sono basate su parametri che cambiano nel tempo.
+- **Statico vs dinamico**:
+	- **Statico**: le decisioni sono prese basandosi su **parametri fissi**; 
+	- **Dinamico**: le decisioni sono basate su **parametri che cambiano nel tempo**.
 
-- Offline vs online: 
-	- **Offline**: decisioni prese prima dell'attivazione dei task (programmazione basata su tabelle)
-	- **Online**: decisioni prese durante l'esecuzione in base ai tasks 
+- **Offline vs online**: 
+	- **Offline**: decisioni prese **prima dell'attivazione** dei task (programmazione basata su tabelle)
+	- **Online**: decisioni prese **durante l'esecuzione** in base ai tasks => a *runtime*
 
+	**Slide 29/128**
 ---
-
 **Tassonomia degli algoritmi di schedulazione(2/2)**
 
-- Ottimale vs euristico:
-	- **Ottimale**: genera una schedulazione che minimizza una funzione di costo definita da un criterio di ottimalità.
-	- **Euristico**: genera una schedulazione secondo una funzione euristica che cerca di soddisfare un criterio di ottimalità, senza garanzia di successo.
+- **Ottimale vs euristico**:
+	- **Ottimale**: genera una schedulazione che **minimizza una funzione di costo** definita da un criterio di ottimalità.
+	- **Euristico**: genera una schedulazione secondo una funzione euristica che **cerca di soddisfare un criterio di ottimalità**, senza garanzia di successo.
 
-- Schedulazione garantita vs best-effort
-	- **Schedulazione garantita**: genera una schedulazione fattibile se esiste; 
+- **Schedulazione garantita vs best-effort**:
+	- **Schedulazione garantita**: genera una schedulazione *fattibile* se esiste; 
 		- necessaria per task hard real-time.
-	- **Best-effort**: non garantisce una schedulazione fattibile;
+	- **Best-effort**: ==non garantisce una schedulazione fattibile==;
 		- utile per task soft real-time; ottimizza la performance media.
 
 - **Algoritmo chiaroveggente**
 	- Conosce tutte le attivazioni future dei task.
 	- Può essere usato per **confrontare** le performance.
 
+	**Slide 30/128**
 ---
-
 **Classificazione algoritmi di scheduling**
 
-![[Pasted image 20250309130836.png]]
+- Classificazione
+	![[Pasted image 20250309130836.png]]
 
+	**Slide 31/128**
 ---
-
 **Anomalie di schedulazione**
 
-- **Teorema (Graham, 1976)**: Se un insieme di task è schedulato in modo ottimale su un multiprocessore con assegnazione di priorità fissa, un numero fisso di processori, tempi di esecuzione fissi e vincoli di precedenza, allora aumentare il numero di processori, ridurre i tempi di esecuzione o ridurre i vincoli di precedenza **può aumentare la lunghezza della schedulazione**.
-	- Piccole variazione nei parametri possono avere grosse conseguenze inaspettate
-	- Ad esempio: un processo più veloce, ovvero a velocità doppia (in giallo le sezioni critiche)
+- **Teorema (Graham, 1976)**: Se un insieme di task è schedulato **in modo ottimale** su un multiprocessore con assegnazione di priorità fissa, un numero fisso di processori, tempi di esecuzione fissi e vincoli di precedenza, allora:
+	1. Aumentare il numero di processori
+	2. Ridurre i tempi di esecuzione 
+	3. Ridurre i vincoli di precedenza 
+	=> **può aumentare la lunghezza della schedulazione**.
+	- Piccole variazione nei parametri possono **avere grosse conseguenze** inaspettate sullo scheduling del task set
 
-		![[Pasted image 20240923181830.png]]
+- Ad esempio: un processo più veloce, ovvero a *velocità doppia* (in giallo le sezioni critiche)
+	
+	![[Pasted image 20240923181830.png]]
 
+	**Slide 32/128**
 ---
-
 ## 2. Schedulazione di task periodici
+
+### Parametri della schedulazione di task periodici
 ---
 **Schedulazione di task periodici: formulazione del problema (1/2)**
 
-- Un insieme di $n$ task periodici $\Gamma = {\tau_1, \dots, \tau_n}$, ciascuno caratterizzato da:
-    - Tempo di arrivo iniziale (fase) $\Phi_i = a_{i,1}$
-    - Tempo di esecuzione nel caso peggiore (WCET) $C_i$
-    - Periodo di attivazione $T_i$
-    - Deadline relativa $D_i \leq T_i$
-- Tutti i task sono indipendenti fra loro
+- Un insieme di $n$ task periodici $\Gamma = \{\tau_1, \dots, \tau_n\}$, ciascuno caratterizzato da:
+    - Tempo di *arrivo iniziale* (fase) => $\Phi_i = a_{i,1}$
+    - Tempo di *esecuzione* (computazione) nel caso peggiore (*WCET*) => $C_i$
+    - Periodo di attivazione => $T_i$
+    - Deadline relativa => $D_i \leq T_i$
+
+- Tutti i task sono **indipendenti** fra loro
 	- Nessun vincolo di precedenza o di risorse.
 	- Nessun task che si autosospende (ad eccezione della sospensione nell'attesa del successivo periodo).
-	- Rilascio del task al suo arrivo.
-	- Nessun o non considerabile overhead del kernel.
+	- Rilascio del task al suo arrivo. 
+	- Nessun o non considerabile *overhead* del kernel.
 
-![[Pasted image 20240923182020.png]]
+	![[Pasted image 20240923182020.png]]
 
+	**Slide 33/128**
 ---
 **Schedulazione di task periodici: formulazione del problema (2/2)**
 
-- Obiettivo: garantire che ogni job $\tau_{i,k}$ di ciascun task periodico $\tau_i$ sia 
-	- attivato al tempo $a_{i,k} = \phi_i + (k - 1) T_i$ 
-	- completato entro il tempo $d_{i,k} = a_{i,k} + D_i$.
+- **Obiettivo**: garantire che ogni job $\tau_{i,k}$ di ciascun task periodico $\tau_i$ sia 
+	- attivato al tempo $a_{i,k} = \phi_i + (k - 1) T_i$  => sono tutti periodici
+	- completato entro il tempo $d_{i,k} = a_{i,k} + D_i$. => eseguiti entro la loro deadline
 
-![[Pasted image 20240923182020.png]]
+	![[Pasted image 20240923182020.png]]
 
+	**Slide 34/128**
 ---
 **Schedulazione di task periodici: parametri aggiuntivi**
 
-- **Iper-periodo $H$**: minimo intervallo di tempo dopo il quale la schedulazione si ripete (minimo comune multiplo dei periodi dei task).
-- **Tempo di risposta di un job $R_{i,k}$** := $R_{i,k} = f_{i,k} - a_{i,k}$.
-- **Tempo di risposta di un task** $R_{i} := max_{k}\{R_{i,k}\}$. 
-	- Ovvero il massimo tempo di risposta fra tutti i job dei task
+- **Iperperiodo $H$**: **minimo intervallo di tempo** dopo il quale la schedulazione **si ripete** (minimo comune multiplo dei periodi dei task).
+- **Tempo di risposta di un job** => $R_{i,k} = f_{i,k} - a_{i,k}$.
+- **Tempo di risposta di un task** => $R_{i} := max_{k}\{R_{i,k}\}$. 
+	- Ovvero il massimo tempo di risposta fra **tutti i job dei task**
+	![[Pasted image 20240923182432.png]]
 
-![[Pasted image 20240923182432.png]]
-
+	**Slide 35/128**
 ---
-**Schedulazione di attività periodiche: istante critico di un'attività**
+**Schedulazione di attività periodiche: istante critico di un task**
 
-- Il tempo di arrivo che produce il massimo tempo di risposta dell'attività.
+- Considero il tempo di arrivo che produce il **massimo tempo di risposta** dei task.
 
 - Si verifica quando l'attività arriva insieme ad altre attività con priorità più alta.
-	- Considera l'interferenza di un'attività ad alta priorità $\tau_i$, su un'attività a bassa priorità $\tau_n$.
-	 ![[Pasted image 20240923183243.png]]
+	- Si considera l'interferenza di un'attività ad alta priorità $\tau_i$ => su un'attività a bassa priorità $\tau_n$.
 	
-	- Ridurre la fase di $\tau_i$ aumenta il tempo di risposta di $\tau_n$. ![[Pasted image 20240923183300.png]]
+		 ![[Pasted image 20240923183243.png]]
+	
+	- Ridurre la fase di $\tau_i$ aumenta il tempo di risposta di $\tau_n$. 
+		
+		![[Pasted image 20240923183300.png]]
 
 	- Ridurre la fase di qualsiasi attività con priorità più alta aumenta il tempo di risposta di $\tau_n$.
 
+	**Slide 36/128**
+---
+### Scheduling statico clock-driven 
 ---
 **Schedulazione non-preemptive a orologio statico (1/2)**
 
-![[Pasted image 20240924222023.png]]
+- Classificazione
+	
+	![[Pasted image 20240924222023.png]]
 
+	**Slide 38/128**
 ---
 **Schedulazione non-preemptive a orologio statico (2/2)**
 
 - Per task periodici con **deadline relativa uguale al periodo**.
 
 - Le decisioni sono prese **offline** in **istanti di tempo prestabiliti**. (cioè uno scheduling statico calcolato offline e salvato in una tabella per usarlo a runtime da un dispatcher attivato da un timer)
-	- Istanti di tempo regolari: scheduling cyclic executive
-	- Istanti di tempo irregolari: scheduling timer-driven (il timer ha bisogno di essere riprogrammato)
+	- Istanti di tempo regolari: *scheduling cyclic executive*
+	- Istanti di tempo irregolari: *scheduling timer-driven* (il timer ha bisogno di essere riprogrammato)
 
 - **Vantaggi**:
-    - Implementazione semplice (non è necessario un sistema operativo in tempo reale).
+    - **Implementazione semplice** (non è necessario un sistema operativo in tempo reale).
     - Basso overhead a runtime.
-    - Jitter molto ridotto.
+    - Jitter molto ridotto. => ricordo che il jitter è la misura di variazione di un evento periodico => posso misurare jitter sullo starting time, finishing time e completion time (quest'ultimo in base allo starting time dei job)
 
 - **Svantaggi**:
-    - Non robusto durante sovraccarichi.
+    - **Non robusto** durante sovraccarichi.
     - Difficile da espandere.
     - Task aperiodici non facili da gestire
 
+	**Slide 39/128**
 ---
-**Schedulazione esecutiva ciclica (schedulazione a timeline)**
+**Schedulazione esecutiva ciclica (schedulazione a timeline)** => *scheduling cyclic executive*
 
 - Uno degli algoritmi di schedulazione più usati nei sistemi militari di difesa e nei sistemi di controllo del traffico (ad esempio, Boeing 777, Space Shuttle).
 
 - **Come funziona**:
 	- Il tempo è diviso in intervalli (**slot temporali**) di uguale durata Δ (**ciclo minore**).
-	- Uno o più task sono **allocati staticamente** a ciascuno slot temporale, assicurando che la somma dei tempi di esecuzione nel caso peggiore (WCET) in ciascuno slot non sia maggiore di Δ.
+	- Uno o più task sono **allocati staticamente** a ciascuno slot temporale, assicurando che la ==somma dei tempi di esecuzione nel caso peggiore (WCET) in ciascuno slot non sia maggiore di Δ==.  
 	- Esecuzione attivata da un **timer** per ciascun slot temporale.
 	- Lo schedule si ripete dopo un intervallo di durata $T$ (**ciclo maggiore**).
 
 **Valori tipici dei parametri**:
+- Δ= gcd⁡{$T_1,...,T_n$} (massimo comune divisore dei periodi dei task).
+- T= lcm{$T_1,...,T_n$} (minimo comune multiplo dei periodi dei task).
 
-- Δ= gcd⁡{$T1,...,Tn$} (massimo comune divisore dei periodi dei task).
-- T= lcm{$T1,...,Tn$} (minimo comune multiplo dei periodi dei task).
-
+	**Slide 40/128**
 ---
 **Esempio di schedulazione esecutiva ciclica**
 
@@ -1013,13 +1013,17 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 	- Major cycle $T = 100$
 	- Minor cycle ∆ $= 25$
 
-![[Pasted image 20240924222135.png]]
+	![[Pasted image 20240924222135.png]]
 
+	**Slide 41/128**
 ---
 **Implementazione e codifica della schedulazione esecutiva ciclica**
 
-![[Pasted image 20240924222519.png]]
+- Esempio di scheduling secondo programma
 
+	![[Pasted image 20240924222519.png]]
+
+	**Slide 42/128**
 ---
 **Cyclic Executive Scheduling: Svantaggi**
 
@@ -1029,44 +1033,50 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 
 - Difficoltà nell'espandere lo scheduling in caso di cambiamenti nei **parametri dei task**:
     - **Cambio del WCET**: $C_B=20 \space \text{(il doppio)} ⇒ C_A+C_B >$ Δ, quindi occorre dividere $τ_B$ in due sottotask $τ_{B_1}$ e $τ_{B_2}$ con WCET pari a 15 e 5 rispettivamente, e ridisegnare lo schedule!
-	![[Pasted image 20240924223316.png]]
+
+		![[Pasted image 20240924223316.png]]
 	
     - **Cambio del periodo**: $T_B=40$ ⇒ Δ=5 $T=200$, il che richiede 40 **sincronizzazioni** per major cycle! => Molto difficile ridisegnare lo schedule a mano.
-	![[Pasted image 20240924223516.png]]
 
+		![[Pasted image 20240924223516.png]]
+
+	**Slide 43/128**
+---
+### Fattore utilizzo processore 
 ---
 **Fattore di utilizzo del processore $U$**
 
-- Frazione del tempo del processore speso nell'esecuzione del task set:
-    - $U = \sum_{i=1}^{n} \frac{C_i}{T_i}$
+- **Frazione** del tempo del processore speso **nell'esecuzione del task set**:$$U = \sum_{i=1}^{n} \frac{C_i}{T_i}$$
+- Esempio: task set con $U = \frac{10}{25} + \frac{10}{40} +\frac{20}{100} = \frac{35}{40} = 0,85$ 
 
-- Esempio: task set con $U = \frac{10}{25} + \frac{10}{40} +\frac{20}{100} = \frac{35}{40} = 0,85$  
+	![[Pasted image 20250313185121.png]]
 
-![[Pasted image 20250313185121.png]]
-
+	**Slide 44/128**
 ---
 **Limite superiore $U_{ub}(\Gamma,A)$ del fattore di utilizzo del processore $U$**
 
-- Definisco il **limite superiore** $U_{ub}(\Gamma,A)$ del fattore di utilizzo $U$ per un insieme di task $\Gamma$ sotto un algoritmo di schedulazione $A$.
+- Definisco il **limite superiore** (*upper bound*) $U_{ub}(\Gamma,A)$ del fattore di utilizzo $U$ per un insieme di task $\Gamma$ sotto un algoritmo di schedulazione $A$.
 	- Se $U = U_{ub}(\Gamma,A)$, l'insieme di task utilizza completamente il processore.
 		- Se il WCET aumenta, il set di task diventa infattibile!
 	- Ogni set di task può avere un diverso limite superiore.
 
 - Ad esempio: (processore assegnato ai task in ordine crescente per il periodo)
 
-![[Pasted image 20240924223949.png]]
+	![[Pasted image 20240924223949.png]]
 
+	**Slide 45/128**
 ---
 **Limite superiore minimo $U_{lub}(A)$**
 
-- Limite superiore **minimo** $U_{lub}(A)$ del fattore di utilizzo sotto un algoritmo di schedulazione $A$. (minimo fra i fattori di utilizzo fra tutti i task set che utilizzano al massimo il processore)
+- Limite superiore **minimo** $U_{lub}(A)$ del fattore di utilizzo sotto un algoritmo di schedulazione $A$. (minimo fra i fattori di utilizzo fra **tutti i task set** che utilizzano **al massimo** il processore)
 	- Definito come:  $U_{lub}​(A)=min_Γ​ \space U_{ub}​(Γ,A)$
 
 - Se $U \leq U_{lub}(A)$, l'insieme di task è **schedulabile** dall'algoritmo $A$, 
 	- altrimenti se $U > 1$ non lo è.
 
-![[Pasted image 20240924224305.png]]
+	![[Pasted image 20240924224305.png]]
 
+	**Slide 46/128**
 ---
 **Massimo Valore di $Ulub(A)$**
 
@@ -1080,18 +1090,21 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 		- $∑\frac{C_i}{T_i}H > H$
 		Dove:
 		- $\frac{H}{T_i}$​ rappresenta il numero di volte che il task $τ_i$ viene eseguito nel periodo H
-		- $\frac{H}{T_i}C_i$​ è il tempo di computazione richiesto da $τ_i$ nel hyper-periodo.
+		- $\frac{H}{T_i}C_i$​ è il tempo di computazione richiesto da $τ_i$ nel *iperperiodo*.
 	3. Quindi: $∑_{i=1}^n\frac{H}{T_i}C_i > H$  rappresenta il tempo totale di computazione richiesto dall’insieme di task nel periodo H
-	4. Se il **tempo richiesto dal set di task** supera il **tempo disponibile del processore** H, allora il set di task non è fattibile.
+	4. Se il **tempo richiesto dal task set** supera il **tempo disponibile del processore** H, allora il set di task non è fattibile.
 
 - **Osservazione**:
 	Questo risultato vale per **qualsiasi algoritmo di scheduling**: se la domanda eccede il tempo disponibile, nessun algoritmo sarà in grado di produrre uno schedule fattibile.
 	
+	**Slide 47/128**
 ---	
+### Scheduling con priorità
+---
 **Schedulazione basata su priorità**
 
 - Come funziona:
-    - Assegna priorità a ciascun task basandosi sui suoi vincoli temporali.
+    - Assegna **priorità** a ciascun task basandosi **sui suoi vincoli temporali**.
     - Verifica la fattibilità della schedulazione usando tecniche analitiche.
     - Esegue i task su un kernel basati sulla **priorità**.
 
@@ -1099,6 +1112,9 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 
 	![[Pasted image 20240924230602.png]]
 
+	**Slide 48/128**
+---
+#### Rate Monotonic 
 ---
 **Schedulazione Rate Monotonic (RM)**
 
@@ -1109,11 +1125,12 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 
 	![[Pasted image 20240924230756.png]]
 	
+	**Slide 49/128**
 ---
 **RM: teorema di ottimalità (Liu & Layland, 1973)**
 
 - **Teorema**: RM è **ottimale** in termini di **fattibilità** tra tutti gli algoritmi a **priorità fissa** per la schedulazione di task periodici (con deadlines uguali ai periodi).
-	- Se uno scheduling a priorità fissa **è fattibile** per un task set $Γ$ ⇒ Lo schedule Rate Monotic è feasible
+	- Se uno scheduling a priorità fissa **è fattibile** per un task set $Γ$ ⇒ Lo schedule RM è feasible
 	- Se invece lo scheduling RM **non è fattibile** per un task set $Γ$ ⇒ Nessun algoritmo a priorità fissa è feasible per il $\Gamma$
 
 - Notare che i due enunciati sono equivalenti ($a$ => $b$ se e solo se $\not b$ => $\not a$)
@@ -1121,6 +1138,7 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 
 - **Teorema**: Se uno scheduling a priorità fissa è fattibile per un task set $Γ$ agli istanti critici ⇒ risulta fattibile anche per la schedulazione RM agli istanti critici.
 
+	**Slide 50/128**
 ---
 **Dimostrazione di ottimalità per il caso di due task(1/3)**
 
@@ -1133,6 +1151,8 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 	![[Pasted image 20240925192958.png]]
 
 - **Obiettivo**: Dobbiamo quindi far vedere che se $C_1 + C_2 ≤ T_1$ ⇒ allora lo scheduling RM è fattibile per $Γ$ all'instante critico
+
+	**Slide 51/128**
 ---
 **Dimostrazione di ottimalità per il caso di due task(2/3)**
 
@@ -1154,6 +1174,7 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 		- ll task set sarà schedulabile se $FC_1 + C_2 ≤ FT_1$ 
 		- Dimostreremo che $C_1 + C_2 ≤ T_1$ implica $FC_1 + C_2 ≤ FT_1$ 
 
+	**Slide 52/128**
 ---
 - Caso 1: Dimostriamo che $C_1 + C_2 ≤ T_1 ⇒ (F + 1)C_1 + C_2 ≤ T_2$
 	• $C_1 + C_2 ≤ T_1 ⇒ F C_1 + F C_2 ≤ F T_1$ dato che F ≥ 1
@@ -1167,6 +1188,7 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 		⇒ $F C_1 + C_2 ≤ F C_1 + F C_2 ≤ F T_1$ dato che F ≥ 1 ⇒
 		⇒ $F C_1 + C_2 ≤ F T_1$
 
+	**Slide 53/128**
 --- 
 **Test di garanzia RM (Liu & Layland, 1973)**
 
@@ -1183,6 +1205,7 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 	- Calcolo l'upper bound $U_{ub}$ tramite $U$
 	- Minimizzo l'upper bound $U_{ub}$, rispetto a tutti gli altri parametri in modo da ottenere il $U{lub}$
 
+	**Slide 54/128**
 ---
 **Test di garanzia RM: dimostrazione nel caso di 2 tasks (1/5)**
 
@@ -1201,6 +1224,7 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 			 
 	- In entrambi i casi, massimizziamo $C_2$ e deriviamo $Uub$ come funzione di $C_1$.
 	
+	**Slide 55/128**
 --- 
 **Test di garanzia RM: dimostrazione nel caso di 2 tasks (2/5)**
 
@@ -1215,8 +1239,10 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 	=> $\frac{T_2}{T_1} - (F+1) \leq 0$ dato che $F∶=⌊T2/T1⌋$
 		=> $U{ub}$ **diminuisce** con l'aumentare di $C_1$
 		=> Il valore minimo di $U{ub}$ sarà per $C_1 = T_2 - FT_1$ 
+		
 	![[Pasted image 20250317213848.png]]
 	
+	**Slide 56/128**
 ---
 **Test di garanzia RM: dimostrazione nel caso di 2 tasks (3/5)**
 
@@ -1230,8 +1256,10 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 	=> La quantità fra parentesi risulta positiva (F parte intera inferiore), 
 	 => $U_{ub}$ **sale** al crescere di $C_1$ 
 	=> Il minimo valore si avrà di nuovo per $C_1 = T_2 - F T_1$
+	
 	![[Pasted image 20250317213727.png]]
 
+	**Slide 57/128**
 ---
 **Test di garanzia RM: dimostrazione nel caso di 2 tasks (4/5)**
 
@@ -1242,10 +1270,11 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 
 	![[Pasted image 20250317215552.png]]
 
+	**Slide 58/128**
 ---
 **Test di garanzia RM: dimostrazione nel caso di 2 tasks (5/5)**
 
-- Chiamo poi la parte decimale $T_2/T_1: G = T_2/T_1 - F$
+- Chiamo poi la parte decimale $T_2/T_1: G = T_2/T_1 - F$ (skip this)
 
 - Per cui ricalcolo la funzione $U_{ub}^{min,C1}$ in funzione di G:
 
@@ -1261,6 +1290,7 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 	- $\frac{dU_{ub}^{min,C1,F}}{dk} = \frac{(2k-2)k - (K^2-2k+2)}{k^2} = \frac{k^2-2}{k^2} = 0$ per $k=\sqrt{2}$
 		=> $U_{lub} = U_{ub}^{min,C1,F}|_{k=\sqrt{2}} = 2(\sqrt{2} -1) = 0,83$ (dove ho risostiuito nell'equazione (1))	=> bound inferiore nel caso di due tasks
 
+	**Slide 59/128**
 ---
 **Test di garanzia RM: Caso particolare di task con periodici armonici**
 
@@ -1269,39 +1299,42 @@ Uno **schedule è fattibile** se tutte i suoi vincoli sono rispettate:
 		=> per cui anche il fattore F:= $⌊T_2/T_1⌋ = T_2/T_1$ è un intero
 		⇒ $U_{lub} = \frac{T_1}{T_2}  ( F + (\frac{T_2}{T_1} - F)^2 ) = 1$
 i
-- Per cui il fattore di utilizzo U = 1 diventa minimo e massimo nel caso di task con periodi armonici => ovvero il test di garanzia RM diventa condizione necessaria e sufficiente alla schedulabilità
+- Per cui il fattore di utilizzo U = 1 diventa minimo e massimo nel caso di task con periodi armonici => ovvero il test di garanzia RM diventa ==condizione necessaria e sufficiente alla schedulabilità==
 
-![[Pasted image 20240929184209.png]]
+	![[Pasted image 20240929184209.png]]
 
+	**Slide 60/128**
 ---
 **Test di Garanzia RM: Dimostrazione per n task(1/3)**
 
 - Ripartiamo per il caso di 2 tasks con $T_1 < T_2$
+
 	![[Pasted image 20240929184807.png]]
 	- $C_1 = T_2 - FT_1$ e F = 1 => $T_2 < 2T_1$, $C_1 = T_2 - T_1$
 	- $C_2 = F(T_1 - C_1) = T_1 - C_1 = T_1 - T_2 + T_1 = 2T_1 - T_2$
 
 - E lo stesso per n tasks con $T_1 < T_2 < ... < T_n$ 
+
 	![[Pasted image 20240929185259.png]]
 
-	- Con $T_n < 2T_1, C_1 = T_2 - T_1, C_2 = T_3 - T_2,$  ... $C_n = T_1 - (∑^{n−1}_ {i=1} C_i)= T_1 - (T_2 - T_1) - (T_3 - T_2)$ - ... $(T_n - T_{n-1}) = 2T_1 - T_n$
+	- Con $T_n < 2T_1, C_1 = T_2 - T_1, C_2 = T_3 - T_2,$  ... $C_n = T_1 - (∑^{n−1}_ {i=1} C_i)= T_1 - (T_2 - T_1) - (T_3 - T_2)$ - ... $(T_n - T_{n-1}) = 2T_1 - T_n$ => il resto si cancella da solo
 
+	**Slide 61/128**
 ---
 **Test di Garanzia RM: Dimostrazione per n task(2/3)**
 
-- Mi calcolo ora l'upper bound di U nel caso peggiore delle condizioni di schedulabiltà
-	- $U_{ub} = \sum_{i=1}^n \frac{C_i}{T_i} = \frac{T_2 - T_1}{T_1}+ \frac{T_3 - T_2}{T_2}+ \space ... \space +\frac{T_n - T_{n-1}}{T_{n-1}}+\frac{2T_1 - T_n}{T_n}$
-		$= \frac{T_2}{T_1}+\frac{T_3}{T_2}+\space ... \space + \frac{T_n}{T_{n-1}}+\frac{2T_1}{T_n} - n$
+- Mi calcolo ora l'upper bound di U nel caso peggiore delle condizioni di schedulabiltà $$U_{ub} = \sum_{i=1}^n \frac{C_i}{T_i} = \frac{T_2 - T_1}{T_1}+ \frac{T_3 - T_2}{T_2}+ \space ... \space +\frac{T_n - T_{n-1}}{T_{n-1}}+\frac{2T_1 - T_n}{T_n}$$$$= \frac{T_2}{T_1}+\frac{T_3}{T_2}+\space ... \space + \frac{T_n}{T_{n-1}}+\frac{2T_1}{T_n} - n$$
 
-- Definisci $R_i = \frac{T_{i+1}}{T_i} \space \forall \space i \in \{1,...,n-1\}$ e nota che $\prod_{i=1}^{n-1} R_i = \frac{T_n}{T_1}$
-	- $U_{ub} = \sum_{i=1}^n R_i + \frac{2}{\prod_{i=1}^{n-1} R_i} - n$
+- Definisco $R_i = \frac{T_{i+1}}{T_i} \space \forall \space i \in \{1,...,n-1\}$ e nota che $\prod_{i=1}^{n-1} R_i = \frac{T_n}{T_1}$
+$$U_{ub} = \sum_{i=1}^n R_i + \frac{2}{\prod_{i=1}^{n-1} R_i} - n$$
 
-- Minimizza $U_{ub}$ rispetto a $R_i \space \forall \space i \in \{1,...,n-1\}$
-	- $\frac{\delta U_{ub}}{\delta R_i} = 1 - \frac{2}{R_i^2} \frac{1}{R_1R_2...R_{i-1}R_{i+1}...R_n} = 1- \frac{2}{R_iP}$ dove $P = \prod_{i=1}^{n-1} R_i$ =>
+- Minimizza $U_{ub}$ rispetto a $R_i \space \forall \space i \in \{1,...,n-1\}$ $$\frac{\delta U_{ub}}{\delta R_i} = 1 - \frac{2}{R_i^2} \frac{1}{R_1R_2...R_{i-1}R_{i+1}...R_n} = 1- \frac{2}{R_iP}$$ dove $P = \prod_{i=1}^{n-1} R_i$ =>
 		=> $\frac{\delta U_{ub}}{\delta R_i} = 0 \space \text{per} \space R_iP = 2$ 
 		=> $U_{ub}$ è minimo per $R_iP=2 \space \forall \space i \in \{1,...,n-1\}$
+
 - $R_iP=2 \space \forall \space i \in \{1,...,n-1\}$ se $R_i = 2^{\frac{1}{n}}$ che porta a $P = (2^{\frac{1}{n}})^{n-1}$
 			
+	**Slide 62/128**
 --- 
 **Test di Garanzia RM: Dimostrazione per n task(3/3)**
 
@@ -1309,11 +1342,10 @@ i
 	- $U_{ub} = \sum_{i=1}^n R_i + \frac{2}{P} - n|_{R_i = 2^{ \frac{1}{n} }, P = (2^{ \frac{1}{n} })^{n-1}} = (n-1)2^{\frac{1}{n}} + \frac{2}{(2^{\frac{1}{n} })^{n-1} } - n =$ 
 		$= n2^{\frac{1}{n}} - 2^{\frac{1}{n}} + \frac{2}{(2^{\frac{1}{n} })^{n-1} } - n =  n2^{\frac{1}{n}} - 2^{\frac{1}{n}} + \frac{2}{(2^{\frac{n-1}{n}}) } - n =$ $=n2^{\frac{1}{n}} - 2^{\frac{1}{n}} + \frac{2}{(2^{1-\frac{1}{n}}) } - n = n2^{\frac{1}{n}} - 2^{\frac{1}{n}} + 2^{\frac{1}{n}} - n = n(2^{\frac{1}{n}}-1)$ 
 
--> che appunto nel caso a due task -> n = 2 ci dà 
-	$U{lub} = 2(2^{1/2} - 1) = 0.83$
+	=> che appunto nel caso a due task -> n = 2 ci dà $$U{lub} = 2(2^{1/2} - 1) = 0.83$$
+	![[Pasted image 20240929191513.png]]
 
-![[Pasted image 20240929191513.png]]
-
+	**Slide 63/128**
 ---
 **Limite iperbolico RM (Bini et al., 2003)**
 
@@ -1326,6 +1358,7 @@ i
 
 	![[Pasted image 20241001181518.png]]
 
+	**Slide 64/128**
 ---
 **Limite iperbolico RM: dimostrazione**
 
@@ -1334,8 +1367,11 @@ i
 
 + Dimostrazione ($\prod_{i=1}^{n} (U_i + 1) \leq 2$ => Task set schedulabile da RM)
 	+ La condizione di schedulabilità nel caso peggiore è $∑^n_{i=1} C_i ≤ T_1$ 
-		=> $∑^{n-1}_{i=1} C_i + C_n ≤ T_1$ => $C_n \leq T_1 - ∑^{n-1}_{i=1} C_i$ => $C_n \leq 2T_1 - T_n$ siccome $∑^{n-1}_{i=1} C_i = T_n - T_1$ nelle condizioni peggiori di schedulabilità 
-		=> Divido quindi il tutto per $T_n$ e ottengo => $U_n \leq \frac{2T_1}{T_n} - 1$ => $U_n +1 \leq \frac{2T_1}{T_n} = \frac{2}{\prod^{n-1}_{i=1} R_i} = \frac{2}{\prod^{n-1}_{i=1} (U_i+1)}$ => $∏^{n}_{i=1} (U_i + 1) \leq 2$ 
+		=> $∑^{n-1}_{i=1} C_i + C_n ≤ T_1$ 
+		=> $C_n \leq T_1 - ∑^{n-1}_{i=1} C_i$
+		=> $C_n \leq 2T_1 - T_n$ siccome $∑^{n-1}_{i=1} C_i = T_n - T_1$ nelle condizioni peggiori di schedulabilità 
+		=> Divido quindi il tutto per $T_n$ e ottengo$$$U_n \leq \frac{2T_1}{T_n} - 1$$$$U_n +1 \leq \frac{2T_1}{T_n} = \frac{2}{\prod^{n-1}_{i=1} R_i} = \frac{2}{\prod^{n-1}_{i=1} (U_i+1)}$$$$∏^{n}_{i=1} (U_i + 1) \leq 2$$
+	**Slide 65/128**
 ---
 **Liu & Layland bound vs hyperbolic bound**
 
@@ -1346,11 +1382,17 @@ i
 
 	![[Pasted image 20250318223244.png]]
 
-****
+	**Slide 65/128**
+---
+#### Deadline Monotonic
+---
 **Schedulazione Deadline Monotonic (DM)**
 
-![[Pasted image 20250318223804.png]]
+- Classificazione
 
+	![[Pasted image 20250318223804.png]]
+
+	**Slide 67/128**
 ---
 **DM: tratti salienti (Leung & Whitehead, 1982)**
 
@@ -1359,13 +1401,14 @@ i
 
 - Algoritmo di scheduling **preemptive statico** e parametri calcolati *online*
 
-- Un task ha un **priorità fissa** inversamente proporzionale alla sua deadline *relativa*
+- Un task ha un **priorità fissa** inversamente proporzionale ==alla sua deadline *relativa*==
 	- Task con minore deadline relative vengono eseguiti prima
 
 - Esempio: priorità $t_1 >$ priorità $t_2$
 
-![[Pasted image 20241006153448.png]]
+	![[Pasted image 20241006153448.png]]
 
+	**Slide 68/128**
 ---
 **DM: ottimalità**  
 
@@ -1376,38 +1419,43 @@ Teorema (No dim)
 
 + Nota che le due affermazioni sono equivalenti (a $\Rightarrow$ b se e solo se $\neg$b $\Rightarrow$ $\neg$a).
 
+	**Slide 69/128**
 ---
 **DM: problema con il limite LL e il limite HB**
 
-- Usando il limite LL (Liu & Layland) e il limite HB (Hyperbolic Bound) sostituendo i periodi con le deadline: il carico di lavoro del processore è sovrastimato $\Rightarrow$ il risultato del test è troppo pessimista!
+- Usando il limite **LL** (*Liu & Layland*) e il limite **HB** (*Hyperbolic Bound*) sostituendo i periodi con le deadline: il carico di lavoro del processore è sovrastimato $\Rightarrow$ il risultato del test è troppo pessimista!
 
 - Esempio in cui i test basati sull'utilizzo del processore non sono conclusivi:  
 	- Il limite LL non è soddisfatto:  $\frac{C_1}{D_1} + \frac{C_2}{D_2} = \frac{2}{3} + \frac{3}{6} = \frac{7}{6} > 1$
 	- Il limite HB non è soddisfatto:  $\left( \frac{C_1}{D_1} + 1 \right) \left( \frac{C_2}{D_2} + 1 \right) = \left( \frac{2}{3} + 1 \right) \left( \frac{3}{6} + 1 \right) = \frac{5}{2} > 2$
 	- Ma l'insieme dei task è schedulabile!
 	
-![[Pasted image 20241006153448.png]]
+	![[Pasted image 20241006153448.png]]
 
+	**Slide 70/128**
 ---
 **DM: analisi del tempo di risposta (Audlsey et al, 1993)**  
 
 - Per ogni task $\tau_i$:
 	1. Si calcola l'**interferenza** $I_i$ dovuta ai task a priorità più alta nell'intervallo $[0, R_i]$: 
 		- $I_i = \sum_{\tau_k | D_k < D_i} z_{ik} C_k$​ dove $z_{ik}$ è il **numero di rilasci** di $\tau_k$ in $[0, R_i]$
-		   $\Rightarrow I_i = \sum_{k=1}^{i-1} \left\lceil \frac{R_i}{T_k} \right\rceil C_k​$ supponendo che i compiti siano ordinati per deadline relativa crescente 
-	2. Calcola il **tempo di risposta** $R_i$:
-		$R_i = C_i + I_i = C_i + \sum_{k=1}^{i-1} \left\lceil \frac{R_i}{T_k} \right\rceil C_k$ (2)
+		   $\Rightarrow I_i = \sum_{k=1}^{i-1} \left\lceil \frac{R_i}{T_k} \right\rceil C_k​$ supponendo che i job siano ordinati per deadline relativa crescente (considera anche il caso in cui un job sia rilasciato ma non abbia completato la sua esecuzione)
+		   
+	2. Calcola il **tempo di risposta** $R_i$:		$$R_i = C_i + I_i = C_i + \sum_{k=1}^{i-1} \left\lceil \frac{R_i}{T_k} \right\rceil C_k \quad (2)$$
 	3. Verifica che $R_i \leq D_i$ 
 
 - Il tempo di risposta nel caso peggiore è il **più piccolo** valore che soddisfa l'equazione
 
+	**Slide 71/128**
 ---
 **DM: Analisi del tempio di risposta - soluzione iterativa**
 
-- La soluzione iterativa per derivare il più piccolo $R_i$ che soddisfa (2,)
+- La soluzione iterativa per derivare il più piccolo $R_i$ che soddisfa (2)
 	- Passo 0: $R_i^{(0)} = \sum_{k=1}^{i}C_k$ (minimo tempo di risposta con l'arrivo dei task sincroni) 
 	- Passo j: $R_i^{(j)} = C_i + I_i = C_i + \sum_{k=1}^{i-1} \left\lceil \frac{R_i^{(j-1)}}{T_k} \right\rceil C_k$ 
-- Itera fino a che $R_i^{(j)} > R_i^{(j-1)}$ && $R_i^{(j)} \leq D_i$ $\forall j > 0$
+	- Itera fino a che $R_i^{(j)} > R_i^{(j-1)}$ && $R_i^{(j)} \leq D_i$ $\forall j > 0$
+
+- Algoritmo:
 	- **Input**: Un set $\Gamma$ di $n$ task periodi $\tau_1,...,\tau_n$ con deadline vincolate
 	- **Output**: $\texttt{TRUE}$ se il task set $\Gamma$ è schedulabile da DM, $\texttt{FALSE}$ altrimenti
 	1. **foreach** task $\tau_i \in \Gamma$ **do**
@@ -1422,19 +1470,21 @@ Teorema (No dim)
 	10. **end**
 	11. **return** $\texttt{TRUE}$
 
+	**Slide 72/128**
 ---
 **DM: Analisi del tempo di risposta - complessità**
 
-- L'algoritmo ha complessità **Pseudo-polinomiale** $O(n * N)$, rispetto al 
-	- Numero di elementi di un set di input 
-	- I valori del set di input
-- Complessità polinomiale nel numero $n$ di task 
-- Complessità polinomiale nel massimo numero $N$ di iterazioni per task, che dipendono principalmente dalla relazione fra i periodi dei task
+- L'algoritmo ha complessità **Pseudo-polinomiale** $O(n * N)$, rispetto al numero di elementi di un set di input e i valori del set di input
+	- Complessità polinomiale nel numero $n$ di task 
+	- Complessità polinomiale nel massimo numero $N$ di **iterazioni per task**, che dipendono principalmente dalla ==relazione fra i periodi dei task==
 
+	**Slide 73/128**
 --- 
 **DM: esempio di un insieme di compiti non schedulabile (1/2)**
 
-![[Pasted image 20241006163226.png]]
+- Esempio **non feasible**
+
+	![[Pasted image 20241006163226.png]]
 
 - $R_1^{(0)} = C_1 = 2 < D_1$; $R_1^{(1)} = C_1 = 2 < D_1$; $\Rightarrow R_1 = 2$
 - $R_2^{(0)} = C_1 + C_2 = 4 < D_2$; $R_2^{(1)} = C_2 + \left\lceil \frac{R_2^{(0)}}{T_1} \right\rceil C_1  = C_2 + C_1 = 4 < D_2$; 
@@ -1442,6 +1492,7 @@ Teorema (No dim)
 - $R_3^{(0)} = C_1 + C_2 + C_3 = 8 = D_3$; $R_3^{(1)} = C_3 + \left\lceil \frac{R_3^{(0)}}{T_1} \right\rceil C_1 + \left\lceil \frac{R_3^{(0)}}{T_2} \right\rceil C_2 = C_3 + C_1 + 2 C_2 = 10 > D_3$
 	=> lo schedule DM è **unfeasible** per il task set
 
+	**Slide 74/128**
 ---
 **DM: esempio di un insieme di compiti non schedulabile (2/2)**
 
@@ -1449,49 +1500,70 @@ Teorema (No dim)
 	
 	![[Pasted image 20241006164325.png]]
 
+	**Slide 75/128**
 ---
 **DM: esempio di un insieme di compiti schedulabile(1/2)**
 
-![[Pasted image 20241006170652.png]]
+- Esempio  **feasible**
+
+	![[Pasted image 20241006170652.png]]
 
 - I tempi di risposta di $\tau_1$ e $\tau_2$ rimangono gli stessi: $R_1 = 2 < D_1$, $R_2 = 4 < D_2$
 - $R_3^{(0)} = C_1 + C_2 + C_3 = 6 < D_3$
 - $R_3^{(1)} = C_3 + \left\lceil \frac{R_3^{(0)}}{T_1} \right\rceil C_1 + \left\lceil \frac{R_3^{(0)}}{T_2} \right\rceil C_2 = C_3 + C_1 + C_2 = 6 < D_3$
+	
+	**Slide 76/128**
 ---
 **DM: esempio di un insieme di compiti schedulabile(2/2)**
 
-![[Pasted image 20250319145804.png]]
+- All'esempio 
+	
+	![[Pasted image 20250319145804.png]]
 
-![[Pasted image 20241006170938.png]]
+- Corrisponde la *demand bound function*
 
+	![[Pasted image 20241006170938.png]]
+
+	**Slide 77/128**
 ---
- **Schedulazione Earliest Deadline First (EDF)**
+#### Earliest Deadline First
+---
+**Schedulazione Earliest Deadline First (EDF)**
 	 
- ![[Pasted image 20241006172843.png]]
+ - Classificazione EDF
+	 
+	 ![[Pasted image 20241006172843.png]]
 
+	**Slide 78/128**
 ---
 **EDF: tratti salienti**
 
 - Algoritmo di schedulazione online, **dinamico** e preemptive.
-- Scheduling per la gestione di task puramente periodici ($D_i = T_i$ $\forall$ task $\tau_i$)
-- Ogni task ha una **priorità dinamica** inversamente proporzionale alla sua deadline **assoluta**.
+
+- Scheduling per la gestione di task **puramente periodici** ($D_i = T_i$ $\forall$ task $\tau_i$)
+
+- Ogni task ha una **priorità dinamica** inversamente proporzionale alla sua deadline **assoluta**. => ad ogni rilascio dei task viene ricalcolata la priorità dei task
 
 - Esempio $C_1 = 3, T_1 = D_1 = 6; C_2 = 4, T_1 = D_1 = 9$
+
 	![[Pasted image 20241006173836.png]]
-(notare a t=6 $\tau_2$ continua la sua esecuzione perchè ha deadline assoluta più piccola)
+	=> notare a t=6 $\tau_2$ continua la sua esecuzione perchè ha *deadline assoluta* più piccola)
+
+	**Slide 79/128**
 ---
 **Scheduling EDF vs Scheduling RM**
 
-- Se lo schedule EDF è fattibile per il task set precedente
+- Se lo schedule EDF è **fattibile** per il task set precedente
 
-- Per lo schedule RM, lo stesso task set non è fattibile 
+- Per lo schedule RM, lo stesso task set **non è fattibile**! 
 
 	![[Pasted image 20241006174155.png]]
 	
-- I test basati su Liu & Layland e gli hyperbolic bounds sono inconclusivi, in quanto non consento di valutare la fattibilità di uno scheduling RM:
+- I test basati su *Liu & Layland* e gli *hyperbolic bounds* sono inconclusivi, in quanto non consentono di valutare la fattibilità di uno scheduling RM:
 	- $U = C_1 / T_1 + C_2/T_2 = 3/6 + 4/9 = 0.944 > 2 (\sqrt2 - 1) = 0.828$
 	- $(U_1 + 1)(U_2 +1) = (3/6+1)(4/9+1) = 13/6 > 2$
 
+	**Slide 80/128**
 ---
 **Test di garanzia EDF (1/2) (Liu & Layland, 1973)**
 
@@ -1506,6 +1578,7 @@ Teorema (No dim)
 		=>  $\sum_{i=1}^{n} \frac{C_i}{T_i} T > T$ per definizione di $U$ => $\sum_{i=1}^{n} \frac{T}{T_i} C_i > T$
 	    => la domanda totale di risorse nel periodo $[0, T)$ è maggiore del tempo disponibile $T$,  => l'insieme dei task non è fattibile.
 
+	**Slide 81/128**
 ---
 **Test di garanzia EDF (2/2) (Liu & Layland, 1973)**
 
@@ -1524,6 +1597,7 @@ Teorema (No dim)
 	
 	![[Pasted image 20241006181152.png]]
 
+	**Slide 82/128**
 --- 
 **Ottimalità EDF (Dertouzos, 1974)**
 
@@ -1536,6 +1610,7 @@ Teorema (No dim)
 + Nota che le due affermazioni sono equivalenti (a $\Rightarrow$ b se e solo se $\neg$b $\Rightarrow$ $\neg$a).
 - Risultato **indipendente dalla periodicità** dei task
 
+	**Slide 83/128**
 ---
 **Ottimalità EDF: dimostrazione(1/3)**
 
@@ -1550,17 +1625,21 @@ Teorema (No dim)
 	- **Output**: Uno schedule EDF $\sigma_{EDF}$ per il task set $\Gamma$
 	1. **foreach**: $t \in \{0,1,..., d_{max} -1\}$ **do**
 	2.     **if** $\sigma(t) \neq \sigma_{EDF}(t)$ **then**
-	3.             $\sigma(t_E) = \sigma(t)$ // $[t_E, t_E +1]$ allocato al task che eseguiva durante $[t,t+1]$
-	4.             $\sigma(t) = E(t)$ // $[t,t+1]$ allocato al task con la minore deadline assoluta a t
+	3.             $\sigma(t_E) = \sigma(t)$ // $[t_E, t_E +1)$ allocato al task che eseguiva durante $[t,t+1)$
+	4.             $\sigma(t) = E(t)$ // $[t,t+1)$ allocato al task con la minore deadline assoluta a t
 	5.    **end**
 	6. **end**
 	7. **return** $\texttt{TRUE}$
 
+	**Slide 84/128**
 ---
 **Ottimalità EDF: dimostrazione(2/3)**
 
-![[Pasted image 20241006182238.png]]
+- Esempio
+	
+	![[Pasted image 20241006182238.png]]
 
+	**Slide 85/128**
 --- 
 **Ottimalità EDF: dimostrazione(3/3)**
 
@@ -1571,6 +1650,7 @@ Teorema (No dim)
 		=> siccome $\sigma$ è fattibile => $t_E +1 \leq d_E \leq d_i \space \forall \space \tau_i$ per definizione di $d_E$ =>
 		=> l'intervallo di tempo posticipato a $t_E$ è schedulabile. 
 
+	**Slide 86/128**
 --- 
 **Ottimalità EDF rispetto alla minimizzazione del ritardo massimo (Jackson, 1955)**
 
@@ -1578,8 +1658,12 @@ Teorema (No dim)
 	Dato un insieme di $n$ task indipendenti, un qualsiasi algoritmo che esegue i task in ordine di deadline assolute crescenti, è ottimo rispetto al minimo della **massima lateness** $L_{max} := \max_{i \in \{1,\dots,n\}} \{L_i\}$.
 
 - Risultato anche lui **indipendente dalla periodicità** (valido anche per task con deadline vincolate)
-- Se l'algoritmo minimizza $L_{max}$ => è ottimale nel senso di feasibility (l'opposto non è sempre vero) 
-- ![[Pasted image 20241006183331.png]]
+
+- Se l'algoritmo minimizza $L_{max}$ => è ottimale nel senso di *feasibility* (l'opposto non è sempre vero)
+
+	![[Pasted image 20241006183331.png]]
+	
+	**Slide 87/128**
 --- 
 **Ottimalità EDF rispetto alla minimizzazione del ritardo massimo: dimostrazione** 
 
@@ -1588,51 +1672,56 @@ Teorema (No dim)
 - Una trasposizione fra due intervalli $\sum_a$ e $\sum_b$ non può aumentare $L_{max}$
 	- Sia $\sum_a$ ad essere anticipato (ovvero $f'_a < f_a$) e $\sum_b$ postposto (ovvero $f'_b > f_a$)
 	- Se $L'_a \geq L'_b$ => $L'_{max} = L'_a = f'_a - d_a < f_a -d_a = L_{max}$ dato che $f'_a < f_a$
-	- Se $L'_a \leq L'_b$ => $L'_{max} = L'_b = f'_b - d_b < f_b -d_b = L_{max}$ dato che $d_a < d_b$
+	- Se $L'_a \leq L'_b$ => $L'_{max} = L'_b = f'_b - d_b = f_a - d_b < f_a -d_a = L_{max}$ dato che $d_a < d_b$ (vedi figura per capire meglio)
 
 - In un numero finito di trasposizioni, $\sigma$ può essere trasformato in $\sigma_{EDF}$ e, dato che la massima lateness non può aumentare, $\sigma_{EDF}$ è ottimale
 
-![[Pasted image 20250319215702.png]]
+	![[Pasted image 20250319215702.png]]
 
+	**Slide 88/128**
 ---
 **EDF con deadline vincolate (Baruah et al., 1990)**
 
 - **Criterio della domanda del processore**:
 	Un insieme di task periodici $\{\tau_1, \dots, \tau_n\}$ con $D_i \leq T_i$ per ogni task $\tau_i$ è schedulabile da EDF se e solo se, in ogni intervallo di tempo $[t_1, t_2]$, la **domanda del processore** $g(t_1, t_2)$ **non supera il tempo disponibile**, cioè $g(t_1, t_2) \leq t_2 - t_1$ per ogni $t_1 < t_2$.
 
-- La domanda del processore nell'intervallo $[t_1, t_2]$, è il tempo di processamento richiesto dai job attivati in $[t_1, t_2]$, con una deadline assoluta $\leq t_2$:
-	- $g(t_1,t_2) = \sum_{i-1}^{n}\eta_i(t_1,t_2)C_i$
+- La domanda del processore nell'intervallo $[t_1, t_2]$, è il tempo di processamento richiesto dai job attivati in $[t_1, t_2]$, con una deadline assoluta $\leq t_2$: $$g(t_1,t_2) = \sum_{i-1}^{n}\eta_i(t_1,t_2)C_i$$
 - Dove $\eta_i(t_1,t_2)$ è il numero di job di $\tau_i$ che contribuisce alla richiesta in $[t_1,t_2]$:
 	- $\eta_i(t_1,t_2): =  ∣\{τ_{i,k} ∣ a_{i,k} ∈ [t_1 , t_2 ] ∧ d_{i,k} ≤ t_2 \}∣\space = max\{0, K_2^i − K_1^i\}$
 	- $K_2^i := ∣\{τ_{i,k} ∣ a_{i,k} ∈ [\phi , t_2 ] ∧ d_{i,k} ≤ t_2 \}∣ = ⌊t_2 + T_i − D_i − \phi_i /Ti ⌋$
 	- $K_1^i = ∣\{τ_{i,k} ∣ a_{i,k} ∈ [\phi , t_1 ]\}∣ = ⌈t_1 − \phi_i /T_i ⌉$
+	
 	![[Pasted image 20250319220450.png]]
 
+	**Slide 89/128**
 ---
 **EDF con deadlines vincolate: valutazione di $K_1$**
 
 - $K_1^i = ∣\{τ_{i,k} ∣ a_{i,k} ∈ [\phi , t_1 ]\}∣ = ⌈t_1 − \phi_i /T_i ⌉$
 
-![[Pasted image 20241007222057.png]]
+	![[Pasted image 20241007222057.png]]
 
+	**Slide 90/128**
 --- 
 **EDF con deadlines vincolate: valutazione di $K_2$**
 
 - $K_2^i := ∣\{τ_{i,k} ∣ a_{i,k} ∈ [\phi , t_2 ] ∧ d_{i,k} ≤ t_2 \}∣ = ⌊t_2 + T_i − D_i − \phi_i /Ti ⌋$
 
-![[Pasted image 20241007222140.png]]
+	![[Pasted image 20241007222140.png]]
 
+	**Slide 91/128**
 --- 
 **EDF con deadline vincolate: funzione di domanda vincolata**
 
 - **Scenario peggiore**: tutti i task sono attivati al tempo $t = 0$ (cioè $\phi_i = 0$ per ogni task $\tau_i$):
-    - $dbf(t) = g(0,t) = \sum_{i-1}^{n}\eta_i(0,t)C_i = \sum_{i=1}^{n} \left\lfloor \frac{t + T_i - D_i}{T_i} \right\rfloor C_i$.
+    $$dbf(t) = g(0,t) = \sum_{i-1}^{n}\eta_i(0,t)C_i = \sum_{i=1}^{n} \left\lfloor \frac{t + T_i - D_i}{T_i} \right\rfloor C_i$$
 
 - **Osservazione**
 	Un set $n$ di task periodici sincroni $\{\tau_1,...,\tau_n\}$  con $D_i \leq T_i$ $\forall$ task $\tau_i$ è schedulabile da EDF se e solo se $dbf(t) \leq t$ $\forall t > 0$
 
 	![[Pasted image 20241007222551.png]]
 
+	**Slide 92/128**
 ---
 **EDF con deadline vincolate: complessità sui bound(1/2)**
 
@@ -1641,42 +1730,49 @@ Teorema (No dim)
    ⇒ Verifico il criterio ==solo per i valori di $t$ uguali alle deadline assolute.==
 3. Verifico il criterio almeno fino a $d_{max} := \max_i \{d_i\} \leq H$.
 
+	**Slide 93/128**
 ---
 **EDF con deadline vincolate: complessità sui bound(2/2)**
 
 4.  $dbf(t) = \sum_{i=1}^{n} \left\lfloor \frac{t + T_i - D_i}{T_i} \right\rfloor C_i \leq  \sum_{i=1}^{n}  \frac{t + T_i - D_i}{T_i} C_i =$
-	$= \sum_{i=1}^{n}(T_i - D_i)U_i + tU$ => 
-	=> $G(0,t) = \sum_{i=1}^{n}(T_i - D_i)U_i + tU$ è una funzione crescente con la pendenza $U$
-	=> se U < 1 (altrimenti ho un numero negativo => guarda denominatore) allora $∃ t^⋆ ∣ G(0, t^⋆ ) = t^⋆$ dove $t^* = \sum_{i=1}^{n}(T_i - D_i)U_i/(1-U)$
+	$= \sum_{i=1}^{n}(T_i - D_i)U_i + tU$ =>  $$G(0,t) = \sum_{i=1}^{n}(T_i - D_i)U_i + tU$$ è una funzione crescente con la pendenza $U$
+	
+	=> se U < 1 (altrimenti ho un numero negativo => guarda dopo denominatore) allora $∃ t^⋆ ∣ G(0, t^⋆ ) = t^⋆$ dove $$t^* = \frac{\sum_{i=1}^{n}(T_i - D_i)U_i}{(1-U)}$$
 	=> $dbf(t) \leq G(0,t) \leq t$ $\forall t \geq t^*$ => mi basta verificare quindi il criterio solo per $t < t^*$
-		![[Pasted image 20241007224836.png]]
 
+	![[Pasted image 20241007224836.png]]
+
+	**Slide 94/128**
 ---
 **EDF con deadline vincolate: processor demand test**
 
 - Riassumendo: come limitare la complessità?  
-	- Verifico il criterio solo per $t \leq H$
-	- Verifico il criterio solo per valori di t uguali alla sua deadline assoluta
-	- Verifico il criterio almeno fino a $d_{max} := max_i\{d_i\} \leq H$
-	- Verifico il criterio solo per $t < t^*$
+	1. Verifico il criterio solo per $t \leq H$
+	2. Verifico il criterio solo per valori di t uguali alla sua deadline assoluta
+	3. Verifico il criterio almeno fino a $d_{max} := max_i\{d_i\} \leq H$
+	4. Verifico il criterio solo per $t < t^*$
 	
 - **Test di domanda del processore**
-	Un insieme sincrono di $n$ task periodici {$\tau_1$, ... , $\tau_n$} con $D_i \leq T_i$ $\forall$ task $\tau_i$ è schedulabile da EDF se e solo se $U < 1$ e $dbf(t) \leq t$ $\forall t ∈ D$ con $D = \{d_i \mid d_i \leq \min \{d_{\text{max}}, t^*\}\}$ e $t^* = \sum_{i=1}^{n}(T_i - D_i)U_i/(1-U)$
+	Un insieme *sincrono* di $n$ task periodici {$\tau_1$, ... , $\tau_n$} con $D_i \leq T_i$ $\forall$ task $\tau_i$ è schedulabile da EDF se e solo se $U < 1$ e $dbf(t) \leq t$ $\forall t ∈ D$ con $D = \{d_i \mid d_i \leq \min \{d_{\text{max}}, t^*\}\}$ e $t^* = \sum_{i=1}^{n}(T_i - D_i)U_i/(1-U)$
 
+	**Slide 95/128**
 --- 
+#### Politiche scheduling con priorità a confronto
+---
 **RM vs EDF**
 
 - **Schedulazione RM**:
     - Meno efficiente in termini di utilizzo del processore. (nel caso peggiore vicino al 69%)
     - Più facile da implementare in Sistemi Operativi Real-Time commerciali
-    - Politiche di priorità fisse, più semplici da predirre durante periodi di *overloads* ma meno flessibili. (task a priorità bassa sono bloccati mentre quelli a priorità alta eseguiti ad un giusto rate)
+    - Politiche di priorità fisse, **più semplici da predirre** durante periodi di *overloads* ma **meno flessibili**. (task a priorità bassa sono bloccati mentre quelli a priorità alta eseguiti ad un giusto rate)
 
 - **Schedulazione EDF**:
-    - Maggiore efficienza nell'utilizzo del processore (l'uso del processore e pari al 100%)
+    - **Maggiore efficienza nell'utilizzo del processore** (l'uso del processore è pari al 100%)
     - Minore numero di prelazioni => minore overhead dovuto ai cambi di contesto
-    - Più flessibile durante periodi di overload (tutti i task sono eseguiti ad un ritmo più lento)
-    - Richiede una gestione delle priorità dinamica, più complessa da implementare, ma che porta a un migliore capacità di risposta nel gestire task aperiodici e un controllo del jitter più uniforme.
+    - **Più flessibile** durante periodi di overload (tutti i task sono eseguiti ad un ritmo più lento)
+    - ==Richiede una gestione delle priorità dinamica==, più complessa da implementare, ma che porta a un migliore capacità di risposta nel gestire task aperiodici e un controllo del jitter più uniforme.
 
+	**Slide 96/128**
 ---
 **Scheduling dei task periodici: riassunto (1/2)** 
 
@@ -1687,21 +1783,29 @@ Teorema (No dim)
 
 - 3 tecniche di analisi di scheduling
 	1. Basate sull'uso del processore
-		- Bound di Liu & Layland (LL) per RM: $U \leq n(2^{1/n} - 1)$ (condizione **sufficiente**)
-		- Hyperbolic bound (HB) per RM: $\prod_{i=1}^n(U_i + 1) \leq 2$ (condizione **sufficiente**)
-		- Bound LL per task armonici: $U \leq 1$ (condizione **necessaria e sufficiente**)
-		- Bound EDF:  $U \leq 1$ (condizione **necessaria e sufficiente**)
-		- Complessità polinomiale $O(n)$ sul numero di task
-	2. Response time analysis
+		- **Bound di Liu & Layland** (LL) per RM: $U \leq n(2^{\frac{1}{n}} - 1)$ (condizione **sufficiente**)
+		- **Hyperbolic bound** (HB) per RM: $\prod_{i=1}^n(U_i + 1) \leq 2$ (condizione **sufficiente**)
+		- Bound LL per **task armonici**: $U \leq 1$ (condizione **necessaria e sufficiente**)
+		- **Bound EDF**:  $U \leq 1$ (condizione **necessaria e sufficiente**)
+		- ==Complessità polinomiale==$O(n)$ sul numero di task
+	2. **Response time analysis**
 		- $R_i \leq D_i$ $\forall i ∈\{1, ... , n\}$ con $R_i = C_i + \sum_{k=1}^{i-1}\left\lceil R_i/T_k \right\rceil C_k$ (necessaria e sufficiente)
 		- Complessità **Pseudo-polinomiale**
-	3. Processor demand analysis
+	3. **Processor demand analysis**
 		- $dbf(t)\leq t$ $\forall t \in D$ (**Necessario e sufficiente**)
 		- Complessità **Pseudo-polinomiale**
-		
-![[Pasted image 20241009083217.png]]
-- Notare che basta solo un task che non sia puramente periodico che tutti i test visti per task puramente periodici non siano più validi => perdo la possibilità di eseguire il test con complessità polinomiale :(
 
+	**Slide 97/128**
+---
+**Scheduling dei task periodici: riassunto (2/2)** 
+
+- Classificazione scheduling
+
+	![[Pasted image 20241009083217.png]]
+
+	=> Notare che basta **solo un task non sia puramente periodico** che tutti i test visti per task puramente periodici non siano più validi => perdo la possibilità di eseguire il test con complessità polinomiale :(
+
+	**Slide 98/128**
 ---
 ## 3. Protocolli di accesso alle risorse
 ---
@@ -1711,32 +1815,36 @@ Teorema (No dim)
 	- Risorsa **privata**: dedicata ad un singolo task
 	- Risorsa **condivisa**: può essere usata da più task
 
-- Una risorsa **esclusiva**: una risorsa condivisa protetta contro gli accessi concorrenti
-	- **Protocolli di accesso alle risorse**: meccanismo che garantisce mutua esclusione
+- Una risorsa **esclusiva**: risorsa condivisa protetta contro gli accessi concorrenti
+	- **Protocolli di accesso alle risorse**: meccanismo che garantisce **mutua esclusione**
 	- **Sezioni critiche**: un pezzo di codice eseguito sotto mutua esclusione
 
-![[Pasted image 20241009083859.png]]
+	![[Pasted image 20241009083859.png]]
 
+	**Slide 99/128**
 --- 
 **Inversione di priorità(1/2)**
 
-- L'inversione di priorità è un fenomeno che accade quando un **task ad alta priorità** è bloccato da un **task a bassa priorità** per un intervallo di ==durata indefinita==
+- L'*inversione di priorità* è un fenomeno che accade quando un **task ad alta priorità** è bloccato da un **task a bassa priorità** ==per un intervallo di durata indefinita==
 	- Il **tempo di blocco** di un task è un ritardo causato da task a priorità minore
 	- Ad esempio se $\tau_1$ e $\tau_3$ (con $P_1 > P_3$) condividono una risorsa gestita da un semaforo binario S
 	- Il tempo di blocco di $\tau_1$ sarà pari al tempo che $\tau_3$ necessità per eseguire la sezione critica
 
 	![[Pasted image 20241009084459.png]]
 	
+	**Slide 100/128**
 ---
 **Inversione di priorità(2/2)**
 
-- Il tempo di blocco del task ad alta priorità non può essere ristretto dalla durata della sezione critica eseguita dal task a bassa priorità
+- Il tempo di blocco del task ad alta priorità può non essere ristretto dalla durata della sezione critica eseguita dal task a bassa priorità
 	- Ad esempio se aggiungo un **task a media priorità** $\tau_2$ ($P_1 > P_2 > P_3$)
-	- Il massimo tempo di blocco di $\tau_1$ dipende non solo dalla durata della sezione critica di $\tau_3$ ma anche dal WCET di $\tau_2$
+	- Il massimo tempo di blocco di $\tau_1$ dipende non solo dalla durata della sezione critica di $\tau_3$ ma anche dal WCET di $\tau_2$ => comportamento indefinito!
 
-![[Pasted image 20250323131919.png]]
+	![[Pasted image 20250323131919.png]]
 
-- La soluzione al *blocco unbounded* è usare protocolli di accesso alle risorse.
+- La soluzione al *blocco unbounded* è usare **protocolli di accesso alle risorse**.
+
+	**Slide 101/128**
 --- 
 **Protocolli di accesso alle risorse: La formulazione del problema(1/2)**
 
@@ -1760,15 +1868,20 @@ Teorema (No dim)
         - $z_{i,k}$ := sezione critica del compito $\tau_i$ protetta dal semaforo binario $S_k$.
         - Per ogni coppia $z_{i,h}, z_{i,k}$, vale che $z_{i,h} \subset z_{i,k}$ o $z_{i,k} \subset z_{i,h}$ o $z_{i,h} \cap z_{i,k} = \emptyset$
 
+	**Slide 102/128**
 ---
 **Protocolli di accesso alle risorse: La formulazione del problema(2/2)**
 
 - **Obiettivo:** derivare il **tempo massimo di blocco** $B_i$ che un compito $\tau_i$ può sperimentare.
     
 - **Aspetti chiave del protocollo:**
-    - **Regola di accesso:** decide se bloccare e quando.
-    - **Regola di avanzamento:** decide come eseguire all'interno di una sezione critica.
-    - **Regola di rilascio:** decide come ordinare le richieste pendenti dei compiti bloccati.
+    - **Regola di accesso:** decide **se bloccare e quando**.
+    - **Regola di avanzamento:** decide come eseguire all'interno di una **sezione critica**.
+    - **Regola di rilascio:** decide come ordinare le **richieste pendenti** dei compiti bloccati.
+
+	**Slide 103/128**
+---
+### Priority Inheritance Protocol (PIP)
 ---
 **Protocollo di Ereditarietà delle Priorità (PIP) (Sha et al., 1990)**
 
@@ -1786,6 +1899,8 @@ Teorema (No dim)
     - Il semaforo $S_k$ viene sbloccato.
     - Il task con priorità più alta bloccato su $S_k$ (se presente) viene risvegliato.
     - Se nessun altro task è bloccato da $\tau_j$, allora $p_j = P_j$; altrimenti $\tau_j$ eredita la priorità più alta dei task che blocca.
+
+	**Slide 104/128**
 ---
 **PIP: Tipi di Blocco**
 
@@ -1797,8 +1912,9 @@ Teorema (No dim)
     
 - Presi ad esempio $\tau_1$, $\tau_2$ ,$\tau_3$ con $P_1 > P_2 > P_3$ e $\tau_1$ e $\tau_3$ condividono la risorsa $R$
 
-![[Pasted image 20241013220530.png]]
+	![[Pasted image 20241013220530.png]]
 
+	**Slide 105/128**
 ---
 **PIP: Sezioni critiche annidate**
 
@@ -1806,8 +1922,9 @@ Teorema (No dim)
 	- $\tau_1$ e $\tau_3$ condividono la risorsa $R_a$ 
 	- $\tau_2$ e $\tau_3$ condividono la risorsa $R_b$
 
-![[Pasted image 20241013220705.png]]
+	![[Pasted image 20241013220705.png]]
 
+	**Slide 106/128**
 ---
 **PIP: Eredità transitoria della priorità** (Transient priority inheritance)
 
@@ -1815,9 +1932,11 @@ Teorema (No dim)
 	- $\tau_1$ e $\tau_2$ condividono la risorsa $R_a$ 
 	- $\tau_2$ e $\tau_3$ condividono la risorsa $R_b$
 
-![[Pasted image 20241013220857.png]]
+	![[Pasted image 20241013220857.png]]
 
 - Al tempo $t_4$, il task $\tau_3$ eredita la priorità del task $\tau_1$ tramite il task $\tau_2$, perchè tiene la risorsa $R_b$ sulla quale $\tau_2$ è bloccata
+	
+	**Slide 107/128**
 ---
 **PIP: Proprietà (1/5)**
 
@@ -1829,6 +1948,7 @@ Teorema (No dim)
 - **Dimostrazione**:
 	Assumiamo per assurdo che $S_k$ sia utilizzato da un compito $\tau_l$ con priorità inferiore a $P_i$, ma non da un compito con priorità superiore a $P_i$. In tal caso, $\tau_l$ non può ereditare una priorità superiore a $P_i$ e quindi $\tau_i$ farà prelazione su $\tau_l$.
 
+	**Slide 108/128**
 --- 
 **PIP: Proprietà (2/5)**
 
@@ -1842,6 +1962,7 @@ Teorema (No dim)
 	  => $\tau_m$ detiene un semaforo $S_a$ (dato che blocca $\tau_h$) e $\tau_l$ detiene un altro semaforo $S_b$ (dato che blocca $\tau_m$) 
 	  => $\tau_m$ ha tentato di bloccare $S_b$ all'interno della sezione critica protetta da $S_a$, quindi le due sezioni critiche sono annidate.
 
+	**Slide 109/128**
 ---
 **PIP: Proprietà (3/5)**
 
@@ -1857,6 +1978,7 @@ Teorema (No dim)
 	=> $\tau_i$ non può essere bloccato di nuovo da $\tau_j$.
 	=> Pertanto, $\tau_i$ può essere bloccato al massimo $l_i$ volte.
 
+	**Slide 110/128**
 ---
 **PIP: Proprietà (4/5)**
 
@@ -1869,29 +1991,31 @@ Teorema (No dim)
 - **Dimostrazione**:
 	I semafori sono binari 
 	=> Solo ==uno dei task a priorità inferiore==  $\tau_j$ può trovarsi in una sezione critica bloccante.
-	=> Una volta che $\tau_j$ esce dalla sezione critica, $\tau_i$ non può essere bloccato di nuovo da $\tau_j$. 
+	=> Una volta che $\tau_j$ esce dalla sezione critica, $\tau_i$ non può essere bloccato di nuovo da $\tau_j$
 	=>  Pertanto, $\tau_i$ può essere bloccato al massimo $s_i$ volte.
 	
+	**Slide 111/128**
 ---
 **PIP: Proprietà (5/5)**
 
 - **Quante volte può essere bloccato un task?**
 
 - **Teorema 1**: Sotto il Protocollo di Ereditarietà delle Priorità (PIP), un compito $\tau_i$ può essere bloccato per al massimo la durata di $\alpha_i = \min\{l_i, s_i\}$ sezioni critiche, dove:
-        - $l_i$ è il numero di compiti a priorità inferiore che possono bloccare $\tau_i$.
-        - $s_i$ è il numero di semafori che possono bloccare $\tau_i$.
+	- $l_i$ è il numero di compiti a priorità inferiore che possono bloccare $\tau_i$.
+	- $s_i$ è il numero di semafori che possono bloccare $\tau_i$.
 
 - **Dimostrazione**: La tesi segue direttamente dai Lemmi 3 e 4.
 
 - Non riusciamo a predire bound stretti sui tempi di blocco tramite questo teorema.
 
+	**Slide 112/128**
 ---
 **Protocollo di Ereditarietà delle Priorità (PIP): Riepilogo(1/2)**
 
 - **Vantaggi:**    
-    - Basso pessimismo (un compito viene bloccato ==solo quando necessario==).
-    - Trasparenza per il programmatore.
-    - Tempo di blocco limitato (al massimo la durata delle sezioni critiche $\alpha_i$).
+    - **Basso pessimismo** (un compito viene bloccato ==solo quando necessario==).
+    - **Trasparenza** per il programmatore.
+    - Tempo di blocco *limitato* (al massimo la durata delle sezioni critiche $\alpha_i$).
     
 - **Svantaggi(1/2):**
     - Il calcolo dei tempi di blocco è complesso (a causa di blocchi diretti, blocchi push-through, ereditarietà prioritaria transitiva).
@@ -1900,6 +2024,8 @@ Teorema (No dim)
     - Suscettibile a **blocchi concatenati** (ogni compito $\tau_i$ bloccato $\alpha_i$ volte nel peggiore dei casi).
 
 		![[Pasted image 20250324181219.png]]
+	
+	**Slide 113/128**
 ---
 
 **Protocollo di Ereditarietà delle Priorità (PIP): Riepilogo(2/2)**
@@ -1908,6 +2034,9 @@ Teorema (No dim)
 	- Non previene da casi di **deadlocks** causati da un uso errato dei semafori
 	    ![[Pasted image 20241014084028.png]]
 	    
+	**Slide 114/128**
+---
+### Priority Ceiling Protocol (PCP)
 ---
 **Protocollo Priority Ceiling  (PCP) (1/2)** 
 
@@ -1919,21 +2048,23 @@ Teorema (No dim)
 
 - La regola di **avanzamento** e di **rilascio** è la stessa di PIP
 
+	**Slide 115/128**
 ---
 **Protocollo Priority Ceiling  (PCP) (2/2)** 
 
 **Regola di avanzamento**: all'interno di una sezione critica associata alla risorsa $R_k$, un task esegue con la priorità più alta dei task bloccati su $R_k$.
-    - $\tau_j$ **eredita** la priorità più alta dei compiti che blocca: 
-	    - $p_j=max⁡\{P_j,max⁡\{P_i∣τ_i$ bloccato su $R_k\}\}$
-    - Proprietà di **transitività**: se $\tau_3$ blocca $\tau_2$ e $\tau_2$ blocca $\tau_1$, allora $p_3 = P_1$.
+- $\tau_j$ **eredita** la priorità più alta dei compiti che blocca: 
+	- $p_j=max⁡\{P_j,max⁡\{P_i∣τ_i$ bloccato su $R_k\}\}$
+- Proprietà di **transitività**: se $\tau_3$ blocca $\tau_2$ e $\tau_2$ blocca $\tau_1$, allora $p_3 = P_1$.
     
 - **Regola di rilascio**: quando $\tau_j$ esce dalla sezione critica associata alla risorsa $R_k$:
     - Il semaforo $S_k$ viene sbloccato.
     - Il task con priorità più alta bloccato su $S_k$ (se presente) viene risvegliato.
     - Se nessun altro task è bloccato da $\tau_j$, allora $p_j = P_j$; altrimenti $\tau_j$ eredita la priorità più alta dei task che blocca.    
 
+	**Slide 116/128**
 ---
-#### (PCP): Ceiling blocking
+**(PCP): Ceiling blocking**
 
 - Il *Ceiling blocking* si verifica quando un task viene bloccato poiché non passa il test di accesso del PCP, cioè 
 	- $P_i \leq \max\{C(S_k) \mid S_k \text\{$ bloccato da compiti $\} \neq \tau_i\}$.
@@ -1944,8 +2075,9 @@ Teorema (No dim)
 	- $\tau_2$ usa la risorsa $R_c$ 
 	- $\tau_3$ usa la risorsa $R_b$ e $R_c$
 
-![[Pasted image 20241014225850.png]]
+	![[Pasted image 20241014225850.png]]
 
+	**Slide 117/128**
 ---
 **Proprietà del PCP(1/4)**
 
@@ -1956,6 +2088,8 @@ Teorema (No dim)
 	- Se $\tau_k$ eredita una priorità maggiore di $\tau_i$ prima che $\tau_i$ completi => esisterà un task $\tau_h$ bloccato da $\tau_k \mid P_h \geq P_i$
 	- Se $\tau_i$ entra nella sua sezione critica => $P_i > C^*$ dove $C^*$ è per definizione il max ceiling dei semafori bloccati da task a priorità minore.
 	- Dunque, $P_h \geq P_i > C^*$ => $\tau_h$ non può essere bloccato da $\tau_k$ che è una contraddizione. 
+
+	**Slide 118/128**
 ---
 **Proprietà del PCP(2/4)**
 
@@ -1966,6 +2100,7 @@ Teorema (No dim)
 	Se accade un blocco transitivo => esistono dei task $\tau_1, \tau_2, \tau_3 \mid P_1 > P_2 > P_3$ dove $\tau_1$ è bloccato da $\tau_2$, mentre $\tau_2$ è bloccato da $\tau_3$ 
 	=> $\tau_3$ dunque erediterà la priorità di $\tau_1$ => che contraddice il Lemma 1
 
+	**Slide 119/128**
 ---
 **Proprietà del PCP(3/4)**
 
@@ -1975,6 +2110,7 @@ Teorema (No dim)
 - **Dimostrazione**: 
 	 Se si verifica un deadlock $\Rightarrow$ esistono task $\tau_1, \tau_2, \ldots, \tau_n$ con $P_1 > P_2 > \ldots > P_n$, dove $\tau_1$ è bloccato da $\tau_2$, $\tau_2$ è bloccato da $\tau_3$ e così via $\Rightarrow$ $\tau_n$ erediterà la priorità di $\tau_1$, contraddicendo il Lemma 1.
 
+	**Slide 120/128**
 ---
 **Proprietà del PCP(4/4)**
 
@@ -1991,6 +2127,7 @@ Teorema (No dim)
 
 - Il massimo tempo di blocco per ogni task è derivato in base al Teorema 2 
 
+	**Slide 121/128**
 ---
 **Riepilogo del PCP**
 
@@ -2003,7 +2140,10 @@ Teorema (No dim)
     - Pessimistico (può causare blocchi non necessari).
     - Non trasparente per il programmatore (i ceiling devono essere specificati nel codice sorgente).
 
+	**Slide 122/128**
 ---
+### Analisi schedulabilità
+
 **Analisi di Schedulabilità per Task Periodici con Risorse Condivise**
 
 - **Blocchi senza limite** $\Rightarrow$ Task set non schedulabile.
@@ -2011,34 +2151,29 @@ Teorema (No dim)
 - **Blocchi limitati** $\Rightarrow$ Estendere i test di schedulabilità per task indipendenti.
 	- Garantisco un task alla volta
 	- Prelazione da task con più alta priorità e blocco da task con bassa priorità
-	- Le condizioni di blocco derivate nel caso peggiore che differisce per ogni task e non possono accadere simultaneamente 
+	- Le condizioni di blocco derivate nel **caso peggiore** che differisce per ogni task e non possono accadere simultaneamente 
 		=> I test sono **solo sufficienti**
 
+	**Slide 123/128**
 ---
 **Test di scheduling estesi(1/3)**
 
 - **Analisi in base all'uso** 
 	- **Test LL (Liu & Layland) per RM**:
-		Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per RM se 
-		- $\sum_{k|_{P_k > P_i}} \frac{C_k}{T_k} + \frac{C_i+B_i}{T_i} \leq i(2^{\frac{1}{i}} -1)$
-		
+		Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per RM se $$\sum_{k|_{P_k > P_i}} \frac{C_k}{T_k} + \frac{C_i+B_i}{T_i} \leq i(2^{\frac{1}{i}} -1)$$
 	- **Test HB (Hyperbolic bound) per RM:** 
-		Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per RM se 
-		- $\prod_{k|_{P_k > P_i}} (\frac{C_k}{T_k} +1) (\frac{C_i+B_i}{T_i}+1) \leq 2$
-
+		Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per RM se $$\prod_{k|_{P_k > P_i}} (\frac{C_k}{T_k} +1) (\frac{C_i+B_i}{T_i}+1) \leq 2$$
 	- Test LL per EDF: Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per EDF se 
-		- $\sum_{k|_{P_k > P_i}} \frac{C_k}{T_k} + \frac{C_i+B_i}{T_i} \leq 1$
+$$\sum_{k|_{P_k > P_i}} \frac{C_k}{T_k} + \frac{C_i+B_i}{T_i} \leq 1$$
 	 
+	**Slide 124/128**
 ---
 **Test di scheduling estesi(2/3)**
 	
 - **Response time analysis**
-	- Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco  e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per **DM(Deadline Monotonic)** se 
-		- $R_i = C_i + B_i+ \sum_{k|_{P_k > P_i}} \lceil \frac{R_i}{T_k} \rceil C_k \leq D$
-	
-	- La soluzione iterativa per calcolare $R_i$ 
-	 ![[Pasted image 20241016081127.png]]
-	
+	- Un set di tasks periodici $\{\tau_1, ... , \tau_n\}$ con fattori di blocco  e con $D_i = T_i$ $\forall$ task $\tau_i$ è schedulabile per **DM(Deadline Monotonic)** se $$R_i = C_i + B_i+ \sum_{k|_{P_k > P_i}} \lceil \frac{R_i}{T_k} \rceil C_k \leq D_i$$
+	- La soluzione iterativa per calcolare $R_i$ $$\begin{cases} R_i^{(0)} = C_i + B_i + \sum_{k| P_k > P_i} C_k \\ R_i^{(j)} = C_i + B_i+ \sum_{k|_{P_k > P_i}} \lceil \frac{R_i^{(j-1)}}{T_k} \rceil C_k \end{cases}$$	
+	**Slide 125/128**
 ---
 **Test di scheduling estesi(3/3)**
 	
@@ -2054,6 +2189,7 @@ Teorema (No dim)
 		- $D = \{d_i \mid d_i \leq max \{D_{max}, min \{H, t^*\}\}\}$, $D_max = max_i\{D_i\}$
 		- $H = lcm(T_1, ..., T_n)$, $t^* = \sum_i (T_i-D_i)U_i /(1-U)$
 
+	**Slide 126/128**
 ---
 
 # 3. Sistemi operativi Real-time
@@ -2065,6 +2201,7 @@ Teorema (No dim)
 2. VxWorks
 3. Introduzione alla programmazione RT: recap sul linguaggio c
 
+	**Slide 1/29**
 ---
 ## 1. Standard per RTOSs
 
@@ -2084,6 +2221,7 @@ Teorema (No dim)
    
 		![[Pasted image 20241020231435.png]]
 
+	**Slide 2/29**
 ---	
 **Memoria: spazio del kernel vs spazio utente**
 
@@ -2096,8 +2234,9 @@ Teorema (No dim)
 	- La modalità utente non è una modalità privilegiata dalla CPU per i programmi a livello utente e questi possono accedere a una parte limitata del kernel tramite le chiamate di sistema.
 	- Se un programma a livello utente invoca una chiamata di sistema, viene inviato un **interruzione software** al kernel, che esegue il gestore appropriato(in modalità kernel) e restituisce il controllo al programma utente.
 
-![[Pasted image 20250325081847.png]]
+	![[Pasted image 20250325081847.png]]
 
+	**Slide 3/29**
 ---
 **Sistemi operativi in tempo reale (RTOS)**
 
@@ -2115,6 +2254,7 @@ Teorema (No dim)
 	- Pianificazione basata su priorità
 	- Ridotta impronta di memoria
 
+	**Slide 4/29**
 ---
 **Standard per GPOS (General Purpose OS) e RTOS**
 
@@ -2131,6 +2271,7 @@ Teorema (No dim)
 	- ARINC-APEX
 	- µITRON
 
+	**Slide 5/29**
 ---
 **POSIX (Portable Operating System Interface per UniX)**
 
@@ -2144,13 +2285,14 @@ Teorema (No dim)
 
 - Supporta vari livelli di **conformità** e il paradigma "**programmare per contratto**".
 
+	**Slide 6/29**
 ---
 **RT-POSIX**
 
 - Estensione real-time di POSIX, che consente la portabilità delle applicazioni in tempo reale.
 
 - Fornisce servizi per la **programmazione concorrente** e la **prevedibilità temporale**.
-	- Sincronizzazione di mutua esclusione tramite eredità di priorità.
+	- Sincronizzazione di **mutua esclusione** tramite eredità di priorità.
 	- Code di messaggi prioritari per la comunicazione tra task.
 	- Scheduling preemptive a priorità fissa.
 
@@ -2160,6 +2302,7 @@ Teorema (No dim)
   - **Dedicated Real-Time System profile (PSE53)**: per grandi sistemi embedded, con supporto per processi multipli con sistema di protezione.
   - **Multi-Purpose Real-Time System profile (PSE54)**: per sistemi multiuso, supporta applicazioni composte da task real-time e non.
 
+	**Slide 7/29**
 ---
 **Altri standard**
 
@@ -2175,15 +2318,17 @@ Teorema (No dim)
 - **µITRON**: famiglia di standard per software applicativo embedded.
 	- Massimizza portabilità mantenendo scalabilità (ad esempio migliorando la portabilità di gestori delle interruzioni limitando l'overhead)
 
+	**Slide 8/29**
 ---
 **Tipi di RTOS**
 
-- **RTOS commerciali**: VxWorks, QNX, Neutrino, OSE, ...
+- **RTOS commerciali**: **VxWorks**, QNX, Neutrino, OSE, ...
  
 - **RTOS basati su Linux**: RTLinux, RTAI, ...
 
-- **RTOS open-source e di ricerca**: SHARK, MaRTE, ERIKA, ...
+- **RTOS open-source e di ricerca**: SHARK, MaRTE, **ERIKA**, ...
 
+	**Slide 9/29**
 ---
 ## 2. VxWorks
 
@@ -2200,11 +2345,15 @@ Teorema (No dim)
 - Shell del kernel
 - IDE basato su Eclipse, con supporto per host Windows/Linux
 
+	**Slide 10/29**
 ---
 **Esempi di applicazioni industriali che utilizzano VxWorks**
 
-![[Pasted image 20241020233243.png]]
+- Esempi pratici
+	
+	![[Pasted image 20241020233243.png]]
 
+	**Slide 11/29**
 ---
 **Clock e scheduling**
 
@@ -2217,6 +2366,7 @@ Teorema (No dim)
 	- Scheduling a Round-Robin
 	- Fino a $256$ livelli di priorità
 
+	**Slide 12/29**
 ---
 **Comunicazione tra task**
 
@@ -2230,6 +2380,7 @@ Teorema (No dim)
 
 - I semafori mutex supportano il Protocollo di Eredità delle Priorità (PIP)
 
+	**Slide 13/29**
 ---
 ## 3. Introduzione alla programmazione in tempo reale: ripasso del linguaggio C
 (skip this)
@@ -2331,6 +2482,7 @@ Teorema (No dim)
 5. Utilizzo delle reti di Petri temporali preemptive nel ciclo di vita software V-Model
 6. Automi temporizzati
 
+	**Slide 1/154**
 ---
 ## 1. Introduzione
 
@@ -2339,16 +2491,17 @@ Teorema (No dim)
 
 - **Approcci analitici**
 	- Presuppongono task con un Tempo di Esecuzione nel Peggior Caso (WCET) **deterministico**.
-	- Forniscono risultati esatti per insiemi di task periodici e indipendenti.
-	- Forniscono risultati pessimistici per insiemi di task che includono task sporadici e dipendenze inter-task (e.g., sincronizzazioni tramite semaforo, precedenze di flusso di dati).
+	- Forniscono risultati **esatti** ==per insiemi di task periodici e indipendenti==.
+	- Forniscono risultati **pessimistici** per insiemi di task che includono task sporadici e dipendenze inter-task (e.g., *sincronizzazioni* tramite semaforo, precedenze di flusso di dati).
 	- Offrono test di schedulabilità efficienti.
 
 - **Metodi basati su spazio degli stati**
-	- Considerano parametri temporali che variano all'interno di un intervallo minimo-massimo.
+	- Considerano parametri temporali che ==variano all'interno di un intervallo minimo-massimo.==
 	- Supportano la modellazione e l'analisi di una vasta classe di sistemi real-time (e.g., insiemi di task real-time, protocolli di comunicazione, ...)
-	- Forniscono risultati esatti per qualsiasi insieme di task che può essere modellato e analizzato.
+	- Forniscono risultati **esatti** per qualsiasi insieme di task che può essere modellato e analizzato.
 	- Richiedono una **complessità computazionale maggiore** rispetto agli approcci analitici.
 
+	**Slide 2/154**
 ---
 ## 2. Reti di Petri
 
@@ -2368,24 +2521,28 @@ Teorema (No dim)
     
 		![[Pasted image 20241021164257.png]] 
 
+	**Slide 3/154**
 ---
 **Sintassi delle Reti di Petri (2/2)**
 
 - Un posto $p$ è detto un **posto di input** per una transizione $t$ se $(p,t) \in A^-$ (Ovvero se esiste un arco diretto da p a t)
 	- Ad esempio $p0$ è un posto di input per $t0$
 
--  Un posto $p$ è detto un **posto di output** per una transizione $t$ se $(p,t) \in A^+$ (Ovvero se esiste un arco diretto da p a t)
-	- Ad esempio $p1$ è un posto di input per $t0$
-		
+- Un posto $p$ è detto un **posto di output** per una transizione $t$ se $(t,p) \in A^+$ (Ovvero se esiste un arco diretto da t a p)
+	- Ad esempio $p1$ è un posto di output per $t0$
+
+		![[Pasted image 20241021164257.png]]
+	
+	**Slide 4/154**
 ---
 **Stato di una PN**
 
 - Una **marcatura** $m: P \rightarrow \mathbb{N}$ assegna un numero naturale di **token** a ciascun posto.
 	- I tokens non hanno identità
-	- Ad esempio $p0$ e $p1$ contengono un token ciascuno
+	- Ad esempio $p0$ e $p2$ contengono un token ciascuno
 
 - Una transizione $t$ è **abilitata** da una marcatura $m$ se e solo se:
-	- $m(p) > 0 \, \forall p \in P \mid (p, t) \in A^-$ (ovvero se e solo se $m$ assegna almeno un token **a ogni posto di input** di $t$)
+	- $m(p) > 0 \, \forall p \in P \mid (p, t) \in A^-$ => ovvero se e solo se $m$ assegna almeno un token **a ogni posto di input** di $t$
 		- Le transizioni abilitate rappresentano **eventi concorrenti**
 		- Ad esempio $t0$ e $t2$ sono abilitati, $t1$ non è abilitato
 
@@ -2396,36 +2553,39 @@ Teorema (No dim)
 
 		![[Pasted image 20241021170229.png]]
 
+	**Slide 5/154**
 ---
 **Semantica delle PN (1/2)**
 
 - Un'**esecuzione** di una PN è un percorso $\omega = s_0 \xrightarrow{\gamma_1} s_1 \xrightarrow{\gamma_2} s_2 \xrightarrow{\gamma_3} \ldots$ tale che:
-  - $s_0 = \langle m_0 \rangle$ è lo stato iniziale e $m_0$ è la marcatura iniziale.
+  - $s_0 = \langle m_0 \rangle$ è lo **stato iniziale** e $m_0$ è la marcatura iniziale.
   - $\gamma_i$ è la $i$-esima transizione attivata.
   - $s_i = \langle m_i \rangle$ è lo stato raggiunto dopo lo sparo di $\gamma_i$.
   - $\gamma_i$ è selezionata tra le transizioni abilitate nello stato $s_{i-1} = \langle m_{i-1}\rangle$.
   - Dopo lo sparo di $\gamma_i$, la nuova marcatura $m_i$ è derivata da $m_{i-1}$ da
-	  1. Aver rimosso un token da ogni posto di input di $\gamma_i$ (ovvero $m_{tmp} = m_{i−1} (p) − 1 \space ∀ \space p | (p, γ_i ) ∈ A^− )$
-	  2. Aver aggiunto un token ad ogni posto di output di $\gamma_i$ (ovvero $m_i = m_{tmp}(p) +1 \space ∀ \space p | (γ_i,p ) ∈ A^+$)
+	  1. Aver rimosso un token da **ogni posto di input** di $\gamma_i$ (ovvero $m_{tmp} = m_{i−1} (p) − 1 \space ∀ \space p | (p, γ_i ) ∈ A^− )$
+	  2. Aver aggiunto un token ad **ogni posto di output** di $\gamma_i$ (ovvero $m_i = m_{tmp}(p) +1 \space ∀ \space p | (γ_i,p ) ∈ A^+$)
   - $\omega$ è un percorso finito o infinito
 
-- Ad esempio: $\langle p0 p2\rangle →^{t0} \langle p1 p2\rangle →^{t2} \langle p1 p3\rangle →^{t1} \langle p0 p2\rangle$ è una sequenza finita
+- Ad esempio: $\langle p0 p2\rangle →^{t0} \langle p1 p2\rangle →^{t2} \langle p1 p3\rangle →^{t1} \langle p0 p2\rangle$ è una sequenza **finita**
  
 	 ![[Pasted image 20241021170229.png]]
 
+	**Slide 6/154**
 ---
 **Semantica delle PN (2/2)**
 
-- Esempio 1: Rete di Petri che ammette infinite esecuzioni (figura sopra)
+- **Esempio 1**: Rete di Petri che ammette infinite esecuzioni (figura sopra)
 	- Ad esempio: $\langle p0 p2\rangle →^{t0} \langle p1 p2\rangle →^{t2} \langle p1 p3\rangle →^{t1} \langle p0 p2\rangle$ è una sequenza finita
 	- Ma la infinita ripetizione di $\omega$ è una **esecuzione infinita**
 	
-- Esempio 2: Rete di Petri che non ammette infinite esecuzioni
+- **Esempio 2**: Rete di Petri che non ammette infinite esecuzioni
 	- Ad esempio: $\langle p0 p2\rangle →^{t0} \langle p1 p2\rangle →^{t2} \langle p1 p3\rangle →^{t1} \langle\rangle$
 	- Ad esempio: $\langle p0 p2\rangle →^{t2} \langle p0 p3\rangle →^{t0} \langle p1 p3\rangle →^{t1} \langle\rangle$
 	
 		![[Pasted image 20241021202840.png]]
 
+	**Slide 7/154**
 ---
 **Grafo di raggiunbilità di un PN**
 
@@ -2438,12 +2598,16 @@ Teorema (No dim)
 	- L'insieme degli archi, include l'arco da $m_i$ a $m_j$ se e solo $\exists t \in T | \langle m_i \rangle →^t \langle m_j \rangle$ 
 
 - Un percorso nel grafo raggiungibile identifica un esecuzione del PN 
- ![[Pasted image 20241021220706.png]] 
+	 ![[Pasted image 20241021220706.png]] 
+	**Slide 8/154**
 ---
 **Enumerazione del grafo di raggiungibilità**
 
-![[Pasted image 20241021220804.png]]
+- Algoritmo per trovare l'insieme minimo delle marcature e quindi il grado di raggiungibilità
 
+	![[Pasted image 20241021220804.png]]
+
+	**Slide 9/154**
 ---
 **Il problema del produttore/consumatore (1/4)**
 
@@ -2451,68 +2615,73 @@ Teorema (No dim)
 - Un produttore produce oggetti e li inserisce in un buffer  
 - Un consumatore consuma oggetti e li rimuove dal buffer  
 - Il buffer può avere una capacità limitata  
-- Produzione e consumo sono in mutua esclusione (requisito di **sicurezza**)  
-- La produzione e il consumo eventualmente si verificheranno (requisito di **liveness**)   -> si intende che non ci può essere solo produzione o solo consumo
+- Produzione e consumo sono in **mutua esclusione** (requisito di **sicurezza**)  
+- La produzione e il consumo eventualmente si verificheranno (requisito di **liveness**) -> si intende che non ci può essere solo produzione o solo consumo => prima o poi ci dovrà essere qualcuno che produce e qualcuno che consuma
 	   
 • **Soluzione del problema**  
 - Utilizzare un semaforo binario per garantire la mutua esclusione  
 
+	**Slide 10/154**
 ---
 **Il problema del produttore/consumatore (2/4)**
 
 • Invarianti di posto  
--  $m(pWaiting) + m(pProducing) + m(pSignalling) = 1$ ∀ $m \in M$  
-- $m(cWaiting) + m(cProducing) + m(cSignalling) = 1$ ∀ $m \in M$  
+-  $m(pWaiting) + m(pProducing) + m(pSignalling) = 1$ ∀ $m \in M$  => eseguo una computazione di produzione alla volta
+- $m(cWaiting) + m(cProducing) + m(cSignalling) = 1$ ∀ $m \in M$  => lo stesso per il consumo
 - $m(free) + m(busy) = 4$ ∀ $m \in M$ (4 è la **capacità del buffer**)  
 
-• Il modello garantisce la mutua esclusione (requisito di sicurezza soddisfatto)  
+• Il modello garantisce la mutua esclusione (requisito di sicurezza soddisfatto)  => questo utilizzando semafori
 • Il modello è però soggetto a **deadlock** (requisito di *liveness* non soddisfatto)  
 - Nessuna transizione abilitata in un qualsiasi marcatura nel caso $m | m(pProducing) = 1 \land m(busy) = 4$  (4 tokens in busy e 1 in producing)
 - Nessuna transizione abilitata in un qualsiasi marcatura nel caso $m | m(cConsuming) = 1 \land m(free) = 4$  (4 tokens in free e 1 in consuming)
+	=> può capitare di aver ottenuto il semaforo, ma non poter procedere perchè non ho alcun gettone in free/busy => rispettivamente nel caso di *producing* e in quello di *consuming*
 	
-![[Pasted image 20241021223042.png]]
+	![[Pasted image 20241021223042.png]]
 
+	**Slide 11/154**
 ---
 **Il problema del produttore/consumatore (3/4)**
 
 • Il modello garantisce la mutua esclusione (requisito di sicurezza soddisfatto)
 	=> tramite mutex
 	
-• Il modello previene il deadlock (requisito di *liveness* soddisfatto)  
+• Il modello previene il deadlock (requisito di *liveness* soddisfatto) => prima di richiedere il semaforo guardo se dei gettoni in free/busy
 
-• Il modello non può essere tradotto in codice real-time  
+• Il modello ==non può essere tradotto in codice real-time==  
 - Il numero di prodotti correnti potrebbe essere rappresentato da una variabile condivisa $sv$  
-- Potrebbe verificarsi uno switch di contesto (a causa del semaforo occupato) dopo che il produttore/consumatore ha letto la variabile e prima di modificarla  => può capitare che una volta che mi sono assicurato di poter produrre/consumare venga fatta l'operazione opposta a quella di controllo e quindi leggere un valore errato della variabile
+- Potrebbe verificarsi uno switch di contesto (a causa del semaforo occupato) dopo che il produttore/consumatore ha letto la variabile e prima di modificarla => può capitare che una volta che mi sono assicurato di poter produrre/consumare venga fatta l'operazione opposta a quella di controllo e quindi ==leggere un valore errato della variabile== => ovvero un valore diverso rispetto a quello precedentemente letto
 
-![[Pasted image 20241021223215.png]]
+	![[Pasted image 20241021223215.png]]
 
+	**Slide 12/154**
 ---
 **Il problema del produttore/consumatore (4/4)**
 	
-• Il modello garantisce la mutua esclusione (requisito di sicurezza soddisfatto)  
-• Il modello previene il deadlock (requisito di liveness soddisfatto)  
+- Il modello garantisce la mutua esclusione (requisito di sicurezza soddisfatto)  
+- Il modello previene il deadlock (requisito di liveness soddisfatto)  
 
-• Il modello può essere tradotto in codice real-time  
-	• La variabile condivisa è prima testata (gettone che viene subito restituito) dal produttore/consumatore e poi modificata  
+- Il modello può essere tradotto in codice real-time  
+	- La variabile condivisa è prima testata (gettone che viene subito restituito) dal produttore/consumatore e poi modificata in un'altro posto
 
-![[Pasted image 20241021223528.png]]
+	![[Pasted image 20241021223528.png]]
 
+	**Slide 13/154**
 ---
 **Reti di Petri con archi inibitori (1/2)**
 
-• Le reti di Petri con archi inibitori hanno l'espressività della macchina di Turing (le reti di Petri no)  
+- Le reti di Petri con archi inibitori hanno l'espressività della macchina di Turing (le reti di Petri no)  
 
-• Una rete di Petri con archi inibitori è una tupla $\langle P, T , A^- , A^+ , A^\bullet \rangle$ dove:  
--  $P$, $T$, $A^-$, $A^+$ sono gli elementi di una rete di Petri  
-- $A^\bullet \subseteq P \times T$ è l'insieme degli **archi inibitori** (archi diretti con frecce a pallino da cerchi a barre)  
+- Una rete di Petri con archi inibitori è una tupla $\langle P, T , A^- , A^+ , A^\bullet \rangle$ dove:  
+	-  $P$, $T$, $A^-$, $A^+$ sono gli elementi di una rete di Petri  
+	- $A^\bullet \subseteq P \times T$ è l'insieme degli **archi inibitori** (archi diretti con frecce a pallino da cerchi a barre)  
 
-• Un posto $p$ è detto un *posto inibitore* per una transizione $t$ se $(p, t) \in A^\bullet$  
-(i.e., se c'è un arco con pallino da $p$ a $t$)  
-	• es.: la *lettura* è un posto inibitore per la transizione *writeWait*  
-	• es.: la *scrittura* è un posto inibitore per la transizione *readWait*  
+- Un posto $p$ è detto un *posto inibitore* per una transizione $t$ se $(p, t) \in A^\bullet$  (i.e., se c'è un arco con pallino da $p$ a $t$)  
+	- es.: la *lettura* è un posto inibitore per la transizione *writeWait*  
+	- es.: la *scrittura* è un posto inibitore per la transizione *readWait*  
 
-![[Pasted image 20241021223747.png]]
+	![[Pasted image 20241021223747.png]]
 
+	**Slide 14/154**
 ---
 **Reti di Petri con archi inibitori (2/2)** 
 
@@ -2524,66 +2693,72 @@ Teorema (No dim)
 -  La transizione *readWait* non può avvenire se il posto *writing* contiene un token (i.e., un processo non è autorizzato a leggere se un altro processo sta scrivendo)  
 - La transizione *writeWait* non può avvenire se il posto *reading* contiene un token  (i.e., un processo non è autorizzato a scrivere se un altro processo sta leggendo)  
 
-![[Pasted image 20241021223747.png]]
+	![[Pasted image 20241021223747.png]]
 
+	**Slide 15/154**
 ---
 **Reti di Petri con priorità (1/2)**
 
-• Le reti di Petri con priorità hanno l'espressività della macchina di Turing (le reti di Petri no)
+• Le reti di Petri **con priorità** hanno l'espressività della macchina di Turing (le reti di Petri no)
 
 • Una rete di Petri con priorità è una tupla $\langle P, T , A^- , A^+ , Z \rangle$ dove:  
 - $P$, $T$, $A^-$, $A^+$ sono gli elementi di una rete di Petri  
-- $Z : T \to N$ associa a ogni transizione una **priorità** (possibilmente annotata accanto alla barra che rappresenta la transizione)  
+- $Z : T \to N$ ==associa a ogni transizione una **priorità**== (possibilmente annotata accanto alla barra che rappresenta la transizione)  
 - Più basso è il numero di priorità, più alta è la priorità della transizione  
 
- • Esempio: $t_0$ ha un livello di priorità maggiore di $t_2$  
+- Esempio: $t_0$ ha un livello di priorità maggiore di $t_2$  
  
-![[Pasted image 20241021224221.png]]
+	![[Pasted image 20241021224221.png]]
 
+	**Slide 16/154**
 ---
 **Reti di Petri con priorità (2/2)**
 
 • Una transizione $t$ è **abilitata** da un marking $m$ se e solo se:  
 	• $m(p) > 0$ ∀ $p \in P | (p, t) \in A^-$ (i.e., $m$ assegna almeno un token a ogni posto di input di $t$)  
-	• ∀ $t' \in T | t \neq t'$, se $m(p) > 0$ ∀ $p \in P | (p, t') \in A^-$ allora $Z(t) < Z(t')$  (i.e., $t$ ha un livello di priorità maggiore rispetto a qualsiasi altra transizione con posti di input non vuoti)  
+	• ∀ $t' \in T | t \neq t'$, se $m(p) > 0$ ∀ $p \in P | (p, t') \in A^-$ allora $Z(t) < Z(t')$  (i.e., $t$ ha un livello di priorità **maggiore** rispetto a qualsiasi altra transizione con posti di input non vuoti)  
 	
-• Esempio: una singola transizione è abilitata in ogni marking raggiungibile
+- Esempio: **una singola** transizione è abilitata in ogni marking raggiungibile
+	
+	![[Pasted image 20241021224334.png]]
 
-![[Pasted image 20241021224334.png]]
-
+	**Slide 17/154**
 ---
 **Reti di Petri con funzioni di abilitazione e aggiornamento (1/2)**  
 
 • Migliorano la comodità di modellazione rispetto alle reti di Petri con archi inibitori  
 
-• Non aumentano l'espressività del modello rispetto alle reti di Petri con archi inibitori
+• ==Non aumentano l'espressività== del modello rispetto alle reti di Petri con archi inibitori
 
 • Una rete di Petri con funzioni di abilitazione e aggiornamento è una tupla $\langle P, T , A^- , A^+ , E , U \rangle$:  
 - $P$, $T$, $A^-$, $A^+$ sono gli elementi di una rete di Petri  
-- $E$ associa a ciascuna transizione $t \in T$ una **funzione di abilitazione**   $E(t) : M \to \{true, false\}$, con $M$ l'insieme delle marcature raggiungibili  
+- $E$ associa a ciascuna transizione $t \in T$ una **funzione di abilitazione**   $E(t) : M \to \{true, false\}$, con $M$ l'insieme delle **marcature raggiungibili**  
 - $U$ associa a ciascuna transizione $t \in T$ una **funzione di aggiornamento** $U(t) : M \to M$  
 - $E(t)$ e $U(t)$ possono essere annotate accanto alla barra che rappresenta la transizione  
 
-• Esempio  
+- Esempio  
 	• $t_0$ ha una *funzione di abilitazione* che valuta a true se $p_0$ contiene un token  
 	• $t_1$ ha una *funzione di aggiornamento* che assegna a una marcatura $m$ un' altra marcatura $m'$  ottenuto da $m$ assegnando un token al posto $p_0$  
 
-![[Pasted image 20241021224824.png]]
+	![[Pasted image 20241021224824.png]]
 
+	**Slide 18/154**
 ---
 **Reti di Petri con funzioni di abilitazione e aggiornamento (2/2)**
 
 • Una transizione $t$ è **abilitata** da una marcatura $m$ se e solo se:  
 -  $m(p) > 0$ ∀ $p \in P | (p, t) \in A^-$ (i.e., $m$ assegna almeno un token a ogni posto di input di $t$)  
-- $E(t)(m) = true$ (i.e., la funzione di abilitazione di $t$ valuta a true in $m$)  
+- $E(t)(m) = true$ (i.e., la funzione di abilitazione di $t$ valuta a **true** in $m$)  
 	
 • Data una marcatura  $m_{i-1}$ e una transizione $\gamma_i$ abilitata da $m_{i-1}$,  la marcatura $m_i$ raggiunta dopo l'esecuzione di $\gamma_i$ è derivata da $m_{i-1}$ attraverso  
 1. la rimozione di un token da ogni posto di input di $\gamma_i$  (i.e., $m_{tmp} = m_{i-1}(p) - 1$ ∀ $p | (p, \gamma_i) \in A^-$)  
 2. l'aggiunta di un token a ogni posto di output di $\gamma_i$  (i.e., $m_{tmp2} = m_{tmp}(p) + 1$ ∀ $p | (\gamma_i, p) \in A^+$)  
-3. l'applicazione della funzione di aggiornamento di $\gamma_i$ (i.e., $m_i = U(\gamma_i)(m_{tmp2})$)  
-![[Pasted image 20241021225203.png]]
-(notare sono stati tolti gli archi dove non necessario)
+3. ==l'applicazione della funzione di aggiornamento== di $\gamma_i$ (i.e., $m_i = U(\gamma_i)(m_{tmp2})$)  
+	
+	![[Pasted image 20241021225203.png]]
+	(notare sono stati tolti gli archi dove non necessario)
 
+	**Slide 19/154**
 ---
 ## 3. Reti di Petri Temporali
 
@@ -2605,6 +2780,7 @@ Teorema (No dim)
 	
 		![[Pasted image 20241022080721.png]]
 
+	**Slide 20/154**
 ---
 **Stato di una TPN**
 
@@ -2612,16 +2788,13 @@ Teorema (No dim)
 	- $m$ è una *marcatura* (rappresenta la posizione logica del sistema).
 	- $\tau$ associa a ciascuna transizione abilitata $t$ un **tempo di attivazione** $\tau(t) \in \mathbb{R}_{\geq 0}$.
 
-- Ad esempio:
-	- $t0$ può essere associato con il tempo di attivazione $\tau(t0) \in [0,1]$
-	- $t2$ può essere associato con il tempo di attivazione $\tau(t2) \in [2,3]$
-  
 - **Esempio**:  
   - $t_0$ può essere associata a un tempo di attivazione $\tau(t_0) \in [0, 1]$.
   - $t_1$ può essere associata a un tempo di attivazione $\tau(t_1) \in [2, 3]$.
 	
 	![[Pasted image 20241022080721.png]]
-
+ 
+	**Slide 21/154**
 ---
  **Semantica delle TPN (1/5)**
 
@@ -2633,6 +2806,7 @@ Teorema (No dim)
 - Una semantica **debole** dei vincoli temporali (non implementata dalle TPNs)
 	- Indica che una transizione non attivata entro il suo tempo **massimo** di attivazione non sarà in grado di attivarsi fino a quando sarà abilitata nuovamente
 
+	**Slide 22/154**
 ---
 **Semantica delle TPN (2/5)**
 
@@ -2650,6 +2824,7 @@ Teorema (No dim)
 
 	![[Pasted image 20241022080721.png]]
 
+	**Slide 23/154**
 ---
 **Semantica delle TPN (3/5)**
 
@@ -2673,6 +2848,7 @@ Teorema (No dim)
 	3. Campionando il tempo di attivazione di ogni **nuova transizione abilitata** $t'$ nel suo intervallo di attivazione
 		=> $\tau_1(t') \in [EFT(t'), LFT(t')]$ $\forall t' \in T \mid t'$ sia una nuova transizione abilitata in $m_1$
 
+	**Slide 24/154**
 ---
 **Semantica delle TPN (4/5)**
 
@@ -2683,6 +2859,7 @@ Teorema (No dim)
 	
 	![[Pasted image 20241022080721.png]]
 	
+	**Slide 25/154**
 ---
 **Semantica delle TPN (5/5)**
 
@@ -2703,6 +2880,7 @@ Teorema (No dim)
 
 	- $\omega$ è un percorso finito o infinito
 
+	**Slide 26/154**
 ---
  **Estensione della sintassi e semantica delle TPN**
 
@@ -2711,6 +2889,7 @@ Teorema (No dim)
 
 	![[Pasted image 20241022085550.png]]
 
+	**Slide 27/154**
 ---
  **Modellazione di insiemi di task in tempo reale con TPN: un esempio (1/4)**
 
@@ -2732,15 +2911,18 @@ Teorema (No dim)
   - $P_3$ è sporadico:
     - Tempo tra gli arrivi $T_3 \geq 6$
     - Scadenza relativa $D_3 = 6$
-    - Computazione: $WCET \, C_{31} \in [1, 2]$, utilizza $R_2, R_3$ ![[Pasted image 20241022085823.png]]
+    - Computazione: $WCET \, C_{31} \in [1, 2]$, utilizza $R_2, R_3$ 
+	    ![[Pasted image 20241022085823.png]]
 
+	**Slide 28/154**
 ---
 **Modellazione di insiemi di task in tempo reale con TPN: un esempio (2/4)**
 
 - La TPN può essere derivata automaticamente dalla timeline dei task.
 
-![[Pasted image 20241022085857.png]]
+	![[Pasted image 20241022085857.png]]
 
+	**Slide 29/154**
 ---
 **Modellazione di insiemi di task in tempo reale con TPN: un esempio (3/4)
 
@@ -2748,8 +2930,9 @@ Teorema (No dim)
 	- Le TPN ==non riescono a catturare le deadline relative== (proprietà da verificare)
 	- Il modello include due tipi di non determinismo:
 		- Nella selezione dei tempi da attivare (non sotto controllo del designer)
-		- Nel rifiuto/accettazione dei job di $P_3$ (sotto controllo del designer)
+		- Nel **rifiuto/accettazione** dei job di $P_3$ (sotto controllo del designer)
 		
+	**Slide 30/154**
 ****
 **Modellazione di insiemi di task in tempo reale con TPN: un esempio (4/4)**
 
@@ -2759,9 +2942,10 @@ Teorema (No dim)
 	- Esiste una strategia di accettazione rifiuto che garantisca le scadenza di $P_1$ e $P_2$?
 
 - A quali domande in generale un analisi della TPN può rispondere?
-	- **Raggiungibilità temporizzata**: quali ordinamenti tra le transizioni sono realizzabili sotto i vincoli temporali del modello?
+	- **Raggiungibilità temporizzata**: quali ordinamenti tra le transizioni sono realizzabili sotto i vincoli temporali del modello? => nel senso entro un certo intervallo di tempo riesco ad a trovarmi in un determinato stato?
 	- **Durata min/max**: qual è il tempo minimo e massimo per completare una sequenza di firing di transizioni?
 
+	**Slide 31/154**
 ---
 **Analisi delle TPN: Preliminari(1/3)**
 
@@ -2769,8 +2953,9 @@ Teorema (No dim)
     - La relazione di raggiungibilità tra stati **non è esplicitamente enumerabile.**
     - Lo spazio degli stati viene coperto attraverso **classi di equivalenza**, ognuna delle quali raccoglie una varietà continua di stati con la stessa marcatura ma un diverso vettore dei tempi di firing.
 
-![[Pasted image 20241029134103.png]]
+	![[Pasted image 20241029134103.png]]
 
+	**Slide 32/154**
 ---
 **Analisi delle TPN: Preliminari(2/3)**
 
@@ -2787,6 +2972,7 @@ Teorema (No dim)
 	- La semantica delle relazioni di raggiungibilità da stabilire sulle classi di stato (nel senso di quale stato si vuole raggiungere)
 	- La forma dei vincoli nella classe di stato iniziale
 
+	**Slide 33/154**
 ---
 **Analisi delle TPN: Preliminari(3/3)**
 
@@ -2808,6 +2994,7 @@ Teorema (No dim)
 - Uno stato $s′$ è raggiungibile da qualche stato nella classe iniziale $S_0$ se e solo se $s′$ è contenuto in una classe $S$ raggiungibile da $S_0$​.
 - Un sequenza di firing $\rho$ è firable se e solo se esiste una classe $S'$ **raggiungibile** da $S_0$ dalla quale esiste un percorso che riproduce gli stessi eventi di $\rho$
     
+	**Slide 34/154**
 ---
  **Analisi del TPN - Introduzione intuitiva (1/5)**
 
@@ -2819,6 +3006,7 @@ Teorema (No dim)
 
 		$D = \begin{cases} 0 \leq \tau_1 \leq 10 \\ 5 \leq \tau_2 \leq 15 \\ 12 \leq \tau_3 \leq 22 \end{cases}$​
 	
+	**Slide 35/154**
 ---
 **Analisi del TPN - Introduzione intuitiva (2/5)**
 
@@ -2826,6 +3014,8 @@ Teorema (No dim)
 	- $D_{t_2}= \begin{cases} D \\ \tau_2 \leq \tau_1 \\ \tau_2 \leq \tau_3 \end{cases} = \begin{cases} 0 \leq \tau_1 \leq 10 \\ 5 \leq \tau_2 \leq 15 \\ 12 \leq \tau_3 \leq 22 \\ \tau_2 - \tau_1 \leq 0 \\ \tau_2 - \tau_3 \leq 0 \end{cases}$​
 
 - Sparo $t2$ in modo tale da mantenere entrambi i vincoli sulle altre transizioni => non ho vincoli superflui
+
+	**Slide 36/154**
 ---
 **Analisi del TPN - Introduzione intuitiva (3/5)**
 
@@ -2836,6 +3026,7 @@ Teorema (No dim)
 - Sostituendo le variabili, $D_{t_2}$ può essere scritto in modo equivalente come:
 	- $D_{t_2} = \begin{cases} 0 \leq \tau_1' + \tau_2 \leq 10  \space (a) \\ 5 \leq \tau_2 \leq 15 \space (b) \\ 12 \leq \tau_3' + \tau_2 \leq 22  \space (c) \\   0 \leq  \tau_1' \space (d) \\  0 \leq \tau_3'  \space(e) \end{cases}$
 	
+	**Slide 37/154**
 ---
 **Analisi del TPN - Introduzione intuitiva (4/5)**
 
@@ -2847,6 +3038,7 @@ Teorema (No dim)
 
 - Il vincolo (a+(-c)) è un vincolo diagonale ad indicare che è passato lo stesso tempo per $\tau_1$ e $\tau_3$ => le due variabili diventano variabli aleatorie **dipendenti**.
 
+	**Slide 38/154**
 ---
 **Analisi del TPN - Introduzione intuitiva (5/5)**
 
@@ -2856,27 +3048,27 @@ Teorema (No dim)
 		- Questa è la relazione di raggiungibilità AE
 
 - Mentre per quanto riguarda la forma dei vincoli di $D'$?
-	- Il dominio di firing $D$ della classe iniziale è un iper-rettangolo.
+	- Il dominio di firing $D$ della ==classe iniziale è un iper-rettangolo==.
 	- $D′$ è un insieme di disuguaglianze che vincolano le differenze tra i tempi di firing.
 	- La forma di $D$′ è detta **Difference Bounds Matrix (DBM)**.
-	- La derivazione ripetuta porta generalmente a un poliedro convesso lineare? No. => Se inizialmente le transizioni sono tra loro indipendenti, a seconda di quella che spara le altre rimangono dipendenti da questa => per tutte le transizioni rimaste vale il fatto che **sia passato lo stesso tempo** per far attivare una transizione.
+	- La derivazione ripetuta porta generalmente a un poliedro convesso lineare? No. => Se inizialmente le transizioni sono tra loro indipendenti, a seconda di quella che spara le altre **rimangono dipendenti** da questa => per tutte le transizioni rimaste vale il fatto che **sia passato lo stesso tempo** per far attivare una transizione.
 
+	**Slide 39/154**
 ---
 **Difference Bounds Matrix: definizione**
 
-- Una DBM $D$ nello spazio di un vettore di valori incogniti $\tau = \langle \tau_0, \tau_1, \ldots, \tau_N \rangle$  è un insieme di disuguaglianze lineari che vincolano la differenza tra gli elementi di $\tau$: 
-	- $D = \begin{cases} \tau_i - \tau_j \leq b_{ij} & \forall i, j \in \{0, 1, \ldots, N - 1\} \cup \{\star\} \text{ con } i \neq j, b_{ij} \in \mathbb{R} \cup \{\infty\} \\ \tau_\star = 0 \end{cases}$
-
+- Una DBM $D$ nello spazio di un vettore di valori incogniti $\tau = \langle \tau_0, \tau_1, \ldots, \tau_N \rangle$  è un insieme di disuguaglianze lineari che vincolano la differenza tra gli elementi di $\tau$: $$D = \begin{cases} \tau_i - \tau_j \leq b_{ij} & \forall i, j \in \{0, 1, \ldots, N - 1\} \cup \{\star\} \text{ con } i \neq j, b_{ij} \in \mathbb{R} \cup \{\infty\} \\ \tau_\star = 0 \end{cases}$$
 - $\tau_\star$​ è una variabile fittizia, detta anche **ground**, utilizzata per:
     - convertire i vincoli della forma $\tau_i \leq b_{i\star}$​ in vincoli diagonali  $\tau_i - \tau_\star \leq b_{i\star}$
     - convertire i vincoli della forma $\tau_i \geq b_{i\star}$​ in vincoli diagonali  $\tau_i - \tau_\star \geq b_{i\star}$
     
 - L'insieme delle *soluzioni* di un insieme di disuguaglianze in forma DBM è chiamato **zona DBM**
 
-![[Pasted image 20241029163332.png]]
+	![[Pasted image 20241029163332.png]]
 
-=> Nell'ultimo caso si ha una sincronizzazione fra transionzioni => queste sparano con stesso TTF. 
+	=> Nell'ultimo caso si ha una sincronizzazione fra transionzioni => queste sparano con stesso TTF. 
 
+	**Slide 40/154**
 ---
 **Difference Bounds Matrix: Forma Normale(1/2)**
 
@@ -2884,11 +3076,12 @@ Teorema (No dim)
 	- Alcuni vincoli possono essere implicati dalla combinazione di altri vincoli
 	- Lo **stesso** insieme di soluzioni può essere rappresentato da **diversi** coefficienti $b_{ij}$
 
-![[Pasted image 20241029163807.png]]
+	![[Pasted image 20241029163807.png]]
 
 - Una **Forma Normale** è introdotta quando ogni coefficiente $b_{ij}$ è *massivamente stretto*
 	=> Ovvero non può essere ridotto senza cambiare l'insieme delle soluzioni
 
+	**Slide 41/154**
 ---
 **Difference Bounds Matrix: Forma Normale(2/2)**
 
@@ -2900,6 +3093,7 @@ Teorema (No dim)
 	- Esiste ed è unica
 	- Sia calcolata come la soluzione del problema del _shortest path_ in tempo $O(N^3)$
 
+	**Slide 42/154**
 ---
 **Difference Bounds Matrix: Rappresentazione grafica**
 
@@ -2910,30 +3104,35 @@ Teorema (No dim)
 
 	![[Pasted image 20241029165410.png]]
 
+	**Slide 43/154**
 ---
 **Difference Bounds Matrix: Proprietà (1/4)**
 
 - **Lemma 1**
-	Se una zona DBM non è vuota, allora il grafo corrispondente non include nessun ciclo dove la somma delle etichette sui bordi attraversati risulta negativa (non ci sono **cicli negativi**)
+	Se una **zona DBM** non è vuota, allora il grafo corrispondente non include nessun ciclo dove la somma delle etichette sui bordi attraversati risulta negativa (==non ci sono **cicli negativi**==)
 
+	**Slide 44/154**
 ---
 **Difference Bounds Matrix: Proprietà (2/4)**
 
 - **Lemma 2**
 	Una DBM è in forma normale se e solo se $b_{ij}$ **è il percorso più breve** nel grafo dal vertice $\tau_j$ al vertice $\tau_i$   $\forall i, j \in \{0, 1, \ldots, N - 1\} \cup \{\star\} \mid i \neq j$
 	
+	**Slide 45/154**
 ---
 **Difference Bounds Matrix: Proprietà (3/4)**
 
 - **Lemma 3**
 	I coefficienti $b_{ij}$ sono il percorso più breve fra due vertici $\tau_j$ e $\tau_i$ se e solo se $b_{ij} \leq b_{ik} + b_{kj}$  $\forall i, j, k \in \{0, 1, \ldots, N - 1\} \cup \{\star\} \mid i \neq j, i \neq k, j \neq k$
 
+	**Slide 46/154**
 ---
 **Difference Bounds Matrix: Proprietà (4/4)**
 
 - **Teorema**
 	Una DBM è in forma normale se e solo $b_{ij} \leq b_{ik} + b_{kj}$ $\forall i, j, k \in \{0, 1, \ldots, N - 1\} \cup \{\star\} \mid i \neq j, i \neq k, j \neq k$
 
+	**Slide 47/154**
 ---
 **Difference Bounds Matrix: Come calcolare la forma normale?**
 
@@ -2944,8 +3143,9 @@ Teorema (No dim)
 		- **Prima iterazione**(k = 0): $b_{ij}^1$ è  il percorso più breve da $\tau_j$ a $\tau_i$ che non visita nessun nodo intermedio con indice più grande di 0
 		- **Ultima iterazione** (k = N- 1): $b_{ij}^N$ è  il percorso più **breve** da $\tau_j$ a $\tau_i$ (dopo aver visitato tutti i nodi)
 
-![[Pasted image 20241029173429.png]]
+	![[Pasted image 20241029173429.png]]
 
+	**Slide 48/154**
 ---
 **Difference Bounds Matrix: decidere se vuoto**
 
@@ -2955,6 +3155,7 @@ Teorema (No dim)
 - **Lemma 6**
 	Una zona DBM è non vuota, se e solo se il grafo corrispondente non include nessun ciclo negativo
 
+	**Slide 49/154**
 ---
 **Difference Bounds Matrix: Proiezione**
 
@@ -2968,6 +3169,7 @@ Teorema (No dim)
 - **Lemma 7**
 	Se una DBM $D$ nello spazio dei valori sconosciuti $\tau = \langle \tau_0, \tau_1, ...,  \tau_{N-1} \rangle$ è in forma normale, allora la matrice dei coefficienti della proiezione $D_{↓0}$ è ottenuta tramite la matrice dei coefficienti di $D$ **eliminando la riga e la colonna zero**, ovvero il grafo $D_{↓0}$ è ottenuto dal grafo $D$ eliminando il nodo $\tau_0$ (senza cambiare i vincoli fra gli altri nodi)
 
+	**Slide 50/154**
 --- 
 **Analisi del TPN - Classe di stato iniziale**
 
@@ -2978,13 +3180,11 @@ Teorema (No dim)
 	- $t^*$ è l'evento fittizio di ingresso nella classe
 	- $\tau(t^*)$ è il **ground** time al quale la classe è entrata
 
+	**Slide 51/154**
 ---
 **Analisi del TPN: esistenza del successore**
 
-- Una classe di stato $S = \langle m, D \rangle$ con $D$ in forma normale DBM ha un **successore** attraverso la transizione $t_0$ se e solo se $t_0$ è abilitata da $m$ e $D$ accetta soluzioni in cui $\tau(t_0)$ ==non è maggiore del tempo di attivazione di qualsiasi altra transizione abilitata,== cioè il **dominio di attivazione ristretto** $D_{t_0}$ ha un insieme di soluzioni non vuoto:
-
-- $D_{t_0} = \begin{cases} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq 0 \\ \forall \, t_i, t_j \in T_e(m) \cup \{t^*\} \, \text{con} \, t_i \neq t_j, \, \forall \, t_h \in T_e(m) \setminus \{t_0\} \end{cases}$
-
+- Una classe di stato $S = \langle m, D \rangle$ con $D$ in forma normale DBM ha un **successore** attraverso la transizione $t_0$ se e solo se $t_0$ è abilitata da $m$ e $D$ accetta soluzioni in cui $\tau(t_0)$ ==non è maggiore del tempo di attivazione di qualsiasi altra transizione abilitata,== cioè il **dominio di attivazione ristretto** $D_{t_0}$ ha un insieme di soluzioni non vuoto: $$D_{t_0} = \begin{cases} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq 0 \\ \forall \, t_i, t_j \in T_e(m) \cup \{t^*\} \, \text{con} \, t_i \neq t_j, \, \forall \, t_h \in T_e(m) \setminus \{t_0\} \end{cases}$$
 - **Lemma 8**  
 	Una classe di stato  $S = \langle m, D \rangle$ con $D$ in forma normale DBM ha un successore attraverso la transizione $t_0$ se e solo se $t_0 \in T_e(m)$ e $b_{h0} \geq 0 \space \forall \space t_h \in T_e(m)$.
 
@@ -2992,51 +3192,43 @@ Teorema (No dim)
 
 - Come calcolare il dominio di attivazione $D'$ del successore $S'$ di $S$ attraverso $t_0$?
  
+	**Slide 52/154**
 ---
 **Analisi TPN: calcolo del successore - condizionamento**
 
 - Condiziono $D$ al fatto che $t_0$ si attivi per prima:
-	- $D_{t_0} = \begin{cases} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq 0 \\ \forall \, t_i, t_j \in T_e(m) \cup \{t^*\} \, | \, t_i \neq t_j, \\ \forall \, t_h \in T_e(m) \setminus \{t_0\} \end{cases}$
-	
-	     $= \begin{cases} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq \min \{0, b_{0h} \} \\ \forall \, t_i, t_j \in T_e(m) \cup \{t^*\} \, | \, t_i \neq t_j, \\ \forall \, t_h \in T_e(m) \setminus \{t_0\} \end{cases}$
-
-- Rappresento $D_{t_0}$ in forma normale e siano $B_{ij}$ i suoi coefficienti (complessità quadratica rispetto al numero di transizioni abilitate): 
-
-- $D_{t_0} = \begin{cases} \tau(t_i) - \tau(t_j) \leq B_{ij} \\ \tau(t_0) - \tau(t_i) \leq B_{0i} \\ \forall \, t_i, t_j \in T_e(m) \cup \{t^*\} , t_i \neq t_j, \, t_i \neq t_0 \end{cases}$
-
+	$$D_{t_0} = \begin{cases} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq 0 \\ \forall \, t_i, t_j \in T_e(m) \cup \{t^*\} \, | \, t_i \neq t_j, \\ \forall \, t_h \in T_e(m) \setminus \{t_0\} \end{cases}$$$$= \begin{cases} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq \min \{0, b_{0h} \} \\ \forall \, t_i, t_j \in T_e(m) \cup \{t^*\} \, | \, t_i \neq t_j, \\ \forall \, t_h \in T_e(m) \setminus \{t_0\} \end{cases}$$
+- Rappresento $D_{t_0}$ in forma normale e siano $B_{ij}$ i suoi coefficienti (complessità quadratica rispetto al numero di transizioni abilitate): $$D_{t_0} = \begin{cases} \tau(t_i) - \tau(t_j) \leq B_{ij} \\ \tau(t_0) - \tau(t_i) \leq B_{0i} \\ \forall \, t_i, t_j \in T_e(m) \cup \{t^*\} , t_i \neq t_j, \, t_i \neq t_0 \end{cases}$$
+	**Slide 53/154**
 ---
 **Analisi TPN: calcolo del successore - avanzamento temporale**
 
 - Si riduce i TTF delle transizioni persistenti in $S_0$ del **tempo trascorso** in $S$, cioè, $\tau'(t_i) = \tau(t_i) - \tau(t_0)$ $\forall t_i \in T_e(m) \cap T_p(S_0) \setminus \{t_0\}$, dove $T_p(S_0)$ è l’insieme delle transizioni **persistenti** in $S_0$: 
 
-![[Pasted image 20241029231440.png]]
+	![[Pasted image 20241029231440.png]]
 
+	**Slide 54/154**
 ---
 **Analisi del TPN - Successione di Computazione (Proiezione)**
 
-- Elimino il tempo di firing della transizione attivata tramite una proiezione: 
-	- $D''_{t_0} = \begin{cases} \tau'(t_i) - \tau'(t_j) \leq B_{ij} \\ \tau'(t_i) \leq B_{i0} \\ -\tau'(t_i) \leq B_{0i} \\ \forall t_i, t_j \in T_e(m) \cup \{t_*\} \mid t_i \neq t_j, t_i \neq t_0 \end{cases}$
-
-- Siano $C_{ij}$ i coefficiente in forma normale ovvero $C_{ij} = B_{ij}, C_{i*} = B_{i0}, C_{*i} = B_{0i}$:
-
-	- $D''_{t_0} = \begin{cases} \tau'(t_i) - \tau'(t_j) \leq C_{ij} \\ \tau'(t_i) - \tau'(t_*) \leq C_{i*} \\ \tau'(t_*) - \tau'(t_i) \leq C_{*i} \\ \forall t_i, t_j \in T_e(m) \cap T_p(S') \cup \{t_*\} \mid t_i \neq t_j, t_i \neq t_0 \end{cases}$
-
+- Elimino il tempo di firing della transizione attivata tramite una proiezione: $$D''_{t_0} = \begin{cases} \tau'(t_i) - \tau'(t_j) \leq B_{ij} \\ \tau'(t_i) \leq B_{i0} \\ -\tau'(t_i) \leq B_{0i} \\ \forall t_i, t_j \in T_e(m) \cup \{t_*\} \mid t_i \neq t_j, t_i \neq t_0 \end{cases}$$
+- Siano $C_{ij}$ i coefficiente in forma normale ovvero $C_{ij} = B_{ij}, C_{i*} = B_{i0}, C_{*i} = B_{0i}$:$$D''_{t_0} = \begin{cases} \tau'(t_i) - \tau'(t_j) \leq C_{ij} \\ \tau'(t_i) - \tau'(t_*) \leq C_{i*} \\ \tau'(t_*) - \tau'(t_i) \leq C_{*i} \\ \forall t_i, t_j \in T_e(m) \cap T_p(S') \cup \{t_*\} \mid t_i \neq t_j, t_i \neq t_0 \end{cases}$$
 - I times-to-fire delle transizioni non abilitate da $m'$ possono essere eliminate in modo simile
 
+	**Slide 55/154**
 ---
 **Analisi del TPN : Computazione delle Successioni - newly enabling
 
-- Aggiungo il tempo di firing di ogni transizione appena abilitata:
-	- $D' = \begin{cases} D''_{t_0} \\ \tau'(t_j) - \tau'(t_*) \leq LFT(t_j) \\ \tau'(t_*) - \tau'(t_j) \leq -EFT(t_j) \\ \forall t_j \in T_n(S') \end{cases}$
-
-	=> Dove $T_n(S')$ è l'insieme delle transizione newly-enable in $S'$
+- Aggiungo il tempo di firing di ogni transizione appena abilitata:	$$D' = \begin{cases} D''_{t_0} \\ \tau'(t_j) - \tau'(t_*) \leq LFT(t_j) \\ \tau'(t_*) - \tau'(t_j) \leq -EFT(t_j) \\ \forall t_j \in T_n(S') \end{cases}$$
+	=> Dove $T_n(S')$ è l'insieme delle transizione **newly-enable** in $S'$
 
 - Il dominio di firing di $D'$ della classe successore $S'$ ==è sempre in forma normale!== 
 	=> La forma della DBM è chiusa rispetto ai passi per il calcolo del successore
-	=> La relazione di raggiungibilità fra i della classe può essere enumerata
+	=> La relazione di raggiungibilità fra gli stati della classe può essere enumerata
+	
 	![[Pasted image 20241030082330.png]]
 
-	56/154
+	**Slide 56/154**
 ---
 **Analisi del TPN : enumerazione spazio degli stati**
 
@@ -3046,39 +3238,69 @@ Teorema (No dim)
 	- Rappresenta la varietà densa di corse firing dato un set di transizioni secondo un ordine qualitativo, con una varietà densa di timings fra due firings successivi
 	- Ad esempio $S_0 \rightarrow^{t_0}  S_1 \rightarrow^{t_2} S_4 \rightarrow^{t_1} S_6$ 
 
-![[Pasted image 20241030082856.png]]
+	![[Pasted image 20241030082856.png]]
 
-	57/154
+	**Slide 57/154**
 ---
 **Dominio dei tempi di una corsa simbolica**
 
 - Si consideri una cosa simbolica $\rho = S_0 \rightarrow^{t^0_{f(0)}} S_1 \rightarrow^{t^1_{f(1)}} S_2 ... S_{N-1} \rightarrow^{t^{N-1}_{f(N-1)}} S_N$ 
 	- $S_0 = \langle m_0, D_0 \rangle$ è la classe di stato iniziale
 	- $S_n = \langle m_n, D_n \rangle$ è la classe di stato n-esima visitata da $\rho \space \forall n \in \{ 1, ..., N\}$
-	- $f(n)$ è l'indice della transizione fired nella classe stato $S_n$ $\forall n \in {0,1,..., N-1}$
+	- $f(n)$ è l'indice della transizione fired nella classe stato $S_n$ $\forall n \in \{0,1,..., N-1\}$
 	- $t_h^k$ è il tempo di fire della trasizione $t_h$ nella classe stato $S_k$ 
-- Il dominio dei timings di $\rho$ è nella forma DBM:
 
-	- $D_{\rho} = \begin{cases} D_{n} \\ \tau(t_{f(n)}^n) - \tau(t_i^n) \leq 0 \\ \tau(t^n_{f(n)}) = \tau(t^{n+1}_*) \\ \forall n \in \{0,1, ..., N-1\}, \forall t_i^n \in T_e(m) \end{cases}$
-
+- Il dominio dei timings di $\rho$ è nella forma DBM: $$D_{\rho} = \begin{cases} D_{n} \\ \tau(t_{f(n)}^n) - \tau(t_i^n) \leq 0 \\ \tau(t^n_{f(n)}) = \tau(t^{n+1}_*) \\ \forall n \in \{0,1, ..., N-1\}, \forall t_i^n \in T_e(m) \end{cases}$$
 - I tempi di soggiorno in classi **non sono indipendenti** => Il caso peggiore di completamento di $\rho$ può non essere la somma casi peggiori di soggiorno in $S_0, ..., S_{N-1}$
 
 - Computazione di $D_{\rho}$: complessità $O(N^3)$
 	- Notare che N è il numero di transizioni fired tra $\rho$
 	- Il numero di transizione abilitate fra $\rho$ può essere $>> N$
 
-	58/154
+	**Slide 58/154**
+---
+**Modellazione di insiemi di task in tempo reale con TPN: un esempio (1/4)**
+
+- 3 task $P_1, P_2, P_3$ che contendono 3 risorse **non preemptabili** $R_1, R_2, R_3$:
+   - $P_1$ e $P_2$ sono hard real-time (obbligatori), $P_3$ è soft real-time (opzionale).
+
+  - $P_1$ è periodico:
+    - Periodo $T_1 = 9$
+    - Scadenza relativa $D_1 = 8$
+    - Jitter di avvio assoluto $J_1 \leq 1$
+    - Computazione 1: $WCET \, C_{11} \in [2, 3]$, utilizza $R_1$
+    - Computazione 2: $WCET \, C_{12} \in [1, 2]$, utilizza $R_1, R_2$![[Pasted image 20241022085722.png]]
+  
+  - $P_2$ è sporadico:
+    - Tempo tra gli arrivi $T_2 \geq 8$
+    - Scadenza relativa $D_2 = 8$
+    - Computazione: $WCET \, C_{21} \in [1, 2]$, utilizza $R_1, R_3$![[Pasted image 20241022085756.png]]
+  
+  - $P_3$ è sporadico:
+    - Tempo tra gli arrivi $T_3 \geq 6$
+    - Scadenza relativa $D_3 = 6$
+    - Computazione: $WCET \, C_{31} \in [1, 2]$, utilizza $R_2, R_3$ 
+		![[Pasted image 20241022085823.png]]
+
+	**Slide 59/154**
+---
+**Modellazione di insiemi di task in tempo reale con TPN: un esempio (2/4)**
+
+- La TPN può essere derivata automaticamente dalla timeline dei task.
+
+	![[Pasted image 20241022085857.png]]
+
+	**Slide 60/154**
 ---
 **Modellazione di insiemi di task in tempo reale con TPN: un esempio (3/3)**
 
-- Le 2 slide prima sono di riepilogo dell'esempio
 - Entrambi i task hard real-time possono perdere la loro deadline:
 	![[Pasted image 20241030150031.png]]
 
 - Come decidere l'accettazione rifiuto dei job di $P_3$ a runtime? Usando i tempi **attuali** di esecuzione per determinare se il fallimento simbolico delle runs sono fattibili!
 	- Un Job di $P_3$ sarà rifiutato se un job di $P_1/P_2$ può perdere la sua deadline.
 
-	59-60-61/154
+	**Slide 61/154**
 ---
 **Scheduling online in un sistema di analisi biologica (1/5)**
 
@@ -3086,9 +3308,9 @@ Teorema (No dim)
 	- Ogni slot comprende diverse provette
 	- Una pipetta e una testina può agire in modo simultaneo sulle provette
 	
-![[Pasted image 20241108175709.png]]	
+	![[Pasted image 20241108175709.png]]	
 
-	62/154
+	**Slide 62/154**
 ---
 **Scheduling online in un sistema di analisi biologica (2/5)**
 
@@ -3099,19 +3321,19 @@ Teorema (No dim)
 - $J_2$ ha dei vincoli di precedenza rispetto al completamento di $J_1$ e $J_2$
 - $J_4$ ha dei vincoli di precedenza rispetto al completamento di $J_3$
 
-![[Pasted image 20241108180149.png]]
+	![[Pasted image 20241108180149.png]]
 
-	63/154
+	**Slide 63/154**
 ---
 **Scheduling online in un sistema di analisi biologica (3/5)**
 
 - Uno scheduling che minimizza il tempo di completamento totale
 
-![[Pasted image 20241108180425.png]]
+	![[Pasted image 20241108180425.png]]
 
 - Come ottenere tale schedule?
 
-	64/154
+	**Slide 64/154**
 ---
 **Scheduling online in un sistema di analisi biologica (4/5)**
 
@@ -3120,9 +3342,9 @@ Teorema (No dim)
     - Il posto $p_2$​ ha un token mentre il posto $p_{2e}$ è vuoto.
     - I posti $p_2$​ e $p_4$​ contengono entrambi un token.
 
-![[Pasted image 20241108180735.png]]
+	![[Pasted image 20241108180735.png]]
 
-	65/154
+	**Slide 65/154**
 ---
 **Scheduling online in un sistema di analisi biologica (5/5)**
 
@@ -3132,9 +3354,9 @@ Teorema (No dim)
 - Più veloce comparato ad un tradizionale di model checking 
 - Implementazione software su un sistema reale.
 
-![[Pasted image 20250401221802.png]]
+	![[Pasted image 20250401221802.png]]
 
-	66/154
+	**Slide 66/154**
 ---
 ## 4. Reti di Petri Temporali Preemptive (PTPN)
 
@@ -3155,7 +3377,7 @@ Teorema (No dim)
 
 	![[Pasted image 20250403081617.png]]
 
-	**67/154**
+	**Slide 67/154**
 ---
 **Stato di una PTPN**
 
@@ -3163,15 +3385,17 @@ Teorema (No dim)
   - $m$ è una marcatura (rappresenta la posizione logica del sistema).
   - $\tau$ associa a ciascuna transizione abilitata $t$ un **tempo di attivazione** (*times to fire*) $\tau(t) \in \mathbb{R}_{\geq 0}$.
   
-- **Esempio** (figura sopra):
-  - $t10$ può essere associata a un tempo di attivazione $\tau(t10) = 5$.
-  - $t20$ può essere associata a un tempo di attivazione $\tau(t20) \in [10, \infty]$.
-  - $t30$ può essere associata a un tempo di attivazione $\tau(t30) = 15$.
-  - $t11$ può essere associata a un tempo di attivazione $\tau(t11) \in [1,2]$.
-  - $t21$ può essere associata a un tempo di attivazione $\tau(t21) \in [1.8,2.8]$.
-  - $t31$ può essere associata a un tempo di attivazione $\tau(t31) \in [2,2.8]$.
+- **Esempio**:
+  - $t10$ può essere associata a un tempo di attivazione $\tau(t10) = 5$
+  - $t20$ può essere associata a un tempo di attivazione $\tau(t20) \in [10, \infty]$
+  - $t30$ può essere associata a un tempo di attivazione $\tau(t30) = 15$
+  - $t11$ può essere associata a un tempo di attivazione $\tau(t11) \in [1,2]$
+  - $t21$ può essere associata a un tempo di attivazione $\tau(t21) \in [1.8,2.8]$
+  - $t31$ può essere associata a un tempo di attivazione $\tau(t31) \in [2,2.8]$
   
-	**68/154**
+	![[Pasted image 20250403081617.png]]
+	
+	**Slide 68/154**
 ---
 **Semantica delle PTPN (1/5)**
 
@@ -3184,7 +3408,7 @@ Teorema (No dim)
 - Una transizione $t$ è in **progressione** in una marcatura $m$ se e solo se:
 	- È abilitata da $m$
 	- $Req(t) \cap Req(t') \neq \emptyset \Rightarrow Prio(t) < Prio(t') \, \forall t' \in T_e(m)$ 
-	  => ovvero, ogni risorsa richiesta non è richiesta da un'altra transizione abilitata con livello di priorità più alto
+	  => ovvero, ogni risorsa richiesta da t non è richiesta da nessun'altra transizione abilitata con livello di priorità più alto
 
 - Una transizione $t$ è **sospesa** in una marcatura $m$ se e solo se:
 	- È abilitata da $m$
@@ -3195,7 +3419,7 @@ Teorema (No dim)
 	- $\tau(t) \leq \tau(t') \, \forall \, t' \in T |t'$ è in progressione su m 
 		=> Il TTF di t non è più grande dei TTF di qualsiasi altra transizione in progressione
 
-	**69/154**
+	**Slide 69/154**
 ---
 **Semantica delle PTPN (2/5)**
 
@@ -3205,7 +3429,7 @@ Teorema (No dim)
 
 	![[Pasted image 20250403081617.png]]
 
-	**70/154**
+	**Slide 70/154**
 ---
 **Semantica delle PTPN (3/5)**
 
@@ -3222,7 +3446,7 @@ Teorema (No dim)
 
 - Come nelle TPN, una transizione è detta **disabilitata** se abilitata da $m_0$ ma non da $m_1$
 
-- $\tau_1$ è derivata da $\tau$ da:
+- $\tau_1$ è derivata da $\tau$ come:
 	1. Riducendo il TTF di ogni transizione **persistente in progressione** di $\tau_0(t)$ 
 		=>$\tau_1(t') = \tau_0(t') - \tau_0(t) \, \forall \, t' \in T| t'$ sia persistente e in progressione in $m_1$
 	2. Lasciando il TTF di ogni transizione **persistente sospesa** non modificato
@@ -3231,7 +3455,7 @@ Teorema (No dim)
 	4. Campionando il TTF di ogni transizione **newly enable** $t'$ nel suo intervallo di firing
 		=> $\tau_1(t') \in [EFT(t'), LFT(t')] \, \forall \, t' \in T| t'$ newly enabled in $m_1$
 		
-	 **71/154**
+	 **Slide 71/154**
 ---
 **Semantica dei PTPN (4/5)**
 
@@ -3244,7 +3468,7 @@ Teorema (No dim)
 		- $\tau_1(t21) = \tau_0(t21)$
 		- $\tau_1(t31) = \tau_0(t31)$
 
-	**72/154**
+	**Slide 72/154**
 ---
 **Semantica dei PTPN (5/5)**
 
@@ -3266,7 +3490,7 @@ Teorema (No dim)
 			=> $\tau_i(t') \in [EFT(t'), LFT(t')] \, \forall \, t' \in T| t'$ newly enabled in $s_1$
 	- $\omega$ è una sequenza finita o infinita
 
-	**73/154**
+	**Slide 73/154**
 ---
 **Estensione della sintassi e della semantica dei PTPN**
 
@@ -3276,7 +3500,7 @@ Teorema (No dim)
 
 	![[Pasted image 20250403152914.png]]    
 
-	**74/154**
+	**Slide 74/154**
 ---
 **Modellazione di insiemi di task real-time con PTPN: un esempio (1/4)**
 
@@ -3287,7 +3511,7 @@ Teorema (No dim)
 	    - scadenza relativa $D_1 = 5$,  
 	    - WCET $C_{11} \in [1, 2]$,  
 	    - richiede la risorsa `cpu` con priorità 1
-	- $P2$ è sporadico:  
+	- $P_2$ è sporadico:  
 		- tempo minimo tra arrivi $T_2 = 10$,  
 		- scadenza relativa $D_2 = 15$,  
 		- WCET $C_11 \in [1{,}8, 2{,}8]$,  
@@ -3298,22 +3522,22 @@ Teorema (No dim)
 		- WCET $C_11 \in [2, 2{,}8]$,  
 		- richiede la risorsa `cpu` con priorità 3
     
-- Rappresentazione temporale (timeline) dell’insieme di task
+- Rappresentazione temporale (*timeline*) dell’insieme di task
 
 	![[Pasted image 20250403153405.png]]
 
-	**75/154**
+	**Slide 75/154**
 ---
 **Modellazione di insiemi di task real-time con PTPN: un esempio (2/4)**
 
 - Modello PTPN corrispondente
-	- Le scadenze sono rispettate? Qual è il tempo minimo/massimo di completamento di ciascun task?
+	- Le deadline sono rispettate? Qual è il tempo **minimo/massimo di completamento** di ciascun task?
 	- Se le scadenze non fossero rispettate, cosa potrebbe fare il progettista software?
 	- Come potrebbe essere modellata la schedulazione preemptive Earliest Deadline First (EDF)?
 
 	![[Pasted image 20250403153717.png]]
 
-	**76/154**
+	**Slide 76/154**
 ---
 **Modellazione di insiemi di task real-time con PTPN: un esempio (3/4)**
 
@@ -3322,7 +3546,7 @@ Teorema (No dim)
 - Rappresentazione temporale (timeline) dell’insieme di task
 	![[Pasted image 20250403153852.png]]
 
-	**77/154**
+	**Slide 77/154**
 ---
 **Modellazione di insiemi di task real-time con PTPN: un esempio (4/4)**
 
@@ -3333,46 +3557,44 @@ Teorema (No dim)
     
 	![[Pasted image 20250403154014.png]]
 
-(notare che potrei andare in contro a fenomeni di *priority inversion* in questo caso)
+	(notare che potrei andare in contro a fenomeni di *priority inversion* in questo caso)
 
-	78/154
+	**Slide 78/154**
 ---
 **Analisi dei PTPN: premesse**
 
 - Come nelle TPN, una **classe di stato** è una coppia $S = \langle m, D \rangle$ dove:
     - $m$ è una marcatura (che rappresenta la posizione logica del sistema)
-    - $D$ è un insieme continuo di valori per i tempi di scatto delle transizioni abilitate
+    - $D$ è un insieme continuo di valori per i time to fire delle transizioni abilitate
         
 - Come nei TPN, uno stato $s = \langle m_s, \vec{\tau}_s \rangle$ è incluso in una classe di stato $S = \langle m, D \rangle$ se:
     - hanno la stessa marcatura (cioè, $m_s = m$)
-    - il vettore dei tempi di scatto $\vec{\tau}_s$ ==soddisfa i vincoli== di $D$ (cioè, $\vec{\tau}_s \in D$)
+    - il vettore dei time to fire $\vec{\tau}_s$ ==soddisfa i vincoli== di $D$ (cioè, $\vec{\tau}_s \in D$)
         
-- Come nei TPN, una classe di stato $S'$ è **raggiungibile** dalla classe $S$ tramite la transizione $t$ (cioè, $S \xrightarrow{t} S'$) se e solo se essa contiene **tutti e soli** gli stati che sono raggiungibili da qualche stato contenuto in $S$ tramite uno firing *fattibile* di $t$, cioè $S'$ è raggiungibile da $S$ tramite $t$ se e solo se:
-    - $\forall s' \in S' \ \exists s \in S \mid s \xrightarrow{t} s'$
-    - $s \in S \wedge s \xrightarrow{t} s' \Rightarrow s' \in S'$
+- Come nei TPN, una classe di stato $S'$ è **raggiungibile** dalla classe $S$ tramite la transizione $t$ (cioè, $S \xrightarrow{t} S'$) se e solo se essa contiene **tutti e soli** gli stati che sono raggiungibili da qualche stato contenuto in $S$ tramite un **firing *fattibile*** di $t$, cioè $S'$ è raggiungibile da $S$ tramite $t$ se e solo se:
+    - $\forall s' \in S' \ \exists s \in S \mid s \xrightarrow{t} s'$ (ogni stato in S' è raggiungibile da almeno uno stato in S)
+    - $s \in S \wedge s \xrightarrow{t} s' \Rightarrow s' \in S'$ (S' contiene solo gli stati raggiungibili da s)
         
-	**79/154**
+	**Slide 79/154**
 ---
 **Analisi dei PTPN: classe di stato iniziale**
 
-- Come nei TPN, si assume che il dominio di scatto $D$ della classe di stato iniziale $S = \langle m, D \rangle$ sia rappresentato come un insieme di disuguaglianze lineari in **forma normale DBM**, cioè:
+- Come nei TPN, si assume che il dominio di firing $D$ della classe di stato iniziale $S = \langle m, D \rangle$ sia rappresentato come un insieme di disuguaglianze lineari in **forma normale DBM**, cioè:
     => $D = \{ \tau(t_i) - \tau(t_j) \leq b_{ij} \quad \forall \ t_i, t_j \in T_e(m) \cup \{t_*\} \mid i \ne j \}$
     dove:
     - $b_{ij} \in \mathbb{R} \cup {\infty}$
-    - $T_e(m)$ è l’insieme delle transizioni abilitate dalla marcatura $m$
-    - $\tau(t_i)$ è il tempo di firing della transizione $t_i$, $\forall$ $t_i \in T_e(m)$
-    - $t_*$ è l’evento fittizio di ingresso nella classe
+    - $T_e(m)$ è l’insieme delle **transizioni abilitate** dalla marcatura $m$
+    - $\tau(t_i)$ è il **tempo di firing** della transizione $t_i$, $\forall$ $t_i \in T_e(m)$
+    - $t_*$ è l’evento fittizio di ingresso nella classe => *ground*
     - $\tau(t_*)$ è il **tempo di riferimento** in cui la classe viene raggiunta (tempo base)
+    
         ![[Pasted image 20250403200232.png]]
 
-	**81/154**
+	**Slide 81/154**
 ---
 **Analisi dei PTPN: esistenza del successore**
 
-- Una classe di stato $S = \langle m, D \rangle$, con $D$ in forma normale DBM, ha un successore attraverso la transizione $t_0$ **se e solo se** $t_0$ è in **esecuzione** in $m$ (*progressing*) e $D$ accetta soluzioni in cui $\tau(t_0)$ non è maggiore del tempo di firing di nessun'altra transizione in esecuzione, cioè il dominio di scatto ristretto $D_{t_0}$ è non vuoto:
-
-    - $D_{t_0} = \left\{ \begin{array}{l} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq 0 \\ \forall \ t_i, t_j \in T_e(m) \cup \{t_*\} \text{ con } t_i \ne t_j, \\ \forall \ t_h \in T_{pr}(m) \setminus \{t_0\} \end{array} \right.$
-    
+- Una classe di stato $S = \langle m, D \rangle$, con $D$ in forma normale DBM, ha un successore attraverso la transizione $t_0$ **se e solo se** $t_0$ è in **esecuzione** in $m$ (*progressing*) e $D$ accetta soluzioni in cui $\tau(t_0)$ ==non è maggiore del tempo di firing di nessun'altra transizione in esecuzione==, cioè il dominio di firing ristretto $D_{t_0}$ è non vuoto: $$D_{t_0} = \left\{ \begin{array}{l} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq 0 \\ \forall \ t_i, t_j \in T_e(m) \cup \{t_*\} \text{ con } t_i \ne t_j, \\ \forall \ t_h \in T_{pr}(m) \setminus \{t_0\} \end{array} \right.$$
     dove $T_{pr}(m)$ è l’insieme delle transizioni che sono in esecuzione (progressing) in $m$.
     
 - **Lemma 9**
@@ -3382,34 +3604,25 @@ Teorema (No dim)
     
 - Dato $\langle m, D \rangle \xrightarrow{t_0} \langle m', D' \rangle$, come si calcola la DBM **minima** che *ingloba* (min embedding) $D'$?
 
-	**82/154**
+	**Slide 82/154**
 ---
-
-
 **Analisi dei PTPN: calcolo del successore – condizionamento**
 
-- Si condiziona $D$ al fatto che $t_0$ scatti per primo:
-    $D_{t_0} = \left\{ \begin{array}{l} D \\ \tau(t_0) - \tau(t_h) \leq 0 \quad \forall t_h \in T_{pr}(m) \setminus \{t_0\} \end{array} \right.$
-
-	$= \left\{ \begin{array}{l} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq 0 \\ \forall \ t_i, t_j \in T_e(m) \cup \{t_*\} \mid t_i \ne t_j, \\ \forall \ t_h \in T_{pr}(m) \setminus \{t_0\} \end{array} \right.$
-	
-	$= \left\{ \begin{array}{l} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq \min\{0, b_{0h}\} \\ \forall \ t_i, t_j \in T_e(m) \cup \{t*\} \mid t_i \ne t_j, \\ \forall \ t_h \in T_{pr}(m) \setminus \{t_0\} \end{array} \right.$
-
+- Si condiziona $D$ al fatto che $t_0$ scatti per primo:    $$D_{t_0} = \left\{ \begin{array}{l} D \\ \tau(t_0) - \tau(t_h) \leq 0 \quad \forall t_h \in T_{pr}(m) \setminus \{t_0\} \end{array} \right.$$$$= \left\{ \begin{array}{l} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq 0 \\ \forall \ t_i, t_j \in T_e(m) \cup \{t_*\} \mid t_i \ne t_j, \\ \forall \ t_h \in T_{pr}(m) \setminus \{t_0\} \end{array} \right.$$$$= \left\{ \begin{array}{l} \tau(t_i) - \tau(t_j) \leq b_{ij} \\ \tau(t_0) - \tau(t_h) \leq \min\{0, b_{0h}\} \\ \forall \ t_i, t_j \in T_e(m) \cup \{t*\} \mid t_i \ne t_j, \\ \forall \ t_h \in T_{pr}(m) \setminus \{t_0\} \end{array} \right.$$
 - Si rappresenta $D_{t_0}$ in forma normale e si indicano con $B_{ij}$ i suoi coefficienti  
-    (**complessità quadratica** rispetto al numero di transizioni abilitate):
-	$D_{t_0} = \left\{ \begin{array}{l} \tau(t_i) - \tau(t_j) \leq B_{ij} \\ \tau(t_0) - \tau(t_i) \leq B_{0i} \\ \forall \ t_i, t_j \in T_e(m) \cup \{t_*\} \mid t_i \ne t_j, \ t_i \ne t_0 \end{array} \right.$
-
-	**83/154**
+    (**complessità quadratica** rispetto al numero di transizioni abilitate): $$D_{t_0} = \left\{ \begin{array}{l} \tau(t_i) - \tau(t_j) \leq B_{ij} \\ \tau(t_0) - \tau(t_i) \leq B_{0i} \\ \forall \ t_i, t_j \in T_e(m) \cup \{t_*\} \mid t_i \ne t_j, \ t_i \ne t_0 \end{array} \right.$$
+	**Slide 83/154**
 ---
 **Analisi dei PTPN: calcolo del successore – avanzamento del tempo (1/4)**
 
-- Si riduce, del tempo trascorso in $S$, il time to fire delle transizioni che sono **in esecuzione** (progressing) in $m$ e **persistenti** in $S'$, cioè:      $$\tau'(t_i) = \tau(t_i) - \tau(t_0) \quad \forall \ t_i \in T_{pr}(m) \cap T_p(S') \setminus \{t_0\}$$- **Non modificare** il tempo di scatto delle transizioni che sono **sospese** in $m$ e **persistenti** in $S'$, cioè:    $$\tau'(t_x) = \tau(t_x) \quad \forall \ t_x \in T_s(m) \cap T_p(S') \setminus \{t_0\}$$ dove $T_s(m)$ è l’insieme delle transizioni che sono **sospese** in $m$
+- Si riduce, del tempo trascorso in $S$, il time to fire delle transizioni che sono **in esecuzione** (progressing) in $m$ e **persistenti** in $S'$, cioè:      $$\tau'(t_i) = \tau(t_i) - \tau(t_0) \quad \forall \ t_i \in T_{pr}(m) \cap T_p(S') \setminus \{t_0\}$$
+- **Non modifico** il time to fire delle transizioni che sono **sospese** in $m$ e **persistenti** in $S'$, cioè:    $$\tau'(t_x) = \tau(t_x) \quad \forall \ t_x \in T_s(m) \cap T_p(S') \setminus \{t_0\}$$ dove $T_s(m)$ è l’insieme delle transizioni che sono **sospese** in $m$
 
 - Prima di sostuire le variabili si riscrive le disuguaglianze in modo tale da:
 	- Rendere espliciti i vincoli che coinvolgono $t_0$ (transizione sparata) e $t_*$ (*ground*)
-	- Distinguere le transizioni in esecuzione da quelle sospese
+	- ==Distinguere le transizioni in esecuzione da quelle sospese==
 
-	**84/154**
+	**Slide 84/154**
 ---
 **Analisi dei PTPN: calcolo del successore – avanzamento del tempo (2/4)**
 
@@ -3417,7 +3630,7 @@ Teorema (No dim)
     
 $$D_{t_0} = \left\{ \begin{array}{ll} \tau(t_i) - \tau(t_j) \leq B_{ij} \quad \text{(progr, progr)} \\ \tau(t_i) - \tau(t_*) \leq B_{i*} \quad \text{(progr, *)} \\ \tau(t_*) - \tau(t_i) \leq B_{*i} \quad \text{(*, progr)} \\ \tau(t_i) - \tau(t_0) \leq B_{i0} \quad \text{(progr, 0)} \\ \tau(t_0) - \tau(t_i) \leq B_{0i} \quad \text{(0, progr)} \\ \tau(t_i) - \tau(t_x) \leq B_{ix} \quad \text{(progr, susp)} \\ \tau(t_y) - \tau(t_j) \leq B_{yj} \quad \text{(susp, progr)} \\ \tau(t_x) - \tau(t_*) \leq B_{x*} \quad \text{(susp, *)} \\ \tau(t_*) - \tau(t_x) \leq B_{*x} \quad \text{(*, susp)} \\ \tau(t_y) - \tau(t_0) \leq B_{y0} \quad \text{(susp, 0)} \\ \tau(t_0) - \tau(t_x) \leq B_{0x} \quad \text{(0, susp)} \\ \tau(t_x) - \tau(t_y) \leq B_{xy} \quad \text{(susp, susp)} \\ \tau(t_0) - \tau(t_*) \leq B_{0*} \quad \text{(0, *)} \\ \tau(t*) - \tau(t_0) \leq B_{*0} \quad \text{(*, 0)} \\ \forall \ t_i, t_j \in T_{pr}(m) \cap T_p(S') \setminus {t_0}| t_i \ne t_j, t_i, t_j \ne t_0 t_i, t_j \ne t_* \\ \forall \ t_x, t_y \in T_s(m) \cap T_p(S')| t_x \ne t_y, t_x, t_y \ne t_0 t_x, t_y \ne t_*\\ \end{array} \right.$$
 
-	85/154
+	**Slide 85/154**
 ---
 **Analisi dei PTPN: calcolo del successore – avanzamento del tempo (3/4)**
 
@@ -3426,48 +3639,48 @@ $$D_{t_0} = \left\{ \begin{array}{ll} \tau(t_i) - \tau(t_j) \leq B_{ij} \\ \tau(
     
 - e quindi:
 $$D'_{t_0} = \left\{ \begin{array}{ll} \tau'(t_i) - \tau'(t_j) \leq B_{ij} \\ \tau(t_0) - \tau(t_*) \leq B_{i*} - (\tau'(t_i) - \tau'(t_*)) \\ \tau(t_*) - \tau(t_0) \leq B_{*i} + (\tau'(t_i) - \tau'(t_*)) \\ \tau'(t_i) - \tau'(t_*) \leq B_{i0} \\ \tau'(t_*) - \tau'(t_i) \leq B_{0i} \\ \tau(t_0) - \tau(t_*) \leq B_{ix} - (\tau'(t_i) - \tau'(t_x)) \\ \tau(t_*) - \tau(t_0) \leq B_{xi} + (\tau'(t_i) - \tau'(t_x)) \\ \tau'(t_x) - \tau'(t_*) \leq B_{x*} \\ \tau'(t_*) - \tau'(t_x) \leq B_{*x} \\ \tau(t_*) - \tau(t_0) \leq B_{y0} + (\tau'(t_*) - \tau'(t_y)) \\ \tau(t_0) - \tau(t_*) \leq B_{0x} - (\tau'(t_*) - \tau'(t_0)) \\ \tau'(t_x) - \tau'(t_y) \leq B_{xy} \\ \tau(t_0) - \tau(t_*) \leq B_{0*} \\ \tau(t_*) - \tau(t_0) \leq B_{*0} \\ \\ \forall \ t_i, t_j \in \dots, \forall \ t_x, t_y \in \dots \\ \end{array} \right.$$
-	**86/154**
+	**Slide 86/154**
 ---
 **Analisi dei PTPN: calcolo del successore – avanzamento del tempo (4/4)**
 
 - **Riordinare** le equazioni in $D'_{t_0}$:
 $$D'_{t_0} = \left\{ \begin{array}{ll} \tau'(t_i) - \tau'(t_j) \leq B_{ij} \\ \tau'(t_x) - \tau'(t_y) \leq B_{xy} \\ \tau'(t_x) - \tau'(t_*) \leq B_{x*} \\ \tau'(t_*) - \tau'(t_x) \leq B_{*x} \\ \tau'(t_i) - \tau'(t_*) \leq B_{i0} \\ \tau'(t_*) - \tau'(t_i) \leq B_{0i} \\ \tau(t_0) - \tau(t_*) \leq B_{0*} \\ \tau(t_0) - \tau(t_*) \leq B_{i*} - (\tau'(t_i) - \tau'(t_*)) \\ \tau(t_0) - \tau(t_*) \leq B_{ix} - (\tau'(t_i) - \tau'(t_x)) \\ \tau(t_0) - \tau(t_*) \leq B_{0x} - (\tau'(t_*) - \tau'(t_0)) \\ \tau(t_*) - \tau(t_0) \leq B_{*0} \\ \tau(t_*) - \tau(t_0) \leq B_{*i} + (\tau'(t_i) - \tau'(t_*)) \\ \tau(t_*) - \tau(t_0) \leq B_{xi} + (\tau'(t_i) - \tau'(t_x)) \\ \tau(t_*) - \tau(t_0) \leq B_{y0} + (\tau'(t_*) - \tau'(t_y)) \\ \\ \forall\ t_i, t_j \in \dots, \forall\ t_x, t_y \in \dots \end{array} \right. $$ 
-	**87/154**
+	**Slide 87/154**
 ---
 **Analisi dei PTPN: calcolo del successore – proiezione**
 
-- **Eliminare** il tempo di scatto della transizione scattata $t_0$ attraverso una **proiezione**:
+- ==**Eliminare** il time to fire della transizione scattata== $t_0$ attraverso una **proiezione**:
 $$D''_{t_0} = \left\{ \begin{array}{ll} \tau'(t_i) - \tau'(t_j) \leq C_{ij} = B_{ij} \\ \tau'(t_x) - \tau'(t_y) \leq C_{xy} = B_{xy} \\ \tau'(t_x) - \tau'(t_*) \leq C_{x*} = B_{x*} \\ \tau'(t_*) - \tau'(t_x) \leq C_{*x} = B_{*x} \\ \tau'(t_i) - \tau'(t_*) \leq C_{i*} = B_{i0} \\ \tau'(t_*) - \tau'(t_i) \leq C_{*i} = B_{0i} \\ \tau'(t_i) - \tau'(t_x) \leq C_{ix} = B_{ix} + B_{*0} \\ \tau'(t_x) - \tau'(t_i) \leq C_{xi} = B_{xi} + B_{0*} \\ \\ (\tau'(t_i) - \tau'(t_x)) + (\tau'(t_y) - \tau'(t_j)) \leq C_{ix} + C_{yj} - c_{ixyj}, \\ \quad \text{con } c_{ixyj} = B_{*0} + B_{0*} \\ \\ (\tau'(t_*) - \tau'(t_x)) + (\tau'(t_y) - \tau'(t_j)) \leq C_{*x} + C_{yj} - c_{*xyj}, \\ \quad \text{con } c_{*xyj} = B_{0*} + B_{*x} - B_{0x} \\ \\ (\tau'(t_i) - \tau'(t_*)) + (\tau'(t_y) - \tau'(t_j)) \leq C_{i*} + C_{yj} - c_{i*yj}, \\ \quad \text{con } c_{i*yj} = B_{i0} + B_{0*} - B_{i*} \\ \\ (\tau'(t_i) - \tau'(t_x)) + (\tau'(t_*) - \tau'(t_j)) \leq C_{ix} + C_{*j} - c_{ix*j}, \\ \quad \text{con } c_{ix*j} = B_{*0} + B_{0j} - B_{*j} \\ \\ (\tau'(t_i) - \tau'(t_x)) + (\tau'(t_y) - \tau'(t_*)) \leq C_{ix} + C_{y*} - c_{ixy*}, \\ \quad \text{con } c_{ixy*} = B_{y*} + B_{*0} - B_{y0} \\ \\ (\tau'(t_*) - \tau'(t_x)) + (\tau'(t_*) - \tau'(t_j)) \leq C_{*x} + C_{*j} - c_{*x*j}, \\ \quad \text{con } c_{*x*j} = B_{0j} + B_{*x} - B_{*j} \\ \\ - (\tau'(t_i) - \tau'(t_*)) + (\tau'(t_y) - \tau'(t_*)) \leq C_{i*} + C_{y*} - c_{i*y*}, \\ \quad \text{con } c_{i*y*} = B_{i0} + B_{y*} - B_{*j} \\ \\ \forall \ t_i, t_j \in T_{pr}(m) \cap T_p(S') \setminus {t_0}|t_i \ne t_j, \ t_i, t_j \ne t_0, \ t_i, t_j \ne t_* \\ \forall \ t_x, t_y \in T_s(m) \cap T_p(S')| t_x \ne t_y, \ t_x, t_y \ne t_0 \ t_x, t_y \ne t_* \end{array} \right.$$
 - Se i coefficienti $B$ sono in **forma normale** ⇒ anche i coefficienti $C$ risultanti sono in **forma normale**
     
-	**88/154**
+	**Slide 88/154**
 ---
 **Analisi dei PTPN: calcolo del successore – newly enabling**
 
-- Aggiungo il time to fire per ogni transizione newly-enabled:
+- Aggiungo il time to fire per ogni transizione **newly-enabled**:
 $$D'= \left\{ \begin{array}{ll} D''_{t_0} \\ \tau'(t_j) - \tau'(t_*) \leq LFT(t_j) \\ \tau'(t_*) - \tau'(t_j) \leq -EFT(t_j)  \\ \forall \ t_j \in T_n(S') \end{array} \right.$$
-- Il dominio di firing $D'$ **non è in forma DBM** => La DBM in forma normale **non è chiusa** rispetto ai steps della computazione successiva!
-- Derivazioni ripetute delle classi successori portano a domini di firings con un numero esponenziale di disuguaglianze nel numero di transizioni abilitate!
+- Il dominio di firing $D'$ **non è in forma DBM** => La DBM in forma normale ==**non è chiusa** rispetto ai steps della computazione successiva!==
 
-	**89/154**
+- Derivazioni ripetute delle classi successori portano a ==domini di firings con un numero esponenziale di disuguaglianze nel numero di transizioni abilitate==!
+
+	**Slide 89/154**
 ---
 **Analisi dei PTPN: approssimazione del successore**
 
 - $D'$ è approssimato dalla sua **più stretta DBM inglobante** $\bar{D'}$:
-    
 $$\bar{D'} = \left\{ \begin{array}{ll} \tau'(t_i) - \tau'(t_j) \leq C_{ij} \\ \tau'(t_x) - \tau'(t_y) \leq C_{xy} \\ \tau'(t_x) - \tau'(t_*) \leq C_{x*} \\ \tau'(t_*) - \tau'(t_x) \leq C_{*x} \\ \tau'(t_i) - \tau'(t_*) \leq C_{i*} \\ \tau'(t_*) - \tau'(t_i) \leq C_{*i} \\ \tau'(t_i) - \tau'(t_x) \leq C_{ix} \\ \tau'(t_x) - \tau'(t_i) \leq C_{xi} \\ \\ \tau'(t_n) - \tau'(t_*) \leq LFT(t_j) \\ \tau'(t_*) - \tau'(t_n) \leq -EFT(t_j) \\ \\ \forall\ t_i, t_j \in T_{pr}(m) \cap T_p(S') \setminus {t_0}| t_i \ne t_j \, t_i, t_j \ne t_0 \, t_i, t_j \ne t_* \\ \forall\ t_x, t_y \in T_s(m) \cap T_p(S')| t_x \ne t_y \, t_x, t_y \ne t_0 \, t_x, t_y \ne t_* \\ \forall\ t_n \in T_n(S') \end{array} \right.$$
 
 	![[Pasted image 20250405001148.png]]
 
-	**90/154**
+	**Slide 90/154**
 ---
 **Analisi dei PTPN: enumerazione spazio degli stati**
 
-- L'enumerazione dell'approssimazione della relazione di raggiungibilità fra classi di stati che portano al grafo di approssimazione delle classi di stati
+- L'enumerazione dell'approssimazione della relazione di raggiungibilità fra classi di stati che portano al ==grafo di approssimazione delle classi di stati==
 	
 	![[Pasted image 20250405001513.png]]
 
-	**91/154**
+	**Slide 91/154**
 ---
 **Dominio dei tempi di un’esecuzione simbolica (1/2)**
 
@@ -3478,13 +3691,11 @@ $$\bar{D'} = \left\{ \begin{array}{ll} \tau'(t_i) - \tau'(t_j) \leq C_{ij} \\ \t
 	- $t^k_i$ è una transizione abilitata ex-novo nella classe di stato $S_k$  (è denotata come $t^k_i$ in ogni classe $S_h$ in cui è persistente da $S_k$ a $S_h$)
 	- $\ell(t^k_i)$ è l’indice dell’ultima classe in cui $t^k_i$ è persistente
 	- $c_n(t_i)$ vale 1 o 0 a seconda che $t_i$ sia in esecuzione o sospesa in $S_n$, rispettivamente
-	- $\sigma_n$ è il tempo di permanenza in $S_n$ per ogni $n \in \{1, \dots, N\}$
+	- $\sigma_n$ è il **tempo di permanenza** (*soujourn time*) in $S_n$ per ogni $n \in \{1, \dots, N\}$
     
-- Il **dominio dei tempi** di $\rho$ soddisfa i seguenti vincoli:
-    
-$$D_\rho = \left\{ \begin{array}{ll} -b^k_{*i} \leq \sum_{n=k}^{\ell(t^k_i)} c_n(t_i)\ \sigma_n \leq b^k_{i*} & \forall\ t^k_i\ \text{che scatta lungo } \rho \\ \\ \sum_{n=k}^{\ell(t^k_w)} c_n(t_w)\ \sigma_n \leq b^k_{w*} & \forall\ t^k_w\ \text{abilitata ma non scattata lungo } \rho \\ \\ \sum_{n=0}^{\ell(t^0_j)} c_n(t_j)\ \sigma_n - \sum_{n=0}^{\ell(t^0_z)} c_n(t_z)\ \sigma_n \leq b^0_{ij} & \forall\ t^0_j, t^0_z\ \text{abilitate in } S_0\ \text{e scattate lungo } \rho \\ \\ -b^k_{i*} \leq \sum_{n=0}^{\ell(t^0_w)} c_n(t_w)\ \sigma_n - \sum_{n=0}^{\ell(t^0_i)} c_n(t_i)\ \sigma_n \leq b^0_{wi} & \forall\ t^0_i\ \text{abilitata in } S_0\ \text{e scattata lungo } \rho,\ \forall\ t^k_w\ \text{abilitata ma non scattata} \end{array} \right.$$
+- Il **dominio dei tempi** di $\rho$ soddisfa i seguenti vincoli: $$D_\rho = \left\{ \begin{array}{ll} -b^k_{*i} \leq \sum_{n=k}^{\ell(t^k_i)} c_n(t_i)\ \sigma_n \leq b^k_{i*} & \forall\ t^k_i\ \text{che scatta lungo } \rho \\ \\ \sum_{n=k}^{\ell(t^k_w)} c_n(t_w)\ \sigma_n \leq b^k_{w*} & \forall\ t^k_w\ \text{abilitata ma non scattata lungo } \rho \\ \\ \sum_{n=0}^{\ell(t^0_j)} c_n(t_j)\ \sigma_n - \sum_{n=0}^{\ell(t^0_z)} c_n(t_z)\ \sigma_n \leq b^0_{ij} & \forall\ t^0_j, t^0_z\ \text{abilitate in } S_0\ \text{e scattate lungo } \rho \\ \\ -b^k_{i*} \leq \sum_{n=0}^{\ell(t^0_w)} c_n(t_w)\ \sigma_n - \sum_{n=0}^{\ell(t^0_i)} c_n(t_i)\ \sigma_n \leq b^0_{wi} & \forall\ t^0_i\ \text{abilitata in } S_0\ \text{e scattata lungo } \rho,\ \forall\ t^k_w\ \text{abilitata ma non scattata} \end{array} \right.$$
 
-	**92/154**
+	**Slide 92/154**
 ---
 **Dominio dei tempi di un’esecuzione simbolica (2/2)**
 
@@ -3493,10 +3704,10 @@ $$D_\rho = \left\{ \begin{array}{ll} -b^k_{*i} \leq \sum_{n=k}^{\ell(t^k_i)} c_n
 - Se $D_\rho$ **ammette soluzioni** ⇒ ogni **limite minimo/massimo** sul tempo trascorso tra **qualsiasi coppia** (non necessariamente consecutiva) di scatti di transizioni può essere calcolato risolvendo un **problema di programmazione lineare** (es. con il **metodo del simplesso**) al fine di **eliminare i comportamenti falsi** introdotti dall’approssimazione
 	- **Calcolare il tempo minimo** trascorso in una qualunque esecuzione ammissibile di $\rho$:
 $$\min_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
-- **Calcolare il tempo massimo** trascorso in una qualunque esecuzione ammissibile di $\rho$:
+	- **Calcolare il tempo massimo** trascorso in una qualunque esecuzione ammissibile di $\rho$:
 $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 
-	**93/154**
+	**Slide 93/154**
 ---
 **ORIS 1: uno strumento per la modellazione e l’analisi di TPN e PTPN**
 
@@ -3505,12 +3716,12 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
     
 - Funzionalità principali
 	- **Modellazione**: editing grafico di TPN e PTPN
-	- **Analisi dello spazio degli stati**: enumerazione dello spazio degli stati per TPN e PTPN
+	- **Analisi dello spazio degli stati**: **enumerazione dello spazio degli stati** per TPN e PTPN
 	- **Analisi dei tracciati**: valutazione del profilo temporale più stretto (tight timing profile) di qualsiasi esecuzione simbolica selezionata nello spazio degli stati di un TPN o di un PTPN
 
-![[Pasted image 20250405002322.png]]
+	![[Pasted image 20250405002322.png]]
 
-	94/154
+	**Slide 94/154**
 ---
 **ORIS 1: come installare e usare lo strumento**
 
@@ -3528,7 +3739,7 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 	- Supporto per l’analisi di **TPN** e **Stochastic Time Petri Nets (STPN)**
 	- Porting in corso delle funzionalità **PTPN** da ORIS 1 a ORIS 2
 
-	**95/154**
+	**Slide 95/154**
 ---
 ## 5. Utilizzo delle PTPN nel ciclo di vita software V-Model
 
@@ -3539,9 +3750,9 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 	- es. scheduling preemptive a priorità fissa
 
 - **Raggiungibilità temporale**: può il set di task raggiungere una condizione logica specifica?
-	- es. verificare la correttezza della sequenza che non abbia inversione di priorità
+	- es. verificare la **correttezza della sequenza** che non abbia inversione di priorità
 
-- **Analisi della tempestività**: qual è il tempo minimo/massimo tra eventi specifici?
+- **Analisi della tempestività**: qual è il tempo **minimo/massimo** tra eventi specifici?
 	- es. calcolare il miglior/peggior caso di tempo di completamento per ogni task
 
 	![[Pasted image 20241108183647.png]]
@@ -3551,10 +3762,10 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 **È solo una questione di verifica?**
 
 - Le PTPN come nucleo formale di un approccio di Model Driven Development (MDD)
-    - Derivazione automatica di PTPN da timeline
-    - Generazione automatica di codice
+    - Derivazione automatica di **PTPN da timeline**
+    - Generazione automatica di **codice**
     - Misura del tempo di esecuzione delle funzioni di ingresso
-    - Selezione ed esecuzione dei casi di test
+    - ==Selezione ed esecuzione dei casi di test==
     - Verdetto dell'oracolo
     
 - Organizzato in un ciclo di vita completo del software:
@@ -3569,6 +3780,7 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 - Riferimento per il ciclo di vita del software nei sistemi critici per la sicurezza (*safety critical*)
 - Integrazione di *design e verifica* (sinistra/destra)
 - Decomposizione dal *sistema ai moduli* (alto/basso)
+
 	![[Pasted image 20241108183938.png]]
 
 	**Slide 98/154**  
@@ -3577,7 +3789,8 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 
 - Integrazione di metodi formali nel ciclo di sviluppo richiede metodi di SW engineering senza interrompere i processi industriali
 	- Il processo di sviluppo V-model è supportato dalla teoria PTPN
-	- La documentazione MIL-STD-498 è supportata da UML-MARTE
+	- La documentazione **MIL-STD-498** è supportata da UML-MARTE
+	
 	![[Pasted image 20241108184351.png]]
 	
 	**Slide 99/154**  
@@ -3606,13 +3819,13 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 **V-Model: SD1, SD2, SD3**
 
 - **SD1** (System Requirements Analysis) - ambito del sistema  
-  - Definisce i requisiti utente ad alto livello del sistema
+  - Definisce i **requisiti utente** ad alto livello del sistema
 
 - **SD2** (System Design) - ambito del sistema  
-  - Identifica le unità di sistema e assegna loro i requisiti utente
+  - Identifica le **unità di sistema** e assegna loro i requisiti utente
 
 - **SD3** (SW/HW Requirements Analysis) - dal sistema all'ambito delle unità  
-  - Scompone ogni unità in Elementi di Configurazione Hardware (HCIs), Elementi di Configurazione Software (CSCIs) e Elementi di Configurazione Firmware (FCIs)
+  - Scompone ogni unità in *Elementi di Configurazione Hardware* (HCIs), *Elementi di Configurazione Software* (CSCIs) e Elementi di Configurazione Firmware **(FCIs)
 
 	![[Pasted image 20241108190239.png]]
 	
@@ -3631,15 +3844,16 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 ---
 **MIL-STD-498: Analisi Requisiti Software**
 
-- Corrisponde alla seconda parte di SD3 (lo scope CSCI => elementi di configurazione del sistema)
+- Corrisponde alla seconda parte di SD3 (lo scope CSCI => *computer software configuration item*)
 
-- Produce la Specifica dei Requisiti Software( SRS) per ogni CSCI e la Specifica dei Requisiti d'Interfaccia (IRS) per ogni unità software
+- Produce la Specifica dei Requisiti Software(SRS) per ogni CSCI e la Specifica dei Requisiti d'Interfaccia (IRS) per ogni unità software
 	- Qui l'SRS è in una forma simile alle carte CRC (Class Resp. Collaboration)
-		- es. carta CRC che specifica le capacità del sistema di Controllo CSCI (sinistro)
+		- es. carta CRC che specifica le capacità del sistema di Controllo CSCI 
 
 			![[Pasted image 20241108191851.png]]
 			
-		- es. carta CRC che specifica le sottocapacità dell'SMU-OU-Comandi (destra) 
+		- es. carta CRC che specifica le sottocapacità dell'SMU-OU-Comandi 
+
 		 ![[Pasted image 20241108191908.png]]
 
 	**Slide 103/154** 
@@ -3647,11 +3861,12 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 **V-Model: SD4-SW, SD5-SW**
 
 - **SD4-SW** (Preliminary SW Design) - ambito del componente SW  
-  - Definisce **l'architettura SW** di ogni CSCI come un insieme di task di comunicazione con moduli funzionali e tempi di rilascio e scadenze prescritte
+  - Definisce **l'architettura SW** di ogni CSCI come un insieme di task di comunicazione **con moduli funzionali e tempi di rilascio e scadenze prescritte**
 
 - **SD5-SW** (Detailed SW Design) - ambito del modulo SW  
   - Definisce il **design SW** di ogni CSCI assegnando risorse e requisiti di tempo a ciascun modulo software
   - Include la SD5.2-SW (Analisi dei requisiti di risorse e del tempo)
+
 	![[Pasted image 20241108192314.png]]
 
 	**Slide 104/154**  
@@ -3661,6 +3876,7 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 - Integra SD4-SW e SD5-SW
 
 - Produce la Descrizione del Design del Software (SDD) -> Software Design Description
+
 	![[Pasted image 20241108192314.png]]
 
 	**Slide 105/154**  
@@ -3669,10 +3885,12 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 
 - Specifica dei **requisiti non funzionali** di ciascun CSCI  
   - Tramite diagramma UML-MARTE a oggetti per ogni task
+
 	![[Pasted image 20241108192617.png]]
 
 - Specifica dei **requisiti funzionali** di ciascun CSCI  
   - Tramite diagramma UML-MARTE delle attività per ogni task
+
 	![[Pasted image 20241108192643.png]]
 
 	**Slide 106/154**  
@@ -3681,9 +3899,10 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 
 - Derivabile (manualmente/automaticamente) dai diagrammi UML-MARTE
 
-- Rappresenta sinteticamente e intuitivamente un insieme di task
+- Rappresenta sinteticamente e intuitivamente un **insieme di task**
 
 - Non supporta la verifica automatizzata del modello
+
 	![[Pasted image 20241108192811.png]]
 
 	**Slide 107/154**  
@@ -3692,7 +3911,8 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 
 - Derivabile (manualmente/automaticamente) dalle timeline
 
-- Supporta la **verifica formale** e i successivi passi di sviluppo
+- ==Supporta la **verifica formale**== e i successivi passi di sviluppo
+
 	![[Pasted image 20241108193544.png]]
 
 	**Slide 108/154**  
@@ -3703,7 +3923,7 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 
 	![[Pasted image 20241108193608.png]]
 
-- Rappresentazione di task con più segmenti sequenziali
+- Rappresentazione di task con più segmenti sequenziali => *chunks*
 
 	![[Pasted image 20241108193625.png]]
 
@@ -3713,15 +3933,17 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 **Design del SW: derivazione di PTPNs dalle timeline (2/3)**
 
 - Rappresentazione dei task sincronizzati su un semaforo
+
 	![[Pasted image 20241108193707.png]]
 
-	=> Vengono aggiunte delle transizioni per l'acquisizione/rilascio di un semaforo => transizioni con TTF nullo
+	=> Vengono aggiunte delle transizioni per l'acquisizione/rilascio di un semaforo => transizioni con **TTF nullo**
 	
 	**Slide 110/154**  
 ---
 **Design del SW: derivazione di PTPNs dalle timeline (3/3)**
 
 - Rappresentazione dei task sincronizzati su una mailbox => dalla timeline alla PTPN
+
 	![[Pasted image 20241108193805.png]]
 
 	**Slide 111/154**
@@ -3735,6 +3957,7 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 - Analisi dello spazio degli stati del modello PTPN
 	- Copertura esaustiva dello spazio degli stati (salvo esplosione dello stato)
 	- Verifica delle proprietà di sequenziamento e tempestività
+
 	![[Pasted image 20241108194300.png]]
 
 	**Slide 112/154**  
@@ -3743,8 +3966,9 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 
 - SD6-SW: **Implementazione del software** - ambito del modulo SW
 	- Implementazione dell'architettura dei task set (architettura eseguibile)
-	- Test unitario (profilatura del tempo di esecuzione dei moduli a basso livello)
+	- **Test unitario** (profilatura del tempo di esecuzione dei **moduli** a basso livello)
 	- Implementazione delle funzioni di ingresso => *entry point functions* (fuori dall'ambito del metodo)
+
 	![[Pasted image 20241108194536.png]]
 
 	**Slide 113/154**  
@@ -3760,14 +3984,14 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 ---
 **Codifica del software: implementazione dell'architettura del task set (1/5)**
 
-- Responsabilità
+- **Responsabilità**
   - Rilasciare job di task in base alle loro politiche
   - Implementare operazioni su semafori e gestione delle priorità
   - Sequenziare l'invocazione delle funzioni di ingresso
   
-- Struttura
+- **Struttura**
   - Riflette la specifica della timeline
-  - Basata su primitive convenzionali di un sistema operativo in tempo reale
+  - Basata su **primitive convenzionali** di un sistema operativo in tempo reale
   - Esperimenti su codice C per applicazioni a singolo processore (VxWorks, Linux RTAI)
   - è codice disciplinato oppure Model Driven Development (MDD)?
 
@@ -3776,6 +4000,7 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 **Codifica del software: implementazione dell'architettura dinamica (2/5)**
 
 - Diagramma UML-MARTE (ci sono gli stereotipi) della struttura dell'implementazione dell'architettura dinamica di un CSCI su **VxWorks 6.5**
+
 	![[Pasted image 20241108195409.png]]
 
 	=> serve a caratterizzare tipologia di task set da usare 
@@ -3814,19 +4039,21 @@ $$\max_{D_\rho} \left\{ \sum_{n=0}^{N-1} \sigma_n \right\}$$
 - Consiste di una **architettura eseguibile** (Unified Process)
 
 - Porta a una baseline per integrazioni incrementali delle funzioni di ingresso
+
 	![[Pasted image 20241108200923.png]]
 
-	=> ci sono istruzioni senza particolare funzione ma utile per garantire certi timings nell'uso della CPU (ad esempio) => ad esempio dei busy sleep => per testare singolarmente entry point di un job
+	=> ci sono istruzioni senza particolare funzione ma utile per garantire certi timings nell'uso della CPU (ad esempio) => ad esempio dei busy sleep => **per testare** singolarmente entry point di un job
 
 	**Slide 119/154**  
 --- 
-**MIL-STD-498: Prima parte del testing dell'HW-nel-loop**
+**MIL-STD-498: Prima parte del testing dell'HW-nel-loop** (fermati qui)
 
 - Corrisponde alla seconda parte del SD6-SDW
 
 - Esegue **unit-testing**, cioè, il testing di ogni modulo SW (riferito anche ad unità di basso livello), nell'architettura dinamica di ogni CSCI
 	- Include altri moduli SW emulati tramite funzioni di busy-sleep
 	- Integra ogni modulo SW entro il range dei comportamenti che sono feasibile per la specifica => permette di evitare il noto problema della **determinazione dell'implementazione** con rispetto alla specifica
+
 	![[Pasted image 20241108194536.png]]
 
 	**Slide 120/154**  
@@ -3844,6 +4071,7 @@ $$
 		- $\tau_k$ è il tempo di entrata nel k-esimo stato visitato, ovvero il k-esimo *timestamp*
 
 - Identifica il comportamento dell'implementazione rispetto alla specifica
+
 	![[Pasted image 20241108202524.png]]
 	=> vado a misurare o tempi di esecuzione effettivi dei vari chunk
 
@@ -3864,6 +4092,7 @@ $$
 - Esegue un grande numero di ripetizioni per l'operazione di log (10,000)
 	- Sequenza dei tempi di esecuzione osservati per l'operazione di log (a sinistra)
 	- Istogramma dei tempi di esecuzione osservati per le operazioni di log(a destra)
+
 	![[Pasted image 20241109121613.png]]
 
 - Approccio semplice ma grossolano, con logging che richiede decine di microsecondi 
@@ -3873,7 +4102,7 @@ $$
 ---
 **HW-in-the-loop testing: profilazione del tempo di esecuzione (4/6)**
 
-- Istogramma fra i tempi di rilascio osservati di un task periodico *Tsk2*
+- Istogramma fra i **tempi di rilascio** osservati di un task periodico *Tsk2*
 	- Il periodo nominale è pari a 20ms
 	- Il periodo osservato rientra entro [19.920, 20.069] ms nel 98.9% dei casi => non è proprio un rilascio periodico!
 	
@@ -3888,30 +4117,32 @@ $$
 ---
 **HW-in-the-loop testing: profilazione del tempo di esecuzione (5/6)**
 
-- Istogramma dell'esecuzioni osservate dell'entry-point f122 di *Tsk1*
+- Istogramma dell'esecuzioni osservate dell'**entry-point** f122 di *Tsk1*
 	- Tempo di esecuzione nominale entro l'intervallo [0.05, 0.2] ms => molto compatto!
 	- Riflette l'assenza delle alternative dipendenti dai dati, nell'implementazine della funzione di entry-point (altrimenti l'istogramma avrebbe avuto un maggiore supporto)
+
 	![[Pasted image 20241109122635.png]]
 
 	**Slide 125/154**  
 ---
 **HW-in-the-loop testing: profilazione del tempo di esecuzione (6/6)**
 
-- Istogramma dei tempi di esecuzione osservati delle **operazioni di *wait*** fatte dal task periodico *Tsk2* sul semaforo binario *sem3*
+- Istogramma dei **tempi di esecuzione** osservati delle **operazioni di *wait*** fatte dal task periodico *Tsk2* sul semaforo binario *sem3*
 	- Il tempo speso per le operazioni del semaforo su *VxWorks 6.5* **non è trascurabile** rispetto all'ordine dei tempi di esecuzione delle funzioni entry-point => sistemi embedded con risorse limitate => sia di costi e di dimensioni => scarse prestazioni!
+
 	![[Pasted image 20241109122947.png]]
 
 	**Slide 126/154**  
 ---
 **V-Model: prima parte di SD7-SW**
 
-- Prima parte di SD7-SW: integrazione SW a livello di componente
+- Prima parte di SD7-SW: **integrazione SW a livello di componente**
 
 - Corrisponde alla seconda parte del test dell' HW-in-the-loop nel MIL-STD-498
 
 - Attività supportate dal nucleo formale delle PTPNs:
-	- Selezione dei test case ed esecuzione
-	- Verdetto dell'oracolo e valutazione del coverage
+	- **Selezione dei test case ed esecuzione**
+	- Verdetto dell'oracolo e **valutazione del coverage**
 
 		![[Pasted image 20241109123240.png]]
 
@@ -3922,7 +4153,7 @@ $$
 - **Guasti**: scostamenti di un componente dalla prestazione prevista 
 	- **Sequenze non ordinate**: un esecuzione che rompe la sequenza dei requirements
 		- es. sequenza di chunk, semaforo e operazione di gestione della priorità, meccanismi di IPC, ...
-	- **Violazioni temporali**: un parametro temporale che prendere valori fuori il suo intervallo nominale
+	- **Violazioni temporali**: un parametro temporale che prende valori fuori il suo intervallo nominale
 		- es. release di un job prematuro, tempo di esecuzione $\notin$ [BCET, WCET]
 	- **Miss della Deadline**: un job che rompe il suo requisito di tempo
 
@@ -4072,7 +4303,7 @@ $$
 
 - La verifica architetturale **può non essere esaustiva** (esplosione dello spazio degli stati) => potrei scomporre componenti software...
 
-- Il testing in ogni caso è necessario per ragioni di certificazione (per buone ragioni) => sistemi avionici ad esempio richiedono testing di un certo tipo.
+- ==Il testing in ogni caso è necessario per ragioni di certificazione== (per buone ragioni) => sistemi avionici ad esempio richiedono testing di un certo tipo.
 
 	**Slide 137/154**
 ---
@@ -4745,9 +4976,11 @@ $$
 3. Test del flusso dei dati
 4. Test degli stati finiti
 
+	**Slide 2/70**
 ---
 ## 1. Concetti di base
 
+---
 **Natura e obiettivi del test del software**
 
 - Il testing è un metodo di verifica
@@ -4755,34 +4988,37 @@ $$
 	- È un approccio dinamico (contrapposto all'ispezione statica)
 
 - Ha limiti inerenti e capacità
-	- Può dimostrare la presenza di difetti, ma non la loro assenza (E. Dijkstra, 1970).
+	- Può dimostrare la presenza di difetti, **ma non la loro assenza** (E. Dijkstra, 1970). => non riesco a dimostrare che il sistema sia corretto.
 	- È utile per fini formativi
-	- è prescritto nella certificazione di sistemi critici per la sicurezza (es. RTCA-D0/178B per sistemi avionici).
-	- Ma è anche un buon driver nella produzione del software (design per testability)
+	- è **prescritto nella certificazione** di sistemi critici per la sicurezza (es. RTCA-D0/178B per sistemi avionici). => sia nel prodotto che nel processo di sviluppo => devo testare il codice se lo voglio certificare
+	- Ma è anche un buon driver nella produzione del software (design per testability) => devo scrivere del codice facile da testare e quindi da certificare
 
+	**Slide 3/70**
 ---
 **Ontologia di difetti, malfunzionamenti ed errori**
 
 - Tre concetti principali:
-	  - **Malfunzionamento**: deviazione dai requisiti funzionali.
-	  - **Difetto**: un elemento nell'implementazione che causa un malfunzionamento.
-	  - **Errore**: passaggio nel processo che porta a un difetto.
+	- **Malfunzionamento**(*failure*): deviazione dai requisiti funzionali.
+	- **Difetto**: un elemento nell'implementazione che causa un malfunzionamento. (uno o più difetti)
+	- **Errore**: passaggio nel processo che porta a un difetto.
 
 - Un esempio (Ariane V, 1996):
 	- Malfunzionamento: valore errato restituito dall’unità SW.
-	- Difetto: tipo di dati non sufficiente per gestire l'intervallo richiesto.
-	- Errore: specifica di requisiti errata non identificava correttamente l'intervallo dei valori di input.
+	- Difetto: tipo di dati non sufficiente per gestire l'intervallo richiesto. => numero di bit insufficienti per l'accellerazione angolare => hanno portato a overflow!
+	- Errore: specifica di requisiti (IRS) errata non identificava correttamente l'intervallo dei valori di input.
 
+	**Slide 4/70**
 ---
 **Ontologia di difetti e malfunzionamenti (1/3)**
 
 - I tre concetti appartengono a differenti prospettive
-  - Un **errore** si verifica durante un'**attività** del processo di sviluppo
-  - Questo porta a un **difetto** nella struttura di un **componente**
-  - Il difetto può causare un **malfunzionamento** (failure) rispetto a un **requisito funzionale**
+  - Un **errore** si verifica durante un'**attività** del processo di sviluppo (nella prospettiva di processo)
+  - Questo porta a un **difetto** nella struttura di un **componente** => come il sistema è fatto
+  - Il difetto può causare un **malfunzionamento** (*failure*) rispetto a un **requisito funzionale**
+	=> errore => difetto => malfunzionamento
+	![[Pasted image 20241119192951.png]]
 
-![[Pasted image 20241119192951.png]]
-
+	**Slide 5/70**
 ---
 **Ontologia di difetti e malfunzionamenti (2/3)**
 
@@ -4790,9 +5026,10 @@ $$
 	- Definizione concettuale di una sistemazione è più facile di quella di un fallimento
 
 - Natura specifica del SW testing (?)
-	- Molto meno legata all'invecchiamento e alla produzione fisica
+	- Molto meno legata all'invecchiamento e alla produzione fisica => software non invecchia come l'hardware ma all'interno del mio sistema ci possono essere condizioni che possono comportare difetti => ad esempio *memory leakage*! (ringiovanimento del software => riportarlo alla condizione iniziale)
 	- La maggior parte dei fallimenti sono presenti per il design e il codice
 
+	**Slide 6/70**
 ---
 **Ontologia di difetti e malfunzionamenti (3/3)**
 
@@ -4800,104 +5037,116 @@ $$
 	- Un **Difetto** (o guasto) porta il sottosistema in uno stato di **Errore**...
 	- ... che può portare al **Fallimento** del sottosistema
 	- ... che può diventare un **Difetto** per un livello più alto del **Sistema**
-
+	=> Da un certo componente che fallisce si arriva ad un difetto del sistema ma non un completo fallimento
+	
 - Ad esempio nell'Ariane V
 	- Difetto: misura dell'unità di processamento ritorna valore sbagliato
 	- Errore: stato inconsistente nell'unità di controllo dell'accellerazione angolare
-	- Fallimento: shutdown del primo processore propagato ai livelli superiori come un Difetto...
+	- Fallimento: shutdown del primo processore propagato ai livelli superiori come un Difetto... => in questo caso fallimento del processore principale ha portato a fault del sistema!
 
 - Principali differenze fra le due prospettive
 	- Enfasi sullo stato comportamentale e sulla gerarchia sistema/sottosistema
-	- Gli errori possono essere recuperati, apre la strada alla tolleranza dei difetti (Fault tollerance)
+	- Gli errori possono essere recuperati, apre la strada alla tolleranza dei difetti (*Fault tollerance*) => azione di recovering che riporta allo stato nominale del sistema
 
+	**Slide 7/70**
 ---
 **Attività nella metodologia di test**
  
-- Selezione dei casi di test
-	- Definisce suite di test per rivelare potenziali difetti
+- **Selezione dei casi di test**
+	- Definisce suite di test per rivelare **potenziali difetti**
 
-- Generazione di input
-	- Individua input che consentono l'esecuzione del caso di test
+- **Generazione di input**
+	- Individua input che consentono l'esecuzione del caso di test => non tutti i parametri del sistema sono controllabili => ad esempio tempi di computazione dei task => hanno a che fare con dati che task deve processare
 
-- Esecuzione dei casi di test
+- **Esecuzione dei casi di test**
 	- Utilizza driver, stub, script e strumenti come JUnit o Mockito per l'esecuzione della test suite
 	
-- Verdetto dell’oracolo
-	- Determina se l'IUT ha passato un test, ovvero se i risultati del test soddisfano i requisiti funzionali.
+- **Verdetto dell’oracolo**
+	- Determina se l'IUT ha passato un test => ovvero se i risultati del test soddisfano i requisiti funzionali => se test andato a buon fine oppure non conclusivo => falso comportamento del sistema
 
-- Debugging
-	- Identifica le cause dei malfunzionamenti osservati
+- **Debugging**
+	- Identifica le cause dei malfunzionamenti osservati => quando si nota che il sistema produce dei risultati diversi dal suo comportamento atteso => si va ad identificare qual'è la causa nella prospettiva strutturale che ha portato a quel fallimento.
 
-- Analisi di copertura
-	- Valuta quanto i risultati del test coprano lo spazio comportamentale dell’IUT
+- **Analisi di copertura**
+	- Valuta quanto i risultati del test coprano lo spazio comportamentale dell’IUT => necessario capire il codice => per capire quanto dello spazio degli stati ho coperto
 
+	**Slide 8/70**
 ---
 **Osservazioni sulla selezione dei casi di test**
 
 - Identifica una suite di test abile a rivelare tutti i possibili Difetti
 - È lo step più caratterrizante della metodologia dei test
-- Si basa su alcune astrazioni dello IUT ... e su alcuni criteri di copertura (coverage)
+- Si basa su alcune astrazioni dello IUT ... e su alcuni criteri di copertura (coverage) => ad esempio *all nodes* => tutte le istruzioni
+	![[Pasted image 20241119201620.png]]
 
-![[Pasted image 20241119201620.png]]
-
+	**Slide 9/70**
 ---
 **Modello di difetto (Fault model)**
 
 - **Abstraction** e **criteri di copertura** dipendono dal **modello di difetto**
 	- Ovvero l’insieme dei **tipi di difetto** nell'IUT che vengono affrontati.
-	- Il modello dipende dalle caratteristiche strutturali e funzionali dell’IUT.
+	- Il modello dipende dalle **caratteristiche strutturali e funzionali** dell’IUT.
 
 		![[Pasted image 20241119201947.png]]
+	=> Test suite (insieme di test) che fa riferimento ad una astrazione dell'implementazione e della sua copertura
+	  
+	**Slide 10/70**
 ---
 **Prospettiva funzionale vs prospettiva strutturale (1/2)**
 
-- L'astrazione può prendere differenti prospettive
+- L'astrazione può prendere **differenti prospettive**
 
-- **Funzionale** (black box) si riferisce alla specifica dell'IUT
+- **Funzionale** (*black box*) si riferisce alla specifica dell'IUT => senza andare a vedere come deve essere fatto
 	- Ad esempio gli use case diagrams, l'SRS prescitto nello standard MIL-STD-498, conceptual class diagram, ...
 
-- **Strutturale** (white box) si riferisce all'implementazione dell'IUT
+- **Strutturale** (*white box*) si riferisce all'**implementazione** dell'IUT
 	- Ad esempio class diagrams, System Design Description (SDD) prescitto nello standard MIL-STD-498, codice sorgente o codice binario (?)
 
-- **Architetturale** (grey box)  si riferisce all'archittetura dell'IUT
+- **Architetturale** (*grey box*)  si riferisce all'archittetura dell'IUT => tiene conto di come il sistema è scomposto in sottosistemi e loro interfacce fra i vari sottosistemi
 	- Ad esempio architectural design, System Subsytem Design Description (SSDD) e lo Interface Requirements Specification (IRS) dello standard MIL-STD-498, ...
 
-- Il Model Driven Development (MDD) può offuscare il concetto, ad esempio il codice generato automaticamente dai requisiti del modello
+- Il *Model Driven Development* (MDD) può offuscare il concetto, ad esempio il codice generato automaticamente dai requisiti del modello => non capisco che tipo di testing sto eseguendo => più facile derivare test funzionale che strutturali => si possono comunque definire casi di test funzionale e capire che copertura hanno dal punto di vista strutturale (spazio dei comportamenti possibili)
 
+	**Slide 11/70**
 ---
 **Prospettiva funzionale vs prospettiva strutturale (2/2)**
 
 - Sul significato di "funzionale" nel l'ingegneria del software
-	-  Requisiti funzionali, strutturali e di qualità . . .
-	-  con caratteristiche di qualità definite dalla norma ISO/IEC 9126, ora sostituita dalla norma ISO/IEC 25010:2011 ...
+	- **Requisiti funzionali**, strutturali e di qualità . . .
+	- con caratteristiche di qualità definite dalla norma ISO/IEC 9126, ora sostituita dalla norma ISO/IEC 25010:2011 ...
 	- e classificati come interni, esterni o in uso
 
 - In Software Testing:
 	-  La prospettiva funzionale si riferisce a qualsiasi requisito
-	- La prospettiva strutturale si riferisce a qualsiasi aspetto dell'implementazione
+	- La prospettiva strutturale si riferisce a qualsiasi aspetto dell'**implementazione**
 
-![[Pasted image 20241119202923.png]]
+	![[Pasted image 20241119202923.png]]
 
+	**Slide 12/70**
 ---
 **Osservazioni sulla generazione dei input**
 
 - Identifica gli input che lasciano il sistema funzionare lungo un caso di prova
-- É un caso di problema undecidibile
+
+- É un caso di problema *undecidibile*
+
 - Può non essere feasible
-	- Per via dei percorsi unfeasible (comportamenti falsi) aggiunti nell'astrazione
+	- Per via dei percorsi unfeasible (*comportamenti falsi*) aggiunti nell'astrazione => non presente nel sistema (nel senso di non possibile eseguirli)
+
 - É collegata con la selezione dei test case
 	- Un criterio di coverage può implementato da differenti Test suites, con differenti condizioni di path feasibility
-
-![[Pasted image 20241120154425.png]]
-
+	![[Pasted image 20241120154425.png]]
+	=> A destra si vede proprio il caso di falso comportamento => non posso avere una variabile che abbia sia valore minore di 10 che maggiore di 100! (e viceversa)
+	
+	**Slide 13/70**
 ---
 **Osservazioni sul verdetto dell'oracolo**
 
-- Decide se l'IUT passa un test
-	- Cioè se il result dei test rispettano i requisiti funzionali
+- Decide **se l'IUT passa un test**
+	=> Cioè se il result dei test rispettano i requisiti funzionali
 
-- Il verdetto dell'oracolo può essere inconclusivo
-	- Per via del fatto che la risposta dello IUT può non essere controllata a piena
+- Il verdetto dell'oracolo (oltre a dire se un test è passato o meno) può essere inconclusivo!
+	- Per via del fatto che la risposta dello IUT **può non essere controllata a piena** => non è detti che si vada a coprire tutti quei casi che mi interessava osservare
 
 - È la parte più difficile da automatizzare
 	- Ha bisogno di una rappresentazione eseguibile dei requisiti
@@ -4905,44 +5154,53 @@ $$
 	- É spesso eseguito manualmente in maniera tautologica:
 		- giudica i risultati dei test in assenza di una specifica
 
+	**Slide 14/70**
 ---
 **Osservazioni sul debugging**
 
-- Riconduce i difetti funzionali osservati ai difetti strutturali
+- Attività che riconduce i **difetti funzionali** osservati ai **difetti strutturali**
 
-- Un difetto può essere associato con diversi difetti
+- Un difetto può essere associato con **diversi difetti** => difficile da identificare in modo univoco! => per più fault servono più fix!
 	- Un malfunzionamento può risultare dall'interazione di diversi dettagli dell'IUT...
 	- ... e può essere rimosso tramite l'applicazione congiunta di diversi aggiustamenti 
 	- ... che successivamente aumentano il problema della regressione del testing(?) 
 
+	**Slide 15/70**
 ---
 **Osservazioni sull'analisi del coverage**
 
-- Valuta quanto i result dei test coprono lo spazio dei comportamenti dell'IUT
+- Valuta quanto i result dei test coprono lo spazio dei comportamenti dell'IUT => non andrò mai ad avere certezza della non presenza di bug ma posso garantire il ricoprimento di tutti gli spazi di comportamento! => caso del pathfinder su marte => inversione di priorità non vista nei casi di test
 
 - La realizzazione è simile a quella della selezione dei casi di test
 	- Misura con cui il risultato dei test copre l'astrazione dello IUT
 	- Se lo IUT passa una test suite => Ho un giustificabile grado di confidenza sull'assenza di difetti residuali nell'IUT
 	- Si basa sul grado di copertura di qualche Abstraction
-	- Sottointende assunzioni sulla dimensione dell'Abstraction
-	- Si basa su qualche strumentazione del codice (es. orientato all'aspetto (?))
+	- Sottointende **assunzioni sulla dimensione dell'Abstraction**
+	- Si basa su qualche strumentazione del codice (es. orientato all'aspetto (?)) => devo avere una sorta di log che mi dica quali sono gli eventi nel mio sistema e quali sono le attività che possono essere completate
 
-- La selezione dei casi di test & l'analisi del coverage può mescolare le prospettive
+- La selezione dei casi di test & l'analisi del coverage può mescolare le prospettive (funzionale o strutturale)
 	- Un esempio: seleziono dei test case dagli use case, e poi valuto la coverage su un astrazione basata sul codice (es. RTCA-DO/178B, RTCA-DO/178C)
 
+	**Slide 16/70**
 ---
 ## 2. Test del flusso di controllo
 
+---
 **Introduzione**
 
-- Fornisce un'astrazione, ovvero **grafo del flusso di controllo (CFG)**
+- Metodo di testing che fornisce un'astrazione, ovvero il **grafo del flusso di controllo (CFG)**
 
-- Fornisce una suite di criteri di copertura: **tutti i nodi**(all-nodes), **tutti i bordi**(all-edges), **tutti i percorsi**(all-paths), **Modified Condition Decision Coverage** (MCDC), ecc
+- Fornisce anche una suite di criteri di copertura => e quindi selezionare casi di test:
+	- **Tutti i nodi**(all-nodes)
+	- **Tutti i bordi**(all-edges)
+	- **Tutti i percorsi**(all-paths)
+	- **Modified Condition Decision Coverage** (MCDC), ecc
 
 - Applicabile sia alla selezione dei casi di test che all'analisi della copertura
 
 - Applicabile sia nel prospettiva strutturale e nella prospettiva funzionale
 
+	**Slide 17/70**
 ---
 **Grafo del Flusso di Controllo (CFG) (1/2)**
 
@@ -4950,150 +5208,185 @@ $$
 	- I blocchi base sono insiemi massimali di istruzioni $\langle S_1, ... , S_N \rangle$ tale che:
 		- $S_N$ è l'unico successore d'esecuzione di $S_{N-1}$
 		- $S_{N-1}$ è l'unico predecessore d'esecuzione di $S_N$
+		=> Dunque istruzioni eseguite in sequenza => non ci sono istruzioni di salto! => in quanto non si possono fare assunzioni da dove viene il codice dopo un *goto*
 	- Ovvero il massimo set di istruzioni che son eseguite sempre insieme
-	- Ovvero senza etichette target, senza rami, break, istruzioni di return, ... massimale
+	- Ovvero senza etichette target, senza rami, *break*, istruzioni di *return*, ... massimale
 
-- Gli archi rappresentano la successione d'esecuzione
+- Gli *archi* rappresentano la **successione d'esecuzione** => se nodo prima di un altro indica che esecuzione di un istruzione avviene prima di un altra.
+		
 	![[Pasted image 20241120175713.png]]
 
+	**Slide 18/70**
 ---
 **Grafo del Flusso di Controllo (CFG) (2/2)**
 
-- L'astrazione CFG toglie le dipendenze dei dati 
+- L'astrazione CFG toglie le dipendenze dei dati => secondo il grafo potrei visitare qualsiasi ramo! (che nel esempio non è possibile)
 
-- Sottointende il fault model
-	- Rappresenta i difetti che influenzano le guardie di controllo o le variabili di controllo usate nelle guardie, che  consente al'IUT di deviare dal flusso di controllo previsto
+- Sottointende il **fault model**
+	- Rappresenta i difetti che influenzano le guardie di controllo o le variabili di controllo usate nelle guardie, che consente al'IUT di deviare dal flusso di controllo previsto
 
 - Applicabile in differenti granelli di astrazione
-	- LOCs, blocchi base, chiamate di funzione, invocazioni di servizi, ...
+	- LOCs, blocchi base, chiamate di funzione, invocazioni di servizi, ... => ovvero nodi possono essere uno o un insieme di istruzioni
 
+	**Slide 19/70**
 --- 
 **Criteri di copertura: tutti i nodi**
 
-- Tutti i nodi (a.k.a block coverage, statement coverage)
-	- Ogni vertice del CFG deve essere visitato almeno una volta
-	- Il minimum coverage necessario per assicurare che ogni linea di codice sia stata eseguita almeno una volta durante il testing
-	- Sufficiente per certificare una grande classe di sistemi safety-critical
+- Tutti i nodi (a.k.a *block coverage*, *statement coverage* => se ad un nodo è associato un blocco o una sola istruzione)
+	- Ogni vertice del CFG **deve essere visitato almeno una volta**
+	- Il minimum coverage necessario per assicurare che ==ogni linea di codice sia stata eseguita almeno una volta== durante il testing => non ho necessità di coprire tutti gli archi
+	- **Sufficiente** per certificare una grande classe di sistemi safety-critical => anche per sistemi avionici!
 
-- Complessità O(N) dove N è il numero di nodi
-	- In termini di numero di casi di test
+- Complessità $O(N)$ dove $N$ è il numero di nodi
+	- In termini di numero di **casi di test** => non è facile sviluppare tutti i casi di test! => ad esempio far fallire il sistema operativo per realizzare certi test
+		=> Ma servono davvero N test per coprire tutti i nodi? No! => casi di test possono coprire più nodi
 	- ... sviluppare un programma in cui (?) ... 
-	- ![[Pasted image 20241120182127.png]]
-	
+		
+		![[Pasted image 20241120182127.png]]
+		=> per ottenere un CFG a forma di Albero binario => basta mettere delle condizioni di *If/else* => istruzioni condizionali annidate 
+		=> Notare che in un albero binario numero di foglie è pari a $N/2$ => e se quindi per coprire le foglie ho bisogno di un numero proporzionale al numero di nodi => prima di arrivare ad una foglia o andrò da una parte o dall'altra => dunque $O(N)$ test sono necessari e sufficienti
+
+	**Slide 20/70**
 ---
 **Criteri di copertura: limiti di tutti i nodi**
 
-- Non garantisce la copertura di tutti i bordi ![[Pasted image 20241120182320.png]]
-
+- In generale però *all nodes* => non garantisce la copertura di tutti i bordi(archi)
+	
+	![[Pasted image 20241120182320.png]]
+	=> In questo caso si perde l'arco in qui l'array è già stato allocato => non ho modo di verificare se l'allocazione è corretta!
+	
 - Non distingue come un ciclo è stato lasciato (guardia, break, return. goto)
 
-- Non dipende dal numero di iterazioni in un ciclo, e ignora completamente la struttura dei dei do-while
+- Non dipende **dal numero di iterazioni** in un ciclo, e ignora completamente la struttura dei dei do-while => non mi interessa quante volte si esegue il ciclo ma basta che l'istruzione venga eseguita almeno una volta => possibili errori oltre la prima volta 
 
 - Nell'analisi del coverage, può non essere proporzianale alla complessità (numero di linee di codice non bilanciato su differenti rami)
 
+	**Slide 21/70**
 ---
 **Criteri di copertura: tutti i bordi**
 
-- Tutti bordi (a.k.a tutte le decisioni)
+- Tutti bordi (a.k.a tutte le *decisioni*) => tutti gli archi
 	- Ogni bordo del CFG deve essere percorso almeno una volta
 
-- Tutti i bordi sottopongono i tutti i nodi
-	- Possono differire con la presenza congiunta di rami e confluenze(?)
+- Tutti i bordi *sottopongono* i tutti i nodi
+	- Possono differire con la presenza congiunta di rami e confluenze => se sono presenti rami e confluenze può capitare di fare all-nodes senza coprire come all-edges
 
-- La complessità è sempre $O(cN)$ dove c è il massimo grado in output delle istruzioni
-	- $O(N)$ raggiunge ogni nodo, e da ogni nodo, c casi coprono tutti gli output
+- La complessità è sempre $O(cN)$ dove c è il **massimo grado** di output delle istruzioni
+	- $O(N)$ raggiunge ogni nodo, e da ogni nodo, c casi **coprono tutti gli output**
 
 - Limiti di tutti i bordi
-	- Non garantisce che le guardie siano testate sotto tutte le combinazioni che possono portare alla stessa decisione
+	- Non garantisce che le guardie siano testate ==sotto tutte le combinazioni== che possono portare alla stessa decisione => se una guardia ha più combinazioni mi basta testare il caso vero e falso complessivo ma di ogni combinazione della guardia
 	- Potrebbe essere rilevante se le guardie producono side effects
-					 ![[Pasted image 20241120185842.png]]
-		
+					 
+		 ![[Pasted image 20241120185842.png]]
+	=> Test suite che soddisfa all-edges soddisfa anche all-nodes 
+
+	**Slide 22/70**
 ---
 **Criteri di copertura: condizioni multiple (1/2)**
 
-- Estende la copertura di tutti i bordi includendo ogni decisione sotto tutte le condizioni delle guardie
+- Estende il criterio di copertura tutti i bordi includendo **ogni decisione** sotto tutte le possibili condizioni delle guardie
 	- Una condizione è una massima espressione senza connettivi Booleani
 
-- Diventa rilevante quando una condizione di guardia può produrre side effects
- ![[Pasted image 20241120190514.png]]
-- ... in congiunzione con shorts-circuits su un espressione
+	![[Pasted image 20241120190514.png]]
+		=> ho tutte le possibili combinazioni delle condizioni
+	
+- Diventa rilevante quando una condizione di guardia può produrre *side effects*
+		
+- ... in congiunzione con shorts-circuits su un espressione => diventa difficile testare del codice in presenza di corto-circuiti
 
+	**Slide 23/70**
 ---
 **Criteri di copertura: condizioni multiple (2/2)**
 
-- Ma la complessità è $O(cN2^k)$ dove $k$ è il numero di condizioni in una guardia
+- Ma la complessità è $O(cN2^k)$ dove $k$ è il numero di condizioni in una guardia => esplosione delle condizioni => complessità exp! => con k = 10 ho già un numero parecchio alto
 
-- Per linguaggi con espressioni short-circuited, molti casi sono equivalenti 
+- Per linguaggi con espressioni short-circuited, molti casi sono equivalenti! 
+ 
 	 ![[Pasted image 20241120191924.png]]
 
-- Questo vale per c, c++, Java, ma non per Ada
+- Questo vale per c, c++, Java, ma non per Ada => linguaggio usato in ambito militare => non sono presenti espressioni corto-circuitate
 
+	**Slide 24/70**
 ---
 **Copertura dei criteri: Modified Condition Decision Coverage (MCDC) (1/2)**
 
 - Modified Condition Decision Coverage(MCDC)
 	- Estende "tutti i bordi" richiedendo che ogni decisione sia coperta in modo che, in alcuni test, ogni **condizione** determini ogni decisione differente in entrambi i modi
 
-![[Pasted image 20241120193623.png]]
-
+	![[Pasted image 20241120193623.png]]
+	=> Devo coprire ogni decisione in più test facendo sì che io abbia coperto ogni condizione che rende la guarda sia vera che falsa 
+	=> tramite congiunzioni riesco a ridurre i diversi test
+	
+	**Slide 25/70**
 ---
 **Copertura dei criteri: Modified Condition Decision Coverage (MCDC) (2/2)**
 
-- Nei linguaggi con espressioni short-circuited, MCDC è equivalente a condizioni multiple
+- Nei linguaggi con espressioni short-circuited, MCDC è equivalente a condizioni multiple => in quanto ci sono casi fra loro equivalenti!
 
-- La complessità è $O(ckN)$
+- La complessità è $O(ckN)$ => passo a complessità lineare!
 	- $c$ è il numero di casi per ciascuna condizione
-	- L'analisi per l'identificazione dei casi di test è $O(2^k)$
+	- L'analisi per l'identificazione dei casi di test è $O(2^k)$ => devo comunque enumerare spazio di tutte le possibili combinazioni!
 	
-- Prescritta dal documento RTCA/DO-178B
+- Prescritta dal documento RTCA/DO-178B (ambito avionico)
 	- Sviluppato da Boeing e adottato da RTCA (Radio Technical Commission for Aeronautics, US) e dall'European Organisation for Civil Aviation Equipment
 
+	**Slide 26/70**
 ---
 **Copertura dei criteri: tutti i percorsi**
 
-- Tutti i percorsi (a.k.a tutti i predicati)
-	- ogni percorso differente è coperto da almeno un test
-	- Complessità: $O(2^N)$ se non esistono cicli, non definita con cicli
-	- È un concetto, non una pratica
+- Tutti i percorsi (a.k.a **tutti i predicati**)
+	- ogni **percorso** differente è coperto da **almeno un test**
+	- Complessità: $O(2^N)$ se non esistono cicli => ovvero se da ogni nodo ho due soli branch, unbounded con cicli
+	- È un concetto, non una pratica => non è fattibile!
 	- Può diventare accessibile su astrazioni molto grosse
 
-- Potrebbe non rivelare problemi a causa della correttezza incidentale
+- Potrebbe non rivelare problemi a causa della correttezza incidentale => questo per il discorso generale sul limite del fare testing => fare test e trovare pochi bug forse è sintomo di non aver scelto un fault model non adeguato
 
+	**Slide 27/70**
 ---
 **Copertura dei criteri: Boundary Interior e Structured Path**
 
 - **Boundary Interior** seleziona un sottoinsieme finito di tutti i percorsi coprendo classi di equivalenza nell'insieme dei percorsi
-	- I test di confine sono percorsi che attraversano il ciclo solo una volta, con test differenti per ciascun percorso
-	- I test interni sono percorsi che attraversano il ciclo più volte, con test differenti per ciascun percorso nella prima iterazione
+	- I test di confine sono percorsi che attraversano il ciclo **solo una volta**, con test differenti **per ciascun percorso** => alla prima occasione di uscire dal ciclo esco! 
+	- I test interni sono percorsi che attraversano il ciclo **più volte**, con test differenti **per ciascun percorso** nella prima iterazione => dopo aver percorso almeno una volta in più il ciclo posso uscire
 
 - Il test dei percorsi strutturati estende il concetto da 1 a $k$ iterazioni
 
+	**Slide 28/70**
 ---
 **Coverage criteria: Esempio di Boundary Interior**
 
-![[Pasted image 20241120195725.png]]
+- Ad esempio:
 
+	![[Pasted image 20241120195725.png]]
+	=> Interior test sono quelli nei quali alla prima occasione di uscire, si resta nel ciclo => ho 4 casi in cui in due passo da una stessa parte => resto nel ciclo e esco => mentre negli altri due casi parto da una parte e poi dopo il ciclo esco dall'altra
+
+	**Slide 29/70**
 ---
 ## 3. Test del flusso dei dati
 
+---
 **Test del flusso di dati**
 
 - Analizza come i difetti possono propagarsi in malfunzionamenti osservabili
-	- Un effetto collaterale difettoso su una variabile non è osservato fino a quando la variabile non è utilizzata
-	- Il difetto può attivare un malfunzionamento o propagarsi ad altre variabili
- ![[Pasted image 20241120201957.png]]
+	- Un effetto collaterale difettoso su una variabile ==non è osservato fino a quando la variabile non è utilizzata==
+	- Quando dunque quale variabile viene usata => il difetto può attivare un malfunzionamento o propagarsi ad altre variabili
+	 ![[Pasted image 20241120201957.png]]
+		=> si va a mettere in relazione dove la variabile viene modificata e quindi dove viene usata
 
-- Applica percorsi che vanno da dove una variabile è influenzata a dove è utilizzata
-	- Ovvero copre l'accoppiamento dei dati fra le istruzioni
+- Applica percorsi che vanno da ==dove una variabile è influenzata a dove è utilizzata==
+	- Ovvero copre l'accoppiamento dei dati fra le istruzioni => in questo modo si vuole capire com'è che i fault si possono propragare e diventare fallimenti osservabili
 
 - Applicabile sia alla selezione dei casi di test che all'analisi della copertura
 
-- Prima nella prospettiva strutturale poi in quella funzionale
+- Prima nella prospettiva *strutturale* poi in quella *funzionale*
 
+	**Slide 30/70**
 ---
 **Data Flow Graph (DFG)**
 
-- Estende il grafo del flusso di controllo (CFG) con annotazioni **def-x** e **use-x** per ogni variabile **rilevante** x (non per tutte le variabili)
+- Estende il grafo del flusso di controllo (CFG) con annotazioni **def-x** e **use-x** per ogni variabile **rilevante** x (non per tutte le variabili) => ovvero dove vado a definire una variabile e dove la uso => ma solo per le variabili che ritieniamo essere più rilevanti => ad esempio più prone ad errori
 
 - Copre il DFG con una suite di criteri: **all-defs**, **all-uses**, **all-DU-paths**
 
@@ -5101,56 +5394,71 @@ $$
 
 - Inizia con una prospettiva strutturale e può successivamente passare a una prospettiva funzionale
 
+	**Slide 31/70**
 ---
 **Data Flow Graph (DFG): Annotazioni e concetti**
 
-- **def-x**: punto in cui la variabile x è influenzata (side-effected)
+- **def-x**: punto in cui la variabile x è **influenzata** (*side-effected*)
 
-- **use-x**: punto in cui il valore di x è utilizzato
-	- **c-use-x**: utilizzo in espressioni fuori da guardie (computazionale)
-	- **p-use-x**: utilizzo in guardie (predicativo)
+- **use-x**: punto in cui il valore di x è **utilizzato**
+	- **c-use-x**: utilizzo in espressioni fuori da guardie (*computazionale*)
+	- **p-use-x**: utilizzo in guardie (*predicativo*)
 
 - La distinzione tra **p-use** e **c-use** 
-	- Non è basata sulla sintassi, ma sulle conseguenze:
-	  - Un **p-use** può divergere nel flusso
-	  - Un **c-use** può propagare
+	- Non è basata sulla **sintassi**, ma sulle conseguenze:
+	  - Un **p-use** può divergere nel flusso => nel senso che a partire da lì ci sarà un branch di vero/falso
+	  - Un **c-use** può propagare => ovvero un valore di una variabile che poi può essere usato altrove
 
-- Un **def-clear-path-x** è percorso aciclico che inizia con un **def-x**, termina con un **use-x** e non attraversa nessun altro **def-x**
-			![[Pasted image 20241120222812.png]]
+- Un **def-clear-path-x** è percorso **aciclico** che inizia con un **def-x**, termina con un **use-x** e ==non attraversa nessun altro== **def-x**
 			
+	![[Pasted image 20241120222812.png]]
+	=> Percorsi dunque dove inizio definendo una variabile e finisco usandola => nel mezzo non ho altre definizioni
+	
+	**Slide 32/70**
 ---
-**Coverage Criteria: All-Def**
+**Coverage Criteria: All-Def** (primo criterio)
 
-- **Copertura di tutte le definizioni**: per ogni definizione (**def**), almeno un percorso fino a un utilizzo (**use**)
-			 ![[Pasted image 20241120223038.png]]
+- **Copertura di tutte le definizioni**: per ogni definizione (**def**), almeno un percorso fino a un utilizzo (**use**) => per ogni def arriva almeno ad un uso
+			 
+	 ![[Pasted image 20241120223038.png]]
+		=> me ne basta uno
 
 - **Slicing del programma**: ripetere questo per ogni variabile **rilevante**  x 
 
+	**Slide 33/70**
 ---
 **Coverage Criteria: All-Uses**
 
-- **Copertura di tutti gli utilizzi**: per ogni **def**, almeno un percorso per ciascun **use** raggiungibile tramite un **def-clear-path**
+- **Copertura di tutti gli utilizzi**: per ogni **def**, ==almeno un percorso per ciascun **use**== raggiungibile tramite un **def-clear-path**
 
 	![[Pasted image 20241120223405.png]]
-	
+	=> qui invece dobbiamo arrivare a tutti gli usi della def => di tutti percorsi che arrivano ad utilizzare quella variabile me ne basta uno => percorsi intesi come def-clear-path
+
+	**Slide 34/70**
 ---
 **Coverage Criteria: All-DU-Paths**
 
 - **Copertura di tutti i percorsi Def-Use**: tutti i **def-clear-paths** da ciascuna definizione a ciascun utilizzo raggiunto da quella definizione e ogni nodo successivo al **use**
 
 	![[Pasted image 20241120223844.png]]
+	=> Un percorso per ogni uso raggiungibile attraverso un def-clear-paths 
+	=> Notare nel caso p-use si considerano entrambi i casi di vero/falso
 
 - Nota: i percorsi DU sono per definizione aciclici
 
+	**Slide 35/70**
 ---
 **Coverage Criteria: Criteri di flusso di controllo vs flusso di dati (1/4)**
 
 - **All-Def** non è confrontabile con **all-nodes** o **all-edges**
-  - **All-def** non include tutti i nodi
-  - ma non è incluso da **all-edges**
+  - **All-def** non include tutti i nodi (dunque nemmeno all-edges)
+  - ma, non è incluso da **all-edges**
 
-![[Pasted image 20241120224115.png]]
-
+	![[Pasted image 20241120224115.png]]
+	=> A destra vedo che percorso di all-def non copre tutti i nodi
+	=> Mentre a sinistra faccio all-edges ma non riesco ad avere un def-clear-path
+	
+	**Slide 36/70**
 ---
 **Coverage Criteria: Criteri di flusso di controllo vs flusso di dati (2/4)**
 
@@ -5159,59 +5467,70 @@ $$
   - Se nessun def è trovato, si può dare un compiler warning
   - Per un qualsiasi **p-use**, si torna indietro a partire dal nodo di decisione
 
-![[Pasted image 20241120224543.png]]
+	![[Pasted image 20241120224543.png]]
 
+	**Slide 37/70**
 ---
 **Coverage Criteria: Criteri di flusso di controllo vs flusso di dati (3/4)**
 
-![[Pasted image 20241120224650.png]]
+- Relazione fra i criteri 
 
+	![[Pasted image 20241120224650.png]]
+
+	**Slide 38/70**
 ---
 **Coverage Criteria: Criteri di flusso di controllo vs flusso di dati (4/4)**
 
-- All-p-uses restringe all-uses per coprire le coppie def e p-use
+- Alcune varianti:
+	- *All-p-uses* restringe all-uses per coprire le coppie def e p-use
+	- *All-p-uses-some-c-uses* estende all-p-uses per coprire all-def
+		- Riduce l'over-coverage di defs mantenendo la comparabilità
 
-- All-p-uses-some-c-uses estende all-p-uses per coprire all-def
-	- Riduce l'over-coverage di defs mantenendo la comparabilità
+	![[Pasted image 20241120224957.png]]
+	![[Pasted image 20241120225021.png]]
+	=> All p-uses/c-uses include all-def => evito di riconsiderare diversi percorsi
 
-![[Pasted image 20241120224957.png]]
-![[Pasted image 20241120225021.png]]
-
+	**Slide 39/70**
 ---
 **Coverage Criteria: Complessità**
 
-- La complessità di **All-Uses** è $O(hN^2)$, dove $h$ è il grado massimo di uscita di una istruzione
+- La complessità di **All-Uses** è $O(hN^2)$, dove $h$ è il grado massimo di uscita di una istruzione => complessità quadratica!
+	=> per casi di switch-case h può essere elevato, ma in generale 1/2
+
 - Sufficiente: 
 	- Non ci sono più di $O(N^2)$ coppie **def-use** in un grafo
 
-![[Pasted image 20241120225139.png]]
-
-- Necessario: 
-	- Ci sono $O(N^2)$ coppie **def-use** in un grafo
-	- Sebbene non ci siano programmi con tale grafo CFG
+	![[Pasted image 20241120225139.png]]
+	=> Con $N^2$ casi di test posso andare a coprire ogni coppia def-use
+	
+- Necessario (devo dimostrare che mi servono non più di $N^2$ casi di test):  
+	- Ci sono $O(N^2)$ coppie **def-use** in un grafo => arrivo allo stesso numero di foglie dei nodi di partenza e siccome faccio all-use avrò $N^2$ percorsi da testare!
+	- Sebbene non ci siano programmi con tale grafo DFG
 	- Ma, è possibile definire un programma in cui tutti gli utilizzi richiedano $O(N^2)$
 
-![[Pasted image 20241120225417.png]]
+		![[Pasted image 20241120225417.png]]
 
+	**Slide 40/70**
 ---
-**Test strutturale vs test funzionale**
+**Test strutturale vs test funzionale** (Fermati qui)
 
 - Il test strutturale appare più fondato
 	- poiché l'implementazione è più formalmente specificata rispetto ai requisiti
 	
-- Ma la selezione dei casi di test strutturali è tautologica
+- Ma la selezione dei casi di test strutturali è tautologica => il codice ha un unica semantica
     - Esempio: 
 	    - $x = 100 \ldots \text{if}(x > 10) \to x = 1 \ldots \text{if}(x > 10) \to \text{fault covered}$
 	    - $x = 100 \ldots \text{if}(x > 10) \to y = 100 \ldots \text{if}(x > 10) \to \text{fault not covered}$
-	  - Non può rilevare funzioni mancanti
+	  - **Non può rilevare funzioni mancanti** 
 
   - L'implementazione è più complessa dei requisiti
 	- Meno accessibile a chi non è coinvolto nello sviluppo
 
 - **Combinazione virtuosa**:
-  - Selezione dei casi di test funzionali
-  - Analisi della copertura strutturale
+  1. Selezione dei casi di test funzionali
+  2. Analisi della copertura in prospettiva strutturale
 
+	**Slide 41/70**
 ---
 **Test del flusso di controllo e dei dati in prospettiva funzionale**
 
@@ -5219,12 +5538,13 @@ $$
 	- Quando la specifica sottende un qualche tipo di flusso di controllo, con possibile rappresentazione esplicita delle dipendenze **def/use**
 
 **Esempi notevoli**:
-1. Diagramma di navigazione delle pagine di un'applicazione web
-2. Specifica del diagramma di flusso dei dati
-3. Flusso di eventi in un template dei casi d'uso (Use Case Template)
-4. Flusso concorrente in un diagramma di attività (Activity Diagram)
-5. Qualsiasi specifica eseguibile (es. prototipo Matlab)
+- Diagramma di navigazione delle pagine di un'applicazione web
+- Specifica del diagramma di flusso dei dati
+- Flusso di eventi in un template dei casi d'uso (Use Case Template)
+- Flusso concorrente in un diagramma di attività (Activity Diagram) => si presta ad applicare tecniche di testing strutturale in prospettiva funzionale!
+- Qualsiasi specifica eseguibile (es. prototipo Matlab)
 
+	**Slide 42/70**
 ---
 **Generazione di casi di test dai casi d'uso (1/3)**
 
@@ -5239,38 +5559,42 @@ $$
 - Non solo per lo sviluppo orientato agli oggetti
   - Si adatta bene in una specifica dei requisiti software (SRS - MIL-STD-498)
 
-![[Pasted image 20241121124342.png]]
+	![[Pasted image 20241121124342.png]]
 
+	**Slide 43/70**
 ---
 **Generazione di casi di test dai casi d'uso (2/3)**
 
 - I flussi di base e alternativi identificano un **Control Flow Graph (CFG)**
   - Ma anche un **Data Flow Graph (DFG)**, quando i dati sono definiti/utilizzati in fasi diverse del flusso
 
-![[Pasted image 20241121124529.png]]
-
+	![[Pasted image 20241121124529.png]]
+	=> Questo generato a partire da uno use case template
+ 	
+	**Slide 44/70**
 ---
 **Generazione di casi di test dai casi d'uso (3/3)**
 
 - I test possono essere selezionati sulla base della copertura di CFG o DFG
 	- Più grossolani rispetto alle astrazioni strutturali e solitamente aciclici
-	- La copertura può permettere criteri "costosi"
+	- La copertura può permettere criteri "costosi" (nel caso dell'astrazione rispetto all'implementazione posso fare anche all-paths come criterio di copertura)
 	- Può includere anche criteri funzionali (es. per cicli non deterministici)
 
-- Un caso di test può coprire più flussi
+- Un caso di test può coprire più flussi => guarda i scenari...
 
 - Uno scenario a livello utente(user-level) può coprire più flussi di diversi casi d'uso
 
-![[Pasted image 20241121124958.png]]
+	![[Pasted image 20241121124958.png]]
 
+	**Slide 45/70**
 ---
 **Generazione di casi di test dai diagrammi di attività (1/4)**
 
 - **Diagrammi di attività UML (Activity Diagrams (ADs))** catturano il **flusso di controllo** e la **concorrenza**:
-  - Attività, sequenza, inizio/fine, ramo, fork/join
+	- Attività, sequenza, inizio/fine, ramo, fork/join
 
 - Derivati dai modelli concettuali delle **reti di Petri**:
-  - Posti e token, transizioni, pre-condizioni e post-condizioni, firing
+	- Posti e token, transizioni, pre-condizioni e post-condizioni, firing
 
 - Derivati dal **Specification and Description Language (SDL)**
 
@@ -5280,14 +5604,16 @@ $$
 
 	![[Pasted image 20241121125320.png]]
 
+	**Slide 46/70**
 ---
 **Generazione di casi di test dai diagrammi di attività (2/4)**
 
 - **Swimlanes** allocano attività per gli attori e le risorse
 	- Diverse partizioni (2 nell'esempio)
 
-![[Pasted image 20241121125524.png]]
+	![[Pasted image 20241121125524.png]]
 
+	**Slide 47/70**
 ---
 **Generazione di casi di test dai diagrammi di attività (3/4)**
 
@@ -5295,6 +5621,7 @@ $$
 
 	![[Pasted image 20241121125658.png]]
 
+	**Slide 48/70**
 ---
 **Generazione di casi di test dai diagrammi di attività (4/4)**
 
@@ -5302,252 +5629,265 @@ $$
 	- Specificando il flusso di controllo
 	- Specificando le dipendenze def/use fra attività successive oppure concorrenti
 
-![[Pasted image 20241121130001.png]]
+	![[Pasted image 20241121130001.png]]
 
+	**Slide 49/70**
 ---
 **Test di unità vs d'integrazione**
 
-- Il test di unità riguarda i singoli componenti
+- Il test di unità riguarda i **singoli componenti**
 	- Spesso prende una prospettiva strutturale, che dipende dalla decomposizione del design
 	- Ad esempio usando *Junit* per singole classi Java oppure usando *Cantata* per testare singole funzioni di file c
 	- Effettuato durante lo sviluppo, dalle stesse persone che hanno sviluppato e capito il codice, a meno di divieti nei requisiti di certificazione del processo
-	- Senza valore contrattuale, a meno di essere stato prescritto nel modello del processo
+	- Senza valore contrattuale, a meno di essere stato prescritto nel modello del processo => fallimenti delle unità non sempre portano a fallimenti del sistema
 	- Spesso con intento formativo, anche nel primo approccio di programmazione
 
-- Il test d'integrazione riguarda diversi componenti
+- Il test d'integrazione **riguarda diversi componenti** => l'intero sistema
 	- Spesso prende una prospettiva funzionale
-	- Spesso ha un intento contrattuale, come nel test di accettazione
+	- Spesso ha un **intento contrattuale**, come nel test di accettazione
 
+	**Slide 50/70**
 ---
 ## 4. Test degli stati finiti
 
+---
 **Sistemi reattivi**
 
-- Mantengono un'interazione continua con l'ambiente, spesso solo parzialmente prevedibile, garantendo requisiti funzionali
+- Mantengono **un'interazione continua con l'ambiente**, spesso solo parzialmente prevedibile, garantendo requisiti funzionali
 	- Contrapposti ai sistemi trasformazionali (?)
 
 - Rappresentano un'astrazione per una vasta classe di **sistemi cyber-fisici**:
     - Esempi: sistemi operativi, sistemi di controllo, componenti software embedded, ..., interfacce utente
-	- Richiedono formalismi di specifica e metodi di verifica
+	- Richiedono formalismi di specifica e metodi di verifica => enfasi su concetto di stato e comportamento
 
+	**Slide 51/70**
 ---
 **Macchine a stati finiti**
 
-- Nella pratica industriale, una specifica ruota attorno a una **macchina a stati finiti (FSM)** definita come $\langle S, I, O, E \rangle$:
-    - Un insieme di stati $S:\{S_0, S_1, S_2\}$, con stato iniziale $S_0 \in S$
-    - Un insieme di input $I : \{a, b, c\}$
-    - Un insieme di output $O:\{e, f\}$
-    - Un insieme di transizioni $E \subseteq S \times I \times O \times S$
+- Nella pratica industriale, una specifica viene caratterizzata tramite una **macchina a stati finiti (FSM)** definita come $\langle S, I, O, E \rangle$:
+    - Un insieme di *stati* $S:\{S_0, S_1, S_2\}$, con stato iniziale $S_0 \in S$
+    - Un insieme di *input* $I : \{a, b, c\}$ => input dall'ambiente
+    - Un insieme di *output* $O:\{e, f\}$ => ad esempio esecuzioni della funzione
+    - Un insieme di *transizioni* $E \subseteq S \times I \times O \times S$ => individua coppia di stati e associa a questi input/output
 
 	![[Pasted image 20241121134441.png]]
 	
+	**Slide 52/70**
 ---
 **Implementazione e test delle macchine a stati finiti**
 
-- Conseguenze sulla struttura dell’IUT:
+- Conseguenze sulla struttura dell’IUT: => in fin dei conti ciò che viene implementato è la macchina a stati => da specifica FSM a implementazione che è realizzazione macchina a stati
     - Funzioni dipendenti dallo stato collegate alle transizioni...
     - Posizioni e istruzioni "goto", ... ,  pattern di stato
 
 - Obiettivi e metodologia di testing:
-    - **Conformance testing**: verifica che l’IUT si comporti secondo una macchina a stati finiti (FSM) specificata
+    - **Conformance testing**: verifica che l’IUT si comporti secondo una macchina a stati finiti (FSM) specificata => FSM che me la ritrovo anche nel testing!
 
+	**Slide 53/70**
 ---
 **Testing di conformità per una macchina a stati finiti**
 
-- Equivalenza tra una specifica $S$ e un IUT $I$:
-    - Gli stati $s$ in $S$ e $i$ in $I$ sono *V-equivalenti* se, partendo da $s$ e $i$, la stessa sequenza di input di lunghezza $V$ produce la stessa sequenza di output
+- Relazione di equivalenza tra una specifica $S$ e un IUT $I$:
+    - Gli stati $s$ in $S$ e $i$ in $I$ sono *V-equivalenti* se, partendo da $s$ e $i$, la stessa sequenza di input di lunghezza $V$ produce **la stessa sequenza di output**
     - Gli stati sono equivalenti se sono V-equivalenti per qualsiasi V
-    - Le FSM $S$ e $I$ sono equivalenti se i loro stati iniziali sono equivalenti
-
+    - Le FSM $S$ e $I$ sono equivalenti se i loro stati iniziali sono equivalenti => le due macchine fra specifica e implementazione sono equivalenti se hanno stati iniziali equivalenti => arrivo a stesso comportamento
+	=> Se testando l'implementazione provo a dare degli input in ingresso e osservando ciò che viene prodotto in output per capire se questa è conforme alla macchina a stati e quindi alla specifica
+		
 - Modello di difetto:
-    - Output fault: lo stato successivo è corretto, ma l’**output** non lo è
-    - Transfer fault: l’output è corretto, ma lo **stato successivo** non lo è
+    - *Output fault*: lo stato successivo è corretto, ma l’**output** non lo è
+    - *Transfer fault*: l’output è corretto, ma lo **stato successivo** non lo è
     - Output e Transfer fault possono succedere insieme
     - Ortogonale al Fault Model del testing del control/data flow
 
+	**Slide 54/70**
 ---
-### Testing di conformità attraverso il metodo WP
+**Testing di conformità attraverso il metodo WP**
 
-- La specifica è una macchina a stati finiti (FSM):
+- La specifica è una macchina a stati finiti (FSM) => alcune ipotesi:
     - **Completamente specificata**: accetta tutti gli input in ogni stato
     - **Osservabile**: in ogni stato, un output è emesso per ciascun input
-    - **Deterministica**: una sola transizione e output per ogni stato e input
+    - **Deterministica**: una sola transizione e output per ogni stato e input => ottengo sempre gli stessi stati a seconda di input
+
 - L’IUT si comporta come una FSM non identificata:
-    - Deterministica, completamente specificata e osservabile
-    - La funzione di reset è corretta, ovvero riporta sempre allo stesso stato
-    - Ha lo stesso numero di stati della specifica
+    - **Deterministica**, completamente specificata e osservabile
+    - La funzione di reset è corretta, ovvero riporta sempre allo stesso stato => ho necessità di ripartire dallo stato iniziale => operazione spesso costosa ad esempio se ho componenti fisici!
+    - Ha **lo stesso numero di stati della specifica** => non così semplice da garantire => possono capitare stati fittizzi nella implementazione
     - Gli stati non sono osservabili, solo gli output lo sono
+
 - Un tipo di **black-box testing**
 
+	**Slide 55/70**
 ---
+**Identificazione (1/2)**
 
-### Identificazione (1/2)
+L'implementazione si comporta come da specifica? => ovvero come dico che macchina a stati dell'implementazione è conforme a macchina a stati della specifica?
 
 - Il problema dell’identificazione:
-    - Dopo il reset, l’IUT si trova in uno stato non identificato in {S0,S1,S2}\{S_0, S_1, S_2\}
-    - L’applicazione di input differenti può disambiguare lo stato iniziale e gli stati visitati, in base agli output osservati
+	- Dopo il reset, l’IUT si trova in uno stato non identificato in $\{S_0, S_1, S_2\}$
+    - L’applicazione di input differenti può disambiguare lo stato iniziale e successivamente gli stati visitati, in base agli output osservati
 
+	![[Pasted image 20250414214131.png]]
+	=> So che posso applicare a ed ottenere e solo in $S0$ => applicando quella transizione riesco a disambuiguare quello stato!
+	
+	**Slide 56/70**
 ---
-
-### Identificazione (2/2)
+**Identificazione (2/2)**
 
 - È possibile che la sequenza non finisca mai?
     - Un sottoinsieme stretto sarà eventualmente incontrato, rilevando il ciclo illimitato
     - La dimostrazione di terminazione è simile al lemma di Karp & Miller per le reti di Petri
 
+	![[Pasted image 20250414214623.png]]
+	=> non riesco a indentificare stato corrente nel caso di stati fra loro equivalenti!
+	
+	**Slide 57/70**
 ---
+**Metodo W: insieme di caratterizzazione (1/2)**
 
-### Metodo W: insieme di caratterizzazione (1/2)
-
-- **Passo 1**: selezionare un insieme di caratterizzazione WW:
-    - Un insieme di sequenze di input che disambiguano lo stato iniziale
+- **Passo 1**: selezionare un insieme di caratterizzazione $W$:
+    - Un insieme di sequenze di input che permettono di disambiguare lo stato iniziale
     - Esempi:
-        - W={{a},{b}}W = \{\{a\}, \{b\}\}: rappresenta 2 sequenze di lunghezza 1
-        - W={{aa}}W = \{\{aa\}\}: rappresenta 1 sequenza di lunghezza 2
-        - W={{ab}}W = \{\{ab\}\}: rappresenta un’altra sequenza di lunghezza 2
+        - $W = \{\{a\}, \{b\}\}$: rappresenta 2 sequenze di lunghezza 1 (nel mezzo ho un reset)
+        - $W = \{\{aa\}\}$: rappresenta 1 sequenza di lunghezza 2
+        - $W = \{\{ab\}\}:$ rappresenta un’altra sequenza di lunghezza 2
 
+	**Slide 58/70**
 ---
-
-### Metodo W: insieme di caratterizzazione (2/2)
+**Metodo W: insieme di caratterizzazione (2/2)**
 
 - Trade-off tra la lunghezza e il numero di sequenze
-    - Esempio: W={{a},{b}}W = \{\{a\}, \{b\}\} rispetto a W={{aa}}W = \{\{aa\}\}
+    - Esempio: $W = \{\{a\}, \{b\}\}$ rispetto a $W = \{\{aa\}\}$
 - La complessità del reset può influenzare questa scelta (specialmente nei sistemi ciber-fisici)
-- Una singola sequenza potrebbe non essere sempre fattibile
+- Una singola sequenza potrebbe non essere sempre fattibile => non è possibile fare *characterization set* con una sola sequenza
 
+	**Slide 59/70**
 ---
+**Metodo W: copertura degli stati (1/4)**
 
-### Metodo W: copertura degli stati (1/4)
+- **Passo 2**: selezionare una **suite di test** $Q$ con un caso di test per ogni stato della specifica (partendo dopo un reset) => da Q riesco a spostarmi in qualsiasi stato dalla stato iniziale => con $W$ identifico se sono nello stato in cui pensavo di essere o meno!
+    - Esempio: $Q = \{\{−\}, \{b\}, \{c\}\}$
 
-- **Passo 2**: selezionare una suite di test QQ con un caso di test per ogni stato della specifica (partendo dopo un reset)
-    - Esempio: Q={{−},{b},{c}}Q = \{\{−\}, \{b\}, \{c\}\}
-- Ottenere una copertura degli stati con la suite Q×WQ \times W:
-    - Tutte le concatenazioni di un elemento di QQ e uno di WW
-    - Esempio: per W={{a},{b}}W = \{\{a\}, \{b\}\}, Q×W={{−},{b},{c}}×{{a},{b}}={{a},{b},{ba},{bb},{ca},{cb}}Q \times W = \{\{−\}, \{b\}, \{c\}\} \times \{\{a\}, \{b\}\} = \{\{a\}, \{b\}, \{ba\}, \{bb\}, \{ca\}, \{cb\}\}
+- Ottenere una copertura degli stati con la suite $Q \times W$:
+    - Tutte le concatenazioni di un elemento di $Q$ e uno di $W$ => prodotto cartesiano fra le due 
+    - Esempio: per $Q \times W = \{\{−\}, \{b\}, \{c\}\} \times \{\{a\}, \{b\}\} = \{\{a\}, \{b\}, \{ba\}, \{bb\}, \{ca\}, \{cb\}\}$
 
+	**Slide 60/70**
 ---
+**Metodo W: copertura degli stati (2/4)**
 
-### Metodo W: copertura degli stati (2/4)
+- Se l’IUT quindi passa la suite di test $Q \times W$, allora ogni stato dell’IUT è identificato in modo **unico e corretto**
+- $Q$ è costruito per terminare in ciascuno stato della specifica
+- Il suffisso $W$ garantisce che lo stato corrisponda a quello nell’IUT
+- Esempio: $$Q \times W = \{\{−\}, \{b\}, \{c\}\} \times \{\{a\}, \{b\}\} = \{\{a\}, \{b\}, \{ba\}, \{bb\}, \{ca\}, \{cb\}\}$$
+	![[Pasted image 20250414221512.png]]
+	=> In questo caso si identifica un *trasfer fault* in $S_0$ sotto il test $\{\{c\}\} \times W$, e $W$ identifica $S_1$ da $S_2$ => nel caso appunto finisca in quello stato  
 
-- Se l’IUT passa la suite di test Q×WQ \times W, allora ogni stato dell’IUT è identificato in modo unico e corretto
-- QQ è costruito per terminare in ciascuno stato della specifica
-- Il suffisso WW garantisce che lo stato corrisponda a quello nell’IUT
-- Esempio: Q×W={{−},{b},{c}}×{{a},{b}}={{a},{b},{ba},{bb},{ca},{cb}}Q \times W = \{\{−\}, \{b\}, \{c\}\} \times \{\{a\}, \{b\}\} = \{\{a\}, \{b\}, \{ba\}, \{bb\}, \{ca\}, \{cb\}\}
-
+	**Slide 61/70**
 ---
+**Metodo W: copertura degli stati (3/4)**
 
-### Metodo W: copertura degli stati (3/4)
+- Esempio (uguale a prima) di rivelazione di un difetto di trasferimento nello stato $S_2$ attraverso $\{\{c\}\} \times W$, poiché $W$ distingue $S_1$ da $S_2$
 
-- Esempio di rivelazione di un difetto di trasferimento nello stato S2S_2 attraverso {{c}}×W\{\{c\}\} \times W, poiché WW distingue S1S_1 da S2S_2
+	![[Pasted image 20250414220404.png]]
 
+	**Slide 62/70**
 ---
+**Metodo W: copertura delle transizioni (4/4)**
 
-### Metodo W: copertura delle transizioni (4/4)
+- **Passo 3**: selezionare una suite di test $P$ con un caso di test che attraversi ciascun bordo e termini dopo di esso
+    - Esempio $P = \{\{−\}, \{a\}, \{b\}, \{c\}, \{ba\}, \{bb\}, \{bc\}, \{ca\}, \{cb\}, \{cc\}\}$
 
-- **Passo 3**: selezionare una suite di test PP con un caso di test che attraversi ciascun bordo e termini dopo di esso
-    - Esempio: P={{−},{a},{b},{c},{ba},{bb},{bc},{ca},{cb},{cc}}P = \{\{−\}, \{a\}, \{b\}, \{c\}, \{ba\}, \{bb\}, \{bc\}, \{ca\}, \{cb\}, \{cc\}\}
-- Ottenere una copertura delle transizioni con P×WP \times W:
-    - Tutte le concatenazioni di un elemento di PP e uno di WW
+- Ottenere una copertura delle transizioni con $P \times W$:
+    - Tutte le concatenazioni di un elemento di $P$ e uno di $W$
+
 - La copertura delle transizioni rivelerà qualsiasi difetto di trasferimento o di output in ogni bordo della specifica
 
+	**Slide 63/70**
 ---
-### **WP-method: mitigare la complessità (1/2)**
+**Il metodo W: copertura dei guasti**  
+
+-  Il metodo W garantisce la **copertura completa** dei guasti di output o di transizione (esempi precedenti) nell’IUT,  ... a condizione che siano soddisfatte le seguenti condizioni:  
+	- La funzione di reset **è corretta**, cioè riporta sempre allo stesso stato (condizione equa)  
+	- L’IUT è **deterministico**, completamente specificato e **osservabile** (condizione equa)
+	- L’IUT ==ha lo stesso numero di stati della specifica== (condizione difficile)
+
+- **Complessità**  
+	- Il numero di casi di test è proporzionale a $|P| \cdot |W|$, cioè $O(N^2 \cdot N) = O(N^3)$  
+	- Non sarebbe un problema, se non ci fossero stati extra
+
+	**Slide 64/70**
+---
+**WP-method: mitigare la complessità (1/2)**
 
 - **Concetto semplice**  
-    Dopo la _state cover_ $Q \times W$, la _transition cover_ $P \times W$  
-    può essere semplificata in $(P \setminus Q) \times W$
+    Dopo la _state cover_ $Q \times W$, la _transition cover_ $P \times W$  => notare lo stesso suffisso! =>    può essere semplificata in $(P \setminus Q) \times W$
     
 - **Concetto più raffinato**  
-    Dopo qualsiasi prefisso di test in $Q$ o in $(P \setminus Q)$,  
-    il suffisso dell'intero insieme di caratterizzazione $W$ può essere sostituito con  
-    un _insieme di identificazione_ **ristretto** allo stato raggiunto previsto
+    Dopo qualsiasi prefisso di test in $Q$ o in $(P \setminus Q)$, il suffisso dell'intero insieme di caratterizzazione $W$ può essere sostituito con un _insieme di identificazione_ **ristretto** allo stato raggiunto previsto => bastano quelle sequenze per disambuiguare un certo stato
+	- Si sostituisce il concetto di **un singolo insieme di caratterizzazione** $W$, con una **collezione di insiemi di caratterizzazione di stato**, uno per ciascuno stato della specifica
     
-- Si sostituisce il concetto di **un singolo insieme di caratterizzazione** $W$,  
-    con una **collezione di insiemi di caratterizzazione di stato**,  
-    uno per ciascuno stato della specifica
-    
-
+	**Slide 65/70**
 ---
-
-### **WP-method: mitigare la complessità (2/2)**
+**WP-method: mitigare la complessità (2/2)** (skip this)
 
 - **Insiemi di caratterizzazione di stato**  
-    Esempio: $WP = {W_0; W_1; W_2} = {{a}; {a, b}; {b}}$
+    Esempio: $WP = \{W_0; W_1; W_2\} = \{\{a\}; \{a, b\}; \{b\}\}$
     
 - Tutti i **prefissi di test** che terminano in $S_0$ o $S_1$  
     saranno estesi da **un solo prefisso** invece che da due
     
 - La complessità si riduce da $O(N^3)$ a $O(N^2)$
     
-
+	**Slide 66/70**
 ---
-
-### **WP-method: sulle ipotesi (1/2)**
+**WP-method: sulle ipotesi (1/2)**
 
 - **Specifiche**:
-    
-    - _Deterministiche_: nella pratica, va da sé  
+    - _Deterministica_: nella pratica, va da sé  (legit)
         (ma, in ogni caso, può essere ottenuto tramite determinizzazione)
+    - _Osservabile_: nel senso che osservo un **output** tutte le volte che metto in ingresso un input => può essere ottenuto con un **simbolo muto** => tipo no-operation
+    - _Completamente specificata_: per ogni nodo ho tutti input/output => può essere ottenuto con un **auto-ciclo muto**
         
-    - _Osservabili_: può essere ottenuto con un **simbolo muto**
-        
-    - _Completamente specificate_: può essere ottenuto con un **auto-ciclo muto**
-        
-- Tuttavia, ciascuna di queste condizioni aumenta la complessità:  
-    nel numero di stati, nella lunghezza o dimensione degli insiemi di caratterizzazione
+- Tuttavia, ciascuna di queste condizioni **aumenta la complessità**, nel numero di stati, nella lunghezza o dimensione degli insiemi di caratterizzazione
     
-
+	**Slide 67/70**
 ---
-
-### **WP-method: sulle ipotesi (2/2)**
+**WP-method: sulle ipotesi (2/2)**
 
 - **Implementazione**:
-    
     - _Deterministica_: è un vincolo per la programmazione
-        
     - _Osservabile_: può essere ottenuta con un simbolo muto
-        
     - _Completamente specificata_: l’IUT deve gestire qualsiasi input in ogni stato,  
         possibilmente con un’operazione nulla (**NOP**)
-        
-    - _Funzione di reset corretta_: richiede che non venga mantenuta memoria,  
+        => fin qui valgono stessi discorsi della specifica
+    - _Funzione di reset corretta_: richiede che ==non venga mantenuta memoria==,  
         può non essere banale da implementare, ma può essere testata
-        
     - **Nessuno stato extra**: il vero limite!
         
-
+	**Slide 68/70**
 ---
-
-### **WP-method: sugli stati extra (1/2)**
+**WP-method: sugli stati extra (1/2)**
 
 - **Qual è il problema con gli stati extra?**
-    
     - Stati extra **equivalenti** non sono un errore
-        
     - Ma, uno stato extra può **sostituire** uno stato, e l’IUT può produrre  
         gli stessi output della specifica attraversando **stati extra**…
+    - …per un numero di passi **più lungo** dei casi di test previsti nell’insieme di caratterizzazione => set di caratterizzazione più complesso!
         
-    - …per un numero di passi **più lungo** dei casi di test previsti nell’insieme di caratterizzazione
-        
-
+	**Slide 69/70**
 ---
-
-### **WP-method: sugli stati extra (2/2)**
+**WP-method: sugli stati extra (2/2)**
 
 - **La soluzione**:
-    
     - L’assenza di stati extra **non è facile da garantire** nell’implementazione
-        
     - I test nell’insieme di caratterizzazione $W$ possono essere **estesi** per garantire  
         la copertura completa fino a $k$ stati extra, sostituendo $W$ con $I_k \times W$,  
-        dove $I_k$ è l’insieme di tutte le **sequenze di input di lunghezza $k$**
+        dove $I_k$ è l’insieme di tutte le **sequenze di input di lunghezza $k$** => ce ne potrebbero essere altre ma mi fermo fino a k!
         
-- **Compromesso** tra **complessità** e **copertura dei guasti**
-    
-- Richiederebbe una **stima del numero di stati extra**
-    
-- La copertura completa dei guasti è un **obiettivo ambizioso**
-    
+- **Compromesso** tra **complessità** e **copertura dei guasti** 
+	- Richiederebbe una **stima del numero di stati extra**
+	- La copertura completa dei guasti è un **obiettivo ambizioso**
+		=> Aumentando il k ho maggiore confidenza nel ridurre possibili errori ma con la possibilità comunque della loro esistenza
 
+	**Slide 70/70**
 ---
-

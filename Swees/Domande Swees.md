@@ -1,0 +1,37 @@
+
+- PTPN
+- EDF in generale e dimostrazione dbf
+---
+- RM scheduling 
+- PTPN
+---
+- Ottimalità RM feasibility + dimostrazione
+- DM con response time analysis
+---
+- Liu e Layland RM
+- DM con response time analysis
+- PTPN
+---
+- Schedulabilità edf task puramente periodici
+- dbf
+- Timed automata :(
+- Relazione tra PTPN e timed automata :((
+---
+- Inversione di priorità 
+- Tipi di blocchi di PIP e PCP 
+- Response time analysis 
+- PTPN
+---
+- Edf: dimostrazioni che è ottimale nel senso della feasibilty e della max latness
+- Data Flow Testing :(
+- ⁠Disegnare una PTPN con una risorsa in comune fra 2 task
+---
+- Processor Demand Criterion
+- In che casi si verifica la inversione di priorità e come evitarlo
+- Parlare delle regole che definiscono Pip e Pcp
+- Quando si verifica un Ceiling Block
+- Da cosa è definita un PTPN, e come utilizzarla per rappresentare un task set in cui 2 task usano una risorsa condivisa. E come evitare la priority inversion
+---
+- A me ha chiesto RM guarantee test (LL), response time analysis e Timed automata
+- Comunque, sulla base delle domande che ha fatto a me e a quelli prima ho visto che chiede sempre di dimostrare l'ottimalità di Rate Monotonic, chiede di fare una PTPN con un semaforo e i protocolli di accesso alle risorse e i vari tipi di blocco. Ogni tanto chiede il processor demand approach e la response time analysis
+---
