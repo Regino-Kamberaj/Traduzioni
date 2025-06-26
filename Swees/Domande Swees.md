@@ -1,30 +1,30 @@
 
 - PTPN
-- EDF in generale e dimostrazione dbf
+- ==EDF in generale e dimostrazione dbf==
 ---
-- RM scheduling 
+- ==RM scheduling== 
 - PTPN
 ---
-- Ottimalità RM feasibility + dimostrazione
-- DM con response time analysis
+- ==Ottimalità RM feasibility + dimostrazione==
+- ==DM con response time analysis==
 ---
-- Liu e Layland RM
-- DM con response time analysis
+- ==Liu e Layland RM==
+- ==DM con response time analysis==
 - PTPN
 ---
-- Schedulabilità edf task puramente periodici
-- dbf
+- ==Schedulabilità edf task puramente periodici==
+- ==dbf==
 - Timed automata :(
 - Relazione tra PTPN e timed automata :((
 ---
-- Inversione di priorità 
-- Tipi di blocchi di PIP e PCP 
-- Response time analysis 
+- ==Inversione di priorità== 
+- ==Tipi di blocchi di PIP e PCP== 
+- ==Response time analysis== 
 - PTPN
 ---
-- Edf: dimostrazioni che è ottimale nel senso della feasibilty e della max latness
+- ==Edf: dimostrazioni che è ottimale nel senso della feasibilty e della max latness==
 - Data Flow Testing :(
-- ⁠Disegnare una PTPN con una risorsa in comune fra 2 task
+- ⁠==Disegnare una PTPN con una risorsa in comune fra 2 task==
 ---
 - Processor Demand Criterion
 - In che casi si verifica la inversione di priorità e come evitarlo

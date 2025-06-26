@@ -4,33 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "4476dab57ec62376",
+        "id": "ee30c165ee1a5aa9",
         "type": "tabs",
         "children": [
           {
-            "id": "ad80df11e0c3467a",
+            "id": "33fd2692ffa17181",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Domande Swees.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "Domande Swees"
-            }
-          },
-          {
-            "id": "45e76d7cb621d2e4",
-            "type": "leaf",
-            "state": {
-              "type": "pdf",
-              "state": {
-                "file": "Swees/Slides/4. SWEES_advancedTopics.pdf"
-              },
-              "icon": "lucide-file-text",
-              "title": "4. SWEES_advancedTopics"
+              "title": "Nuova scheda"
             }
           }
         ]
@@ -90,8 +74,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 361.501522064209,
-    "collapsed": true
+    "width": 361.501522064209
   },
   "right": {
     "id": "1ac7e9d81bf48250",
@@ -176,13 +159,19 @@
       "command-palette:Apri riquadro comandi": false
     }
   },
-  "active": "ad80df11e0c3467a",
+  "active": "3866e5b81b45f173",
   "lastOpenFiles": [
+    "Senza nome",
+    "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
+    "Piano Di Attacco Laurea.md",
+    "Opt/Traduzione Pdf Optimization.md",
     "Swees/Swees - Traduzione slides.md",
+    "Swees/Domande Swees.md",
+    "Senza nome.md",
+    "Swees/Slides/2. SWEES_realTimeSystems.pdf",
     "Swees/Slides/4. SWEES_advancedTopics.pdf",
     "Swees/Slides/3. SWEES_realTimeOperatingSystems.pdf",
     "Domande Swees.md",
-    "Swees/Slides/2. SWEES_realTimeSystems.pdf",
     "Swees/Slides/1. SWEES_introduction.pdf",
     "Swees/Slides/6. SWEES_testing.pdf",
     "Pasted image 20250414221512.png",
@@ -200,9 +189,7 @@
     "Swees/Slides/SWEES_advancedTopics.pdf",
     "Swees/Slides/SWEES_realTimeOperatingSystems.pdf",
     "Swees/Slides/SWEES_realTimeSystems.pdf",
-    "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
     "Net Sec/README.md",
-    "Opt/Traduzione Pdf Optimization.md",
     "Senza nome 3.md",
     "Senza nome 2.md",
     "Opt/Tabella di Marcia Optimization.md",

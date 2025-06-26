@@ -1,0 +1,9 @@
+È uno dei primi tentativi di unire le tecniche basate sugli [approcci simbolici e quelli neurali](regio/Approcci%20neuro-simbolici/Approcci%20neuro-simbolici.md#Neural%20Symbolic%20Computation%20(NeSy)) inglobando le informazioni della conoscenza di base espressa tramite la logica nell'architettura della rete.
+Il risultato è una rete neurale; la bakcground knowledge viene persa totalmente.
+# Idea
+![esempio KBANN](regio/Approcci%20neuro-simbolici/File/esempio%20KBANN.png)
+L'idea è quella di costruire una rete neurale ad-hoc, cioè che si basi su una background knowledge.
+La conoscenza di base su un qualche dominio è rappresentata tramite il simbolismo e quindi si basa sulla [logica](XAI/ILP/Programmazione%20logica.md).
+Sulla base di questa conoscenza si costruisce una rete neurale ad-hoc, che permetta di rappresentare esattamente quella logica: le variabili (i.e. la testa di una regola) diventano i neuroni; gli archi uscenti dai neuroni sono le relazioni tra testa e coda di una regola, cioè i neuroni al livello sottostante sono gli elementi della coda della regola.
+In questa costruzione posso aggiungere altre regole con nuovi elementi nella testa che esprimono le stesse cose; in questo modo si può imparare poi nuova conoscenza. Aggiungo inoltre connessioni in modo da creare una rete FC; in questo modo la rete è più semplice da addestrare tramite la back propagation e posso apprendere più cose; i pesi di queste connessioni saranno inizializzati a valori molto piccoli, contro le connessione reali (presenti nella background knowledge) che avranno pesi più grandi.
+Questa rete viene poi addestrata tramite degli esempi di training.

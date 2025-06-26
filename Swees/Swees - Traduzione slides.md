@@ -1,5 +1,3 @@
-# 1. Introduzione al corso - Ingegneria del Software per Sistemi Embedded
-
 **Ingegneria del Software per Sistemi Embedded**  
 **Introduzione al corso**
 
@@ -10,7 +8,7 @@ Università di Firenze
 
 [http://stlab.dinfo.unifi.it/carnevali](http://stlab.dinfo.unifi.it/carnevali)  
 [laura.carnevali@unifi.it](mailto:laura.carnevali@unifi.it)
-
+# 1. Introduzione al corso 
 ---
 **Struttura del corso**
 
@@ -676,7 +674,7 @@ Università di Firenze
 ---
 **Task periodico** 
 
-- Un **task periodico** $\tau_i$ consiste in una sequenza infinita di job $\tau_{i1}, \tau_{i2}, \dots, \tau_{ik}$, regolarmente attivati con un tasso costante, ossia con periodo $T_i$. 
+- Un **task periodico** $\tau_i$ consiste in una sequenza infinita di job $\tau_{i1}, \tau_{i2}, \dots, \tau_{ik}$, ==regolarmente attivati con un tasso costante, ossia con periodo $T_i$.== 
 	-  Se $T_i = D_i$, allora l'attività è detta **task periodica pura**.
 	- Il **fattore di utilizzo del task** è $U_i := \frac{C_i}{T_i}$.
 
@@ -943,7 +941,7 @@ Uno **schedule è fattibile** se tutti i suoi vincoli sono rispettate:
 
 - Considero il tempo di arrivo che produce il **massimo tempo di risposta** dei task.
 
-- Si verifica quando l'attività arriva insieme ad altre attività con priorità più alta.
+- Si verifica quando l=='attività arriva insieme ad altre attività con priorità più alta.==
 	- Si considera l'interferenza di un'attività ad alta priorità $\tau_i$ => su un'attività a bassa priorità $\tau_n$.
 	
 		 ![[Pasted image 20240923183243.png]]
@@ -1118,9 +1116,9 @@ Uno **schedule è fattibile** se tutti i suoi vincoli sono rispettate:
 ---
 **Schedulazione Rate Monotonic (RM)**
 
-- Algoritmo di schedulazione online, **statico** e preemptive.
-- Per task puramente periodici (ovvero $D_i = T_i \space \forall  \space \text{task} \space \tau_i$)
-- Viene assegnata una **priorità fissa** inversamente proporzionale al periodo del task.
+- Algoritmo di schedulazione **online** (ovvero le decisione sono su quale task mettere in esecuzione sono prese online), **statico** e **preemptive**.
+- Per task **puramente periodici** (ovvero $D_i = T_i \space \forall  \space \text{task} \space \tau_i$)
+- Viene assegnata una **priorità fissa** **inversamente proporzionale al periodo** del task.
 - Ad esempio: (con priorità di $τ_A > τ_B > τ_C$ )
 
 	![[Pasted image 20240924230756.png]]
@@ -1339,10 +1337,10 @@ $$U_{ub} = \sum_{i=1}^n R_i + \frac{2}{\prod_{i=1}^{n-1} R_i} - n$$
 **Test di Garanzia RM: Dimostrazione per n task(3/3)**
 
 - Calcolo il least upper bound su U: 
-	- $U_{ub} = \sum_{i=1}^n R_i + \frac{2}{P} - n|_{R_i = 2^{ \frac{1}{n} }, P = (2^{ \frac{1}{n} })^{n-1}} = (n-1)2^{\frac{1}{n}} + \frac{2}{(2^{\frac{1}{n} })^{n-1} } - n =$ 
+	- $U_{lub} = \sum_{i=1}^n R_i + \frac{2}{P} - n|_{R_i = 2^{ \frac{1}{n} }, P = (2^{ \frac{1}{n} })^{n-1}} = (n-1)2^{\frac{1}{n}} + \frac{2}{(2^{\frac{1}{n} })^{n-1} } - n =$ 
 		$= n2^{\frac{1}{n}} - 2^{\frac{1}{n}} + \frac{2}{(2^{\frac{1}{n} })^{n-1} } - n =  n2^{\frac{1}{n}} - 2^{\frac{1}{n}} + \frac{2}{(2^{\frac{n-1}{n}}) } - n =$ $=n2^{\frac{1}{n}} - 2^{\frac{1}{n}} + \frac{2}{(2^{1-\frac{1}{n}}) } - n = n2^{\frac{1}{n}} - 2^{\frac{1}{n}} + 2^{\frac{1}{n}} - n = n(2^{\frac{1}{n}}-1)$ 
 
-	=> che appunto nel caso a due task -> n = 2 ci dà $$U{lub} = 2(2^{1/2} - 1) = 0.83$$
+	=> che appunto nel caso a due task -> n = 2 ci dà $$U_{lub} = 2(2^{1/2} - 1) = 0.83$$
 	![[Pasted image 20240929191513.png]]
 
 	**Slide 63/128**
@@ -1384,7 +1382,7 @@ $$U_{ub} = \sum_{i=1}^n R_i + \frac{2}{\prod_{i=1}^{n-1} R_i} - n$$
 
 	**Slide 65/128**
 ---
-#### Deadline Monotonic
+####  Deadline Monotonic
 ---
 **Schedulazione Deadline Monotonic (DM)**
 
@@ -1399,9 +1397,9 @@ $$U_{ub} = \sum_{i=1}^n R_i + \frac{2}{\prod_{i=1}^{n-1} R_i} - n$$
 - Estensione di RM per task periodici con deadline vincolate (ossia, $D_i \leq T_i$).
 	- Le deadline non sono più pari ai periodi
 
-- Algoritmo di scheduling **preemptive statico** e parametri calcolati *online*
+- Algoritmo di scheduling **preemptive statico** e parametri calcolati ***online***
 
-- Un task ha un **priorità fissa** inversamente proporzionale ==alla sua deadline *relativa*==
+- Un task ha un **priorità fissa** ==inversamente proporzionale alla sua deadline *relativa*==
 	- Task con minore deadline relative vengono eseguiti prima
 
 - Esempio: priorità $t_1 >$ priorità $t_2$
@@ -1423,7 +1421,7 @@ Teorema (No dim)
 ---
 **DM: problema con il limite LL e il limite HB**
 
-- Usando il limite **LL** (*Liu & Layland*) e il limite **HB** (*Hyperbolic Bound*) sostituendo i periodi con le deadline: il carico di lavoro del processore è sovrastimato $\Rightarrow$ il risultato del test è troppo pessimista!
+- Usando il limite **LL** (*Liu & Layland*) e il limite **HB** (*Hyperbolic Bound*) sostituendo i periodi con le deadline: il carico di lavoro del processore è **sovrastimato** $\Rightarrow$ ==il risultato del test è troppo pessimista!==
 
 - Esempio in cui i test basati sull'utilizzo del processore non sono conclusivi:  
 	- Il limite LL non è soddisfatto:  $\frac{C_1}{D_1} + \frac{C_2}{D_2} = \frac{2}{3} + \frac{3}{6} = \frac{7}{6} > 1$
@@ -1437,14 +1435,14 @@ Teorema (No dim)
 **DM: analisi del tempo di risposta (Audlsey et al, 1993)**  
 
 - Per ogni task $\tau_i$:
-	1. Si calcola l'**interferenza** $I_i$ dovuta ai task a priorità più alta nell'intervallo $[0, R_i]$: 
+	1. Si calcola l'**interferenza** $I_i$ **dovuta ai task a priorità più alta** nell'intervallo $[0, R_i]$: 
 		- $I_i = \sum_{\tau_k | D_k < D_i} z_{ik} C_k$​ dove $z_{ik}$ è il **numero di rilasci** di $\tau_k$ in $[0, R_i]$
 		   $\Rightarrow I_i = \sum_{k=1}^{i-1} \left\lceil \frac{R_i}{T_k} \right\rceil C_k​$ supponendo che i job siano ordinati per deadline relativa crescente (considera anche il caso in cui un job sia rilasciato ma non abbia completato la sua esecuzione)
 		   
 	2. Calcola il **tempo di risposta** $R_i$:		$$R_i = C_i + I_i = C_i + \sum_{k=1}^{i-1} \left\lceil \frac{R_i}{T_k} \right\rceil C_k \quad (2)$$
 	3. Verifica che $R_i \leq D_i$ 
 
-- Il tempo di risposta nel caso peggiore è il **più piccolo** valore che soddisfa l'equazione
+- Il tempo di risposta nel caso peggiore ==è il **più piccolo** valore che soddisfa l'equazione==
 
 	**Slide 71/128**
 ---
@@ -1456,10 +1454,10 @@ Teorema (No dim)
 	- Itera fino a che $R_i^{(j)} > R_i^{(j-1)}$ && $R_i^{(j)} \leq D_i$ $\forall j > 0$
 
 - Algoritmo:
-	- **Input**: Un set $\Gamma$ di $n$ task periodi $\tau_1,...,\tau_n$ con deadline vincolate
+	- **Input**: Un set $\Gamma$ di $n$ task periodici $\tau_1,...,\tau_n$ con deadline vincolate
 	- **Output**: $\texttt{TRUE}$ se il task set $\Gamma$ è schedulabile da DM, $\texttt{FALSE}$ altrimenti
 	1. **foreach** task $\tau_i \in \Gamma$ **do**
-	2.       $I_i = \sum_{k=1}^{i-1}C_k$
+	2.       $I_i = \sum_{k=1}^{i}C_k$
 	3.       **do**
 	4.             $R_i = C_i + I_i$
 	5.             **if** $R_i > D_i$ **then**
@@ -1542,7 +1540,7 @@ Teorema (No dim)
 
 - Scheduling per la gestione di task **puramente periodici** ($D_i = T_i$ $\forall$ task $\tau_i$)
 
-- Ogni task ha una **priorità dinamica** inversamente proporzionale alla sua deadline **assoluta**. => ad ogni rilascio dei task viene ricalcolata la priorità dei task
+- Ogni task ha una **priorità dinamica** ==inversamente proporzionale alla sua deadline **assoluta**==. => ad ogni rilascio dei task viene ricalcolata la priorità dei task
 
 - Esempio $C_1 = 3, T_1 = D_1 = 6; C_2 = 4, T_1 = D_1 = 9$
 
@@ -1567,7 +1565,7 @@ Teorema (No dim)
 ---
 **Test di garanzia EDF (1/2) (Liu & Layland, 1973)**
 
-- **Teorema**: Un insieme di task periodici puri è schedulabile tramite EDF se e solo se $U \leq 1$.
+- **Teorema**: Un insieme di task **periodici puri** è schedulabile tramite EDF se e solo se $U \leq 1$.
 	- Il test è **necessario e sufficiente**
 	- Complessità polinomiale $O(n)$ rispetto al numero $n$ di compiti
 	- Necessità: se un insieme di task periodici è schedulabile con EDF $\Rightarrow U \leq 1$ (ovvero se $U>1$ => un insieme di tasks puramente periodici non è schedulabile da EDF)
@@ -1618,7 +1616,7 @@ Teorema (No dim)
 	- $\sigma(t)$: compito eseguito durante l'intervallo $[t, t + 1)$
 	- $E(t)$: indice del compito con la scadenza assoluta minima a $t$
 	- $t_E :=$ tempo $\geq t$ al quale $\tau_{E(t)}$ è eseguito per primo 
-	- $d_max:=$ $max_{i \in \{1,...,n\}}\{d_i\}$ (massima deadline assoluta)
+	- $d_{max}:=$ $max_{i \in \{1,...,n\}}\{d_i\}$ (massima deadline assoluta)
 
 - Lo schedule $\sigma$ è trasformato in uno schedule EDF $\sigma_{EDF}$:
 	- **Input**: Uno schedule fattibile $\sigma$ per un task set $\Gamma$
@@ -1643,7 +1641,7 @@ Teorema (No dim)
 --- 
 **Ottimalità EDF: dimostrazione(3/3)**
 
-- Una trasposizione conserva la schedulabilità, cioè $\sigma_{EDF}$ è fattibile per $\Gamma$
+- Una trasposizione ==conserva la schedulabilità==, cioè $\sigma_{EDF}$ è fattibile per $\Gamma$
 	- Se un intervallo di tempo di un task $\tau_i$ viene **anticipato** => la fattibilità di $\tau_i$ è preservata.
 	- Se un intervallo di tempo di un task $\tau_i$ viene **posticipato** a $t_E$ =>
 		=> $t_E +1 \leq d_E$ con $d_E$ la più vicina deadline assoluta al tempo t
@@ -1670,7 +1668,7 @@ Teorema (No dim)
 - Riconsideriamo la trasposizione di *Dertouzos* (vedi dimostrazione ottimalità EDF)
 
 - Una trasposizione fra due intervalli $\sum_a$ e $\sum_b$ non può aumentare $L_{max}$
-	- Sia $\sum_a$ ad essere anticipato (ovvero $f'_a < f_a$) e $\sum_b$ postposto (ovvero $f'_b > f_a$)
+	- Sia $\sum_a$ ad essere anticipato (ovvero $f'_a < f_a$) e $\sum_b$ postposto (ovvero $f'_b > f_b$)
 	- Se $L'_a \geq L'_b$ => $L'_{max} = L'_a = f'_a - d_a < f_a -d_a = L_{max}$ dato che $f'_a < f_a$
 	- Se $L'_a \leq L'_b$ => $L'_{max} = L'_b = f'_b - d_b = f_a - d_b < f_a -d_a = L_{max}$ dato che $d_a < d_b$ (vedi figura per capire meglio)
 
@@ -1682,8 +1680,8 @@ Teorema (No dim)
 ---
 **EDF con deadline vincolate (Baruah et al., 1990)**
 
-- **Criterio della domanda del processore**:
-	Un insieme di task periodici $\{\tau_1, \dots, \tau_n\}$ con $D_i \leq T_i$ per ogni task $\tau_i$ è schedulabile da EDF se e solo se, in ogni intervallo di tempo $[t_1, t_2]$, la **domanda del processore** $g(t_1, t_2)$ **non supera il tempo disponibile**, cioè $g(t_1, t_2) \leq t_2 - t_1$ per ogni $t_1 < t_2$.
+- **Criterio della domanda del processore** (*Demand bound function*):
+	Un insieme di task periodici $\{\tau_1, \dots, \tau_n\}$ con $D_i \leq T_i$ per ogni task $\tau_i$ è schedulabile da EDF se e solo se, in ogni intervallo di tempo $[t_1, t_2]$, la **domanda del processore**  $g(t_1, t_2)$ **non supera il tempo disponibile**, cioè $g(t_1, t_2) \leq t_2 - t_1$ per ogni $t_1 < t_2$.
 
 - La domanda del processore nell'intervallo $[t_1, t_2]$, è il tempo di processamento richiesto dai job attivati in $[t_1, t_2]$, con una deadline assoluta $\leq t_2$: $$g(t_1,t_2) = \sum_{i-1}^{n}\eta_i(t_1,t_2)C_i$$
 - Dove $\eta_i(t_1,t_2)$ è il numero di job di $\tau_i$ che contribuisce alla richiesta in $[t_1,t_2]$:
@@ -1697,16 +1695,14 @@ Teorema (No dim)
 ---
 **EDF con deadlines vincolate: valutazione di $K_1$**
 
-- $K_1^i = ∣\{τ_{i,k} ∣ a_{i,k} ∈ [\phi , t_1 ]\}∣ = ⌈t_1 − \phi_i /T_i ⌉$
-
+- $$K_1^i = ∣\{τ_{i,k} ∣ a_{i,k} ∈ [\phi , t_1 ]\}∣ = \lceil \frac{t_1 − \phi_i}{T_i} \rceil $$
 	![[Pasted image 20241007222057.png]]
 
 	**Slide 90/128**
 --- 
 **EDF con deadlines vincolate: valutazione di $K_2$**
 
-- $K_2^i := ∣\{τ_{i,k} ∣ a_{i,k} ∈ [\phi , t_2 ] ∧ d_{i,k} ≤ t_2 \}∣ = ⌊t_2 + T_i − D_i − \phi_i /Ti ⌋$
-
+- $$K_2^i := ∣\{τ_{i,k} ∣ a_{i,k} ∈ [\phi , t_2 ] ∧ d_{i,k} ≤ t_2 \}∣ = ⌊\frac{t_2 + T_i − D_i − \phi_i}{Ti}⌋$$
 	![[Pasted image 20241007222140.png]]
 
 	**Slide 91/128**
@@ -1825,7 +1821,7 @@ Teorema (No dim)
 --- 
 **Inversione di priorità(1/2)**
 
-- L'*inversione di priorità* è un fenomeno che accade quando un **task ad alta priorità** è bloccato da un **task a bassa priorità** ==per un intervallo di durata indefinita==
+- L'*inversione di priorità* è un fenomeno che accade quando un **task ad alta priorità** è ==bloccato== da un **task a bassa priorità** ==per un intervallo di durata indefinita==
 	- Il **tempo di blocco** di un task è un ritardo causato da task a priorità minore
 	- Ad esempio se $\tau_1$ e $\tau_3$ (con $P_1 > P_3$) condividono una risorsa gestita da un semaforo binario S
 	- Il tempo di blocco di $\tau_1$ sarà pari al tempo che $\tau_3$ necessità per eseguire la sezione critica
@@ -1838,7 +1834,7 @@ Teorema (No dim)
 
 - Il tempo di blocco del task ad alta priorità può non essere ristretto dalla durata della sezione critica eseguita dal task a bassa priorità
 	- Ad esempio se aggiungo un **task a media priorità** $\tau_2$ ($P_1 > P_2 > P_3$)
-	- Il massimo tempo di blocco di $\tau_1$ dipende non solo dalla durata della sezione critica di $\tau_3$ ma anche dal WCET di $\tau_2$ => comportamento indefinito!
+	- Il massimo tempo di blocco di $\tau_1$ dipende non solo dalla durata della sezione critica di $\tau_3$ ma anche dal WCET di $\tau_2$ => **comportamento indefinito**!
 
 	![[Pasted image 20250323131919.png]]
 
@@ -1943,10 +1939,12 @@ Teorema (No dim)
 - **Quando si verifica il blocco?**
 
 - **Lemma 1**: 
-	Un semaforo $S_k$ può causare un push-through blocking a un task $\tau_i$ solo se $S_k$ è stato acquisito da un task con priorità inferiore a $P_i$ e (richiesto) da un task con priorità superiore a $P_i$.
+	Un semaforo $S_k$ può causare un blocco diretto* a un task $\tau_i$ solo se $S_k$ è stato acquisito da un task con priorità inferiore a $P_i$ e (richiesto) da un task con priorità superiore a $P_i$.
 
 - **Dimostrazione**:
 	Assumiamo per assurdo che $S_k$ sia utilizzato da un compito $\tau_l$ con priorità inferiore a $P_i$, ma non da un compito con priorità superiore a $P_i$. In tal caso, $\tau_l$ non può ereditare una priorità superiore a $P_i$ e quindi $\tau_i$ farà prelazione su $\tau_l$.
+
+	- * In slide dice di push-trough blocking
 
 	**Slide 108/128**
 --- 
@@ -1955,7 +1953,7 @@ Teorema (No dim)
  - **Quando si verifica l’ereditarietà transitoria della priorità?
  
 - **Lemma 2**: 
-	L'eredità transitoria della priorità può verificarsi solo nel caso di sezioni critiche annidate.
+	L'eredità transitoria della priorità può verificarsi solo **nel caso di sezioni critiche annidate.**
 
 - **Dimostrazione**: 
 	L'eredità transitoria si verifica quando un task ad alta priorità $\tau_h$ è bloccato da un task di priorità media $\tau_m$, che a sua volta è bloccato da un task di bassa priorità $\tau_l$. 
@@ -2040,9 +2038,9 @@ Teorema (No dim)
 ---
 **Protocollo Priority Ceiling  (PCP) (1/2)** 
 
-- La **priorità ceiling** $C(S_k)$ di un semaforo $S_k$ è la priorità massima tra quelle dei task che possono bloccare $S_k$, cioè $C(S_k) := \max_{i \in \{1, \ldots, n\}} \{P_i \mid \tau_i \text\{ utilizza \} S_k\}$.
-    
-- **Regola di accesso:** Un compito $\tau_i$ si blocca all'entrata di una sezione critica se la sua priorità non è superiore al massimo ceiling dei semafori bloccati da altri compiti, cioè $P_i \leq \max\{C(S_k) \mid S_k \text\{$ bloccato da compiti$\} \neq \tau_i\}$.
+- La **priorità ceiling** $C(S_k)$ di un semaforo $S_k$ è la priorità massima tra quelle dei task che possono ottenere $S_k$, cioè $C(S_k) := \max_{i \in \{1, \ldots, n\}} \{P_i \mid \tau_i \text\{ utilizza \} S_k\}$.
+    j
+- **Regola di accesso:** Un task $\tau_i$ si blocca all'entrata di una sezione critica se la sua priorità non è superiore al **massimo ceiling** dei semafori bloccati da altri task, cioè $P_i \leq \max\{C(S_k) \mid S_k \text\{$ bloccato da task $\} \neq \tau_i\}$.
 	- **Test di accesso per il PCP** per garantire una richiesta di blocco su un semaforo libero
 	- Un task non può entrare in una sezione critica bloccata da un semaforo libero se sono presenti semafori bloccati che lo possono bloccare => una volta che un task entra nella sua sezione critica, non può essere bloccato da un task a bassa priorità fino al suo completamento
 
@@ -2082,7 +2080,7 @@ Teorema (No dim)
 **Proprietà del PCP(1/4)**
 
  - **Lemma 1**
-	Se un task $\tau_k$ subisce preemption nella sua sezione critica da un task $\tau_i$ che entra nella sezione critica $z_{i,b}$ => $\tau_k$ non può ereditare una priorità maggiore di $\tau_i$ fino a che $\tau_i$ finisce
+	Se un task $\tau_k$ subisce preemption nella sua sezione critica (prima?) da un task $\tau_i$ che entra nella sezione critica $z_{i,b}$ => $\tau_k$ non può ereditare una priorità maggiore di $\tau_i$ fino a che $\tau_i$ finisce
 
 - **Dimostrazione**: 
 	- Se $\tau_k$ eredita una priorità maggiore di $\tau_i$ prima che $\tau_i$ completi => esisterà un task $\tau_h$ bloccato da $\tau_k \mid P_h \geq P_i$
@@ -2132,12 +2130,12 @@ Teorema (No dim)
 **Riepilogo del PCP**
 
 - **Vantaggi:**
-    - Limita il blocco alla durata di una sezione critica.
+    - Limita il blocco alla durata di ==una sezione critica.==
     - Previene deadlock e blocchi transitivi.
     
 - **Svantaggi:**
     - Complesso da implementare.
-    - Pessimistico (può causare blocchi non necessari).
+    - **Pessimistico** (può causare blocchi non necessari).
     - Non trasparente per il programmatore (i ceiling devono essere specificati nel codice sorgente).
 
 	**Slide 122/128**
@@ -2150,9 +2148,9 @@ Teorema (No dim)
 
 - **Blocchi limitati** $\Rightarrow$ Estendere i test di schedulabilità per task indipendenti.
 	- Garantisco un task alla volta
-	- Prelazione da task con più alta priorità e blocco da task con bassa priorità
-	- Le condizioni di blocco derivate nel **caso peggiore** che differisce per ogni task e non possono accadere simultaneamente 
-		=> I test sono **solo sufficienti**
+	- Prelazione da task con più alta priorità e ==blocco da task con bassa priorità==
+	- Le condizioni di blocco derivate nel **caso peggiore** che differisce per ogni task e  possono non accadere simultaneamente 
+		=> ==I test sono **solo sufficienti**==
 
 	**Slide 123/128**
 ---
@@ -2183,10 +2181,10 @@ $$\sum_{k|_{P_k > P_i}} \frac{C_k}{T_k} + \frac{C_i+B_i}{T_i} \leq 1$$
 		- $dbf(t) + B(t) \leq t$ $\forall t \in D$
 	
 	- Dove:
-		- $dbf(t) = \sum_i ⌊ \frac{t + T_i - D_i}{T_i} C_i ⌋$
+		- $dbf(t) = \sum_i ⌊ \frac{t + T_i - D_i}{T_i} ⌋C_i$
 		- $B(t) = max_{i,j \mid i \ne j} \{ \beta_{ij} \mid D_i > t ∧ D_j \leq t\}$ è chiamato **funzione di blocco**
 		- $\beta{ij}$ è il massimo tempo per il quale $t_i$ tiene una risorsa che è anche necessaria per $\tau_j$
-		- $D = \{d_i \mid d_i \leq max \{D_{max}, min \{H, t^*\}\}\}$, $D_max = max_i\{D_i\}$
+		- $D = \{d_i \mid d_i \leq max \{D_{max}, min \{H, t^*\}\}\}$, $D_{max} = max_i\{D_i\}$
 		- $H = lcm(T_1, ..., T_n)$, $t^* = \sum_i (T_i-D_i)U_i /(1-U)$
 
 	**Slide 126/128**
@@ -4361,7 +4359,7 @@ $$
 
 - Lo stato di un TA è una coppia $(l, v)$ dove:
   - $l$ è una *posizione* => sono esplicitati i possibili stati di concorenza del sistema => ad esempio caso in cui alcuni task stanno computando mentre altri sono in attesa
-  - $v$ è una *valutazione* => clock associato ad un valore continuo => c'è di nuovo bisogno di classi ci di equivalenza
+  - $v$ è una *valutazione* => clock associato ad un valore continuo => c'è di nuovo bisogno di classi di equivalenza
 
 - Esistono due tipi di **transizione tra stati**:
   - **Transizione delay**: $(l, v) \xrightarrow{\tau} (l, v + \tau)$ per qualsiasi stato $(l, v)$ e qualsiasi ritardo $\tau \in \mathbb{R}^{\geq 0}$ => passa solo del tempo ma non cambia locazione
@@ -4587,6 +4585,7 @@ $$
 	=> Modelli strutturali invece dicono da quali parti è fatto il sistema e le loro relazioni
 	=> Infine modelli di performance per tutto ciò che riguardano requisiti non funzionali
 	=> Altri modelli possono riguardare ad esempio costo oppure safety
+	 
 	![[Pasted image 20241119162804.png]]
 
 	**Slide 3/37**
@@ -4639,6 +4638,7 @@ $$
 	=> Comportamentali => ciò che il sistema deve fare 
 	=> Strutturali
 	=> Dei requisiti
+	
 	![[Pasted image 20241119164136.png]]
 
 	=> Tutto quello chè in grassetto sono i diagrammi modificati/aggiunti rispetto a UML
@@ -4649,6 +4649,7 @@ $$
 **I Quattro Pilastri di SysML**
 
 - Un esempio di modellazione di un sistema ABS 
+
 	![[Pasted image 20241119164337.png]]
 
 	=> I *parametrics* vanno ad indicare delle relazioni esistenti fra quelli che sono i parametri del sistema => si rappresentano vincoli che riguardano le feature del sistema sia in prospettiva funzionale che non => ad esempio equazioni riguardante velocità di un veicolo!
@@ -4725,6 +4726,7 @@ $$
 - Fra le relazioni:
 	- Piene sono relazioni di *associazione* fra elementi
 	- Vuote sono relazioni di *specializzazione* (vale "è un...")
+
 	![[Pasted image 20241119173356.png]]
 
 	=> A destra si fa vedere come i blocchi comunicano fra loro
@@ -4748,6 +4750,7 @@ $$
 **Diagrammi Parametrici (2/2)**
 
 - Ad esempio:
+
 	![[Pasted image 20241119173758.png]]
 
 	**Slide 14/32**
@@ -4861,6 +4864,7 @@ $$
 **Diagramma dei requisiti**
 
 - Esempio 
+
 	![[Pasted image 20241119181451.png]]
 
 	=> Posso specificare quali sono i blocchi che dovrebbero andare a soddisfare certi requisiti => ad esempio requisito di potenza dovrebbe essere soddisfatto dal *powerSubsystem*

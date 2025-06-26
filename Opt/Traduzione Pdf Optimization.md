@@ -1920,7 +1920,7 @@ L'**efficienza del GD rispetto all'SGD** si osserva solo per valori molto piccol
 
 TBD (Per ora vedi Pdf notes_palchetti_2023/ notes_senoner_2024)
 
-## 6 Problemi di Ottimizzazione nel Machine Learning: Concetti di Base
+## 6. Problemi di Ottimizzazione nel Machine Learning: Concetti di Base
 
 ### 6.1 Introduzione
 
@@ -2106,7 +2106,7 @@ dove \(D\) è una matrice diagonale con elementi:
 
 	$d_{ii} = \sigma(y^{(i)} w^T x^{(i)}) \cdot \sigma(-y^{(i)} w^T x^{(i)})$
 
-## 7 Support Vector Machines
+## 7. Support Vector Machines
 
 Un modello di **Support Vector Machine (SVM)** lineare è, in breve, un modello di classificazione ottenuto risolvendo il problema di minimizzazione del ==rischio empirico con la **hinge loss** e il regolarizzatore $\ell_2$==, ossia:
 
@@ -2643,7 +2643,7 @@ Non fatte quindi non le studio :D
 
 Uguale a 7.2.3 :D
 
-## 8 Ottimizzazioni su larga scala per Deep Models
+## 8. Ottimizzazioni su larga scala per Deep Models
 
 Prima leggere capitolo 4.8
 

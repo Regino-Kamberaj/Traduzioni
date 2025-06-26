@@ -20,7 +20,7 @@ Introduzione e concetti generali
 - Intelligenza artificiale spiegabile: tassonomia, metriche
 - Interpretabilità progettuale
 - Spiegabilità dei modelli black-box
-- Applicazioni: giustizia, medicina, sistemi critici per la sicurezza
+- Applicazioni: giustizia, medicina, **sistemi critici per la sicurezza**
 
 ---
 **Contenuto del corso (2/5)**
@@ -45,7 +45,7 @@ Spiegazioni post-hoc
 ---
 **Contenuto del corso (4/5)**
 
-Intelligenza artificiale neuro-simbolica
+Intelligenza artificiale **neuro-simbolica**
 - Combinazione di IA simbolica e sottosimbolica
 - Logica di Markov, DeepProbLog
 - Modelli a colli di bottiglia concettuali
@@ -220,7 +220,7 @@ Un modello di IA potrebbe imparare erroneamente che i pazienti asmatici hanno un
 ---
 **Bias nei dati**
 
-📌 "Perché dovrei fidarmi del tuo modello?" (Ribeiro et al.)  
+📌 "Perché dovrei fidarmi del tuo modello?" (Ribeiro et al.)  => Motivare ogni predizione di ogni classificatore
 
 ![[Pasted image 20250311084216.png]]
 
@@ -280,8 +280,10 @@ Un modello di IA potrebbe imparare erroneamente che i pazienti asmatici hanno un
 📌 Alcuni modelli sono **inherently interpretable**, (non necessitano di essere spiegati) come:
 - Alberi decisionali
 - Modelli lineari
-- Sistemi basati su regole
+- Sistemi basati su regole (*Rule based systems*)
 - Programmazione logica induttiva
+
+![[Pasted image 20250624183917.png]]
 
 ---
 **Interpretabilità vs. Spiegabilità**
@@ -303,7 +305,9 @@ Alcuni dicono che esiste un trade-off fra interpretabilità e accuratezza... è 
 - Modelli lineari generalizzati
 - Programmazione logica induttiva
 
+
 ---
+**Tassonomia degli approcci**
 
 📌 **Spiegazioni post-hoc per modelli black-box:**
 - **Spiegazione globale:** costruzione di un modello interpretabile che approssima il sistema.
