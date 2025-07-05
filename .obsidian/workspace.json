@@ -11,10 +11,14 @@
             "id": "33fd2692ffa17181",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "EXAI/XAI-Edo/Interpretability/Generalized additive models (GAMs).md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "Nuova scheda"
+              "title": "Generalized additive models (GAMs)"
             }
           }
         ]
@@ -40,7 +44,7 @@
                 "autoReveal": false
               },
               "icon": "lucide-folder-closed",
-              "title": "Esplora risorse"
+              "title": "Files"
             }
           },
           {
@@ -151,18 +155,37 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Apri selezione rapida": false,
-      "graph:Apri vista grafo": false,
-      "canvas:Crea nuova lavagna": false,
-      "daily-notes:Apri nota del giorno": false,
-      "templates:Inserisci modello": false,
-      "command-palette:Apri riquadro comandi": false
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
     }
   },
-  "active": "3866e5b81b45f173",
+  "active": "33fd2692ffa17181",
   "lastOpenFiles": [
-    "Senza nome",
+    "EXAI/XAI-Edo/Varie.md",
+    "EXAI/XAI-Edo/XAI - Edo Ordinata.md",
+    "EXAI/XAI-Edo/Immagini/istogramma.png",
+    "EXAI/XAI-Edo/Immagini/esempio paradosso di simpson.pdf",
+    "EXAI/XAI-Edo/Immagini/accuracy vs plausibility.jpeg",
+    "regio/Interpretability/Interpretability.md",
+    "regio/Interpretability",
+    "regio",
+    "EXAI/XAI-Edo/Immagini/box plot.png",
+    "EXAI/XAI-Edo/Immagini/bar plot.png",
+    "EXAI/XAI-Edo/Immagini/data analysis example.pdf",
+    "EXAI/XAI-Edo/Immagini/explainability vs performance.png",
+    "EXAI/XAI-Edo/Immagini/incremental featurs deletion.jpeg",
+    "EXAI/XAI-Edo/Immagini/GOSDT algoritmo.jpeg",
+    "EXAI/XAI-Edo/Immagini/GOSDT banary problem representation.jpeg",
+    "EXAI/XAI-Edo/Immagini/GOSDT computazione esempio.pdf",
+    "EXAI/Tabella di marcia exai.md",
     "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
+    "EXAI/XAI-Edo/Immagini/ProtoPNet.png",
+    "EXAI/XAI-Edo/Immagini/EBM training.png",
+    "Senza nome",
     "Piano Di Attacco Laurea.md",
     "Opt/Traduzione Pdf Optimization.md",
     "Swees/Swees - Traduzione slides.md",
@@ -173,22 +196,6 @@
     "Swees/Slides/3. SWEES_realTimeOperatingSystems.pdf",
     "Domande Swees.md",
     "Swees/Slides/1. SWEES_introduction.pdf",
-    "Swees/Slides/6. SWEES_testing.pdf",
-    "Pasted image 20250414221512.png",
-    "Pasted image 20250414220404.png",
-    "Pasted image 20250414214623.png",
-    "Pasted image 20250414214131.png",
-    "Pasted image 20250414213739.png",
-    "Swees/Slides/5. SWEES_sysml.pdf",
-    "Swees/Immagini Swees/Pasted image 20250405002322.png",
-    "Swees/Immagini Swees/Pasted image 20250405001513.png",
-    "Swees/Immagini Swees/Pasted image 20250405001148.png",
-    "Swees/Immagini Swees/Pasted image 20250405001115.png",
-    "Swees/Immagini Swees/Pasted image 20250403200232.png",
-    "Swees/Slides/SWEES_VxWorks.pdf",
-    "Swees/Slides/SWEES_advancedTopics.pdf",
-    "Swees/Slides/SWEES_realTimeOperatingSystems.pdf",
-    "Swees/Slides/SWEES_realTimeSystems.pdf",
     "Net Sec/README.md",
     "Senza nome 3.md",
     "Senza nome 2.md",

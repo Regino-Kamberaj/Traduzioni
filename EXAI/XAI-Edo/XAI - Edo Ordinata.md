@@ -30,7 +30,9 @@ L'AI Act definisce 4 livelli di rischio nell'utilizzo dei modelli: si va dal liv
 L'articolo 13 dell'AI Act afferma che "i sistemi di intelligenza artificiale ad alto rischio devono essere progettati e sviluppati in modo tale da garantire che il loro funzionamento sia abbastanza trasparente per consentire agli sviluppatoti di interpretare l'output di un sistema e utilizzarlo in modo appropriato".
 ### Interpretability/Explainability
 
-Quando si parla di [explainability](regio/Explainability/Explainability.md) si intende la spiegazione delle decisioni prese dai modelli. Alcuni modelli sono spiegabili per costruzione (by design); in questo caso si parla di [interpretability](regio/Interpretability/Interpretability.md).
+Quando si parla di [explainability](regio/Explainability/Explainability.md) si intende la spiegazione delle decisioni prese dai modelli. Alcuni modelli sono spiegabili per costruzione (by design); in questo caso si parla di interpretability.
+
+![[explainability vs performance.png]]
 
 ## Bias
 
@@ -65,6 +67,12 @@ Vediamo alcuni tipi di bias negli algorimi.
 ## Data analysis
 
 La data analysis utilizza metodi statistici e visuali per spiegare le correlazioni dei dati. I dati statistici se non usati insieme a quelli visuali potrebbero non fornire una soluzione corretta ed esatta; tramite la visualizzazione si possono osservare cose che le sole statistiche non ci dicono, come in [questo esempio](regio/File/data%20analysis%20example.pdf) (non da sapere).
+
+![[data analysis example.pdf]]
+
++ Esempio di unfairness
+
+![[esempio paradosso di simpson.pdf]]
 ### Plot
 
 Solitamente i grafici sono utili per mostrare relazioni tra due variabili. Non è solitamente consigliato mostrare relazioni tra più di due variabili; se siamo molto bravi a fare grafici multidimensionali e interattivi allora si può fare, però è difficile.
@@ -76,23 +84,38 @@ Le librerie più usate sono:
 #### Scatter plot
 
 È usato per mettere in relazione due variabili continue $x$ e $y$ ([grafico](regio/File/scatter%20plot.png)), dove ogni punto sul piano è dato dalla coppia $(x,y)$; se usato per variabili discrete allora vengono delle barre di samples.
+
+![[scatter plot.png]]
+
 Si possono mettere insieme più scatter plot in una [matrice](regio/File/scatter%20plot%20matrix.png) $n\times n$, in modo da avere a vista più coppie di variabili.
+
+![[scatter plot matrix.png]]
+
 È usato per rappresentare pattern o outliers.
 #### Bar plot
 
 Mette in relazione la grandezza (quantità, media, varianza) di una variabile rispetto a un insieme di categorie discrete ([grafico](regio/File/bar%20plot.png)).
+
+![[bar plot.png]]
 #### Istogramma
 
 Rappresenta la distribuzione di una variabile continua: sulle ascisse abbiamo i valori delle variabili suddivise in bin, sulle ordinate la densità rispetto a ogni bin.
 Usato per comprendere la distribuzione dei samples.
+![[istogramma.png]]
 #### Box plot
 
 Sulle ascisse ci sono le categorie discrete e sulle ordinate la distribuzione delle variabili. Il [box](regio/File/box%20plot.png) rappresenta il primo e terzo quartile, con la mediana nel mezzo; i baffi rapprensetano l'estensione della distribuzione; gli outliers sono rappresnetati da pallini esterni ai baffi.
 Usato per capire la distribuzione dei samples e rappresentare gli outliers.
 
-Alcuni modelli sono spiegabili per costruzione (by design); in questo caso si parla di interpretability.
+![[box plot.png]]
 
 # Interpretabilità 
+
+Alcuni modelli sono spiegabili per costruzione (by design); in questo caso si parla di interpretability.
+## ![[incremental featurs deletion.jpeg]]
+
+![[accuracy vs plausibility.jpeg]]
+
 ## Modelli lineari
 
 I modelli lineari calcolano l'output come $f(x)=\sum_{i=1}^P\beta_ix_i+\beta_0$, dove $P$ è il numero di featues. I modelli lineari sono molto interpretabili perché i coefficienti $\beta_i$ mi dicono il peso di ogni features, cioè mi dicono l'impatto che ha una modifica di $x_i$ sul risultato; in pratica se $x_i$ incrementa di una unità allora $f(x)$ incrementa di $\beta_i$.
@@ -242,6 +265,14 @@ Questo ha senso perché vogliamo che il nostro output, cioè $f(x)$, sia determi
 - È una via di mezzo tra la completezza di h2o e un'integrazione con scikitlearn. 
 
 ### GOSDT
-Aggiungere roba
+
+![[GOSDT binary data inefficient.jpeg]]
+![[GOSDT banary problem representation.jpeg]]
+
+
+Vedi esempio: ![[GOSDT computazione esempio.pdf]]
+
+##### Algoritmo GOSDT
+![[GOSDT algoritmo.jpeg]]
 
 ### Generalized additive models (GAM)
