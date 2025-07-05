@@ -363,7 +363,7 @@ Il paradosso di Simpson si verifica quando una tendenza osservata in più gruppi
 ---
 **Bias nei dati: Paradosso di Simpson**
 
-Una **Variabile confondente**  è una variabile che influenza sia la variabile indipendente che quella dipendente, causando il paradosso.  
+Una **Variabile di confusione** è una variabile che influenza sia la variabile indipendente che quella dipendente, causando il paradosso.  
 
 ![[Pasted image 20250311174836.png]]
 

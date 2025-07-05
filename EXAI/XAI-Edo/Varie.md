@@ -1,2 +1,3 @@
 # Out of distribution
+
 Questo problema è critico nei vari modelli: finché i sample che si presentano hanno una distribuzione delle feature simile a quella del training set allora il modello funziona; valutare un sample campionato da una distribuzione diversa è un tallone di Achille per quasi ogni modello. Questo è dovuto all'overfitting, che sarà sempre un po' presente: classificare un nuovo sample è tanto più difficile quanto questo è diverso da quelli su cui il modello è stato addestrato.

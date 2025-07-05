@@ -27,6 +27,7 @@
 
 	Materiale didattico: slides (01), [notebook_01_bias_and_fairness](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/01_Bias_and_Fairness.ipynb).
 # 3^ Settimana
+
 - **Martedì 11 marzo (2h)**
 
 	Richiami su alberi di decisione: algoritmi greedy, entropia, Gini index. Sistemi basati su regole: decision sets (cenni) e decision lists. Algoritmi per apprendere decision lists: sequential covering.
