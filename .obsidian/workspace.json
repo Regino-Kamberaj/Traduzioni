@@ -8,17 +8,15 @@
         "type": "tabs",
         "children": [
           {
-            "id": "33fd2692ffa17181",
+            "id": "f8f2bf8e475c7b8c",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "EXAI/XAI-Edo/Interpretability/Generalized additive models (GAMs).md",
-                "mode": "source",
-                "source": false
+                "file": "EXAI/XAI-Edo/Immagini/esempio KBANN.png"
               },
-              "icon": "lucide-file",
-              "title": "Generalized additive models (GAMs)"
+              "icon": "lucide-image",
+              "title": "esempio KBANN"
             }
           }
         ]
@@ -132,7 +130,7 @@
                 "searchQuery": ""
               },
               "icon": "lucide-tags",
-              "title": "Etichette"
+              "title": "Tags"
             }
           },
           {
@@ -163,39 +161,46 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "33fd2692ffa17181",
+  "active": "3866e5b81b45f173",
   "lastOpenFiles": [
-    "EXAI/XAI-Edo/Varie.md",
+    "EXAI/Immagini/Screenshot 2025-07-13 at 18.46.19.png",
+    "EXAI/Immagini/Pasted image 20250713164124.png",
+    "EXAI/XAI-Edo/Screenshot 2025-07-13 at 18.46.19.png",
+    "EXAI/XAI-Edo/Pasted image 20250713164124.png",
+    "EXAI/Immagini/Screenshot 2025-07-13 at 21.58.45.png",
+    "EXAI/Immagini/Screenshot 2025-07-13 at 18.44.54.png",
+    "EXAI/Immagini/Screenshot 2025-07-13 at 18.22.57.png",
+    "EXAI/Immagini/Screenshot 2025-07-13 at 17.11.44.png",
+    "EXAI/Immagini/Pasted image 20250713175257.png",
+    "EXAI/Immagini/Pasted image 20250713165904.png",
+    "EXAI/XAI-Edo/Approcci neuro-simbolici/KBANNs.md",
+    "EXAI/XAI-Edo/Approcci neuro-simbolici/Approcci neuro-simbolici.md",
     "EXAI/XAI-Edo/XAI - Edo Ordinata.md",
-    "EXAI/XAI-Edo/Immagini/istogramma.png",
-    "EXAI/XAI-Edo/Immagini/esempio paradosso di simpson.pdf",
-    "EXAI/XAI-Edo/Immagini/accuracy vs plausibility.jpeg",
-    "regio/Interpretability/Interpretability.md",
-    "regio/Interpretability",
-    "regio",
-    "EXAI/XAI-Edo/Immagini/box plot.png",
-    "EXAI/XAI-Edo/Immagini/bar plot.png",
-    "EXAI/XAI-Edo/Immagini/data analysis example.pdf",
-    "EXAI/XAI-Edo/Immagini/explainability vs performance.png",
-    "EXAI/XAI-Edo/Immagini/incremental featurs deletion.jpeg",
-    "EXAI/XAI-Edo/Immagini/GOSDT algoritmo.jpeg",
-    "EXAI/XAI-Edo/Immagini/GOSDT banary problem representation.jpeg",
-    "EXAI/XAI-Edo/Immagini/GOSDT computazione esempio.pdf",
     "EXAI/Tabella di marcia exai.md",
     "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
-    "EXAI/XAI-Edo/Immagini/ProtoPNet.png",
-    "EXAI/XAI-Edo/Immagini/EBM training.png",
-    "Senza nome",
+    "EXAI/XAI-Edo/Immagini/esempio KBANN.png",
+    "EXAI/XAI-Edo/Approcci neuro-simbolici/Markov Logic Networks.md",
+    "EXAI/Slides/02_Interpretable_by_design.pdf",
+    "EXAI/Slides/03_NeSy.pdf",
+    "EXAI/Immagini/02_Interpretable_by_design-26 2.pdf",
+    "EXAI/02_Interpretable_by_design-26 2.pdf",
+    "02_Interpretable_by_design-26 2.pdf",
+    "Decision tree.md",
+    "EXAI/XAI-Edo/Interpretability/Generalized additive models (GAMs).md",
+    "regio/Interpretability/Rule fit.md",
+    "regio/Interpretability",
+    "regio",
+    "EXAI/XAI-Edo/Varie.md",
+    "EXAI/XAI-Edo/Immagini/esempio paradosso di simpson.pdf",
+    "regio/Interpretability/Interpretability.md",
+    "EXAI/XAI-Edo/Immagini/data analysis example.pdf",
+    "EXAI/XAI-Edo/Immagini/GOSDT computazione esempio.pdf",
     "Piano Di Attacco Laurea.md",
     "Opt/Traduzione Pdf Optimization.md",
     "Swees/Swees - Traduzione slides.md",
     "Swees/Domande Swees.md",
     "Senza nome.md",
-    "Swees/Slides/2. SWEES_realTimeSystems.pdf",
-    "Swees/Slides/4. SWEES_advancedTopics.pdf",
-    "Swees/Slides/3. SWEES_realTimeOperatingSystems.pdf",
     "Domande Swees.md",
-    "Swees/Slides/1. SWEES_introduction.pdf",
     "Net Sec/README.md",
     "Senza nome 3.md",
     "Senza nome 2.md",
