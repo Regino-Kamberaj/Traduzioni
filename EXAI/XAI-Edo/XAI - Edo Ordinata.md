@@ -667,53 +667,160 @@ Esempio di ILP system, che segue l'impostazione di LFE, i passi da seguire sono:
 ![[Screenshot 2025-07-13 at 21.58.45.png]]
 
 # Approcci Neuro-Simbolici
-Un problema che il campo dell'AI vuole risolvere è cercare di utilizzare la stessa struttura e modi di fare del nostro cervello. In merito a questo ci sono due tipi di approcci, quello simbolico e quello connessionista (sub-simbolico). Queste due tecniche hanno sia differenze filosofiche che tecniche: non ce ne c'è una meglio o peggio, ma dipende dal caso d'uso.
-# Simbolici
-Il ragionamento avviene tramite la manipolazione di simboli rappresentati tramite qualche formalismo.
-Si basa sulla [logica](XAI/ILP/Programmazione%20logica.md) e si vuole quindi sfruttare una background knowledge.
-##### Conseguenze
-- È molto interpretabile, come abbiamo visto per gli [ILP system](XAI/ILP/ILP%20system.md).
-- Ha bisogno di features discrete (valori finiti ed enumerabili). Diventa complesso, ma fattibile, il reasoning con valori numerici.
-- Non è un buon approccio quando abbiamo grandi quantità di dati. Come abbiamo visto per [Aleph system](XAI/ILP/ILP%20system.md#Aleph%20system) si deve costruire i predicati grounded (quelli con tutte le clausole) e questo porta a poca efficienza se abbiamo molti dati.
-- Sono metodi soggetti al rumore. Se una regola vale ma non per tutti gli esempi, allora il modello imparerà quella regole e anche un'altra, in modo da coprire tutti gli esempi.
-# Connessionisti
-Il ragionamento avviene tramite l'elaborazione del segnale tra unità fondamentali interconnesse. Vogliamo in questo modo replicare il ragionamento che avviene nel nostro cervello.
-Si basa sulle reti neurali.
-##### Conseguenze
-- Utile quando non abbiamo una grande conoscenza di base. I modelli scoprono infatti dei pattern in questi in modo non supervisionato, lo svantaggio sta che imparano anche i [bias](XAI/Bias.md) resenti nei dati.
-- Non si devono codificare i dati in qualche modo, ma il modello apprende da dati raw.
-- Servono una grande quantità di dati.
-- Non si ha una grande perdita di prestazioni se in dati viene introdotto del rumore. Le prestazioni decadono in modo lineare rispetto al rumore.
-# Unione
+
+Un problema che il campo dell'AI vuole risolvere è ==cercare di utilizzare la stessa struttura e modi di fare del nostro cervello==. In merito a questo ci sono due tipi di approcci, quello [simbolico] e quello [connessionista] (sub-simbolico).
+Queste due tecniche hanno sia differenze filosofiche che tecniche: non ce ne c'è una meglio o peggio, ma dipende dal caso d'uso.
+## Simbolici
+
+Il **ragionamento** avviene tramite la ==manipolazione di simboli== rappresentati tramite qualche formalismo.
+### Conseguenze
+
+- Si basa sulla [logica](XAI/ILP/Programmazione%20logica.md) e si vuole quindi sfruttare una *background knowledge.* 
+- È **molto interpretabile**, come abbiamo visto per gli [ILP system](XAI/ILP/ILP%20system.md).
+- ==Ha bisogno di features discrete== (valori finiti ed enumerabili). Diventa complesso, ma fattibile, il reasoning con valori numerici => non sempre la realtà è divisa in due valori categorici...
+- Non è un buon approccio quando abbiamo grandi quantità di dati. ==Come abbiamo visto per [Aleph system](XAI/ILP/ILP%20system.md#Aleph%20system) si deve costruire i *predicati grounded* (**quelli con tutte le clausole**) e questo porta a poca efficienza se abbiamo molti dati.== Questo è spesso il **collo di bottiglia** degli approcci simbolici, esistono però:
+	- Tecniche smart per evitare di generare tutti i predicati
+	- Sfruttare simmetrie e patterns/templates.
+- Sono metodi soggetti al rumore. Se una regola vale ma non per tutti gli esempi, allora il modello imparerà quella regole e anche un'altra, in modo da coprire tutti gli esempi. (??)
+## Connessionisti
+
+Il **ragionamento** avviene tramite ==l'elaborazione del segnale tra unità fondamentali **interconnesse**==. Vogliamo in questo modo replicare il ragionamento che avviene nel nostro cervello. Si basa sulle **reti neurali**.
+### Conseguenze
+
+- Utile quando non abbiamo **una grande conoscenza di base**. I modelli scoprono infatti dei pattern in questi in modo non supervisionato.
+	- Lo svantaggio sta che imparano anche i [bias](XAI/Bias.md) presenti nei dati.
+- ==Non si devono codificare i dati== in qualche modo, ma il modello apprende da dati raw.
+- Servono una **grande** quantità di dati, lavora meglio con grandi collezioni di dati => gli algoritmi tipicamente riescono a distribuire i dati!
+- ==Non si ha una grande perdita di prestazioni== se nei dati viene introdotto del **rumore**. Le prestazioni decadono in modo lineare rispetto al rumore. => gestisce incertezza e dati rumorosi (*graceful degradation*)
+- Spesso però sono visti come una "black box" => **mancano di interpretabilità**!
+
+Ci chiediamo dunque:
+-  Abbiamo davvero bisogno (come umani) di grandi collezioni di dati per imparare?
+- Come possiamo acquisire skills di **generalizzazione**?
+- Possiamo facilmente definire **regole** che guidano le nostre decisioni?
+- Possiamo facilmente descrivere i dati tramite un formalismo simbolico?
+## Unione - Combinare addestramento e ragionamento
+
 Supponiamo di avere tre ingredienti: i metodi simbolici, quelli connessionisti e quello probabilistici. A seconda di come li uniamo otteniamo tecniche diverse.
-Oggi questi mondi si incontrano sempre di più.
-##### Machine/deep learning
-Si ricava dall'unione degli approcci probabilistici e neurali. Ci sono solo features e variabili aleatorie, ma non simboli.
-Ci sono soluzione che permettono anche un po' di reasoning, come i LLM.
-##### StarAI
-È la Statistical Relational AI e unisce metodi probabilistici e simbolici.
-Un esempio è una [Markov Logic Networks](regio/Approcci%20neuro-simbolici/Markov%20Logic%20Networks.md).
-##### Neural Symbolic Computation (NeSy)
-Unisce metodi neurali e simbolici.
-- [KBANNs](regio/Approcci%20neuro-simbolici/KBANNs.md)
-È uno dei primi tentativi di unire le tecniche basate sugli [approcci simbolici e quelli neurali](regio/Approcci%20neuro-simbolici/Approcci%20neuro-simbolici.md#Neural%20Symbolic%20Computation%20(NeSy)) inglobando le informazioni della conoscenza di base espressa tramite la logica nell'architettura della rete.
-Il risultato è una rete neurale; la bakcground knowledge viene persa totalmente.
-# Idea
+Oggi questi mondi si incontrano sempre di più. In modo tale da sfruttare i punti di forza dei vari approcci
+
+![[Pasted image 20250714153543.png]]
+
+Le principali divisioni sono:
+- [Machine/deep learning]:
+	- Si ricava dall'unione degli approcci probabilistici e neurali. Ci sono solo features e variabili aleatorie, ma non simboli. Esistono soluzioni che permettono anche un po' di reasoning, come i LLM.
+- [SRL/StarAI]:
+	- È la *Statistical Relational AI* e unisce metodi probabilistici e simbolici. Un esempio è una [Markov Logic Networks](regio/Approcci%20neuro-simbolici/Markov%20Logic%20Networks.md).
+- [Neural Symbolic Computation (NeSy)]:
+	- Unisce metodi neurali e simbolici. Un esempio di questo tipo è [KBANNs](regio/Approcci%20neuro-simbolici/KBANNs.md) 
+
+### NeSy
+
+Altra branca di ricerca, con l'idea di combinare la logica con neuroscienza cognitiva.
+
+L'obiettivo (come per le *KBAANs*) era quello di combinare **modelli neurali** e **approcci simbolici** per addestramento ragionamento, dunque di:
+- Fare enconding della Knowledge nell'architettura della rete
+- Usare un termine **regolarizzatore** per codificare le regole
+- **Legare** le computazioni neurali con le regole
+
+Da notare però che: iniettare knowledge nella rete neurale, e lasciare fare alla rete il resto può non essere sufficiente => rischio di perdere la parte di ragionamento e spiegazione!
+
+Come usare la logica?
+- Tipo una programma neurale(?) => questa è l'idea per le KBANN
+- Come regolarizzatore?
+	- In questo caso oltre la loss di classificazione standard aggiungo un termine aggiuntivo di penalità sulle soluzioni che portano a rompere alcuni vincoli semantici (perdite sulla semantica(?)). Ad esempio:
+	![[Pasted image 20250714165521.png]]
+	![[Pasted image 20250714165532.png]]
+	In questo caso ho tradotto la logica nella rete, in una funzione di loss differenziabile => ragionamento logico(?)
+#### Knowledge Base ANN (KBANN)
+
+È uno dei primi tentativi (1994) di unire le tecniche basate sugli [approcci simbolici e quelli neurali](regio/Approcci%20neuro-simbolici/Approcci%20neuro-simbolici.md#Neural%20Symbolic%20Computation%20(NeSy)) inglobando le informazioni della conoscenza di base (espressa tramite la logica) **nell'architettura della rete**. 
+Il risultato è una rete neurale, la background knowledge viene persa totalmente.
+
+![[Pasted image 20250714155431.png]]
+#### Idea
+
+L'idea è quella di iniettare la conoscenza simbolica nelle reti neurali. Quindi si costruisce una rete neurale ad-hoc, che si basa su una background knowledge. La conoscenza di base su un qualche dominio è rappresentata tramite il **simbolismo** e quindi si basa sulla [logica](XAI/ILP/Programmazione%20logica.md).
+Sulla base di questa conoscenza si costruisce una **rete neurale ad-hoc** (iniziale), che permetta di rappresentare esattamente quella logica:
+- le variabili (i.e. la testa di una regola) diventano i neuroni; 
+- gli archi uscenti dai neuroni sono le ==relazioni tra testa e coda di una regola==, cioè i neuroni al livello sottostante sono gli elementi della coda della regola.
+
 ![[esempio KBANN.png]]
-![esempio KBANN](regio/Approcci%20neuro-simbolici/File/esempio%20KBANN.png)
-L'idea è quella di costruire una rete neurale ad-hoc, cioè che si basi su una background knowledge.
-La conoscenza di base su un qualche dominio è rappresentata tramite il simbolismo e quindi si basa sulla [logica](XAI/ILP/Programmazione%20logica.md).
-Sulla base di questa conoscenza si costruisce una rete neurale ad-hoc, che permetta di rappresentare esattamente quella logica: le variabili (i.e. la testa di una regola) diventano i neuroni; gli archi uscenti dai neuroni sono le relazioni tra testa e coda di una regola, cioè i neuroni al livello sottostante sono gli elementi della coda della regola.
-In questa costruzione posso aggiungere altre regole con nuovi elementi nella testa che esprimono le stesse cose; in questo modo si può imparare poi nuova conoscenza. Aggiungo inoltre connessioni in modo da creare una rete FC; in questo modo la rete è più semplice da addestrare tramite la back propagation e posso apprendere più cose; i pesi di queste connessioni saranno inizializzati a valori molto piccoli, contro le connessione reali (presenti nella background knowledge) che avranno pesi più grandi.
+
+In questa costruzione posso aggiungere **altre regole con nuovi elementi** nella testa che esprimono le stesse cose; in questo modo si può imparare poi nuova conoscenza.
+
+Aggiungo inoltre tutte le connessioni in modo da creare una rete *fully connected*; in questo modo la rete è più semplice da addestrare tramite la back propagation e posso apprendere più cose. 
+I pesi di queste connessioni saranno inizializzati **a valori molto piccoli**, contro le connessione reali (presenti nella background knowledge) che avranno pesi più grandi.
+(punto a favore dell'interpretabilità!)
 Questa rete viene poi addestrata tramite degli esempi di training.
 
-# Markov Logic Networks
+Questo fu un primo tentativo di "ibridazione", ma con limiti: le reti diventano abbastanza ccomplesse e la logica può perdersi durante l'apprendimento.
+### SRL/StarAI
 
-È un modello derivato dall'unione di [approcci statistici e simbolici](regio/Approcci%20neuro-simbolici/Approcci%20neuro-simbolici.md#StarAI).
-# Definzione
-Una Markov Logic Network è definita da un insieme di regole e dei pesi, uno associato a ogni regola; più il peso di una regola è alto più voglio che la regola sia vera.
-# Applicazioni
+Più recenti tentativi di combinare **Logica e Probabilità**.
+L'obiettivo è quello di mettere insieme logica di primo ordine e modelli grafici per addestramento e ragionamento:
+- Sfruttare a pieno la **potenza espressiva** della logica
+- Gestire l'incertezza con **modelli grafici**
+- Combinare inferenza **logica e probabilistica**, dove:
+	- **Inferenza logica**: inferire il valore di verità su alcuni fatti logici, in base ad un collezione di fatti e regole
+	- **Inferenza probabilistica**: inferire la distribuzione a posteriore di variabili aleatorie non osservate, date quelle già osservate.
+
++Esempio di inferenza logica:
+- **Regola**:  
+  ```prolog
+  likesmovie(X,M) :- moviegenre(M,G), likesgenre(X,G).  
+  likesmovie(X,M) :- friends(X,Y), likesmovie(Y,M).
+  ```
+- **Fatti noti**:  
+  ```prolog
+  moviegenre(bladerunner, scifi).  
+  likesgenre(alice, scifi).  
+  friends(alice, bob).
+  ```
+- **Fatto derivato (inferito)**:  
+  ```prolog
+  likesmovie(alice, bladerunner).  % Per la prima regola
+  likesmovie(bob, bladerunner).    % Per la seconda regola (se bob non ha likesgenre diretto)
+  ```
+
+**Come funziona?**  
+- **Forward Chaining**: Parte dai fatti e applica regole fino a trovare conclusioni.  
+- **Backward Chaining**: Parte da un goal (es. `likesmovie(bob, bladerunner)`) e verifica se è supportato dai fatti. (non c'è spazio per incertezza o eccezioni)
+
+Esempio di questo caso sono le [Markov Logic Networks]
+#### Markov Logic Networks (skip this)
+
+È un modello derivato dall'unione di [approcci statistici e simbolici](regio/Approcci%20neuro-simbolici/Approcci%20neuro-simbolici.md#StarAI). Se la logica impone **vincoli hard** sul set delle possibili parole, in questo caso si sfruttano **vincoli soft**
+##### Definizione
+
+Una *Markov Logic Network* è definita:
+- da un **insieme di regole** 
+- dei **pesi**, uno associato a ogni regola 
+=> più il peso di una regola è alto più voglio che la regola sia vera. In questo caso dunque se ho una parola che viola una formula(regola?) è meno probabile ma non impossibile!
+
++Esempio:
+![[Pasted image 20250714172049.png]]
+
+Più alto il peso associato e più ho un mondo dove la regola è vera.
+
++Notare che per le MLN, in maniera opposta a *ProbLog*(estensione di prolog con le probabilità), le costanti sono in maiuscolo e la variabili in minuscolo 
+
+##### Applicazioni
+
 - Inferenza
 	Siccome ogni regola ha un peso, posso voler dedurre la probabilità che qualcosa di non noto sia vero. Non ho una certezza (come nella logica pura), ma una probabilità associata a un evento.
 - Learning
 	Se ho un dataset posso imparare i pesi. Più complesso è imparare le regole.
+ 
+ Come visto in precedenza il processo di inferenza è fatto usando i pesi in modo probabilistico: ovvero dati un set di fatti conosciuti, le regole pesate sono usate per inferire il valore di verità di altre query (fatti)
+	![[Pasted image 20250714173014.png]]
+
+Il problema non è risolvibile in forma chiusa, dunque si usano algoritmi approssimati. Ad esempio si usa [MaxWalkSAT] (1996) => *stocastic local search*: minimizza la somma su clausole non soddisfatte.
+
+Altro problema: abbiamo bisogno di fare il ground della knowledge base nei predicati(?) => spesso diventa pesante per requisiti di memoria e tempo(?) => si fa inferenza insieme sia sui pesi che le regole da una collezione di predicati osservati => Ground-Specific MLNs => estensione di MLN che inserisce reti neurali per calcolare i pesi => evito di dover calcolare le grounded rules!
+
++**ProbLog/DeepProbLog**:
+
+- **ProbLog**: Estende Prolog con probabilità (es. `0.8::likes(X,M)`).
+    
+- **DeepProbLog**: Sostituisce probabilità con output di reti neurali. Non utilizzabile per fare classificazione

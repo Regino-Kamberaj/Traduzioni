@@ -52,6 +52,7 @@
 
 	Materiale didattico: [RDN22] note di Cynthia Rudin su alberi di decisione ottimali, sketchbook [20250320_1](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_03_20_1.png), [20250320_2](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_03_20_2.png).
 # 5^ Settimana
+
 - **Martedì 25 marzo (2h)**
 
 	Generative Additive Models e Explainable Boosting Machines. Applicazioni ed esempi.
@@ -73,6 +74,7 @@
 	Materiale didattico: sketchbook [2025_04_03_1.png](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_04_03_1.png), [2025_04_03_2.png](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_04_03_2.png).
 
 # 7^ Settimana
+
 - **Martedì 8 aprile (2h)**
 
 	Programmazione logica induttiva. Cenni alla programmazione logica. Definizioni, sintassi, semantica. Esempi: https://swish.swi-prolog.org/example/examples.swinb
@@ -103,6 +105,7 @@
 	Materiale didattico: sketchbook [2025_05_06_1.png](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_05_06_1.png), [2025_05_06_2](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_05_06_2.png)[.png](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_04_10_2.png), survey [GMT18], in particolare sezioni 4-5-6-7-8, ma soltanto nelle parti trattate a lezione.
 
 # 9^ Settimana
+
 - **Giovedì 8 maggio (2h)**
 
 	Metodi di spiegazione locali: esempi (local surrogate models, feature perturbation, saliency masks). Algoritmo LIME (Local Interpretable Model-agnositc Explanations).
@@ -111,6 +114,7 @@
 
 
 # 10^ Settimana
+
 - **Martedì 13 maggio (2h)**
 
 	Approfondimento su LIME: costo del calcolo di una spiegazione, cenni alla tecnica Submodular Pick. Algoritmo PredDiff per la stima dell'impatto di una feature sull'uscita di un modello. Introduzione alla teoria dei giochi non-cooperativi (cenni alla teoria dell'equilibrio di Nash) e cooperativi (Shapley values).
@@ -125,6 +129,7 @@
 
 
 # 11^ Settimana
+
 - **Martedì 20 maggio (2h)**
 
 	KernelSHAP. Legame tra SHAP e LIME. Esempi di applicazioni ed utilizzo di librerie Python.
