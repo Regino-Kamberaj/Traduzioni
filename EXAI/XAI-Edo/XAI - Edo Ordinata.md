@@ -1018,7 +1018,7 @@ Fra i modelli **locali** abbiamo:
 #### Idea
 
 Supponiamo di avere una black box che produce una superficie di separazione molto complessa e non lineare.
-Se voglio spiegare un'istanza posso creare un modello lineare c==he mi approssima la black box solo in un intorno di quella istanza.==
+Se voglio spiegare un'istanza posso creare un modello lineare ==che mi approssima la black box solo in un intorno di quella istanza.==
 
 ![[Pasted image 20250715181609.png]]
 
@@ -1046,7 +1046,11 @@ LIME lavora in modo discreto: il modello lineare che spiega la black box viene a
 Gli ingredienti richiesti quindi sono:
 1. Una *rappresentazione interpretabile* $x'\in\{0,1\}^{d'}$ definita a partire da $x$ in una dimensione $d'$.
 	- Se $x\in \mathbb{R}^d$ è l'input da spiegare definito in uno spazio a $d$ dimensioni. Questa va portata ad uno spazio più piccolo di dimensione $d'$:
-		- Ad esempio, sia $x$ una classica immagine di partenza con dimensione $W\times H\times 3$ => Si genera una sua rappresentazione $x'$ costituita da **superpixel** a colore costante, cioè da gruppi di pixel dove all'interno il colore è lo stesso (cioè un solo canale e non più tre) => Questo permette di semplificare la rappresentazione e renderla più capibile.  ![[Pasted image 20250715185131.png]]
+		- Ad esempio, sia $x$ una classica immagine di partenza con dimensione $W\times H\times 3$ (l'ultimo è per l'RGB) => Si genera una sua rappresentazione $x'$ costituita da **superpixel** a colore costante, cioè da gruppi di pixel dove all'interno il colore è lo stesso (cioè un solo canale e non più tre)
+		=> In generale se più pixel condividono una particolare caratteristica => divido ad esempio l'immagine di partenza in regioni na seconda di certe caratteristiche presenti
+		- Per i testi invece esistono spazi di parole fra loro vicine dal punto di vista semantico 
+			=> *embeddings*: rappresentazioni di testo in uno spazio compatto  => molto più piccolo rispetto ad un vocabolario
+		=> Questo permette di semplificare la rappresentazione e renderla più capibile.  Si va a guardare semplicemente se una determinata caratteristica è presente o meno nel mio esempio![[Pasted image 20250715185131.png]]
 		- Oppure ad esempio, per dati tabulari la perturbazione consiste nel sostituire un valore 1 con uno 0.
 
 2. Ci serve definire la proximity function $\pi_x$, per definire la distanza di un campione generato attorno l'input $x$ (*locality*):
@@ -1057,33 +1061,38 @@ Gli ingredienti richiesti quindi sono:
 
 3.  La Loss di classificazione $L$, usata per addestrare $g$ e garantire *local fidelity* possiamo definirla come: $$L(f,g,\pi_x)=\displaystyle\sum_{z,z'\in Z}\pi_x(z)(f(z)-g(z'))^2$$dove:
 	- $Z$ è il vicinato di $x$
-	- $z$ è la rappresentazione originale di un valore campionato
+	- $z$ è la rappresentazione originale di un valore campionato (ottenuto tramite perturbazione)
 	- $z'$ la sua rappresentazione interpretabile.
 
-	In pratica voglio minimizzare [l'errore quadratico] tra il valore predetto dalla black box sulla **rappresentazione originale** e quello predetto dal modello interpretabile sulla **rappresentazione interpretabile** 
-	=> Si pesa questo errore secondo la vicinanza con il punto da spiegare $x$.
+	In pratica voglio minimizzare [l'errore quadratico] tra il valore predetto dalla black box sulla **rappresentazione originale** (chiedo alla black box di classificarmelo) e quello predetto dal modello interpretabile sulla **rappresentazione interpretabile** 
+	=> Si pesa questo errore secondo la vicinanza con il punto da spiegare $x$:
+	- Ovvero misuro la distanza fra x con z e x' con z'
 
 4. $\Omega(g)$ è un regolarizzatore [lasso] che ==limita la complessità di $g$, cioè assicura che $g$ sia interpretabile.==
-	È definita come: $$\Omega(g)=\infty\cdot\mathbb{1}[||w_g||_0>k]$$Il regolarizzatore da un contributo infinito se il **vettore dei pesi** $w_g$ del modello interpretabile non è sparso almeno quanto $k$, cioè se il numero di valori diversi da 0 è più di $k$. Il valore di $k$ è un iperparametro.
-	Nella pratica è il numero di parole per il testo, di superpixel per immagini o il numero di features per dati tabulari. (non devono essere troppe? pago penalità se sono più di k?)
-##### Pseudo codice
+	È definita come: $$\Omega(g)=\infty\cdot\mathbb{1}[||W_g||_0>k]$$Il regolarizzatore da un contributo infinito se il **vettore dei pesi** $W_g$ del modello interpretabile non è **sparso** almeno quanto $k$, cioè se il numero di valori diversi da 0 è più di $k$. Il valore di $k$ è un iperparametro.
+	Nella pratica è il numero di parole per il testo, di superpixel per immagini o il numero di features per dati tabulari => dunque voglio un modello lineare che usi al + K feature, se  ho K o più feature attive pagherò infinito! (zero altrimenti)
+##### Pseudo codice - LIME algorithm
+
 - Input:
 	- La black box $f$.
 	- Il numero $N$ di campioni nel vicinato.
 	- L'istanza da spiegare $x$ e la sua versione interpretabile $x'$.
-	- La funzione distanza $\pi_x$.
-	- La lunghezza della spiegazione $k$.
+	- La funzione distanza $\pi_x$. (*proximiy*)
+	- La **lunghezza della spiegazione** $k$.
 	- Tecnica per passare da $z'$ a $z$.
-- $Z\leftarrow\{\}$.
+- $Z\leftarrow\{\}$. 
 - $for\ i\cdots,N:$ (ciclo che genera i campioni)
-	- $z_i'\leftarrow samplearound(x')$
-	- $Z\leftarrow Z\cup\{(z_i,z_i',\pi_x(z_i))\}$
-- $w\leftarrow k-lasso(Z,k)$ (addestramento del modello interpretabile)
+	- $z_i'\leftarrow samplearound(x')$ //effetto la perturbazione rimuovendo gli 1 dalla rappresentazione interpretabile
+	- $Z\leftarrow Z\cup\{(z_i,z_i',\pi_x(z_i))\}$ //gli $z_i'$ sono le features mentre $f(z_i)$ i target
+- $W \leftarrow K-lasso(Z,K)$ (addestramento del modello interpretabile)
+
+Alla fine le **feature più importanti** nel modello semplice (es. i coefficienti della regressione) diventano la spiegazione per la previsione originale => come capisco quali sono le feature più importanti? quelle che uso per classificare l'esempio di partenza => cerco di ottenere similarità al target!
 ##### Costo
 Usando l'hw dell'articolo si ha un costo rispetto al tempo di:
 - Con una random forest composta da 1000 alberi e $N=5000$ ci vogliono 3 secondi.
 - Con una inception network e $N=5000$ ci vogliono 10 minuti.
-# Submodular pick (SP-LIME)
+##### Submodular pick (SP-LIME)
+
 Siccome il costo in tempo di LIME è comunque abbastanza alto, ci interessa trovare quegli esempi da spiegare che possono permettere all'utente di capire al meglio possibile la black box.
 L'algoritmo SP trova applicazione quando un utente ha un budget $B$ di tempo limitato per capire come funziona il modello black box.
 ##### Idea
