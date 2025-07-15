@@ -28,7 +28,66 @@ Le motivazioni principali per cui ci servono motivi spiegabili sono:
 ### AI Act
 L'AI Act definisce 4 livelli di rischio nell'utilizzo dei modelli: si va dal livello più basso in cui sono contenuti gli scenari deve gli uomini non sono coinvolti (es: industria e giochi), fino al livello più alto in cui le persone sono centrali (es: riconoscimento facciale).
 L'articolo 13 dell'AI Act afferma che "i sistemi di intelligenza artificiale ad alto rischio devono essere progettati e sviluppati in modo tale da garantire che il loro funzionamento sia abbastanza trasparente per consentire agli sviluppatoti di interpretare l'output di un sistema e utilizzarlo in modo appropriato".
-### Interpretability/Explainability
+
+### Explainability
+
+Quando si parla di explainability nel campo della [XAI](XAI/XAI.md) si intende la spiegazione delle decisioni prese dai modelli.
+#### Explainability vs performace
+
+In letteratura c'è un dibattito sul concetto per cui c'è una relazione inversa tra le performance e l'explainability di un modello. Un [grafico](XAI/File/explainability%20vs%20performance.png) molto comune in letteratura evidenzia quali modelli hanno delle prestazioni migliori rispetto alla explainability.
+Il punto è che non c'è nessun teorema a favore di questa tesi. In alcune situazioni si riesce a ottenere modelli di XAI le cui performance sono paragonabili ai modelli blackbox.
+#### Tecniche
+
+Ci sono tre tecniche per valutare l'explainability di un modello, cioè se la spiegazione che ci da una blackbox è soddisfacente.
+##### Application grounded evaluation
+
+Utilizza umani esperti nell'applicazione su cui il modello lavora e richiede istanze (i.e., samples di test) reali. Ha costi elevati a causa dell'utilizzo di esperti (che costano) e di esempi di test reali.
+Per valutare la spiegazione si possono confrontare le spiegazioni del modello e dell'esperto sulle stesse istanze di test o chidere all'esperto di valutare la spiegazione data dal modello.
+##### Human gounded evaluation
+
+Utilizza umani su applicazioni non tecniche e richiede quindi task reali ma semplici (non praticabile se l'applicazione richiede tecnicismo).
+Ha costi meno elevati perché non sono interessati esperti e gli umani che valutano hanno costi ragionevoli.
+##### Functionally grounded evaluation
+
+Non utilizza umani e si devono usare task proxy.
+È una tecnica valida quando non si possono usare umani perché non sarebbe fair, oppure quando non abbiamo un modello prontissimo per i costi degli esperti ma vogliamo avere una certa sicurezza sulla sua bontà.
+#### Parametri
+
+I parametri usati per spiegare l'explainability si possono distingue in due tipi.
+##### Quantitativi
+
+Sono parametri che devono essere valutati da umani.
+- Completezza
+	Una spiegazione potrebbe essere corretta ma non completa.
+	Ad esempio un esperto potrebbe osservare anche altri parti che una mappa di salienza non mette in evidenza.
+- Semplicità e complessità
+	Rasoio di Occam: la spiegazione migliore spesso è quella più semplice.
+	Dobbiamo in questo caso definire quando una spiegazione è semplice (e.g., per un albero di decisione la profondità).
+- Plausibilità
+	Misura quanto un utente è convinto dalla spiegazione del modello.
+	In un articolo viene mostrata una [relazione tra accuracy e plausibility](XAI/File/accuracy%20vs%20plausibility.jpeg): se l'accuracy è molto elevata e un utente non è assolutamente convinto dalla spiegazione, allora può essere che il modello ha trovato qualcosa che l'umano non aveva notato.
+- Generalizzazione
+	Quanto quella spiegazione funziona bene su dati nuovi.
+	È l’overfitting delle spiegazioni.
+- Rilevanza
+	Le spiegazioni sono rilevanti per un determinato dominio. Ci sono domini molto tecnici che hanno bisogno di spiegazioni ad hoc.
+##### Ausiliari
+
+Sono parametri che non coinvolgono umani.
+- Sensibilità
+	Quanto un modello è sensibile alla perturbazione di una feature.
+	Ad esempio su un dataset di 1000 esempi quante volte cambiando una feature mi cambia l’output.
+- Continuità
+	Se ho due esempi simili, vorrei che questi avessero spiegazioni simili.
+	Voglio che una spiegazione sia comune a una regione di spazio.
+- Consistenza
+	Vorrei che modelli diversi mi dessero la stessa motivazione per lo stesso input.
+- Costo computazionale
+	Quanto è costoso avere una spiegazione. Può succedere che il costo della spiegazione sia più oneroso del costo dell'output.
+- Correttezza
+	Si spiega da se.
+	Non sempre è possibile però avere una verità assoluta con cui confrontare la spiegazione. Ad esempio due medici possono spiegare un risultato in modi diversi.
+### Interpretability
 
 Quando si parla di [explainability](regio/Explainability/Explainability.md) si intende la spiegazione delle decisioni prese dai modelli. Alcuni modelli sono spiegabili per costruzione (by design); in questo caso si parla di interpretability.
 
@@ -677,7 +736,8 @@ Il **ragionamento** avviene tramite la ==manipolazione di simboli== rappresentat
 
 - Si basa sulla [logica](XAI/ILP/Programmazione%20logica.md) e si vuole quindi sfruttare una *background knowledge.* 
 - È **molto interpretabile**, come abbiamo visto per gli [ILP system](XAI/ILP/ILP%20system.md).
-- ==Ha bisogno di features discrete== (valori finiti ed enumerabili). Diventa complesso, ma fattibile, il reasoning con valori numerici => non sempre la realtà è divisa in due valori categorici...
+- ==Ha bisogno di features discrete== (valori finiti ed enumerabili). Diventa complesso, ma fattibile, il reasoning con valori numerici => non sempre la realtà 
+- è divisa in due valori categorici...
 - Non è un buon approccio quando abbiamo grandi quantità di dati. ==Come abbiamo visto per [Aleph system](XAI/ILP/ILP%20system.md#Aleph%20system) si deve costruire i *predicati grounded* (**quelli con tutte le clausole**) e questo porta a poca efficienza se abbiamo molti dati.== Questo è spesso il **collo di bottiglia** degli approcci simbolici, esistono però:
 	- Tecniche smart per evitare di generare tutti i predicati
 	- Sfruttare simmetrie e patterns/templates.
@@ -826,3 +886,206 @@ Altro problema: abbiamo bisogno di fare il ground della knowledge base nei predi
 - **ProbLog**: Estende Prolog con probabilità (es. `0.8::likes(X,M)`).
     
 - **DeepProbLog**: Sostituisce probabilità con output di reti neurali. Non utilizzabile per fare classificazione
+# Metodi spiegabili a posteriori
+
+## Classificazione metodi
+
+Esistono 3 tipologie di metodi per fare una spiegazione a posteriori di un qualsiasi modello **non interpretabile**, ad esempio reti neurali o altri sistemi complessi:
+1. [Model Explanation] => spiegazione di tipo **globale**, si vuole trovare una spiegazione totale del modello nel suo complesso. 
+2. [Outcome Explanation] => spiegazione **locale**, l'obiettivo è dare ==una spiegazione della singola istanza di test==. 
+3. [Model Inspection] => spiegazione **ibrida**, si vuole fornire una spiegazione di alcune caratteristiche generali del modello, usando comunque tecniche locali, ad esempio importanza delle features.
+
+In generali in tutti e tre i casi abbiamo in input:
+- Una Black Box $b$
+- Un Dataset $X$, oppure un singolo esempio $x$ del Dataset.
+
+(1.) => In questo caso il problema consiste nel trovare una spiegazione $E \in \xi$, attraverso un ***predittore* globale interpretabile** $C_g$ tale che: $$C_g = f(b,X)$$In quel caso diremo che la spiegazione $E$ è ottenuta da $C_g$ se:
+$$E=\xi_g(C_g,X)$$
+=> $\xi_g$ è la nostra logica di explanation. 
+In questo caso la nostra spiegazione dipende dal dominio scelto!
+
++Notare che trovare un modello interpretabile che spieghi totalmente la black-box addestrata su di un certo dataset non è la stessa cosa di addestrare una certa rete neurale => il nostro goal infatti è il perchè di quel modello non del dataset! 
+
+Spesso può capitare che non ho il dataset di partenza con cui la rete è stata addestrata (Il dataset nostro di input non per forza corrisponde a quello con cui la rete è stata addestrata).
+Le uniche cose che posso fare è quindi fare domande alla rete e vedere che risposte dà => cercando di "capire" le risposte del modello. Ottenuti classificatore e dati, cerco un meccanismo logico che mi porta ad una spiegazione. Ad esempio: se il nostro predittore $C_g$ è un albero di decisione => la spiegazione $\xi_g$ sarà estratta da un insieme di regole.
+
+(2.) => Il problema consiste nel trovare **una spiegazione** $e \in \xi$ appartenente all'insieme di *domini iterpretabili*, tramite un ***predittore* locale interpretabile** $C_e$ tale che: $$C_l = f(b,x)$$
+Diremo che una spiegazione $e$ è ottenuta da $C_l$ se: $$e=\xi_l(C_l,x)$$per una qualche logica di spiegazione $\xi_e$
+
+=> Il clssificatore passa da globale a **locale** => imparo ogni volta un qualcosa che mi deve classificare un solo determinato esempio => abbasso di molto la complessità per l'*explanation*. 
+=> Un esempio che segue questo ragionamento è il metodo dei prototipi visti per le [KNN] => sfrutto proprio i prototipi per fare *outcome explanation*!
+
+(3.) Fare *model inspection* significa offrire all'utente una rappresentazione di alcune proprietà della black box => ovvero: $$r = f(b,X)$$
+Rappresentazione di qualche proprietà di $b$ usando il processo $f$
+
+### Tassonomia tecniche XAI
+
+Le tecniche di XAI dipendono da:
+- Il tipo del problema, ad esempio:
+	- Regressione o classificazione
+- Il tipo di modello per la spiegazione, ad esempio:
+	- Albero di decisione
+	- Logica 
+	- Modello lineare
+- Il tipo della black-box, se:
+	- Agnostico => le mie tecniche di spiegazione sono valide per qualsiasi tipo di rete
+	- Specifico
+- Il tipo di dato:
+	- Testo
+	- Immagini
+	- Tabulari
+
+Fra i modelli per la spiegazione (*explanator*), troviamo:
+- [Alberi di decisione]
+- [Regole di decisione]
+- [Importanza delle features] => misuro l'importanza delle features all'interno del mio sistema **black-box**, per fare predizione
+- [Mappe di salienza]
+- [Analisi di sensitività] => cambiando input, vedo quanto cambia output
+- [Partial Dependecy plots] => come cambia l'uscita in funzione dei cambiamenti su una delle variabili  => grafici per fare spiegazione
+- [Prototipi] => usare esempi analoghi per mostrare il perchè di una certa classificazione
+- [Activation maximization] => Quali parti di una rete neurale si attivano di più in corrispondenza di certi input?
+
+## Global Model Explanation
+
+Preso un qualsiasi sistema *black-box* trovare un **sistema interpretabile** che approssima il sistema black-box non è molto semplice => questi algoritmi non vengono dunque usati moltissimo, a differenza di (2.) e (3.) => dove magari avere la risposta del perché di un caso specifico può essere molto di aiuto.
+
+### Trepan (1996)
+
+In questo caso:
+- Si usa come *explanator* => gli alberi
+- è specifico solo per i modelli fatti con le reti neurali(anche generalizzabili)
+- I dati stanno in forma tabellare
+
+L'idea dell'algoritmo è quindi:
+- Sottoponi esempi di test alla rete neurale => costruisco così il mio dataset $(x_i, y_i)$ con rispettivamente l'esempio di test e il valore predetto dalla rete. => userò questo dataset per fare il training del mio modello. 
+	=> notare, come fatto notare precedentemente, le $y_i$ non sono per forza le stesse che la rete ha preso in input, ma sono semplicemente quelle che manda in output.
+- Identifica gli esempi rilevanti (i nostri prototipi), e dai a loro un importanza maggiore durante il training => ad esempio casi in cui cambia la funzione di decisione della rete => *relevant examples*
+- Impara un albero sopra la rete => dunque con alta fede rispetto questo => *tree* con *high fidelity* => ovvero che le predizioni siano il più possibili vicine a quelle della rete
+
++Notare che l'idea di fare domande alla rete e ottenere un dataset per addestare un predittore globale $C_g$ è un idea generale e non solo usata in Trepan.
+
+### PALM (2017)
+
+Stavolta:
+- oltre agli **alberi** come explanator **uso dei sottomodelli**
+- Il modello ottenuto è **agnostico**
+- é valido con qualsiasi tipo di dati
+
+L'algoritmo si ispira al [K-means clustering]:
+- All'inizio partiziono i dati i K gruppi
+- Si imparano K *sotto-modelli* diversi (anche black-box) 
+	=> con questi riclassifico i dati associandoli al **miglior** sotto-modello che li classifica meglio.
+	=> A seconda di come sono stati classificati ricalcolo la partizione => se sono stati classificati correttamente li lascio dove sono, altrimenti rifaccio la partizione e rialleno i sotto-modelli.
+
+L'interpretabilità stà nel come viene fatta la partizione => questa viene fatta a stile albero o lista di regole, ad esempio: "se x ha febbre > di ... e pressione > di ... => va nel sotto-problema X". Farò finire i miei esempi in una delle K categorie/modelli creati.
+![[Pasted image 20250715165232.png]]
+Questo è molto utile per *debuggare* delle classificazioni errate => riesco a risalire a quale sia il sotto-modello responsabile!
+
+### LImiti delle spiegazioni globali
+
+In generale per ottenere delle spiegazioni di tipo globale:
+1. Fai domande alla *black box* per le predizioni
+2. Addestra un predittore sul dataset da (1.)
+3. Controlla che il modello imparato è allineato con la black box: $C_g \approx b$ 
+
+Arriverò mai a perfetto allineamento?? Boh dipende spesso dai dati scelti => non posso avere grosse garanzie che il mio modello funzioni bene oltre ai dati scelti... che succede per i dati fuori dalla distribuzione??
+
+I limiti delle spiegazioni globali sono quindi:
+- Rischio di *approssimare e oversemplificare*
+- Rimangono comunque difficili da interpretare(?) => avere un albero che approssima una rete neurale, può portare ad un albero troppo profondo e quindi di poca interpretabilità! 
+- Infine c'è una forte dipendenza sui dati scelti.
+
+## Outcome Explanations
+
+Fra i modelli **locali** abbiamo:
+- [Modelli locali surrogati]()
+	=> Si cerca un modello interpretabile "nel vicinato" dell'istanza di test => trovo un insieme di vicini che mi motivano il fatto che quell'esempio sia valido in quell'intorno 
+	=> Esempio di questo tipo è [LIME]
+- [Feature Perturbation/removal]() 
+	=> Vado a vedere che succede se cambio/rimovo una certa feature => se l'outcome cambia di molto la feature ha molta importanza
+	=> Esempio di questo tipo è **PREDDIFF** => da cui si ricava [SHAP]
+- [Mappe di Salienza]()
+	=>Evidenzio le porzioni dell'input che sono più rilevanti per fare predizione => ad esempio quali pixel di un immagino oppure quali parole all'interno di una frase
+	=> Esempi di questo tipo sono [CAM] oppure [GradCAM]
+### LIME
+
+["Why should I trust you? Explain the predictions of any classifier"](https://dl.acm.org/doi/10.1145/2939672.2939778)
+
+**Local Interpretable Model-agnostic Explaination** (LIME) è una tecnica di local surrogate models del 2016 per l'[outcome explaination](regio/Explainability/Metodi.md#Outcam%20explaination) nel campo dell'[explainability](regio/Explainability/Explainability.md).
+- Come *explanator* usa un modello interpretabile => Solitamente si usa un modello lineare.
+- È model agnostic, cioè valido per tutti i tipi di black box.
+- Va bene qualunque tipo di dato.
+#### Idea
+
+Supponiamo di avere una black box che produce una superficie di separazione molto complessa e non lineare.
+Se voglio spiegare un'istanza posso creare un modello lineare c==he mi approssima la black box solo in un intorno di quella istanza.==
+
+![[Pasted image 20250715181609.png]]
+
+=> il modello lineare è il modello + semplice che approssima la black box!
+
+È importante osservare che la *fidelity* del modello interpretabile è buona solo ==localmente al punto da spiegare==: un modello lineare approssima bene un modello complesso solo localmente.
+Globalmente però la fidelity potrebbe essere, e solitamente lo è, anche pessima => global fideliy e local fidelty sono diverse fra loro!
+
+=> Genero quindi i miei campioni tramite *perturbazione* nell'intorno dell'istanza di test (che vogliamo spiegare) => dati che saranno tutti vicini all'istanza di test
+=> Addestro quindi un modello lineare, che è interpretabile e approssima bene la black-box nella località della predizione
+
+La nostra funzione obiettivo sarà quindi: $$explanation(x)=\displaystyle\arg\min_{g\in G}L(f,g,\pi_x)+\Omega(g)$$
+Dove:
+- $x$ è la nostra istanza di test da spiegare
+- $G$ è la famiglia di modelli interpretabili  (nel nostro caso modelli lineari, ma valido anche per altri modelli interpretabili)
+- $L$ è la loss per la ***local fidelity*** => quanto approssimo bene la black-box (nell'intorno di x), dove:
+	- $f$ è la black-box
+	- $g$ è il nostro nuovo modello interpretabile
+	- $\pi_x$ è detta *proximity function* => mi dà una misura della distanza
+- $\Omega$ è il termini *regolarizzatore* sulla complessità di $g$ => serve per garantire interpretabilità di $g$
+#### Ingredienti dell'algoritmo
+
+LIME lavora in modo discreto: il modello lineare che spiega la black box viene addestrato su **features discrete**, in particolare binarie.
+
+Gli ingredienti richiesti quindi sono:
+1. Una *rappresentazione interpretabile* $x'\in\{0,1\}^{d'}$ definita a partire da $x$ in una dimensione $d'$.
+	- Se $x\in \mathbb{R}^d$ è l'input da spiegare definito in uno spazio a $d$ dimensioni. Questa va portata ad uno spazio più piccolo di dimensione $d'$:
+		- Ad esempio, sia $x$ una classica immagine di partenza con dimensione $W\times H\times 3$ => Si genera una sua rappresentazione $x'$ costituita da **superpixel** a colore costante, cioè da gruppi di pixel dove all'interno il colore è lo stesso (cioè un solo canale e non più tre) => Questo permette di semplificare la rappresentazione e renderla più capibile.  ![[Pasted image 20250715185131.png]]
+		- Oppure ad esempio, per dati tabulari la perturbazione consiste nel sostituire un valore 1 con uno 0.
+
+2. Ci serve definire la proximity function $\pi_x$, per definire la distanza di un campione generato attorno l'input $x$ (*locality*):
+	- Un esempio è definirla come una *distanza gaussiana* $$\pi_x(z)=exp(-D(x,z)^2/\sigma^2)$$dove $D$ può essere:
+		- la [distanza del coseno] per i testi,
+		- [L2] per le immagini 
+	  e $\sigma$ è un iperparametro.
+
+3.  La Loss di classificazione $L$, usata per addestrare $g$ e garantire *local fidelity* possiamo definirla come: $$L(f,g,\pi_x)=\displaystyle\sum_{z,z'\in Z}\pi_x(z)(f(z)-g(z'))^2$$dove:
+	- $Z$ è il vicinato di $x$
+	- $z$ è la rappresentazione originale di un valore campionato
+	- $z'$ la sua rappresentazione interpretabile.
+
+	In pratica voglio minimizzare [l'errore quadratico] tra il valore predetto dalla black box sulla **rappresentazione originale** e quello predetto dal modello interpretabile sulla **rappresentazione interpretabile** 
+	=> Si pesa questo errore secondo la vicinanza con il punto da spiegare $x$.
+
+4. $\Omega(g)$ è un regolarizzatore [lasso] che ==limita la complessità di $g$, cioè assicura che $g$ sia interpretabile.==
+	È definita come: $$\Omega(g)=\infty\cdot\mathbb{1}[||w_g||_0>k]$$Il regolarizzatore da un contributo infinito se il **vettore dei pesi** $w_g$ del modello interpretabile non è sparso almeno quanto $k$, cioè se il numero di valori diversi da 0 è più di $k$. Il valore di $k$ è un iperparametro.
+	Nella pratica è il numero di parole per il testo, di superpixel per immagini o il numero di features per dati tabulari. (non devono essere troppe? pago penalità se sono più di k?)
+##### Pseudo codice
+- Input:
+	- La black box $f$.
+	- Il numero $N$ di campioni nel vicinato.
+	- L'istanza da spiegare $x$ e la sua versione interpretabile $x'$.
+	- La funzione distanza $\pi_x$.
+	- La lunghezza della spiegazione $k$.
+	- Tecnica per passare da $z'$ a $z$.
+- $Z\leftarrow\{\}$.
+- $for\ i\cdots,N:$ (ciclo che genera i campioni)
+	- $z_i'\leftarrow samplearound(x')$
+	- $Z\leftarrow Z\cup\{(z_i,z_i',\pi_x(z_i))\}$
+- $w\leftarrow k-lasso(Z,k)$ (addestramento del modello interpretabile)
+##### Costo
+Usando l'hw dell'articolo si ha un costo rispetto al tempo di:
+- Con una random forest composta da 1000 alberi e $N=5000$ ci vogliono 3 secondi.
+- Con una inception network e $N=5000$ ci vogliono 10 minuti.
+# Submodular pick (SP-LIME)
+Siccome il costo in tempo di LIME è comunque abbastanza alto, ci interessa trovare quegli esempi da spiegare che possono permettere all'utente di capire al meglio possibile la black box.
+L'algoritmo SP trova applicazione quando un utente ha un budget $B$ di tempo limitato per capire come funziona il modello black box.
+##### Idea
+Viene costruita una matrice dove sulle righe ho gli esempi che voglio spiegare e sulle colonne le features.
+Applicando LIME è come se evidenziasse per ogni esempio le celle relative alle features che sono state maggiormente usate per spiegare quell'esempio. Quello che questo algoritmo fa è [massimizzare la coverege](regio/Explainability/File/SP%20LIME.png) delle features importanti sulla base degli esempi di test: in pratica calcoliamo la spiegazione per ogni esempio del test set e poi scegliamo quegli esempi che coprono tutte (o la maggior parte) delle features più importanti, cioè quelle maggiormente usate da tutti gli esempi.

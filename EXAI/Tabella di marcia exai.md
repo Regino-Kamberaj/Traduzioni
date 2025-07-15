@@ -115,7 +115,6 @@
 
 	Materiale didattico: sketchbook [2025_05_08_1.png](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_05_08_1.png), [2025_05_08_2.png](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_05_08_2.png), [MLNR25] sezione 14.
 
-
 # 10^ Settimana
 
 - **Martedì 13 maggio (2h)**
@@ -129,7 +128,6 @@
 	Metodo SHAP (SHapley Additive exPlanations) per produrre spiegazioni sulla base del calcolo degli Shapley values. Assiomi di equità. Esempi di coalizioni. Cenni all'approssimazione degli Shapley values. Tecnica KernelSHAP e legame con LIME.
 
 	Materiale didattico: sketchbook [2025_05_15_1.png](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_05_15_1.png), [2025_05_15_2.png](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_05_15_2.png), [MLNR25] sezioni 17-18.
-
 
 # 11^ Settimana
 
@@ -146,6 +144,7 @@
 	Materiale didattico: [MLNR25] capitolo 25, lavagne [20250522_1.jpg](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/20250522_1.jpg), [20250522_2.jpg](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/20250522_2.jpg), [20250522_3.jpg](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/20250522_3.jpg), [20250522_4.jpg](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/20250522_4.jpg), [20250522_5.jpg](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/20250522_5.jpg), [20250522_6.jpg](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/20250522_6.jpg), [20250522_7.jpg](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/20250522_7.jpg), [20250522_8.jpg](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/20250522_8.jpg).
 
 # 12^ Settimana
+
 - **Martedì 27 maggio (2h)**
 
 	Metodi di spiegazione basati su gradiente: GradCam, Guided GradCam. Problematiche relative alle salency maps, test di robustezza. Introduzione ai metodi di explanation basati su attention.
@@ -160,6 +159,7 @@
 	Materiale didattico: sketchbook [2025_05_29_1.png](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_05_29_1.png), [2025_05_29_2.png](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_05_29_2.png), [2025_05_29_3.png](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_05_29_3.png).
 
 # 13^ Settimana
+
 - **Martedì 3 giugno (2h)**
 
 	Individual Conditional Expectation (ICE) e Partial Dependence Plot (PDP) come grafici per la spiegazione delle feature. Permutation feature importance. Introduzione ai concept bottleneck models.
