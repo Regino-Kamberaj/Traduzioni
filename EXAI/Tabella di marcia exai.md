@@ -40,6 +40,7 @@
 
 	Materiale didattico: [MLNR24] sezione 5.5.2, [sketchbook_20250313_1](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_03_13_1.png), [sketchbook_20250313_2](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_03_13_2.png), script [rules_titanic.py](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/rules_titanic.py)e [rules_churn.py](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/rules_churn.py), dataset [bank_consumer_churn.csv](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/bank_customer_churn.csv). NOTA: nella nuova versione [MLNR25] disponibile online si tratta della seconda parte del capitolo 10.
 # 4^ Settimana
+
 - **Martedì 18 marzo (2h)**
 
 	Algoritmo RuleFit: modello lineare combinato con regole decisionali. Alberi di decisione ottimali. Algoritmo GOSDT (cenni).
@@ -60,6 +61,7 @@
 	Materiale didattico: sketchbook [2025_03_25.png](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_03_25.png), [presentazione](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/Rich_Caruana_EBMs.pdf) di Rich Caruana (esempi sul caso di polmonite). 
 
 # 6^ Settimana
+
 - **Martedì 1 aprile (2h)**
 
 	Esercitazione su modelli interpretabili basati su alberi, liste e modelli additivi.
@@ -92,11 +94,13 @@
 	Problema dei treni di Michalski: https://cplint.ml.unife.it/example/aleph/train.pl
 
 # 8^ Settimana
+
 - **Martedì 15 aprile (2h)**
 
 	Neuro-symbolic Artificial Intelligence. Metodi ibridi per la combinazione di approcci simbolici e sub-simbolici. Knowledge-Based Artificial Neural Networks. Logica come regolarizzazione. Cenni alle Markov Logic Networks.
 
 	Materiale didattico: lucidi del blocco 03 (slide da 38 a 46 soltanto come approfondimento).
+# 9^ Settimana
 
 - **Martedì 6 maggio (2h)**
 
@@ -104,7 +108,6 @@
 
 	Materiale didattico: sketchbook [2025_05_06_1.png](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_05_06_1.png), [2025_05_06_2](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_05_06_2.png)[.png](https://e-l.unifi.it/pluginfile.php/3289993/course/section/427330/2025_04_10_2.png), survey [GMT18], in particolare sezioni 4-5-6-7-8, ma soltanto nelle parti trattate a lezione.
 
-# 9^ Settimana
 
 - **Giovedì 8 maggio (2h)**
 

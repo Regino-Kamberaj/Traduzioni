@@ -728,10 +728,12 @@ Da notare però che: iniettare knowledge nella rete neurale, e lasciare fare all
 Come usare la logica?
 - Tipo una programma neurale(?) => questa è l'idea per le KBANN
 - Come regolarizzatore?
-	- In questo caso oltre la loss di classificazione standard aggiungo un termine aggiuntivo di penalità sulle soluzioni che portano a rompere alcuni vincoli semantici (perdite sulla semantica(?)). Ad esempio:
-	![[Pasted image 20250714165521.png]]
-	![[Pasted image 20250714165532.png]]
-	In questo caso ho tradotto la logica nella rete, in una funzione di loss differenziabile => ragionamento logico(?)
+	- In questo caso oltre la loss di classificazione standard aggiungo un termine aggiuntivo di penalità sulle ==soluzioni che portano a rompere alcuni vincoli== semantici (perdite sulla semantica(?)). $$Loss = ClassificationLoss + \lambda SemanticLoss$$
+Ad esempio:
+![[Pasted image 20250714165521.png]]
+![[Pasted image 20250714165532.png]]
+
+In questo caso ho tradotto la logica nella rete, in una funzione di loss differenziabile => ragionamento logico(?) => adesso ho un vincolo meno rigido!
 #### Knowledge Base ANN (KBANN)
 
 È uno dei primi tentativi (1994) di unire le tecniche basate sugli [approcci simbolici e quelli neurali](regio/Approcci%20neuro-simbolici/Approcci%20neuro-simbolici.md#Neural%20Symbolic%20Computation%20(NeSy)) inglobando le informazioni della conoscenza di base (espressa tramite la logica) **nell'architettura della rete**. 
@@ -801,7 +803,7 @@ Una *Markov Logic Network* è definita:
 +Esempio:
 ![[Pasted image 20250714172049.png]]
 
-Più alto il peso associato e più ho un mondo dove la regola è vera.
+Più alto il peso associato e più ho un mondo dove la regola è vera => il peso della regola è dato in base al numero di esempi che questa soddisfa.
 
 +Notare che per le MLN, in maniera opposta a *ProbLog*(estensione di prolog con le probabilità), le costanti sono in maiuscolo e la variabili in minuscolo 
 
