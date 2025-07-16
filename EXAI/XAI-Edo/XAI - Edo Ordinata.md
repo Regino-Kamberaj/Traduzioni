@@ -1088,6 +1088,7 @@ Gli ingredienti richiesti quindi sono:
 
 Alla fine le **feature più importanti** nel modello semplice (es. i coefficienti della regressione) diventano la spiegazione per la previsione originale => come capisco quali sono le feature più importanti? quelle che uso per classificare l'esempio di partenza => cerco di ottenere similarità al target!
 ##### Costo
+
 Usando l'hw dell'articolo (si parla di 10 anni fà) si ha un costo rispetto al tempo di:
 - Con una *random forest* composta da 1000 alberi e $N=5000$ ci vogliono 3 secondi.
 - Con una *inception network* e $N=5000$ ci vogliono 10 minuti.
@@ -1155,7 +1156,55 @@ Per un gioco $v$, gli *shapley values* sono: $$\phi_1(v), ... , \phi_d(v)$$
 1. **Efficienza** => i crediti devono sommare al valore della *grande coalizione*: $$\sum_{i\in D} \phi_i (v) = v(D) - v(0)$$
 2. **Simmetria** => se 2 giocatori sono interscambiabili ovvero: $$v(S \cup \{i\}) = v(S \cup \{j\}) \ \forall S \subset D$$ Allora vale: $$\phi_i(v) = \phi_j(v)$$
 3. **Giocatore nullo** => se un giocatore non dà contributo allora ha "simmetria zero" $$v(S \cup \{i\}) = v(S) \ \forall S \subset D \Rightarrow \phi_i(v) = 0$$
-4. **Linearità** => la distribuzione di crediti segue una legge lineare:$$\phi(c_1v_1 + c_2v_2) = c_1\phi(v_1) +c_2\phi(v_2)$$Si può dimostrare che lo *shapley value* $\phi : G \rightarrow \mathbb{R}^d$ è l'unica funzione che soddisfa queste proprietà: $$\phi_j = \frac{1}{d} \sum_{S \subset D/j} \frac{1}{(\frac{d-1}{|s|})} (v(S \cup \{i\}) - v(S))$$ Dove: 
-	- La somma è una media pesata sulle coalizioni
-	- Il peso è dato da 1 fratto tutti i modi di scegliere |s| giocatori da d-1 (j è escluso)
-	- Calcolo poi il contributo per aver aggiunto il giocatore $j$
+4. **Linearità** => la distribuzione di crediti segue una legge lineare:$$\phi(c_1v_1 + c_2v_2) = c_1\phi(v_1) +c_2\phi(v_2)$$
+Si può dimostrare che lo *shapley value* $\phi : G \rightarrow \mathbb{R}^d$ è l'unica funzione che soddisfa queste proprietà: $$\phi_j = \frac{1}{d} \sum_{S \subset D/j} \frac{1}{\binom{d-1}{|s|}} (v(S \cup \{i\}) - v(S))$$ Dove: 
+- La somma è una media pesata sulle coalizioni
+- Il peso è dato da 1 fratto tutti i modi di scegliere |s| giocatori da d-1 (j è escluso)
+- Calcolo poi il contributo per aver aggiunto il giocatore $j$
+
+Riformulando un po': $$\phi_j = \frac{1}{d} \sum_{S \subset D/j} \frac{|s|!(d-1-|s|)!}{(d-1)!} (v(S \cup \{i\}) - v(S))$$$$\phi_j =  \sum_{S \subset D/j} \frac{|s|!(d-1-|s|)!}{d!} (v(S \cup \{i\}) - v(S))$$
+##### Esempio:
+$d=3$ , giocatori{ 1,2,3}, come calcolo lo shapley value per il secondo giocatore?
+=> quante coalizioni senza {2} ? => {0}, {1}, {3}, {1,3} => l'ordine conta! 
+(guarda la formula sopra) 
+
+![[Screenshot 2025-07-16 at 22.43.32.png]]
+=> queste sono tutte le mie $\phi$ => le funzioni caratteristiche sono date in partenza.
+
+#### Shapley Values per ML
+
+Applicando la teoria di giochi al machine learning: 
+- I nostri **players** equivalgono alle **features**
+- il **profitto** sarà il *model behaviour* ovvero come risponde il modello tipo loss o accuracy; 
+- gli shapley values servono a quantificare **l'impatto delle features**
+
+Tramite gli shapley values, il metodo SHAP riesce quindi a spiegare l'uscita individuale (ma anche quella globale => sommando i vari contributi) usando un **additive feature attribution**.
+
+Il modello risultante è dunque: $$f(\hat{x}) = \phi + \sum_{j=1}^d \phi_j \hat{x}_j'$$ Dove:
+- $f$ è la solita black-box, da spiegare
+- $\hat{x}$ è la istanza di test, mentre $\hat{x}'$ è la rappresentazione interpretabile (varia in base alla black box da spiegare), in particolare è il **vettore delle coalizioni** 
+	![[Pasted image 20250716231527.png]]  => gli 1 sono i giocatori (features presenti nella coalizione)
+- $\phi_0$ è valore iniziale ed è preso come il valore atteso dell'instanza di test => $E[f(x)]$ 
+
+Gli shapley values spiegano quindi la differenza fra il valore predetto $f(\hat{x})$ e la "predizione media"
+![[SHAP interpretazione.png]]
+=> notare che posso anche avere dei contributi negativi!
+
+##### Problemi
+
+L'esatta computazione degli shapley values => necessita di enumerare **tutte le possibili combinazioni di features** per poter stimare il contributo di ognuna di esse. 
+Questa porta ad una complessità di $2^d$ con d numero di feature =>  con $d = 20$ il problema non è fattibile!
+
+Abbiamo dunque bisogno di metodi di approssimazione! 
+=> si usa una procedura di sampling per le coalizioni => invece di enumerarle tutte alcune (o tutte?) le predico ?
+
+Molti modi di implementare questo sono:
+- Model Agnostic => [Kernel SHAP] (molto simile a LIME)
+- Model Specific => [Tree SHAP] o [Deep SHAP]
+
+##### Kernel SHAP
+
+Tecnica per stimare i contributi delle feature per una predizione di $x$ come un approssimazione degli **shapley values esatti**.
+
+Se su LIME avevo $$explanation(x)=\displaystyle\arg\min_{g\in G}L(f,g,\pi_x)+\Omega(g)$$
+In questo caso pongo $\Omega(g) = 0$, la Loss rimane  $$L(f,g,\pi_x)=\displaystyle\sum_{z,z'\in Z}\pi_x(z)(f(z)-g(z'))^2$$Mentre la funzione di distanza diventa: $$\pi_x(z') = \frac{d-1}{\binom{d}{|z'|}|z'| (d-|z'|)} $$

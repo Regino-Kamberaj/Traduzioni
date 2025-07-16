@@ -35,8 +35,7 @@
               "title": "Tabella di marcia exai"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -179,10 +178,15 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "7113b25abe9da709",
+  "active": "f8f2bf8e475c7b8c",
   "lastOpenFiles": [
-    "EXAI/XAI-Edo/XAI - Edo Ordinata.md",
     "EXAI/Tabella di marcia exai.md",
+    "EXAI/XAI-Edo/Immagini/SHAP interpretazione.png",
+    "EXAI/XAI-Edo/XAI - Edo Ordinata.md",
+    "Pasted image 20250716231527.png",
+    "Screenshot 2025-07-16 at 22.43.32.png",
+    "EXAI/XAI-Edo/Immagini/SP LIME.png",
+    "EXAI/Immagini/Pasted image 20250716180934.png",
     "EXAI/Immagini/Pasted image 20250715185131.png",
     "EXAI/Immagini/Pasted image 20250715184958.png",
     "EXAI/Immagini/Pasted image 20250715181609.png",
@@ -190,11 +194,6 @@
     "EXAI/Slides/03_NeSy.pdf",
     "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
     "EXAI/XAI-Edo/Immagini/esempio KBANN.png",
-    "EXAI/Immagini/Screenshot 2025-07-13 at 18.46.19.png",
-    "EXAI/Immagini/Pasted image 20250713164124.png",
-    "EXAI/XAI-Edo/Screenshot 2025-07-13 at 18.46.19.png",
-    "EXAI/XAI-Edo/Pasted image 20250713164124.png",
-    "EXAI/Immagini/Screenshot 2025-07-13 at 21.58.45.png",
     "EXAI/XAI-Edo/Approcci neuro-simbolici/KBANNs.md",
     "EXAI/XAI-Edo/Approcci neuro-simbolici/Approcci neuro-simbolici.md",
     "EXAI/XAI-Edo/Approcci neuro-simbolici/Markov Logic Networks.md",
