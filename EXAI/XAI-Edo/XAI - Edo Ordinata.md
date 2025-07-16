@@ -1088,13 +1088,74 @@ Gli ingredienti richiesti quindi sono:
 
 Alla fine le **feature più importanti** nel modello semplice (es. i coefficienti della regressione) diventano la spiegazione per la previsione originale => come capisco quali sono le feature più importanti? quelle che uso per classificare l'esempio di partenza => cerco di ottenere similarità al target!
 ##### Costo
-Usando l'hw dell'articolo si ha un costo rispetto al tempo di:
-- Con una random forest composta da 1000 alberi e $N=5000$ ci vogliono 3 secondi.
-- Con una inception network e $N=5000$ ci vogliono 10 minuti.
+Usando l'hw dell'articolo (si parla di 10 anni fà) si ha un costo rispetto al tempo di:
+- Con una *random forest* composta da 1000 alberi e $N=5000$ ci vogliono 3 secondi.
+- Con una *inception network* e $N=5000$ ci vogliono 10 minuti.
+=> risolvere anche un solo problema di explanaibility può essere costoso!
 ##### Submodular pick (SP-LIME)
 
-Siccome il costo in tempo di LIME è comunque abbastanza alto, ci interessa trovare quegli esempi da spiegare che possono permettere all'utente di capire al meglio possibile la black box.
-L'algoritmo SP trova applicazione quando un utente ha un budget $B$ di tempo limitato per capire come funziona il modello black box.
+Siccome il costo in tempo di LIME è comunque abbastanza alto, ci interessa trovare quegli esempi da spiegare che possono permettere ==all'utente di capire al meglio possibile la black box.== Anche se il numero di esempi lo scegliamo a priori e di queste ne vengono estratte per tutti le spiegazioni, possiamo decidere di mostrare all'utente solo una parte di questi => quelli che consideriamo più importanti, ovvero i più rappresentativi.
+
+Leggersi infatti tutte le spiegazioni e poi valutarle ha comunque un determinato costo. L'algoritmo SP trova applicazione quando un utente ha un budget $B$ di tempo limitato per capire come funziona il modello black box.
 ##### Idea
-Viene costruita una matrice dove sulle righe ho gli esempi che voglio spiegare e sulle colonne le features.
-Applicando LIME è come se evidenziasse per ogni esempio le celle relative alle features che sono state maggiormente usate per spiegare quell'esempio. Quello che questo algoritmo fa è [massimizzare la coverege](regio/Explainability/File/SP%20LIME.png) delle features importanti sulla base degli esempi di test: in pratica calcoliamo la spiegazione per ogni esempio del test set e poi scegliamo quegli esempi che coprono tutte (o la maggior parte) delle features più importanti, cioè quelle maggiormente usate da tutti gli esempi.
+
+Viene costruita una matrice dove sulle righe ho gli esempi che voglio spiegare e sulle colonne le features. 
+
+![[SP LIME.png]]
+
+Applicando LIME è come se evidenziasse per ogni esempio le celle relative alle features che sono state usate per spiegare quell'esempio. 
+Quello che fa l'algoritmo è [massimizzare la coverege](regio/Explainability/File/SP%20LIME.png) delle features importanti sulla base degli esempi di test: in pratica calcoliamo la spiegazione per ogni esempio del test set e poi scegliamo quegli esempi che coprono tutte (**o la maggior parte**) delle features più importanti, cioè quelle maggiormente usate da tutti gli esempi. => è dunque un problema di ottimizzazione dove dato il budget si cerca di massimizzare la coverage delle feature che gli esempi coprono ma minimizzando questi ultimi, rientrando nel Budget di partenza.
+
+### PredDiff 
+
+Sempre un algoritmo di spiegazione locale => *outcome explanation* => ma collegato alla feature importance.
+
+L'idea è quella di calcolare l'importanza di un attributo $A_i$ , per predizione di un determinato esempio $x$: $$\text{PredDiff}_i(x)= f(x) - f(x / A_i)$$
+Ovvero tolgo all'istanza l'informazione di $A_i$ e nel calcolo la differenza.
+
+Vorrei comunque che la $f$ rimanga la stessa => ma togliendo una feature rischio di dover riaddestrare la rete!
+
+Potrei quindi pensare di quantificarlo come: $$\text{PredDiff}_i(x) = p(y=c |x) - p(y= c | x / A_i)$$ Come calcolo quindi l'altra quantità? (L'*infoDiff* si ottiene applicando i logaritmi alle prob)
+
+Come posso simulare la rimozione di una feature?
+=> Un idea potrebbe essere quella di simulare la rimozione con il contributo medio dei valori della feature. $$p(y | x / A_i) = \sum_{s=1}^{m_i} p (A_i=a_s) \times p(y| x \leftarrow A_i =a_s)$$ Dove:
+- $m_i$ sono il numero di possibili valori di  $A_i$ nel training set
+- Il secondo termine vado a guardare quando l'istanza di test abbia o meno per la colonna i-esima di A il valore di quella feature.
+
+#### Pregi vs Difetti
+- Il metodo è agnostico sul modello => positivo
+- Ma non si considera l'interazione sulle feature => negativo
+- Può capitare che la perturbazione delle features crei dati non realistici => in quanto considero appunto una feature alla volta e non insieme. => da qui i tentativi di miglioramento del metodo che hanno portato a *SHAP*
+
+### SHAP
+
+*Shapley Additive Explanation* 
+=> "[A unified approach to interpreting model predictions](https://proceedings.neurips.cc/paper_files/paper/2017/file/8a20a8621978632d76c43dfd28b67767-Paper.pdf)"
+#### Teoria dei giochi cooperativa
+
+Skippo l'esempio del [dilemma del prigioniero](https://it.wikipedia.org/wiki/Dilemma_del_prigioniero)
+
+Supponiamo di avere un insieme di giocatori $D = \{1,...,,d\}$ . Un **gioco** è dato specificando un valore per ogni possibile *coalizione* $S \subset D$ . Descrivo quindi una funzione caratteristica $v$ come: $$ v: 2^D \rightarrow \mathbb{R}$$ Che rappresenta il nostro *payoff*
+
+Ad esempio, ho degli impiegati in azienda:
+![[Pasted image 20250716180934.png]]
+Mi chiedo quale potrebbe essere la combinazione di impiegati che mi porta ad un miglior profitto in azienda? 
+=> Se dunque ho dei profitti come li ripartisco fra i giocatori/impiegati? => da qui vengono fuori gli [shapley values], derivati da un insieme di [assiomi di equità]
+
+Prima però associo alle coalizioni il premio (funzione caratteristica):
+- $v(D)$ => *grand coalition* => tutto l'insieme
+- $v(\mathbb{0})$ => *null coalition*
+- $v(S)$ => *arbitrat coalition* => una coalizione del insieme
+
+Sia quindi $G$ l'insieme di tutti i giochi di $d$ giocatori, lo *shapley value* assegna un array di crediti (profitti) per ogni gioco => in $\mathbb{R}^d$ un credito per ogni giocatore: $$\phi: G \leftarrow \mathbb{R}^d$$ => nell'esempio i giochi sono tutte le coalizioni.
+
+Per un gioco $v$, gli *shapley values* sono: $$\phi_1(v), ... , \phi_d(v)$$
+##### Assiomi di equità
+
+1. **Efficienza** => i crediti devono sommare al valore della *grande coalizione*: $$\sum_{i\in D} \phi_i (v) = v(D) - v(0)$$
+2. **Simmetria** => se 2 giocatori sono interscambiabili ovvero: $$v(S \cup \{i\}) = v(S \cup \{j\}) \ \forall S \subset D$$ Allora vale: $$\phi_i(v) = \phi_j(v)$$
+3. **Giocatore nullo** => se un giocatore non dà contributo allora ha "simmetria zero" $$v(S \cup \{i\}) = v(S) \ \forall S \subset D \Rightarrow \phi_i(v) = 0$$
+4. **Linearità** => la distribuzione di crediti segue una legge lineare:$$\phi(c_1v_1 + c_2v_2) = c_1\phi(v_1) +c_2\phi(v_2)$$Si può dimostrare che lo *shapley value* $\phi : G \rightarrow \mathbb{R}^d$ è l'unica funzione che soddisfa queste proprietà: $$\phi_j = \frac{1}{d} \sum_{S \subset D/j} \frac{1}{(\frac{d-1}{|s|})} (v(S \cup \{i\}) - v(S))$$ Dove: 
+	- La somma è una media pesata sulle coalizioni
+	- Il peso è dato da 1 fratto tutti i modi di scegliere |s| giocatori da d-1 (j è escluso)
+	- Calcolo poi il contributo per aver aggiunto il giocatore $j$
