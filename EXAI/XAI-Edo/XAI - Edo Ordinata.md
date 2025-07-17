@@ -1208,3 +1208,93 @@ Tecnica per stimare i contributi delle feature per una predizione di $x$ come un
 
 Se su LIME avevo $$explanation(x)=\displaystyle\arg\min_{g\in G}L(f,g,\pi_x)+\Omega(g)$$
 In questo caso pongo $\Omega(g) = 0$, la Loss rimane  $$L(f,g,\pi_x)=\displaystyle\sum_{z,z'\in Z}\pi_x(z)(f(z)-g(z'))^2$$Mentre la funzione di distanza diventa: $$\pi_x(z') = \frac{d-1}{\binom{d}{|z'|}|z'| (d-|z'|)} $$
+=> Allora in questo caso, l'algoritmo di LIME trova come vettore di pesi $W$, un approx degli shapley values!
+=> Shapley values che rispetto a lime non hanno l'ipotesi di una spiegazione breve/compatta a $K$ feature => non ho vincoli sul contributo delle feature!
+
+###### Sketch algoritmo
+
+1. Si campionano gli esempi => ovvero campiono le coalizioni $$ z_k' \in \{0,1\}^d \ k \in \{1, ..., N\}$$ dove N è il numero di campioni generati
+	![[Pasted image 20250717153616.png]]
+	
+2.  Calcola $f$ per i campioni (nello spazio di partenza): $$h_x(z_k'):\{0,1\}^d \rightarrow \mathbb{R}^p$$ con $p$ il numero di feature nello spazio di partenza. (in linea di principio $d$ e $p$ sono uguali)
+	=> trasformo in un vettore su cui posso calcolare la $f$
+	La funzione $h_x$: 
+	- Mappa gli "1" ai **valori originali** della feature $x$
+	- Mappa gli "0" ad un valore random del training set => campiono dal training set i valori di un **esempio di training**, ottengo cosi (guarda esempio sopra):
+	![[Pasted image 20250717154645.png]]
+	Questo per dati tabulari... che succede per le immagini?![[Pasted image 20250717155215.png]] Una volta campionata la coalizione $z'_k$, la funzione $h$ seleziona le parti da tenere e quali da campionare => in quest'ultimo caso vado a generare tante immagini perturbate dove tolgo dei pesi. Da qui ne calcolo la $f$ e vado a capire le feature più importanti!
+	
+3. Si calcola il peso $\pi$ della coalizione come con la funzione di distanza vista prima:$$\pi_x(z') = \frac{d-1}{\binom{d}{|z'|}|z'| (d-|z'|)}$$ in particolare $|z'|$ mi restituisce il numero di elementi non a zero a in $z'$ 
+
+4. Si *fitta* tramite un modello lineare pesato:$$L(f,g,\pi_x)=\displaystyle\sum_{z,z'\in Z}\pi_x(z)(f(z)-g(z'))^2$$ e come visto primo ho un analogia a LIME se non che pongo $\Omega(g)=0$  => ovvero non pongo nessun limite sul numero di feature $K$ usate nelle spiegazioni
+
+5. Ritorno i coefficienti del modello lineare appreso ==come un approx degli shapley values== $\phi$ => la j-esima componente nel modello lineare è lo shapley value della j-esima feature $\phi_j$ 
+	=> Si può ottenere una misura globale dell'importanza delle feature come media del valore assoluto degli shapley values su tutti i dati: $$ I_j = \frac{1}{n} \sum_{i=1}^n |\phi_j^{(i)}|$$ vengono presi anche gli shapley values negativi ma messi in valore assoluto
+
+#### Additive feature attributions
+
+Esistono 3 proprietà equivalenti agli assiomi di equità, validi sugli shapley values:
+1. Accuratezza locale
+2. *Missingness*
+3. Consistenza
+
+La proprietà (1.) ci dice che $g$ modello di spiegazione locale => approssima $f$ localmente: $$f(x) = g(z') = \phi_0 + \sum_{i=1}^d\phi_i z_i'$$
+La proprietà (2.): se una feature è mancante =>  $z_i' = 0$ , siccome il suo contributo è zero => $\phi_i=0$ allora non ha impatto!
+
+La proprietà (3.) ci dice che comunque scelti due modelli $f_1$ e $f_2$ se il contributo di una feature in $f_1$ è più grande che in $f_2$ allora: $$\phi_j(f_1,x) \geq \phi_j(f_2,x)$$
+ovvero: $$f_1(x)-f_1(x/j) \geq f_2(x) - f_2(x/j)$$
+=> Anche qui gli shapley values sono le uniche funzioni a soddisfare (1.)-(2.)-(3.). Sono valide anche per lime solo se $\Omega(g) = 0$ e $\pi$ è scelto come in SHAP => con il coeff. binomiale.
+
+### Metodi Basati sul gradiente
+
+Si vuole fare spiegazioni locali per reti profonde. L'idea è quella di usare l'informazioni che ci dà il gradiente rispetto all'input iniziale => per capire quali sono le feature più significativi per quella uscita.
+
+I diversi approcci si basano sui modi in cui viene calcolato il gradiente. In questi casi la nostra spiegazione sarà grande quanto l'input, se ad esempio ho in input un immagine => posso ottenere una mappa che associa ad ogni singolo pixel un determinato peso di importanza. 
+
+![[Pasted image 20250717171329.png]]
+
+Questo è esattamente quello che si chiama [mappa di salienza] => ovvero un immagine con stessa dimensione dell'immagine di input dove ogni pixel ha colore per ogni livello di explanation. 
+
+Messe poi una sopra l'altra i pixel più colorati sono quelli con maggiore importanza per la spiegazione => *mappe di aggregazione*. Metodi che si prestano bene per dati con una certa sequenzialità di parole o pixel. 
+Analizzando come i cambiamenti sull'input hanno un impatto sulla rete.
+
+#### Vanilla gradient
+
+Preso $F_c(x)$ ovvero l'output di un rete neurale per una classe c, consideriamo l'approssimazione al primo ordine di taylor $F_c(x) \approx wx+b$ , dove il peso $w$ vale: $$w = \frac{\delta F_c(x)}{\delta x}|_{x_0}$$Calcolata nel punto (o il pixel) $x_0$ che ci interessa.
+
+**Gradienti grandi** indicano che piccoli cambiamenti in quelle zone (features), ovvero piccoli cambiamenti nell'input, corrispondono a **grandi cambiamenti nell'output**.
+
+I gradienti ci dicono quali feature hanno la più ripida direzione locale, relativa alla predizione del modello => in un dato punto lungo la funzione di predizione ho la direzione di cambiamento più grande
+
+#### Mappe di Salienza
+
+Presa una immagine di input $I_0 \in \mathbb{R}^{W\times H \times K}$ , dove $K$ corrisponde al numero di canali => 3 per Immagini RGB 
+=> si passa alle mappe di salienza di dimensione $$M \in \mathbb{R}^{W\times H}$$ dove: $$M_{ij} = max| W_{ijk}|$$
+=> si effettua un operazione di [pooling] => dove si riduce lo spazio delle feature.
+
+Effettuo un operazione di *feature maps* => guardo nel'intorno di pixel e faccio un operazione di aggregazione => tramite max/avg e mediamente mi basta che sia estratta la feature di interesse.
+
+Un modo di ottenere le mappe di salienza è quindi tramite *vanilla grad*, mappe però che risultano essere molto **rumorose**... si studiano quindi modi per ridurre il rumore sulle mappe di salienza: 
+- [Smooth-grad]
+- [GradCAM] e le varie versioni come [Guided GradCAM]
+
+##### Smooth-grad
+
+"Si aggiunge rumore per rimuovere rumore" => aggiungo rumore su diverse copie dell'input iniziale.
+Fatto quindi vanilla grad, della mappa di salienza ottenuta ne faccio la media, aggiungendo ad ogni copia della varianza/rumore => ottengo così delle immagini che non cambiano di molto ma hanno comunque impatto sull'output:$$W = \frac{1}{N} \sum_{i=1}^N \nabla_x F_c(x+\epsilon)$$con $\epsilon$ il rumore aggiunto, che insieme a $N$ costituiscono gli iperparametri del modello
+
+##### Grad CAM 
+
+*Gradient - Class Activation Mapping*
+
+![[Pasted image 20250717182805.png]]
+
+Presa la solita immagine di input, eseguo $n$ volte delle [convoluzioni] => segue un operazione di [pooling] => che insieme ad altre operazioni di convoluzione porta ad una rete *fully connected* [MLP] (Multi layer perceptron => rete fully connected con funzioni di attivazioni non lineari)  => e quindi l'output finale.
+
+Grad CAM invece si ferma prima di eseguire lo step della rete fully connected.
+
+Da un immagine di input $I_0$ => se la dò in pasto ad una [CNN] => questa produce mappe in uscita di dimensione $P\times Q$ dove $P << W$ e $Q<<H$ 
+
+![[Pasted image 20250717183731.png]]
+
+Si hanno delle misure di gradiente + grossolane => ma anche più robuste in quanto + aggregate => ci si ferma infatti all'ultima uscita del filtro convoluziona => ovvero non si fa backpropagation fino all'input, ma ci si ferma all'output dell'ultimo layer convoluzionale.
