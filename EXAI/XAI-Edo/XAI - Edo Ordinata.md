@@ -1283,7 +1283,7 @@ Un modo di ottenere le mappe di salienza è quindi tramite *vanilla grad*, mappe
 "Si aggiunge rumore per rimuovere rumore" => aggiungo rumore su diverse copie dell'input iniziale.
 Fatto quindi vanilla grad, della mappa di salienza ottenuta ne faccio la media, aggiungendo ad ogni copia della varianza/rumore => ottengo così delle immagini che non cambiano di molto ma hanno comunque impatto sull'output:$$W = \frac{1}{N} \sum_{i=1}^N \nabla_x F_c(x+\epsilon)$$con $\epsilon$ il rumore aggiunto, che insieme a $N$ costituiscono gli iperparametri del modello
 
-##### Grad CAM 
+##### GradCAM 
 
 *Gradient - Class Activation Mapping*
 
@@ -1291,10 +1291,113 @@ Fatto quindi vanilla grad, della mappa di salienza ottenuta ne faccio la media, 
 
 Presa la solita immagine di input, eseguo $n$ volte delle [convoluzioni] => segue un operazione di [pooling] => che insieme ad altre operazioni di convoluzione porta ad una rete *fully connected* [MLP] (Multi layer perceptron => rete fully connected con funzioni di attivazioni non lineari)  => e quindi l'output finale.
 
-Grad CAM invece si ferma prima di eseguire lo step della rete fully connected.
+GradCAM invece si ferma prima di eseguire lo step della rete fully connected.
 
 Da un immagine di input $I_0$ => se la dò in pasto ad una [CNN] => questa produce mappe in uscita di dimensione $P\times Q$ dove $P << W$ e $Q<<H$ 
 
 ![[Pasted image 20250717183731.png]]
 
 Si hanno delle misure di gradiente + grossolane => ma anche più robuste in quanto + aggregate => ci si ferma infatti all'ultima uscita del filtro convoluziona => ovvero non si fa backpropagation fino all'input, ma ci si ferma all'output dell'ultimo layer convoluzionale.
+
+###### Algoritmo
+
+Riassumendo quanto abbiamo detto: Gradcam calcola i gradienti indietro fino all'input/pixel ma fino all'output dell'ultimo layer della rete convoluzionale.
+
+$K$ è il nostro iperparametro della architettura della rete => ovvero serve a scegliere il numero di mappe all'ultimo layer convoluzionale. In particolare ciascun $K$ è fatta nel seguente modo: 
+![[Pasted image 20250718153919.png]]
+
+=> GradCAM calcola per ogni *superpixel* (ovvero un insieme di pixel dell'immagine originale) la quantità:$$\frac{\delta F_c}{\delta A_{ij}^h}$$ ovvero deriva l'input di partenza secondo il singolo elemento h-esimo della *feature map*
+![[Pasted image 20250718154207.png]]
+
+Ottengo quindi la mia mappa di salienza come: $$S_{\text{Gradcam}}^C = ReLU(\sum_h \alpha_h^CA^h) \ (*)$$ con $\alpha_h^C$ i parametri calcolati da GradCAM
+
+I passi da seguire, per calcolare i parametri, sono dunque:
+1. Dò in input alla rete l'immagine da calcolare => forward pass
+2. Prendo l'uscita della classe C (prima di calcolare il [softmax](https://www.google.com/search?q=softmax&oq=softmax&gs_lcrp=EgZjaHJvbWUyDggAEEUYJxg5GIAEGIoFMgcIARAAGIAEMgcIAhAAGIAEMgcIAxAAGIAEMgcIBBAAGIAEMgcIBRAAGIAEMgcIBhAAGIAEMgcIBxAAGIAEMgcICBAAGIAEMgcICRAAGIAE0gEIMjU4N2owajeoAgCwAgA&sourceid=chrome&ie=UTF-8)) => $y^C$
+3. Imposto gli score delle altre classi a zero
+4. Faccio backpropagation fino all'ultmo layer convoluzionale $\frac{\delta y^C}{\delta A_{ij}^h}$
+5. Calcolo l'importance di una feature map $A^h$ per la classe C come:$$\alpha_h^C = \frac{1}{Z} \sum_{u,v}\frac{\delta y^C}{\delta A_{uv}^h}$$ovvero la ottengo come media fra tutti i superpixel ($Z \in [0,1]$ è un fattore di normalizzazione)
+6. Trovo la mappa di salienza $S$ con la formula vista prima (*)
+
++Notare che in realtà la mappa di salienza ottenuta in questo modo non ha stesse dimensioni dell'immagine di partenza => si esegue quindi un [upsample](https://www.google.com/search?q=upsample+immagini&sca_esv=b3f6a4e4ace9f962&sxsrf=AE3TifN0QjPmu7hBbsEaOz3DcnXdjjIuDQ%3A1752847484030&ei=fFR6aObLAd3r7_UPpOjdwAY&ved=0ahUKEwjm-YXdycaOAxXd9bsIHSR0F2gQ4dUDCBA&uact=5&oq=upsample+immagini&gs_lp=Egxnd3Mtd2l6LXNlcnAiEXVwc2FtcGxlIGltbWFnaW5pMgUQIRigATIFECEYoAEyBRAhGKABSIwLUL0BWJoJcAF4AZABAJgBlQGgAboIqgEDMC45uAEDyAEA-AEBmAIKoAKiC8ICChAAGLADGNYEGEfCAg0QABiABBiwAxhDGIoFwgIFEAAYgATCAggQABiABBjLAcICBhAAGBYYHsICCRAAGIAEGBMYDcICCBAAGBMYDRgemAMAiAYBkAYKkgcEMC4xMKAH0imyBwMwLjm4B7kKwgcHMy01LjMuMsgHjwI&sclient=gws-wiz-serp) => dove si allarga alle dimensioni dell'immagine di partenza.
+
+##### Guided GradCAM
+
+L'idea è di combinare le spiegazioni ottenute da GradCAM più grossolane, con quelle ottenute a livello di pixel da un metodo tipo Vanilla Grad.
+La mappa di salienza ottenuta è quindi: $$S_{ggc} = upsample(S_{GC}) \ (*) \ S_{VG}$$ ovvero si fa una moltiplicazione elemento per elemento fra le mappe di salienza ottenute da **GradCAM** e **Vanilla Grad**
+
+##### Sanity Checks for saliency maps
+
+Vengono proprosti 2 test sperimentali per **valutare** la bontà delle mappe di salienza:
+
+1. Si compara una mappa di salienza di una rete addestrata su un qualche dataset/task con una rete inizializzata in modo random => Se non vedo differenze la mappa differenza non può essere una buona spiegazione **di quel modello**
+2. Comparo una mappa di salienza sempre di una rete addestrata su un certo dataset/task ma con una rete addestrata sulle stesse immagini di input con le *labels* permutate in modo randomico => Se stavolta non vedo nessuna differenza la mappa di salienza non può essere una buona spiegazione **di quel particolare dataset**
+
+=> Fra i vari test si nota che vanilla, smoothgrad e gradCAM passano i test mentre guided gradCAM no
+=> inoltre non possiamo estendere il risultato del test da un dataset al caso generale => potremmo comunque dire che i metodi basati sul gradiente forniscono una buona spiegazione del modello se passano questi test => quantificare quanto buona sia questa spiegazione è un altro problema!
+
+## Attention
+
+["Attention is all you need"](https://arxiv.org/abs/1706.03762)
+https://arxiv.org/abs/1706.03762
+
+L'attention è un layer speciale delle reti neurali => usato spesso nel caso di sequenze come parole in una frase o *patches* in un immagine.
+
+=> nato per reti ricorrenti tipo task di traduzione di testi => compara porzioni dell'input.
+
+Si può interpretare l'attention come una sorta di spiegazione intrinseca del modello? => L'attention vorrebbe in qualche modo replicare quello che fa l'attenzione umana, ovvero pongo l'attenzione su parti di un testo/immagini => pesi dell'attenzione sono pesi associati a delle porzioni dell'input => utile quindi non solo alla classificazione ma anche alla spiegazione!
+
+Ad esempio:
+![[Pasted image 20250718164556.png]]
+=> dò maggiore peso alle parole che più mi influenzano la mia decisione
+
+Oppure per le immagini:
+![[Pasted image 20250718164738.png]]
+
+Oppure ancora per una traduzione:
+![[Pasted image 20250718164813.png]]
+=> le frecce rappresentano l'attention => *processo selettivo* per trovare le parti che servono ad un task a compiere una determinata azione => con l'obiettivo di dare un peso ad ogni parte.
+
+Più formalmente, faccio ***mapping*** fra query $Q$ e chiave $K$ per calcolare degli score di **similarità** => score che sono dati in pasto ad una *softmax* (normalizzatore) produrre un **insieme di pesi di attention**:![[Pasted image 20250718165653.png]]
+=> l'exp mi aiuta a dare una spinta in più a quelli più probabili
+
+
+
+## Model Inspection
+
+Tecnica di explanability che forniscono spiegazioni non globali, ma che danno caratteristiche globali della black box. 
+I metodi che vedremo sono simili a quelli per fare *data visualization*. Sono 3 famiglie di plot che si definiscono in maniera "uno a partire dall'altro"
+
+### Ceteris Paribus Plots
+
+Dal latino: "a parità di tutto il resto" => "a parità di tutte le condizioni".
+è una tecnica model agnostic ma locale.
+
+L'idea: parte da una solita istanza di test => scelgo una feature di cui vogliamo fare il plot => a questa gli diamo tutto il range dei possibili valori => dal minimo al massimo di tutta la griglia di valori => e guardo il risultato dell'output della block box per ogni valore 
+=> tipo "per un passeggero del titanic" => "se avesse avuto 5 anni" => poi "se avesse avuto 10" e cosi via... => "si sarebbe salvato?"
+
+Si costruisce un plot per ogni feature dato un esempio di test => in sequenza:
+- Si fa una perturbazione del valore di una feature
+- Provo una griglia di possibili valori
+- Dò in pasto il campione modificato alla black box
+- Disegno il grafico
+
+Abbiamo quindi due casi a seconda dei valori assunti dalla feature:
+1. Se la feature è **continua**:
+	=> Dato un punto $\hat{x}$ da spiegare e una feature $j$ da usare
+	=> Creo una griglia di valori $z_1, ... , z_k$ (con $k$ iperparametro), dove tipicamente:
+	- $z_1 = min(x_j)$ e $z_k = max(x_j)$ del training set 
+	=> Per ogni $z_i$:
+		=> Creo un nuovo punto (*data point*) $x' = \hat{x}_{x_j = z_i}$ => rischio però di creare casi molto *spuri* non correlati molto con gli altri => occhio a prendere valori estremi => posso avere dei picchi sul grafico!
+		=> Calcolo $f(x')$
+		=> Disegno il punto $(z_i, f(x'))$
+	=> Disegno anche i punti originali!
+	
+![[Ceteris paribus Plot.png]]
+=> Si possono notare alcuni punti dai quali in poi non cambiano i valori dell'output
+
+2. Se la feature è **categorica** (discreta):
+	 => Vale la stessa cosa di prima ma stavolta disegneremo un barplot 
+	 ![[Pasted image 20250719130149.png]]
+
+Lo svantaggio come detto prima è che le perturbazioni possono generare campioni non realistici!
