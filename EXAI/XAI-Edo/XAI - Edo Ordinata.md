@@ -1,10 +1,18 @@
 # Primo capitolo
 
-L'explainable AI (XAI) produce e integra modelli di intelligenza artificiale per rendere interpretabile la logica interna e il risultato degli algoritmi, rendendo il processo comprensibile agli esseri umani. Se un modello non fa parte di questa categoria si parla di black-box model.
-Nel processo decisionale dovremmo tendere a favore dei modelli black-box solo se le prestazioni motivano questa scelta. Non ci sono infatti motivi per non andare verso un modello XAI se non per le prestazioni: siccome con i modelli XAI lavoriamo maggiormente sui dati, durante la costruzione del modello si può capire se il dataset è affetto da bias, se abbiamo formulato male il problema.
-##### Paradosso di Hans
-Un uomo aveva un cavallo che reputava molto intelligente a livello scientifico: se gli veniva posta una domanda di tipo matematico allora rispondeva, battendo lo zoccolo per contare, bene; se però l'interlocutore si allontanava e non lo poteva vedere, ma lo poteva solo sentire, allora rispondeva male. La verità è che non aveva un'intelligenza matematica ma osservava molto bene il comportamento dell'interlocutore per rispondere bene.
-Il risultato è che si parla di paradosso di Hans quando un agente da un risultato giusto ma per il motivo sbagliato.
+L'explainable AI (XAI) produce e integra modelli di intelligenza artificiale per rendere interpretabile la logica interna e il risultato degli algoritmi, rendendo il processo comprensibile agli esseri umani.
+
+Se un modello non fa parte di questa categoria si parla di **black-box** model.
+Nel processo decisionale dovremmo tendere a favore dei modelli black-box solo se le prestazioni motivano questa scelta. 
+
+![[explainability vs performance.png]]
+
+Non ci sono infatti motivi per non andare verso un modello XAI se non per le prestazioni: siccome con i modelli XAI lavoriamo maggiormente sui dati, durante la costruzione del modello si può capire se il dataset è affetto da *bias*, se abbiamo formulato male il problema, o in generale il perché di una determinata risposta da parte del modello!
+## Paradosso di Hans
+
+Un uomo aveva un cavallo che reputava molto intelligente a livello scientifico: se gli veniva posta una domanda di tipo matematico allora rispondeva, battendo lo zoccolo per contare, bene; se però l'interlocutore si allontanava e non lo poteva vedere, ma lo poteva solo sentire, allora rispondeva male. 
+La verità è che non aveva un'intelligenza matematica ma osservava molto bene il comportamento dell'interlocutore per rispondere bene.
+Il risultato è che si parla di *paradosso di Hans* quando un agente da un risultato giusto ma per il motivo sbagliato. Altro motivo per cui un modello di XAI è da preferire è appunto il perché può capitare che un modello ci dia un output corretto ma il procedimento è sbagliato! => senza una motivazione non ce ne possiamo accorgere!
 ### Motivazioni
 
 Le motivazioni principali per cui ci servono motivi spiegabili sono:
@@ -91,7 +99,7 @@ Sono parametri che non coinvolgono umani.
 
 Quando si parla di [explainability](regio/Explainability/Explainability.md) si intende la spiegazione delle decisioni prese dai modelli. Alcuni modelli sono spiegabili per costruzione (by design); in questo caso si parla di interpretability.
 
-![[explainability vs performance.png]]
+
 
 ## Bias
 
@@ -1336,7 +1344,7 @@ Vengono proprosti 2 test sperimentali per **valutare** la bontà delle mappe di 
 => Fra i vari test si nota che vanilla, smoothgrad e gradCAM passano i test mentre guided gradCAM no
 => inoltre non possiamo estendere il risultato del test da un dataset al caso generale => potremmo comunque dire che i metodi basati sul gradiente forniscono una buona spiegazione del modello se passano questi test => quantificare quanto buona sia questa spiegazione è un altro problema!
 
-## Attention
+### Attention
 
 ["Attention is all you need"](https://arxiv.org/abs/1706.03762)
 https://arxiv.org/abs/1706.03762
@@ -1358,16 +1366,64 @@ Oppure ancora per una traduzione:
 ![[Pasted image 20250718164813.png]]
 => le frecce rappresentano l'attention => *processo selettivo* per trovare le parti che servono ad un task a compiere una determinata azione => con l'obiettivo di dare un peso ad ogni parte.
 
+#### Algoritmo
+
 Più formalmente, faccio ***mapping*** fra query $Q$ e chiave $K$ per calcolare degli score di **similarità** => score che sono dati in pasto ad una *softmax* (normalizzatore) produrre un **insieme di pesi di attention**:![[Pasted image 20250718165653.png]]
 => l'exp mi aiuta a dare una spinta in più a quelli più probabili
 
+Supponiamo quindi di avere un insieme di chiavi $\alpha$, a cui sono associate dei valori => tipo una memoria con coppie chiavi valori. 
+Il meccanismo dell'attention segue i seguenti passi:
+	=> prende la query e attraverso una qualche **funzione di attention** $f_{att}$ => genera uno **score di similarità** fra la chiave $K_i$ e la query $q$.
+	=> Punteggio di similarità che viene normalizzato tramite una funzione di *softmax* => producendo il valore di **peso di attention** $\alpha_i$, 
+	=> Peso  che viene moltiplicato per il rispettivo valore associato alla chiave $v_i$ producendo il **context vector** => vettore che nel valutare il mio contesto, pesa ciascun valore del mio set di chiavi.	
+	![[Screenshot 2025-07-19 at 17.20.05.png]]
 
++Esempio (nel caso di *self attention* => chiavi e valori coincidono)
 
+![[Pasted image 20250719172158.png]]
+Le chiavi saranno tutte le parole della frase. Dunque una volta presa la *rappresentazione vettoriale* (tramite ad esempio [embedding](https://aws.amazon.com/it/what-is/embeddings-in-machine-learning/#:~:text=Gli%20embedding%20sono%20rappresentazioni%20numeriche,lo%20fanno%20gli%20esseri%20umani.)) per ogni parola, pongo in queste rappresentazioni in "memoria" => e calcolo tramite la funzione di attention i miei pesi di attenzione (*attention weights*) $\alpha_i$     ![[Pasted image 20250719172924.png]]  => pesi con cui mi costruisco il *context vector* (come somma pesata di tutte le parole)![[Pasted image 20250719173148.png]] 
+In questo caso per la parola "book"
+
+Rimane da capire come calcolare lo score di similarità:
+- **Additive**: $$\alpha = softmax(w_3^T tanh(w_1K+w_2Q)$$ dove $w_1, w_2, w_3$ sono i parametri che si possono allenare => per modulare misura similarità
+- **Dot-product**:$$$\alpha = softmax(\frac{KQ}{\sqrt{m}})$$ dove $m$ è il size dell'insieme delle chiavi.
+- In generale: $$\alpha_i = \frac{exp(f_{att}(K_i,q))}{\sum_j exp(f_{att}(K_j,q))}$$
+=> l'idea generale è che il peso deve essere maggiore a quei valori con le chiavi più simili alla query.
+
+#### L'attention come explanation
+
+Visto il suo algoritmo vien da chiedersi => "is attention explanation?"
+Ovvero possiamo interpretare gli *attention weights* come un elemento che porta a spiegazioni?
+
+Visto l'uso della rete di attention => usata nella maggior parte delle reti neurali odierne come negli [LLM](https://www.hpe.com/it/it/what-is/large-language-model.html#:~:text=Un%20Large%20Language%20Model%20(LLM)%20è%20una%20tecnologia%20AI%20avanzata,le%20complessità%20del%20linguaggio%20naturale.), [CNN](https://www.ibm.com/it-it/think/topics/convolutional-neural-networks) e [Transformers](https://aws.amazon.com/it/what-is/transformers-in-artificial-intelligence/), se fosse interpretabile sarebbe una notizia positiva!
+
+Andando però a guardare come sono nate => ovvero come upgrade per le reti ricorrenti => non vi era alcun obiettivo di explanaibility!
+
+Sono dunque stati proposti due lavori al riguardo:
+- [Attention in not explanation](https://arxiv.org/abs/1902.10186)
+- [Attention is not not explanation](https://arxiv.org/abs/1908.04626)
+
+Nel primo articolo vengono fatti 2 esperimenti:
+1. Misurano quanto gli attention weights correlano con altre tecniche di **feature importance** 
+2. Provano a fare un *shuffling* randomico dei pesi per vedere quanto cambia l'output, usando anche *adversarial shuffling* => modifico pesi come se fosse fatto intenzionalmente ovvero dò più importanza a ciò che non lo dovrebbe avere
+
+=> in entrambi i casi i risultati non sono un granchè... nel primo caso infatti ho una correlazione bassa e nell'altro caso l'uscita non cambia significativamente => layer di attenzione non fornisce spiegazione!
+
++Nel secondo articolo invece si riguardano i test e si cerca di spiegare i motivi per cui non abbia potuto funzionare:
+	=> Come prima obiezione mostrano che la correlazione può essere bassa anche per altri metodi di feature importance (non solo per attention)
+	=> Nel secondo caso invece parlano di spiegazioni *fedeli* e *plausibili*:
+		- Con **fedeli** si intende che le spiegazioni motivano il comportamento **reale** della black box
+		- Mentre le **plausibili** sono convincenti per l'utente
+	=> Se dunque la spiegazione fedele è unica, a questa possono corrispondere più spiegazioni plausibili => le quali sono + semplici, meno specifiche ma comunque convincenti
+	=> La spiegazione fornita dalla rete di attention può essere una spiegazione plausibile, mentre nel primo articolo gli esperimenti consideravano solo quelle fedeli!
+
++Notare che nemmeno LIME spesso è in grado di fornire spiegazioni fedeli => si spera appunto che valga il principio di località e che il numero $K$ di iperparametri coincida con il numero di features della black box...
+
++Il dibattito va dunque avanti => alcuni lavori fanno vedere di esempi di correlazioni fra parole non molto buone per le spiegazioni...
 ## Model Inspection
 
 Tecnica di explanability che forniscono spiegazioni non globali, ma che danno caratteristiche globali della black box. 
 I metodi che vedremo sono simili a quelli per fare *data visualization*. Sono 3 famiglie di plot che si definiscono in maniera "uno a partire dall'altro"
-
 ### Ceteris Paribus Plots
 
 Dal latino: "a parità di tutto il resto" => "a parità di tutte le condizioni".
@@ -1401,3 +1457,87 @@ Abbiamo quindi due casi a seconda dei valori assunti dalla feature:
 	 ![[Pasted image 20250719130149.png]]
 
 Lo svantaggio come detto prima è che le perturbazioni possono generare campioni non realistici!
+
+Riaussumendo: Ceteris Paribus Plots come un plot per ogni feature e per ogni punto di esempio => con l'obiettivo di mostrare come cambia il target del nostro classificatore se cambiamo il valore di quella feature nel singolo esempio.
+
+### Individual Conditional Expectation (ICE)
+
+Si riprendono tutti i plot di Ceteris paribus plots, ma stavolta ==tutti insieme== nello stesso plot!
+![[Pasted image 20250719191448.png]]
+=> grafici che si accavallano fra di loro => difficili da leggere, ma danno comunque idea del trend
+
+Per migliorare la leggibilità, possiamo far partire tutti gli *ice plots* da uno stesso punto (ovvero zero) => sottraendo il delta rispetto al valore che la feature prende a $x_{min}$ ![[Pasted image 20250719192027.png]]
+Questo secondo plot è detto ***centered-ice***, ed è ottenuto appunto togliendo ad ogni feature j-esima nel punto $x_{min}$ la differenza fra il target e il valore del target quando la feature j-esima ha valore $x_{min}$: $$C-ICE_j(\hat{x}) = ICE_j(\hat{x})-f(\hat{x}_{x_j = x_{min}})$$
+### Partial Dependence Plot (PDP)
+
+Sempre a partire dai ceteris paribus plots, ne faccio la media => ovvero faccio la media degli ICE plots di solito non risulta centrato...
+
++é possibile analizzare in questo caso coppie di variabili di features => in quel caso si usano visualizzano delle [heatmaps] 
+
++Libreria DALEX(?)
+
+### Permutation Feature Importance
+
+Provo a misurare l'importanza delle feature facendo ==una permutazione dei valori== della feature (in tutti gli esempi del test set) stessa ma senza riaddestrare il modello. L'obiettivo è spiegare delle caratteristiche del modello dunque è anche questa è una tecnica di *model inspection* 
+
+Data una black box $f$ e un test set $X$, calcolo l'importanza di ogni feature j-esima, permutando i valori nella colonna $X_j$
+![[Pasted image 20250719194713.png]] 
+=> Guardo che succede cambiando i valori nella colonna scelta. In particolare mi calcolo:
+- Un errore originale (nel test set di partenza): $$Error_{origin}= \frac{1}{N_{test}}\sum_iL(y_i, f(x_i))$$
+- Un errore dopo la permutazione: $$Error_{Perm(j)}= \frac{1}{N_{test}}\sum_iL(y_i, f(x_i^{P_j}))$$
+Ottengo quindi la mia **feature importance** come rapporto fra i due errori: $$FeatureImp(j) = \frac{Error_{orig}}{Error_{Perm(j)}}$$Se dunque variando i valori di una feature si nota un grosso impatto => le performance cambiano considerevolmente!
+
+#### Ground-Wise permutation
+
++Bisogna comunque stare attenti (come già visto) a non creare esempi troppo discordanti da quelli di partenza => posso quindi fare la permutazione della feature j-esima solo all'interno di un gruppo di esempi => ad esempio un gruppo di esempi comuni
+![[Pasted image 20250719200347.png]] 
+Ad esempio dopo aver diviso in gruppi di esempi => ne considero solo un gruppo.
+
+## Concept-Based models
+
+In generale sono tecniche che cercano di ottenere spiegazioni **in termini di concetti** che si attivano durante il processo decisionale.
+Solitamente è una tecnica usata per le reti neurali.
+### Concept bottleneck model
+
+![[Concept bottleneck model.png]]
+
+È un modello strutturato con più layer:
+- Concept encoder $g$
+	Solitamente è una CNN che prende l'input e produce un **vettore di concetti**.
+- Linear layer $f$
+	Prende la lista di concetti ed esegue la **classificazione** vera e propria. Deve essere semplice: un MLP o meglio anche un semplice layer lineare; se è troppo complesso il modello diventa non spiegabile. => classificatore è una funziona composta! $f(g(x))$
+	
+![[Screenshot 2025-07-19 at 20.28.52.png]]
+#### Esempio
+
+Se ho un'immagine di una mela, vorrei che la CNN mi restituisca un vettore di informazioni legate ad essa: rosso si, tondo si, quadrato no, blu no, e così via. A questo punto la mia spiegazione è il vettore dei concetti.
+#### Osservazioni
+
+- La lista di concetti è definita in fase di progettazione e i concetti devono essere [supervisionati] (ovvero dati di input e output abbinati etichettati => molto oneroso!). Ci deve essere quindi un train set di dati annotati con il vettore dei concetti, cioè dove l'etichetta non è la classe ma il vettore. => vettore dei concetti risultante deve essere più possibili elaborato!
+- La spiegazione, supponendo la semplicità del layer lineare, deriva dal vettore dei concetti che viene associato all'input.
+
+#### Learning
+
+Vediamo come si addestra il modello.
+##### Independent
+
+Il concept encoder $g$ e il layer lineare $f$ sono addestrati indipendentemente (eventualmente anche in parallelo):
+- Si addestra il concept encoder $g$ con i concetti come target. Si tratta di una classificazione multilabel, cioè dove si possono attivare più concetti.
+- Si addestra il layer lineare $f$ dandogli in input i **concetti veri**, cioè un vettore binario. In pratica l'input dell'addestramento di $f$ ==è il target dell'addestramento di $g$.== (e non quello che ho in output da $g$)
+##### Sequential
+
+Il concept encoder e il layer lineare $f$ sono addestrati in **modo sequenziale**:
+- Si addestra prima il concept layer $g$. Solo dopo aver finito di addestrare $g$ si passano i concetti predetti come addestramento di $f$. 
+- Gli input dell'addestramento del layer lineare $f$ derivano dall'output di $g$ => non posso addestrare la $f$ prima di aver finito di addestrare $g$
+##### Joint
+
+Si tratta il modello come fosse **un singolo layer**, incapsulando l'obiettivo nella loss: $$L=L_{target}+\lambda(L_{concept})$$ dove:
+- $L_{target}$ è la classica **loss sull'output** (i.e. la classificazione finale), cioè $L_{target}(y_i,f(g(x_i)))$.
+- $L_{concept}$ è la loss sui concetti, cioè $L_{concept}(c_i,(g(x_i))$, dove $c_i$ sono i concetti.
+##### Conseguenze
+
+![[Pasted image 20250719204018.png]]
+- Per la versione join se si usa un $\lambda$ piccolo, allora potrei avere più errori sui concetti, cioè sulle spiegazioni; quando $\lambda$ cresce invece potrei avere più errori sulla classificazione finale.
+- Solitamente i primi due metodi tendono a imparare meglio i concetti, cioè la spiegazione. 
+
+Questi portano ad avere un po' di **errore sulla classificazione** => questo perché meno concept error si e più si ha libertà nella scelta dei concetti da mantenere per fare classificazione!   (problema di allineamento? da capire); tale errore diminuisce sempre più quanto il *dizionario dei concetti* è grande, in quanto aggiungo concetti aggiuntivi per coprire più variabilità nei dati.  (cioè diminuisce se i concetti legati all'input non semplifica troppo l'input stesso (?))

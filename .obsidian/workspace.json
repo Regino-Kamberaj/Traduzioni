@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "EXAI/XAI-Edo/XAI - Edo Ordinata.md",
+                "file": "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "XAI - Edo Ordinata"
+              "title": "Traduzione Slides XAI - Intelligenza Artificiale Explainable"
             }
           },
           {
@@ -27,12 +27,32 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "EXAI/Tabella di marcia exai.md",
+                "file": "EXAI/XAI-Edo/Explainability/Concept-base model.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Tabella di marcia exai"
+              "title": "Concept-base model"
+            }
+          }
+        ]
+      },
+      {
+        "id": "23690269b548c76a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9933bdfbd13be528",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "EXAI/XAI-Edo/XAI - Edo Ordinata.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "XAI - Edo Ordinata"
             }
           }
         ]
@@ -178,26 +198,32 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "f8f2bf8e475c7b8c",
+  "active": "9933bdfbd13be528",
   "lastOpenFiles": [
-    "EXAI/Tabella di marcia exai.md",
-    "EXAI/XAI-Edo/Immagini/SHAP interpretazione.png",
-    "EXAI/XAI-Edo/XAI - Edo Ordinata.md",
-    "Pasted image 20250716231527.png",
-    "Screenshot 2025-07-16 at 22.43.32.png",
-    "EXAI/XAI-Edo/Immagini/SP LIME.png",
-    "EXAI/Immagini/Pasted image 20250716180934.png",
-    "EXAI/Immagini/Pasted image 20250715185131.png",
-    "EXAI/Immagini/Pasted image 20250715184958.png",
-    "EXAI/Immagini/Pasted image 20250715181609.png",
-    "EXAI/Immagini/Pasted image 20250715165232.png",
-    "EXAI/Slides/03_NeSy.pdf",
+    "EXAI/Immagini/Pasted image 20250719204018.png",
+    "EXAI/Immagini/Pasted image 20250719200347.png",
+    "EXAI/Immagini/Pasted image 20250719194713.png",
+    "EXAI/Immagini/Pasted image 20250719192027.png",
+    "EXAI/Immagini/Pasted image 20250719191448.png",
+    "EXAI/Immagini/Pasted image 20250719173148.png",
+    "EXAI/Immagini/Pasted image 20250719173139.png",
+    "EXAI/Immagini/Pasted image 20250719172924.png",
+    "EXAI/Immagini/Pasted image 20250719172158.png",
+    "EXAI/Immagini/Screenshot 2025-07-19 at 20.28.52.png",
+    "EXAI/Immagini/Screenshot 2025-07-19 at 17.20.05.png",
     "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
-    "EXAI/XAI-Edo/Immagini/esempio KBANN.png",
+    "EXAI/XAI-Edo/XAI - Edo Ordinata.md",
+    "EXAI/Slides/01_Introduction.pdf",
+    "EXAI/Slides/03_NeSy.pdf",
+    "EXAI/Slides/02_Interpretable_by_design.pdf",
+    "EXAI/Slides/00_Administrivia.pdf",
+    "EXAI/Slides/05_Applications.pdf",
+    "EXAI/XAI-Edo/Explainability/Concept-base model.md",
+    "EXAI/Tabella di marcia exai.md",
+    "embedding.md",
     "EXAI/XAI-Edo/Approcci neuro-simbolici/KBANNs.md",
     "EXAI/XAI-Edo/Approcci neuro-simbolici/Approcci neuro-simbolici.md",
     "EXAI/XAI-Edo/Approcci neuro-simbolici/Markov Logic Networks.md",
-    "EXAI/Slides/02_Interpretable_by_design.pdf",
     "EXAI/Immagini/02_Interpretable_by_design-26 2.pdf",
     "EXAI/02_Interpretable_by_design-26 2.pdf",
     "02_Interpretable_by_design-26 2.pdf",
@@ -207,10 +233,7 @@
     "regio/Interpretability",
     "regio",
     "EXAI/XAI-Edo/Varie.md",
-    "EXAI/XAI-Edo/Immagini/esempio paradosso di simpson.pdf",
     "regio/Interpretability/Interpretability.md",
-    "EXAI/XAI-Edo/Immagini/data analysis example.pdf",
-    "EXAI/XAI-Edo/Immagini/GOSDT computazione esempio.pdf",
     "Piano Di Attacco Laurea.md",
     "Opt/Traduzione Pdf Optimization.md",
     "Swees/Swees - Traduzione slides.md",
@@ -222,8 +245,6 @@
     "Senza nome 2.md",
     "Opt/Tabella di Marcia Optimization.md",
     "Welcome.md",
-    "Untitled 1.md",
-    "Untitled.md",
-    "Net Sec/Network Security.md"
+    "Untitled 1.md"
   ]
 }
