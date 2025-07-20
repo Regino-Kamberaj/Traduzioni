@@ -22,17 +22,15 @@
             }
           },
           {
-            "id": "7113b25abe9da709",
+            "id": "f30530c5ebe179b6",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "pdf",
               "state": {
-                "file": "EXAI/XAI-Edo/Explainability/Concept-base model.md",
-                "mode": "source",
-                "source": false
+                "file": "EXAI/Slides/01_Introduction.pdf"
               },
-              "icon": "lucide-file",
-              "title": "Concept-base model"
+              "icon": "lucide-file-text",
+              "title": "01_Introduction"
             }
           }
         ]
@@ -200,6 +198,16 @@
   },
   "active": "9933bdfbd13be528",
   "lastOpenFiles": [
+    "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
+    "EXAI/XAI-Edo/XAI - Edo Ordinata.md",
+    "EXAI/Slides/01_Introduction.pdf",
+    "EXAI/XAI-Edo/Explainability/Concept-base model.md",
+    "regio/Fairness.md",
+    "regio",
+    "XAI/File/explainability vs performance.png 1.md",
+    "XAI/File/explainability vs performance.png.md",
+    "XAI/File",
+    "XAI",
     "EXAI/Immagini/Pasted image 20250719204018.png",
     "EXAI/Immagini/Pasted image 20250719200347.png",
     "EXAI/Immagini/Pasted image 20250719194713.png",
@@ -210,15 +218,10 @@
     "EXAI/Immagini/Pasted image 20250719172924.png",
     "EXAI/Immagini/Pasted image 20250719172158.png",
     "EXAI/Immagini/Screenshot 2025-07-19 at 20.28.52.png",
-    "EXAI/Immagini/Screenshot 2025-07-19 at 17.20.05.png",
-    "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
-    "EXAI/XAI-Edo/XAI - Edo Ordinata.md",
-    "EXAI/Slides/01_Introduction.pdf",
     "EXAI/Slides/03_NeSy.pdf",
     "EXAI/Slides/02_Interpretable_by_design.pdf",
     "EXAI/Slides/00_Administrivia.pdf",
     "EXAI/Slides/05_Applications.pdf",
-    "EXAI/XAI-Edo/Explainability/Concept-base model.md",
     "EXAI/Tabella di marcia exai.md",
     "embedding.md",
     "EXAI/XAI-Edo/Approcci neuro-simbolici/KBANNs.md",
@@ -226,12 +229,9 @@
     "EXAI/XAI-Edo/Approcci neuro-simbolici/Markov Logic Networks.md",
     "EXAI/Immagini/02_Interpretable_by_design-26 2.pdf",
     "EXAI/02_Interpretable_by_design-26 2.pdf",
-    "02_Interpretable_by_design-26 2.pdf",
     "Decision tree.md",
     "EXAI/XAI-Edo/Interpretability/Generalized additive models (GAMs).md",
     "regio/Interpretability/Rule fit.md",
-    "regio/Interpretability",
-    "regio",
     "EXAI/XAI-Edo/Varie.md",
     "regio/Interpretability/Interpretability.md",
     "Piano Di Attacco Laurea.md",
@@ -242,9 +242,6 @@
     "Domande Swees.md",
     "Net Sec/README.md",
     "Senza nome 3.md",
-    "Senza nome 2.md",
-    "Opt/Tabella di Marcia Optimization.md",
-    "Welcome.md",
-    "Untitled 1.md"
+    "Senza nome 2.md"
   ]
 }

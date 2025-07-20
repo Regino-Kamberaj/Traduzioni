@@ -5,59 +5,85 @@ L'explainable AI (XAI) produce e integra modelli di intelligenza artificiale per
 Se un modello non fa parte di questa categoria si parla di **black-box** model.
 Nel processo decisionale dovremmo tendere a favore dei modelli black-box solo se le prestazioni motivano questa scelta. 
 
-![[explainability vs performance.png]]
-
 Non ci sono infatti motivi per non andare verso un modello XAI se non per le prestazioni: siccome con i modelli XAI lavoriamo maggiormente sui dati, durante la costruzione del modello si può capire se il dataset è affetto da *bias*, se abbiamo formulato male il problema, o in generale il perché di una determinata risposta da parte del modello!
 ## Paradosso di Hans
 
 Un uomo aveva un cavallo che reputava molto intelligente a livello scientifico: se gli veniva posta una domanda di tipo matematico allora rispondeva, battendo lo zoccolo per contare, bene; se però l'interlocutore si allontanava e non lo poteva vedere, ma lo poteva solo sentire, allora rispondeva male. 
 La verità è che non aveva un'intelligenza matematica ma osservava molto bene il comportamento dell'interlocutore per rispondere bene.
 Il risultato è che si parla di *paradosso di Hans* quando un agente da un risultato giusto ma per il motivo sbagliato. Altro motivo per cui un modello di XAI è da preferire è appunto il perché può capitare che un modello ci dia un output corretto ma il procedimento è sbagliato! => senza una motivazione non ce ne possiamo accorgere!
-### Motivazioni
+## Motivazioni
 
 Le motivazioni principali per cui ci servono motivi spiegabili sono:
-- Capire le decisioni
+
+- **Capire le decisioni**
 	Ci interessa capire perché un modello ha preso una decisione e non ne ha presa un'altra.
-- Migliorare
-	Si parla di "human in the loop" quando dopo che il modello ha preso una decisione, l'uomo da il proprio feedback, che finisce nei dati di addestramento. In questo modo di possono produrre modelli personalizzati per una situazione, cioè si possono integrare informazioni che a priori non erano rappresentabili.
-- Fiducia
+	
+- **Migliorare il modello di IA**
+	Si parla di "human in the loop" quando dopo che il modello ha preso una decisione, l'uomo da il proprio feedback, che finisce nei dati di addestramento. 
+	In questo modo di possono produrre modelli personalizzati per una situazione, cioè si possono integrare informazioni che a priori non erano rappresentabili.
+	
+- **Fiducia**
 	Se un modello è spiegabile allora possiamo riporre un certo grado di fiducia.
 	Questo non vuol dire che se un modello è spiegabile allora è degno di fiducia, ma possiamo capire anche quando non fidarsi.
-### Problemi
-- Costruzione dei dati
+## Problemi
+
+- **Problema dell'allineamento**
+	Output del modello di ia coincide con quello che ci stavamo aspettando? oppure quello che la macchina dovrebbe restituire?
+
+- **Costruzione dei dati**
+	Un modello potrebbe imparare erroneamente dal dataset iniziale, per mancanza o incompletezza di dati.
 	Un esempio è quello in cui un sistema predice il rischio di un paziente affetto da polmonite. Dai risultati del sistema si osserva che se una persona è asmatica allora ha un basso rischio (basso rischio si intende che poi sta male); questo sarebbe contro intuitivo per ogni dottore.
 	Il motivo di questo è che se una persona asmatica ha una polmonite viene curato subito e ha un trattamento privilegiato e quindi alla fine non sta male.
 	Tutto questo succede perché nei dati c'è la relazione per cui le persone con asma non stanno male nel lungo periodo, ma questo avviene perché vengono visitate tempestivamente e perché hanno in realtà un rischio alto.
-- Blackbox ingannati
+
+- **Blackbox ingannati**
 	I modelli blackbox possono essere ingannati.
 	Un esempio sono gli esempi avversari: abbiamo un immagine $x$ a cui viene applicato un rumore $\epsilon$; il modello predice $x$ con una certa probabilità, ma se valuta $x+\epsilon$ allora predice altro con una probabilità molto più alta.
-- [Bias](regio/Bias.md)
+	![[Pasted image 20250311084154.png]]
+	
+- **Bias dei dati**
+	Bias nei dataset di partenza, non previsti possono portare a favorire/sfavorire determinate persone. Oppure ancora portare a prendere decisioni in base a etichette o particolari caratteristiche che hanno poco a che fare con l'oggetto da classificare. => ad esempio:![[Pasted image 20250311084702.png]]
+	=> immagini classificate solo per delle etichette!
+## AI Act
 
-### AI Act
-L'AI Act definisce 4 livelli di rischio nell'utilizzo dei modelli: si va dal livello più basso in cui sono contenuti gli scenari deve gli uomini non sono coinvolti (es: industria e giochi), fino al livello più alto in cui le persone sono centrali (es: riconoscimento facciale).
-L'articolo 13 dell'AI Act afferma che "i sistemi di intelligenza artificiale ad alto rischio devono essere progettati e sviluppati in modo tale da garantire che il loro funzionamento sia abbastanza trasparente per consentire agli sviluppatoti di interpretare l'output di un sistema e utilizzarlo in modo appropriato".
+L'AI Act definisce 4 livelli di rischio nell'utilizzo dei modelli: 
+- si va dal livello più basso in cui sono contenuti gli scenari deve gli uomini non sono coinvolti (es: industria e giochi),
+- fino al livello più alto in cui le persone sono centrali (es: riconoscimento facciale).
 
-### Explainability
+L'articolo 13 dell'AI Act afferma che "i sistemi di intelligenza artificiale ad alto rischio devono essere progettati e sviluppati in modo tale da garantire che il loro funzionamento sia abbastanza **trasparente** per consentire agli sviluppatoti di **interpretare** l'output di un sistema e utilizzarlo in modo appropriato".
 
-Quando si parla di explainability nel campo della [XAI](XAI/XAI.md) si intende la spiegazione delle decisioni prese dai modelli.
-#### Explainability vs performace
+## Interpretability vs Explainability
 
-In letteratura c'è un dibattito sul concetto per cui c'è una relazione inversa tra le performance e l'explainability di un modello. Un [grafico](XAI/File/explainability%20vs%20performance.png) molto comune in letteratura evidenzia quali modelli hanno delle prestazioni migliori rispetto alla explainability.
-Il punto è che non c'è nessun teorema a favore di questa tesi. In alcune situazioni si riesce a ottenere modelli di XAI le cui performance sono paragonabili ai modelli blackbox.
-#### Tecniche
+Quando si parla di [explainability](regio/Explainability/Explainability.md) si intende la spiegazione delle decisioni prese dai modelli. Alcuni modelli sono spiegabili per costruzione (by design); in questo caso si parla di **interpretability**, modelli di questo tipo sono:
+- [Alberi decisionali]
+- [Modelli lineari] =>da cui ricavare i [modelli additivi generalizzati]
+- Sistemi basati su regole ([Rule based systems])
+-   [Programmazione logica induttiva]
 
-Ci sono tre tecniche per valutare l'explainability di un modello, cioè se la spiegazione che ci da una blackbox è soddisfacente.
+### Explainability vs performance
+
+In letteratura c'è un dibattito sul concetto per cui c'è una relazione inversa tra le performance e l'explainability di un modello. Un grafico molto comune in letteratura evidenzia quali modelli hanno delle prestazioni migliori rispetto alla explainability.
+
+![[explainability vs performance.png]]
+Il punto è che non c'è nessun teorema a favore di questa tesi. In alcune situazioni si riesce a ottenere modelli di XAI le cui performance sono paragonabili ai modelli blackbox => modelli sicuramente da preferire! 
+I black box andrebbero usati solo quando necessario... oppure se l'unico modello disponibile. In quel caso per fornire comunque una spiegazione si sfruttano i metodi di [spiegazione post-hoc]
+## Valutazione explainability
+
+Ci sono tre tecniche per valutare l'explainability di un modello, cioè se la spiegazione che ci da una blackbox è soddisfacente. Tecniche che si basano principalmente a seconda dell'uso e della necessità dei tasks.
+
+![[Pasted image 20250312185203.png]]
 ##### Application grounded evaluation
 
-Utilizza umani esperti nell'applicazione su cui il modello lavora e richiede istanze (i.e., samples di test) reali. Ha costi elevati a causa dell'utilizzo di esperti (che costano) e di esempi di test reali.
-Per valutare la spiegazione si possono confrontare le spiegazioni del modello e dell'esperto sulle stesse istanze di test o chidere all'esperto di valutare la spiegazione data dal modello.
+**Utilizza umani esperti** nell'applicazione su cui il modello lavora e richiede istanze (i.e., samples di test) reali. Ha **costi elevati** a causa dell'utilizzo di esperti (che costano) e di esempi di test reali. => metodo più affidabile ma anche il più costoso
+
+Per valutare la spiegazione si possono confrontare le spiegazioni del modello e dell'esperto sulle stesse istanze di test o chiedere all'esperto di valutare la spiegazione data dal modello.
 ##### Human gounded evaluation
 
-Utilizza umani su applicazioni non tecniche e richiede quindi task reali ma semplici (non praticabile se l'applicazione richiede tecnicismo).
-Ha costi meno elevati perché non sono interessati esperti e gli umani che valutano hanno costi ragionevoli.
+Utilizza umani su applicazioni non tecniche e richiede quindi task reali ma **semplici** (non praticabile se l'applicazione richiede tecnicismo).
+Ha costi meno elevati perché **non sono interessati esperti** e gli umani che valutano hanno costi ragionevoli. => permette di eseguire più test anche se risulta meno preciso
 ##### Functionally grounded evaluation
 
-Non utilizza umani e si devono usare task proxy.
+**Non utilizza umani** e si devono usare task proxy.
 È una tecnica valida quando non si possono usare umani perché non sarebbe fair, oppure quando non abbiamo un modello prontissimo per i costi degli esperti ma vogliamo avere una certa sicurezza sulla sua bontà.
 #### Parametri
 
@@ -65,90 +91,196 @@ I parametri usati per spiegare l'explainability si possono distingue in due tipi
 ##### Quantitativi
 
 Sono parametri che devono essere valutati da umani.
-- Completezza
-	Una spiegazione potrebbe essere corretta ma non completa.
+
+- **Completezza**
+	Una spiegazione potrebbe essere corretta ==ma non completa== (per l'utente).
 	Ad esempio un esperto potrebbe osservare anche altri parti che una mappa di salienza non mette in evidenza.
-- Semplicità e complessità
+	
+- **Semplicità e complessità**
 	Rasoio di Occam: la spiegazione migliore spesso è quella più semplice.
-	Dobbiamo in questo caso definire quando una spiegazione è semplice (e.g., per un albero di decisione la profondità).
-- Plausibilità
-	Misura quanto un utente è convinto dalla spiegazione del modello.
+	Dobbiamo in questo caso definire quando una spiegazione è semplice (e.g., per un albero di decisione la profondità)
+
+- **Comprensibilità**
+	Quanto tempo ci mette l'utente a capire la spiegazione?
+	
+- **Plausibilità**
+	Misura quanto un utente è **convinto** dalla spiegazione del modello.
 	In un articolo viene mostrata una [relazione tra accuracy e plausibility](XAI/File/accuracy%20vs%20plausibility.jpeg): se l'accuracy è molto elevata e un utente non è assolutamente convinto dalla spiegazione, allora può essere che il modello ha trovato qualcosa che l'umano non aveva notato.
-- Generalizzazione
+	
+- **Generalizzazione**
 	Quanto quella spiegazione funziona bene su dati nuovi.
 	È l’overfitting delle spiegazioni.
-- Rilevanza
+	
+- **Rilevanza**
 	Le spiegazioni sono rilevanti per un determinato dominio. Ci sono domini molto tecnici che hanno bisogno di spiegazioni ad hoc.
 ##### Ausiliari
 
 Sono parametri che non coinvolgono umani.
-- Sensibilità
+- **Sensibilità**
 	Quanto un modello è sensibile alla perturbazione di una feature.
 	Ad esempio su un dataset di 1000 esempi quante volte cambiando una feature mi cambia l’output.
-- Continuità
+	
+- **Continuità**
 	Se ho due esempi simili, vorrei che questi avessero spiegazioni simili.
 	Voglio che una spiegazione sia comune a una regione di spazio.
-- Consistenza
+	
+- **Consistenza**
 	Vorrei che modelli diversi mi dessero la stessa motivazione per lo stesso input.
-- Costo computazionale
+	
+- **Costo computazionale**
 	Quanto è costoso avere una spiegazione. Può succedere che il costo della spiegazione sia più oneroso del costo dell'output.
-- Correttezza
+	
+- **Correttezza**
 	Si spiega da se.
 	Non sempre è possibile però avere una verità assoluta con cui confrontare la spiegazione. Ad esempio due medici possono spiegare un risultato in modi diversi.
-### Interpretability
-
-Quando si parla di [explainability](regio/Explainability/Explainability.md) si intende la spiegazione delle decisioni prese dai modelli. Alcuni modelli sono spiegabili per costruzione (by design); in questo caso si parla di interpretability.
-
 
 
 ## Bias
 
-Un bias è definito come un errore sistematico nel processo decisionale che porta a un risultato [unfair](regio/Fairness.md).
-Nel mondo del ML la previsione del modello viene presa basandosi sui dati del train set; se questi dati contengono dei bias allora l'outcome sarà unfair.
-- Un esempio è che se passiamo una foto di un matrimonio occidentale allora ci dice che è un matrimonio, ma la foto è di un matrimonio orientale allora ci dice che sono persone.
-- Un altro esempio è che se i dati esprimono (e succede davvero) che le donne hanno uno stipendio più basso, allora i modelli di raccomandazione propongono alle donne dei lavori con stipendio più basso.
-- Se un dataset contiene foto di lupi dove nella maggior parte i lupi sono sulla neve, allora se chiediamo di classificare un Husky sulla neve ci darà che è un lupo.
+Un bias è definito come un ==errore sistematico nel processo decisionale== che porta a un risultato non giusto (*unfair*)
+
+Nel mondo del ML la previsione del modello viene presa basandosi sui dati del train set; se questi dati **contengono dei bias** allora l'outcome sarà unfair.
+
+
+
 ### Bias nei dati
 
 Vediamo alcuni tipi di bias nei dati.
-- Sampling
-	È detto bias di campionamento è succede quando il train set non è ottenuto in modo casuale dalla distribuzione della popolazione, ma ci sono alcune categorie di individui che hanno più probabilità di essere campionate.
-	È quindi un problema di come sono raccolti i dati.
-- Representation
-	Avviene quando ci sono delle sotto popolazioni che sono rappresentate meno. È un concetto molto simile al sampling, ma qua l'attenzione è sulle sotto popolazioni e non sul campionamento in generale
-- Artefatti
-	Si presenta quando c'è una correlazione tra artefatti (e.g. patch in una foto) e classe di appartenenza del sample.
-	In pratica il modello usa l'artefatto per classificare i futuri samples.
+
+- **Bias di campionamento**
+	Succede quando il train set non è ottenuto in modo casuale dalla distribuzione della popolazione, ma ci sono ==alcune categorie di individui che hanno più probabilità di essere campionate==. => È quindi un problema di come sono raccolti i dati.
+	- Ad esempio: Il sondaggio _Literary Digest_ per le elezioni presidenziali USA del 1936, basato su un campione non rappresentativo
+	
+- **Bias di rappresentazione**
+	Avviene quando ci sono delle ==sotto popolazioni che sono rappresentate meno==. È un concetto molto simile al sampling, ma qua l'attenzione è sulle sotto popolazioni e non sul campionamento in generale. 
+	- Un esempio è che se passiamo una foto di un matrimonio **occidentale** allora ci dice che è un matrimonio, ma se invece la foto è di un matrimonio orientale allora il modello non ci dice che sono persone che si stanno sposando.
+	
+- **Artefatti**
+	Si presenta quando c'è ==una correlazione tra artefatti== (e.g. patch in una foto) e ==classe di appartenenza== del sample.
+	In pratica il modello usa l'artefatto per **classificare** i futuri samples. 
+	- Se un dataset contiene foto di lupi dove nella maggior parte i lupi sono sulla neve, allora se chiediamo di classificare un Husky sulla neve ci darà che è un lupo. => overfitting!
+
++ **Bias di aggregazione**
+	Si fanno inferenze sugli individui basandosi su statistiche aggregate ma dell'intera popolazione!
+	- Ad esempio: [Paradosso di Simpson]  
+#### Paradosso di Simpson
+
+![[esempio paradosso di simpson.pdf]]
+
+Qual è il miglior trattamento per una malattia?
+- Il **trattamento A** sembra il migliore considerando alcuni **gruppi di pazienti.**
+- Il **trattamento B** sembra il migliore guardando i dati aggregati. => sbagliato!
+
+Il paradosso di Simpson si verifica quando ==una tendenza osservata in più gruppi scompare o si inverte quando i gruppi vengono combinati.== 
+
+Il motivo è perché risulta presente una *variabile di confusione* ovvero: una variabile che influenza sia la variabile indipendente che quella dipendente, causando il paradosso.
+
+![[Pasted image 20250311174836.png]]
+
+Ad esempio: nello studio sulle malattie renali, la **dimensione dei calcoli renali** ha influenzato la scelta del trattamento (i casi più semplici erano trattati di più con il metodo B).
+
+Come evitare il paradosso? 
+Deve valere il *sure-thing principle* => Un azione A che aumenta la probabilità di un evento E **in ogni sottopopolazione** deve anche aumentare la probabilità di E **nell'intera popolazione**, in questo modo l'azione non cambia la distribuzione delle sottopopolazioni.
 ### Bias negli algoritmi
 
-Vediamo alcuni tipi di bias negli algorimi.
-- Algoritmico
-	Non ci sono bias nei dati, ma è l'algoritmo che introduce dei bias per come è costruito.
-- D'interazione
-	Quando il bias proviene dall'interazione dell'algoritmo verso alcune categorie di utenti.
-- Di conferma
-	Se chi ha progettato l'algoritmo ha introddo un bias perché il suo pensiero è affetto da bias.
-- Generativo
-	Se i dati hanno dei bias e un modello generativo genera risposte affetti da questi bias. È strettamente legato ai modelli generativi.
+Vediamo alcuni tipi di bias negli algoritmi.
 
+- **Algoritmico**
+	Non ci sono bias nei dati, ma è **l'algoritmo che introduce dei bias** per come è costruito. 
+	
+- **D'interazione**
+	Quando il bias proviene dall'interazione dell'algoritmo verso alcune categorie di utenti. 
+	- Ad esempio: un chatbot che risponde in determinati modi a seconda di chi ha a che fare (es. uomo vs donna)
+	
+- **Di conferma**
+	Se chi ha progettato l'algoritmo ha introdotto un bias perché il suo pensiero è affetto da bias. => il sistema di IA rafforza pregiudizi preesistenti nei dati o nei suoi utenti! 
+	- Ad esempio algoritmi di selezione del personale che premiano solo candidati con certe caratteristiche (a discapito di altre)
+	- Un altro esempio è che se i dati esprimono (e succede davvero) che le donne hanno uno stipendio più basso, allora i modelli di raccomandazione propongono alle donne dei lavori con stipendio più basso.
+	
+- **Generativo**
+	Se i dati hanno dei bias e un modello generativo genera risposte affetti da questi bias. È strettamente legato ai modelli generativi.
+	- **Esempio:** Un generatore di immagini che produce sempre figure maschili per il ruolo di "CEO" e femminili per "infermiere".
+
+### Misure di correttezza
+
+Definiamo la correttezza come ==l’assenza di pregiudizi o favoritismi nei confronti di un individuo o gruppo==, basati su caratteristiche innate o acquisite.
+
+Come misurare la correttezza?
+Esistono molte metriche per misurare la **correttezza**. La maggior parte di queste sono basate sull'esistenza di una macchina di machine learning che modella la probabilità P di una classe positiva e le sue relazioni con qualche attributo protetto A.
+
+#### Equalized Odds
+
+Un predittore $\hat{Y}$ soddisfa **equalized odds** con rispetto all'attributo protetto $A$ e outcome $Y$, se $Y$ e $A$ sono indipendenti condizionalmente da $\hat{Y}$ $$P( \hat{Y} = 1 | A = 0, Y = \gamma) = P(\hat{Y} = 0 | A = 1, Y = \gamma) \space \gamma \in \{0,1\}$$ Ovvero se la probabilità di classificare:
+ - Un istanza positiva (*true positive*) => correttamente
+ - Un istanza negativa (*false positive*) => erroneamente
+Sono le stesse sia per gruppi [protetti] (che soddisfano certe caratteristiche) che non protetti.
+
+Riassumendo => gruppi protetti e non protetti devono avere stessi tassi per TP e FP
+#### Equal Opportunity
+
+Un predittore binario $\hat{Y}$ soddisfa Equal opportunity con rispetto a $A$ e $Y$ se:$$P( \hat{Y} = 1 | A = 0, Y = 1) = P(\hat{Y} = 0 | A = 1, Y = 1)$$Ovvero se la probabilità di classificare correttamente un instanza (solo) positiva è la stessa per gruppi protetti e non protetti.
+
+Riassumendo => gruppi protetti e non protetti devono avere stessi tassi per TP
+#### Demografic Parity
+
+Un predittore $\hat{Y}$ soddisfa demographic parity se: $$P( \hat{Y} | A = 0) = P(\hat{Y}| A = 1)$$Ovvero se la probabilità (in questo caso [likelihood]) di ottenere un **esito positivo** è la stessa indipendentemente dall'appartenenza (o meno) a un gruppo protetto.
+#### Metodi per garantire correttezza:
+
+Esistono due metodi per garantire la correttezza:
+
+- *Fairness trough awareness*
+	L'algoritmo è equo se assegna risultati simili a individui con caratteristiche simili, secondo particolari metriche di somiglianza a seconda del task specifico
+
+- *Fairness trough unawareness*
+	Un algoritmo è equo se non utilizza esplicitamente caratteristiche protette nel prendere decisioni.
+
++Altri criteri per la correttezza sono:
+- **Uguaglianza di trattamento**
+- **Equità nei test**
+- **Correttezza controfattuale**
+- **Equità nei domini relazionali**
+- **Parità statistica condizionale**
+#### Correttezza nei modelli
+
+Come gestire il bias?
+
+Ho tre possibilità:
+
+1. **Pre-processing:** Modificare i dati **prima dell’addestramento** per eliminare discriminazioni. 
+2. **In-processing:** **Modificare gli algoritmi di apprendimento** per garantire equità (ad es. cambiando la funzione obiettivo o introducendo vincoli).  
+3. **Post-processing:** **Intervenire dopo l’addestramento**, ad esempio correggendo le predizioni tramite set di validazione.
 ## Data analysis
 
-La data analysis utilizza metodi statistici e visuali per spiegare le correlazioni dei dati. I dati statistici se non usati insieme a quelli visuali potrebbero non fornire una soluzione corretta ed esatta; tramite la visualizzazione si possono osservare cose che le sole statistiche non ci dicono, come in [questo esempio](regio/File/data%20analysis%20example.pdf) (non da sapere).
+La data analysis utilizza **metodi statistici e visuali** per spiegare le correlazioni dei dati. I dati statistici se non usati insieme a quelli visuali potrebbero non fornire una soluzione corretta ed esatta; tramite la visualizzazione si possono osservare cose che le sole statistiche non ci dicono, come in [questo esempio](regio/File/data%20analysis%20example.pdf) (non da sapere).
 
 ![[data analysis example.pdf]]
 
-+ Esempio di unfairness
-
-![[esempio paradosso di simpson.pdf]]
+Questo dimostra che **guardare solo le statistiche numeriche può essere fuorviante**: è sempre necessaria un'analisi visiva dei dati.
 ### Plot
 
-Solitamente i grafici sono utili per mostrare relazioni tra due variabili. Non è solitamente consigliato mostrare relazioni tra più di due variabili; se siamo molto bravi a fare grafici multidimensionali e interattivi allora si può fare, però è difficile.
-Un modo per mettere in relazione tre variabili è usare i colori: sulle ascisse e orinate ho due variabili; la terza è espressa nello spazio definito dalle altre due tramite colori.
+Solitamente i grafici sono utili **per mostrare relazioni tra variabili**.
+Non è solitamente consigliato mostrare relazioni tra più di due variabili; se siamo molto bravi a fare grafici multidimensionali e interattivi allora si può fare, però è difficile.
+
+Un modo per mettere in relazione tre variabili è usare i **colori**: sulle ascisse e orinate ho due variabili; la terza è espressa nello spazio definito dalle altre due tramite colori.
+
 Le librerie più usate sono:
-- Le classiche e quelle su cui si appoggiano le altre sono Pandas, numpy e matplotlib.
+- Le classiche e quelle su cui si appoggiano le altre sono *Pandas*, numpy e matplotlib.
 - Quelle più moderne sono seaborn, plotly (per grafici interattivi) e vega-altair (più avanzata).
-- Le più specifiche per il ML e la XAI sono ydata-profling, FACETS e KNIME.
-#### Scatter plot
+- Le più specifiche per il ML e la XAI sono *ydata-profling*, FACETS e KNIME.
+
+#### Esempi grafici
+
+##### Bar plot
+
+Mette in relazione la grandezza (quantità, media, varianza) di una variabile rispetto a un insieme di categorie discrete ([grafico](regio/File/bar%20plot.png)).
+
+![[bar plot.png]]
+##### Istogramma
+
+Rappresenta la distribuzione di una variabile continua: sulle ascisse abbiamo i valori delle variabili suddivise in bin, sulle ordinate la densità rispetto a ogni bin.
+Usato per comprendere la distribuzione dei samples.
+![[istogramma.png]]
+##### Scatter plot
 
 È usato per mettere in relazione due variabili continue $x$ e $y$ ([grafico](regio/File/scatter%20plot.png)), dove ogni punto sul piano è dato dalla coppia $(x,y)$; se usato per variabili discrete allora vengono delle barre di samples.
 
@@ -158,24 +290,43 @@ Si possono mettere insieme più scatter plot in una [matrice](regio/File/scatter
 
 ![[scatter plot matrix.png]]
 
-È usato per rappresentare pattern o outliers.
-#### Bar plot
-
-Mette in relazione la grandezza (quantità, media, varianza) di una variabile rispetto a un insieme di categorie discrete ([grafico](regio/File/bar%20plot.png)).
-
-![[bar plot.png]]
-#### Istogramma
-
-Rappresenta la distribuzione di una variabile continua: sulle ascisse abbiamo i valori delle variabili suddivise in bin, sulle ordinate la densità rispetto a ogni bin.
-Usato per comprendere la distribuzione dei samples.
-![[istogramma.png]]
-#### Box plot
+È usato per rappresentare **pattern o outliers.**
+##### Box plot
 
 Sulle ascisse ci sono le categorie discrete e sulle ordinate la distribuzione delle variabili. Il [box](regio/File/box%20plot.png) rappresenta il primo e terzo quartile, con la mediana nel mezzo; i baffi rapprensetano l'estensione della distribuzione; gli outliers sono rappresnetati da pallini esterni ai baffi.
 Usato per capire la distribuzione dei samples e rappresentare gli outliers.
 
 ![[box plot.png]]
 
+## Esempi
+
+### **Importanza delle caratteristiche (Feature Importance)**  
+
+![[Pasted image 20250313145134.png]]
+
+Indica quanto ogni variabile contribuisce alla predizione del modello.
+### **Mappe di attenzione (Attention Maps)**  
+
+![[Pasted image 20250313145214.png]]
+
+Visualizzano quali parti dell’input il modello considera **più rilevanti.**
+### Mappe di salienza (Saliency Maps)**  
+
+![[Pasted image 20250313145243.png]]
+
+Evidenziano le aree più influenti dell’immagine per una predizione.
+
+ ### **LIME (Local Interpretable Model-agnostic Explanations)**  
+
+![[Pasted image 20250313145315.png]]
+
+Genera spiegazioni interpretabili per singole predizioni dei modelli _black-box_.
+
+### **SHAP (Shapley Additive Explanations)**  
+
+![[Pasted image 20250313145349.png]]
+
+Metodo basato sulla teoria dei giochi per assegnare **valori di contributo equi** a ciascuna caratteristica del modello.
 # Interpretabilità 
 
 Alcuni modelli sono spiegabili per costruzione (by design); in questo caso si parla di interpretability.
