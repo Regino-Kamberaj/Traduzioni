@@ -1610,7 +1610,7 @@ I gradienti ci dicono quali feature hanno la più ripida direzione locale, relat
 
 Presa una immagine di input $I_0 \in \mathbb{R}^{W\times H \times K}$ , dove $K$ corrisponde al numero di canali => 3 per Immagini RGB 
 => si passa alle mappe di salienza di dimensione $$M \in \mathbb{R}^{W\times H}$$ dove: $$M_{ij} = max| W_{ijk}|$$
-=> si effettua un operazione di [pooling] => dove si riduce lo spazio delle feature.
+=> si effettua un operazione di [pooling] => dove (stavolta) si riduce lo spazio delle feature.
 
 Effettuo un operazione di *feature maps* => guardo nel'intorno di pixel e faccio un operazione di aggregazione => tramite max/avg e mediamente mi basta che sia estratta la feature di interesse.
 
@@ -1637,7 +1637,7 @@ Da un immagine di input $I_0$ => se la dò in pasto ad una [CNN] => questa produ
 
 ![[Pasted image 20250717183731.png]]
 
-Si hanno delle misure di gradiente + grossolane => ma anche più robuste in quanto + aggregate => ci si ferma infatti all'ultima uscita del filtro convoluziona => ovvero non si fa backpropagation fino all'input, ma ci si ferma all'output dell'ultimo layer convoluzionale.
+Si hanno delle misure di gradiente + grossolane => ma anche più robuste in quanto + aggregate => ci si ferma infatti all'ultima uscita del filtro convoluzionale => ovvero non si fa backpropagation fino all'input, ma ci si ferma all'output dell'ultimo layer convoluzionale.
 
 ###### Algoritmo
 

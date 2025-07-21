@@ -13,27 +13,30 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "EXAI/XAI-Edo/XAI - Edo Ordinata.md",
+                "file": "EXAI/XAI - Ordinata.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "XAI - Edo Ordinata"
+              "title": "XAI - Ordinata"
             }
           },
           {
             "id": "0da98e33b1ebf2fa",
             "type": "leaf",
             "state": {
-              "type": "pdf",
+              "type": "markdown",
               "state": {
-                "file": "EXAI/Slides/02_Interpretable_by_design.pdf"
+                "file": "EXAI/Domande esame XAI.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-file-text",
-              "title": "02_Interpretable_by_design"
+              "icon": "lucide-file",
+              "title": "Domande esame XAI"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -90,8 +93,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 361.501522064209,
-    "collapsed": true
+    "width": 361.501522064209
   },
   "right": {
     "id": "1ac7e9d81bf48250",
@@ -176,19 +178,23 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "9933bdfbd13be528",
+  "active": "0da98e33b1ebf2fa",
   "lastOpenFiles": [
-    "Neurone artificiale.md",
-    "EXAI/XAI-Edo/XAI - Edo Ordinata.md",
-    "EXAI/Slides/02_Interpretable_by_design.pdf",
-    "Pasted image 20250721114316.png",
-    "Opt/Traduzione Pdf Optimization.md",
-    "().md",
+    "EXAI/XAI - Ordinata.md",
     "EXAI/Traduzione Slides XAI - Intelligenza Artificiale Explainable.md",
+    "EXAI/XAI-Edo/Varie.md",
+    "EXAI/Tabella di marcia exai.md",
+    "EXAI/Immagini/Concept bottleneck model.png",
+    "EXAI/XAI-Edo/Explainability/Concept-base model.md",
+    "EXAI/Immagini/Pasted image 20250721114316.png",
+    "EXAI/Slides/02_Interpretable_by_design.pdf",
+    "Neurone artificiale.md",
+    "().md",
+    "EXAI/Domande esame XAI.md",
+    "Opt/Traduzione Pdf Optimization.md",
     "XAI/File/explainability vs performance.png 1.md",
     "XAI/File/explainability vs performance.png.md",
     "EXAI/Slides/01_Introduction.pdf",
-    "EXAI/XAI-Edo/Explainability/Concept-base model.md",
     "regio/Fairness.md",
     "regio",
     "XAI/File",
@@ -201,11 +207,9 @@
     "EXAI/Immagini/Pasted image 20250719173148.png",
     "EXAI/Immagini/Pasted image 20250719173139.png",
     "EXAI/Immagini/Pasted image 20250719172924.png",
-    "EXAI/Immagini/Pasted image 20250719172158.png",
     "EXAI/Slides/03_NeSy.pdf",
     "EXAI/Slides/00_Administrivia.pdf",
     "EXAI/Slides/05_Applications.pdf",
-    "EXAI/Tabella di marcia exai.md",
     "embedding.md",
     "EXAI/XAI-Edo/Approcci neuro-simbolici/KBANNs.md",
     "EXAI/XAI-Edo/Approcci neuro-simbolici/Approcci neuro-simbolici.md",
@@ -215,14 +219,11 @@
     "Decision tree.md",
     "EXAI/XAI-Edo/Interpretability/Generalized additive models (GAMs).md",
     "regio/Interpretability/Rule fit.md",
-    "EXAI/XAI-Edo/Varie.md",
     "regio/Interpretability/Interpretability.md",
     "Piano Di Attacco Laurea.md",
     "Swees/Swees - Traduzione slides.md",
     "Swees/Domande Swees.md",
     "Senza nome.md",
-    "Domande Swees.md",
-    "Net Sec/README.md",
-    "Senza nome 3.md"
+    "Domande Swees.md"
   ]
 }
