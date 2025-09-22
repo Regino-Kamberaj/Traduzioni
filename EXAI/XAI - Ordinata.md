@@ -1502,6 +1502,7 @@ Si può dimostrare che lo *shapley value* $\phi : G \rightarrow \mathbb{R}^d$ è
 
 Riformulando un po': $$\phi_j = \frac{1}{d} \sum_{S \subset D/j} \frac{|s|!(d-1-|s|)!}{(d-1)!} (v(S \cup \{i\}) - v(S))$$$$\phi_j =  \sum_{S \subset D/j} \frac{|s|!(d-1-|s|)!}{d!} (v(S \cup \{i\}) - v(S))$$
 ##### Esempio:
+
 $d=3$ , giocatori {1,2,3}, come calcolo lo shapley value per il secondo giocatore?
 => quante coalizioni senza {2} ? => {0}, {1}, {3}, {1,3} => l'ordine conta! 
 (guarda la formula sopra) 

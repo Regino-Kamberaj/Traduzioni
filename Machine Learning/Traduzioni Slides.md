@@ -45,6 +45,7 @@ Alla fine di questa lezione avrete:
 “Ho studiato tutte le carte celesti disponibili di pianeti e stelle e nessuna corrisponde alle altre. Ci sono tante misurazioni e metodi quanti sono gli astronomi e tutti sono in disaccordo. Ciò che serve è un progetto a lungo termine con l'obiettivo di mappare i cieli condotto da una singola località per un periodo di diversi anni.”
 
 	- Tycho Brahe, 1563 (età 17 anni).
+(Tycho dice mannagg ar cazzo non ci sono abbastanza dati)
 
 - Il termine Apprendimento Automatico risale ad Arthur Samuel negli anni '50.
 - Negli anni successivi il suo ambito si è espanso e contratto.
@@ -55,11 +56,11 @@ $$\text{Apprendimento Automatico} = \text{(Statistica Computazionale + Ottimizza
 ---
 **Cos'è l'Apprendimento Automatico?**
 
-“Si dice che un programma per computer apprenda dall'esperienza E rispetto ad alcune classi di compiti T e misura di performance P se la sua performance nei compiti in T, misurata da P, migliora con l'esperienza E.”
+“Si dice che un programma per computer apprenda dall'esperienza E rispetto ad alcune classi di compiti T e **misura di performance** P se la sua performance nei compiti in T, misurata da P, migliora con l'esperienza E.” => tipo vedo se aumenta accuratezza di classificazione
 
 	- Tom Mitchell, 1987
 
-- Questa definizione è simile alle definizioni (moderne) di Intelligenza Artificiale.
+- Questa definizione è simile alle definizioni (moderne) di Intelligenza Artificiale. 
 - Cioè, è operativa invece che cognitiva.
 - Alan Turing iniziò questa tendenza cambiando la domanda da “Le macchine possono pensare?” a “Le macchine possono fare ciò che noi (come entità pensanti) possiamo fare?”.
 
@@ -67,21 +68,21 @@ $$\text{Apprendimento Automatico} = \text{(Statistica Computazionale + Ottimizza
 **Apprendimento supervisionato versus non supervisionato**
 
 - L'Apprendimento Automatico è (molto approssimativamente) diviso in due macro categorie di approcci di apprendimento:
-  - **Apprendimento Supervisionato**: a volte chiamato “apprendere da un insegnante” si riferisce a una classe di approcci che mirano ad apprendere a predire output da *input* partendo da un dataset di input e output accoppiati.
-  - **Apprendimento Non Supervisionato**: che invece cerca di apprendere “qualcosa” da dati di input **non etichettati** – cioè, senza etichette pre-specificate.
+  - **Apprendimento Supervisionato**: a volte chiamato “apprendere da un insegnante” si riferisce a una classe di approcci che mirano ad apprendere a predire output da *input* partendo da un dataset di input e output accoppiati. => immagine e questa è un immagine di un gatto"
+  - **Apprendimento Non Supervisionato**: che invece cerca di apprendere “qualcosa” da dati di input **non etichettati** – cioè, senza etichette pre-specificate. => tipo GPT, tanti dati senza supervisore => self supervisor
 
 - In questo corso introduttivo ci limiteremo per lo più all'apprendimento supervisionato.
-- Nota che esiste, in effetti, uno spettro completo di regimi di supervisione: supervisionato, debolmente supervisionato, semi-supervisionato, auto-supervisionato, non supervisionato.
+- Nota che esiste, in effetti, uno spettro completo di regimi di supervisione: supervisionato, debolmente supervisionato, semi-supervisionato, auto-supervisionato, non supervisionato. (algoritmi non supervisionati ci so a data mining)
 
 ---
 **Apprendimento supervisionato: un esempio**
 
-- Supponiamo di analizzare la correlazione tra altezza e peso.
+- Supponiamo di analizzare la correlazione tra **altezza** e **peso**.
 - (A parte: useremo spesso esempi sintetici di questo tipo per illustrare concetti e tecniche chiave.)
 - E supponiamo di avere solo due punti dati:
   $$ (67.9, 170.85) \text{ e } (61.9, 122.5)$$
 
-- Idealmente, desideriamo inferire una relazione tra altezza e peso che spieghi i dati.
+- Idealmente, desideriamo inferire una **relazione** tra altezza e peso che spieghi i dati.
 - Un buon primo passo è di solito visualizzare.
 
 ---
@@ -95,7 +96,8 @@ $$\text{Apprendimento Automatico} = \text{(Statistica Computazionale + Ottimizza
 ---
 **Apprendimento supervisionato: un esempio**
 
-- Beh, un po' di algebra delle scuole medie ci permette di connettere i punti:  $$y = 8.013x - 373.247$$ perché questo modello?
+- Beh, un po' di algebra delle scuole medie ci permette di connettere i punti:  $$y = 8.013x - 373.247$$ perché questo modello? => tipo perché non una parabola? 
+=> la retta è il modello più semplice! => con due sole variabili!
 
 ![[Pasted image 20250917230839.png]]
 
@@ -105,7 +107,9 @@ $$\text{Apprendimento Automatico} = \text{(Statistica Computazionale + Ottimizza
 - Ora supponiamo di avere molti più dati.
 - Il nostro “modello” generalizza?
 
-![[Pasted image 20250917231024.png]]---
+![[Pasted image 20250917231024.png]]
+
+In alcune parti potremmo fare meglio in altre peggio... Come migliorare? avendo più punti e solo con due parametri devo decidere quale sia il miglior modello che generalizza i dati.
 
 ----
 ## Organizzazione e Obiettivi del Corso
@@ -114,17 +118,18 @@ $$\text{Apprendimento Automatico} = \text{(Statistica Computazionale + Ottimizza
 **Prerequisiti (Matematica)**
 
 - Questo corso richiede un certo grado di maturità matematica, così come una padronanza delle basi della programmazione, degli algoritmi e delle strutture dati.
-- I Concetti Matematici Chiave che dovreste conoscere includono:
+
+- I **Concetti Matematici** Chiave che dovreste conoscere includono:
   - Cos'è il rango di una matrice. Cosa significa essere rank-deficient (a rango carente)?
   - Cosa sono gli autovalori e gli autovettori di una matrice? Cosa significano?
-  - Cos'è il gradiente di una funzione multivariata? In quale direzione punta?
-  - Cos'è un prodotto scalare (punto) tra due vettori?
+  - Cos'è il gradiente di una funzione multivariata? In quale direzione punta? => direzione nel quale la direzione è più ripida.
+  - Cos'è un prodotto scalare (punto) tra due vettori?  
   - Cos'è la norma di un vettore? Cosa ha a che fare con il prodotto scalare?
 
 ---
 **Prerequisiti (Statistica e Teoria della Probabilità)**
 
-- I Concetti Statistici Chiave che dovreste conoscere includono:
+- I Concetti **Statistici** Chiave che dovreste conoscere includono:
   - Cos'è la Regola della **Somma della probabilità**? E la Regola del Prodotto?
   - Cosa hanno a che fare queste regole con le **funzioni di densità** di probabilità Congiunta, Condizionata e Marginale?
   - Cos'è la **Regola di Bayes**? Cosa significa e come possiamo derivarla?
@@ -141,18 +146,18 @@ $$\text{Apprendimento Automatico} = \text{(Statistica Computazionale + Ottimizza
 ---
 **Organizzazione**
 
-Questo corso è sui Fondamenti dell'Apprendimento Automatico, e in esso tratteremo:
+Questo corso è sui **Fondamenti dell'Apprendimento Automatico**, e in esso tratteremo:
 
-- Fondamenti dei Fondamenti: teoria della probabilità e statistica per l'apprendimento automatico, distribuzioni di probabilità, basi della teoria dell'informazione, interpretazioni bayesiane versus frequentiste, modelli lineari per la regressione, modelli lineari per la classificazione, la scomposizione bias-varianza, overfitting e underfitting, regolarizzazione del modello, modelli generativi probabilistici, modelli discriminativi probabilistici, Stima di Massima Verosimiglianza (MLE), inferenza Massimo a Posteriori (MAP), inferenza bayesiana.
+- Fondamenti dei Fondamenti: teoria della probabilità e statistica per l'apprendimento automatico, distribuzioni di probabilità, basi della teoria dell'informazione (NO), interpretazioni bayesiane versus frequentiste, modelli lineari per la regressione, modelli lineari per la classificazione, la scomposizione bias-varianza, overfitting e underfitting, regolarizzazione del modello, modelli generativi probabilistici, modelli discriminativi probabilistici, **Stima di Massima Verosimiglianza** (Likelihood) (MLE), inferenza Massima a Posteriori (MAP), inferenza bayesiana. => primo modulo su regressione e classificazione
 
-- Apprendimento Automatico: Macchine a Vettori di Supporto (SVM), modelli kernel, modelli grafici, alberi decisionali, metodi ensemble, boosting, bagging, media bayesiana di modelli, foreste casuali, Expectation Maximization (EM), stima della densità di misture.
+- Apprendimento Automatico: **Macchine a Vettori di Supporto** (SVM), modelli kernel, modelli grafici (NO), alberi decisionali, metodi ensemble, boosting, bagging, media bayesiana di modelli, foreste casuali, Expectation Maximization (EM), stima della densità di misture.
 
 ---
 **Organizzazione**
 
 - Apprendimento Profondo(Deep Learning): modelli connessionisti, regole di apprendimento hebbiane, il percettrone, reti neurali, Discesa del Gradiente Stocastica (SGD), l'algoritmo di Backpropagation, il Percettrone Multistrato (MLP), gradienti che svaniscono ed esplodenti, dimensione del modello e regolarizzazione, regolarizzazione della rete.
-- Argomenti Speciali e Applicazioni: Reti Neurali Ricorrenti a Memoria a Lungo-Termine (LSTM), elaborazione del linguaggio naturale e modelli linguistici (Transformers), Reti Neurali Convoluzionali (CNN), apprendimento auto-supervisionato, apprendimento continuo, adattamento del dominio, transfer learning.
-- Strumenti, Tecniche e Best Practices: programmazione numerica, visualizzazione, diagnostica del modello e monitoraggio dell'addestramento, scikit-learn, PyTorch.
+- Argomenti Speciali e Applicazioni: Reti Neurali Ricorrenti a Memoria a Lungo-Termine (LSTM) (NO), elaborazione del linguaggio naturale e modelli linguistici (Transformers), Reti Neurali Convoluzionali (CNN), apprendimento auto-supervisionato, apprendimento continuo, adattamento del dominio, transfer learning.
+- Strumenti, Tecniche e Best Practices: programmazione numerica, visualizzazione, diagnostica del modello e monitoraggio dell'addestramento, scikit-learn (buono per per documentazione), PyTorch(framework scelto principalmente per machine learning).
 
 ---
 **Una Timeline Approssimativa del Materiale**
@@ -178,7 +183,7 @@ Questo corso è sui Fondamenti dell'Apprendimento Automatico, e in esso trattere
   - Apprendimento Profondo I
   - Apprendimento Profondo II
 
-- Nelle sessioni di laboratorio (sempre di martedì) lavoreremo insieme su una serie di problemi.
+- Nelle sessioni di laboratorio (sempre di martedì /forse giovedì) lavoreremo insieme su una serie di problemi.
 
 - Una settimana prima pubblicherò i laboratori e un breve tutorial per iniziare.
 
@@ -191,12 +196,12 @@ Questo corso è sui Fondamenti dell'Apprendimento Automatico, e in esso trattere
 
 - La valutazione finale si basa su diverse componenti:
 
-| Tipo      | Componente             | Peso                                  |
-|-----------|------------------------|---------------------------------------|
-| Obbligatorio | Laboratorio/Compiti a casa | \(1/3 (+1/30 \, \text{bonus puntualità})\) |
-| Opzionale   | Esame Scritto Intermedio | \(1/3\)                               |
-| Obbligatorio | Esame Scritto Finale   | \(1/3 \, (\text{o} \, 2/3)\)          |
-| Opzionale   | Esame Orale Finale     | \(\pm 1/30 \, (\text{per la lode})\)  |
+| Tipo         | Componente                 | Peso                                         |
+| ------------ | -------------------------- | -------------------------------------------- |
+| Obbligatorio | Laboratorio/Compiti a casa | \(1/3 (+1/30 \, $\text{bonus puntualità})$\) |
+| Opzionale    | Esame Scritto Intermedio   | \(1/3\)                                      |
+| Obbligatorio | Esame Scritto Finale       | \(1/3 \, ($\text{o}$ \, 2/3)\)               |
+| Opzionale    | Esame Orale Finale         | \($\pm 1/30$ \, ($\text{per la lode})$\)     |
 
 - Importante: Il voto dell'esame intermedio è valido per i primi quattro appelli finali successivi alla fine del corso (cioè fino e incluso l'appello di Pasqua).
 - Importante: Se usate il voto dell'esame intermedio, l'esame finale coprirà solo la seconda metà del corso. Altrimenti, l'esame finale è comprensivo.
@@ -219,7 +224,7 @@ Facciamo un passo indietro e pensiamo a obiettivi più astratti:
 - La teoria è importante, ma non è tutto.
 - Probabilmente il 95% delle volte non avete esplicitamente bisogno di teorie sofisticate.
 - Tuttavia, per quel 5% rimanente diventa improvvisamente indispensabile – specialmente quando si cerca di capire perché le cose non funzionano come previsto.
-- Quindi, non preoccupatevi se non afferrate ogni intuizione o derivazione dalle versioni abbreviate qui.
+- Quindi, non preoccupatevi se non afferrate ogni intuizione o derivazione dalle versioni abbreviate qui. (il bro ci dirà cosa è effettivamente più importante)
 - Assimilate, costruite intuizione sulla teoria che informerà la vostra pratica.
 
 ---
@@ -260,6 +265,7 @@ Facciamo un passo indietro e pensiamo a obiettivi più astratti:
 - Tutti facciamo un respiro profondo prima di continuare a leggere:
 
 I vostri giorni di apprendimento in ambienti di apprendimento strutturati sono (quasi) finiti.
+=> Define your learning objectives? 
 
 ---
 **Cosa ci si aspetta da voi (e dal vostro professore (io))**
@@ -278,401 +284,122 @@ I vostri giorni di apprendimento in ambienti di apprendimento strutturati sono (
 
 Gli ingredienti:
 
-- Uno spazio di input \(\mathcal{X}\) (spesso \(\mathbb{R}^m\)) e uno spazio di output \(\mathcal{Y}\) (spesso \(\mathbb{R}^n\)).
-- Un'assunzione generativa di una funzione \(h : \mathcal{X} \to \mathcal{Y}\) (spesso \(y = h(x) + \varepsilon\)).
-- Una densità di probabilità congiunta sconosciuta \(p(x, y)\) su \(\mathcal{X}\) e \(\mathcal{Y}\).
-- Uno spazio di ipotesi \(\mathcal{H}\) di funzioni da \(\mathcal{X}\) a \(\mathcal{Y}\).
-- Una funzione di perdita \(\mathcal{L} : \mathcal{Y} \times \mathcal{Y} \to \mathbb{R}\).
+- Uno spazio di input $\mathcal{X}$ (spesso $\mathbb{R}^m$ e uno spazio di output $\mathcal{Y}$ (spesso $\mathbb{R}^n$).
+
+- Un'**assunzione generativa** di una funzione (per la relazione fra i due spazi) $h : \mathcal{X} \to \mathcal{Y}$ (spesso $y = h(x) + \varepsilon$). => voglio capire quale sia h, tramite $\epsilon$ aggiungo un po' di rumore/confusione
+
+- Una **densità di probabilità congiunta** sconosciuta $p(x, y)$ su $\mathcal{X}$ e $\mathcal{Y}$. => mi aspetto qualche relazione fra i due spazi
+- Uno spazio di ipotesi $\mathcal{H}$ di funzioni da $\mathcal{X}$ a $\mathcal{Y}$. 
+- Una **funzione di perdita** $\mathcal{L} : \mathcal{Y} \times \mathcal{Y} \to \mathbb{R}$. => cerco la funzione migliore che approssima all'interno del mio spazio di Ipotesi => certe volte chiamata risk function => funzione di perdita alta quando la nostra funzione non si comporta bene!
 
 Un obiettivo di apprendimento:
 
-- Assumendo che la vera \(h \in \mathcal{H}\), possiamo semplicemente:
-  \[    h^* = \arg \min_{h \in \mathcal{H}} \mathbb{E}_p[\mathcal{L}(h(x), y)]\]
-  \[    = \arg \min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y) p(x, y) dxdy\]
+- Assumendo che la vera $h \in \mathcal{H}$, possiamo semplicemente:
+$$h^* = \arg \min_{h \in \mathcal{H}} \mathbb{E}_p[\mathcal{L}(h(x), y)] =$$ $$\arg \min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y) p(x, y) dxdy$$
+Problema di minimizzazione => integro su tutti i valori x,y => expectation di una loss value tramite una likelihood sui dati => cerco di penalizzare il più possibile quei valori che hanno una alta similirità ma anche un loss value molto alta! (vado a vedere il valore restituito da h e confronto con y) => questo fra tutte le combinazioni di x e y 
 
-25
-
-===== Pagina 31 =====
-
+---
 **Abbiamo finito?**
 
-**Possiamo andare a casa?**
+- **Possiamo andare a casa?**$$h^* = \arg\min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y) p(x, y) dxdy$$
+- Non possiamo ancora andare a casa. Cominciamo con la grande incognita $p$ => non sappiamo appunto la relazione fra x e y => è quella che vogliamo scoprire!
 
-\[h^* = \arg\min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y) p(x, y) dxdy\]
+- Senza informazioni su $p$ dobbiamo ricorrere al **campionamento**:  $$(x_i, y_i) \in \mathcal{X} \times \mathcal{Y}, \text{ per } i \in \{1, \ldots, N\}$$
+- Importante: $(x_i, y_i) \sim p(x, y)$
 
-26
-
-===== Pagina 32 =====
-
-**Abbiamo finito?**
-
-**Possiamo andare a casa?**
-
-\[h^* = \arg\min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y) p(x, y) dxdy\]
-
-- Non possiamo ancora andare a casa. Cominciamo con la grande incognita \( p \).
-
-26
-
-===== Pagina 33 =====
-
-**Abbiamo finito?**
-
-**Possiamo andare a casa?**
-
-\[h^* = \arg\min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y)p(x, y)dxdy\]
-
-- Non possiamo ancora andare a casa. Cominciamo con la grande incognita \( p \).
-- Senza informazioni su \( p \) dobbiamo ricorrere al campionamento:
-  \[  (x_i, y_i) \in \mathcal{X} \times \mathcal{Y}, \text{ per } i \in \{1, \ldots, N\}\]
-
-- Importante: \((x_i, y_i) \sim p(x, y)\)
-
-26
-
-===== Pagina 34 =====
-
-**Abbiamo finito?**
-
-**Possiamo andare a casa?**
-
-\[h^* = \arg\min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y) p(x, y) dxdy\]
-
-- Non possiamo ancora andare a casa. Cominciamo con la grande incognita \( p \)...
-- Senza informazioni su \( p \) dobbiamo ricorrere al campionamento:
-
-\[(x_i, y_i) \in \mathcal{X} \times \mathcal{Y}, \text{ per } i \in \{ 1, \ldots, N \}\]
-
-- Importante: \((x_i, y_i) \sim p(x, y)\)
-- Possiamo allora approssimare l'obiettivo con la perdita attesa empirica:
-
-\[h^* = \arg\min_{h \in \mathcal{H}} \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(h(x_i), y_i)\]
-
-26
-
-===== Pagina 35 =====
-
+- Possiamo allora approssimare l'obiettivo con la perdita attesa empirica(empirical expected loss/empirical risk minimization): $$h^* = \arg\min_{h \in \mathcal{H}} \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(h(x_i), y_i)$$
+---
 **Abbiamo finito ora?**
 
-**Bene. Ora possiamo andare a casa?**
-
-\[h^* = \arg\min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y) p(x, y) dxdy\]
-
-\[\approx \arg\min_{h \in \mathcal{H}} \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(h(x_i), y_i)\]
-
-27
-
-===== Pagina 36 =====
-
-**Abbiamo finito ora?**
-
-**Bene. Ora possiamo andare a casa?**
-
-\[h^* = \arg\min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y) p(x, y) dxdy\]
-
-\[\approx \arg\min_{h \in \mathcal{H}} \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(h(x_i), y_i)\]
-
+- **Bene. Ora possiamo andare a casa?** $$h^* = \arg\min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y) p(x, y) dxdy$$$$\approx \arg\min_{h \in \mathcal{H}} \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(h(x_i), y_i)$$
 - Non possiamo.
+- E riguardo a $\mathcal{L}$ ?
+- E riguardo a $\mathcal{H}$ ?
 
-27
+Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo quadratica)... rischio di avere un modello che approssima troppo => extreme over-fitting
 
-===== Pagina 37 =====
-
-**Abbiamo finito ora?**
-
-**Bene. Ora possiamo andare a casa?**
-
-\[h^* = \arg\min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y) p(x, y) dxdy\]
-
-\[\approx \arg\min_{h \in \mathcal{H}} \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(h(x_i), y_i)\]
-
-- Non possiamo.
-- E riguardo a \(\mathcal{L}\)?
-
-27
-
-===== Pagina 38 =====
-
-**Abbiamo finito ora?**
-
-**Bene. Ora possiamo andare a casa?**
-
-\[h^* = \arg\min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y) p(x, y) dxdy\]
-
-\[\approx \arg\min_{h \in \mathcal{H}} \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(h(x_i), y_i)\]
-
-- Non possiamo.
-- E riguardo a \(\mathcal{L}\)?
-- E riguardo a \(\mathcal{H}\)?
-
-27
-
-===== Pagina 39 =====
-
-**Abbiamo finito ora?**
-
-**Bene. Ora possiamo andare a casa?**
-
-\[h^* = \arg\min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y) p(x, y) dxdy\]
-
-\[\approx \arg\min_{h \in \mathcal{H}} \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(h(x_i), y_i)\]
-
-- Non possiamo.
-- E riguardo a \(\mathcal{L}\)?
-- E riguardo a \(\mathcal{H}\)?
 - E riguardo a quella spaventosa minimizzazione?
+- Infine, e riguardo a $\mathcal{X}$ e $\mathcal{Y}$ => occhio alle rappresentazioni fra spazio di partenza e fine => tipo immagini e classificazione come output => che cosa devo avere come output?
 
-27
-
-===== Pagina 40 =====
-
-**Abbiamo finito ora?**
-
-**Bene. Ora possiamo andare a casa?**
-
-\[h^* = \arg\min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y) p(x, y) dxdy\]
-
-\[\approx \arg\min_{h \in \mathcal{H}} \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(h(x_i), y_i)\]
-
-- Non possiamo.
-- E riguardo a \(\mathcal{L}\)?
-- E riguardo a \(\mathcal{H}\)?
-- E riguardo a quella spaventosa minimizzazione?
-- Infine, e riguardo a \(\mathcal{X}\) e \(\mathcal{Y}\)?
-
-27
-
-===== Pagina 41 =====
-
+---
 **Generalizzare**
 
 - Torniamo all'esempio semplice, ma cosa succede se abbiamo dati distribuiti come sotto?
-- Processo: \( y = f(x) + \varepsilon \) (dove \(\varepsilon\) è rumore gaussiano).
+- Processo: $y = f(x) + \varepsilon$ (dove $\varepsilon$ è rumore gaussiano).
 
-125
-100
-75
-50
-25
-0
--25
--50
+![[Pasted image 20250918100418.png]]
+=> Notare che il rumore ci aiuta a non essere troppo precisi nel trovare il modello corretto => utile per generalizzare
 
--4
--2
-0
-2
-4
-28
-
-===== Pagina 42 =====
-
+---
 **Generalizzare**
 
 - Il nostro obiettivo è sfruttare questo training set per fare previsioni.
-- Cioè, predire il target \(\hat{y} = f(\hat{x})\) per nuovi \(\hat{x}\).
-- Nel fare questo stiamo implicitamente cercando di apprendere quale sia la sottostante \(f\).
-- L'apprendimento dovrebbe essere indipendente da \(\varepsilon\) (che non vogliamo catturare).
+- Cioè, predire il target $\hat{y} = f(\hat{x})$ per nuovi $\hat{x}$.
+- Nel fare questo stiamo implicitamente cercando di apprendere quale sia la underlying $f$.
+- L'apprendimento dovrebbe essere indipendente da $\varepsilon$ (che non vogliamo catturare).
 
-125
-100
-75
-50
-25
-0
--25
--50
+---
+**Un diverso tipo di problema**
 
--4
--2
-0
-x
-2
-4
-
-29
-
-===== Pagina 43 =====
-
-# Un diverso tipo di problema
-
-- A volte vogliamo capire come i dati sono generati da \( N \) sorgenti.
+- A volte vogliamo capire come i dati sono generati da $N$ sorgenti.
 - Con l'obiettivo di discriminare le sorgenti l'una dall'altra.
 
----
-
-### Diagrammi
-- Etichetta
-- 0
-- 1
+![[Pasted image 20250918110847.png]]
 
 ---
-
-### Diagrammi
-- -4
-- -3
-- -2
-- -1
-- x
-- 0
-- 1
-- 2
-- 3
-
-===== Pagina 44 [text layer] =====
-
 **Discriminare**
-• Idea generale: trovare un iperpiano separatore.
-• Cioè, uno che separi una classe dall'altra.
-4
-3
-2
-1
-0
-1
-2
-3
-x
-4
-3
-2
-1
-0
-1
-2
-3
-y
-Etichetta
-0
-1
-31
 
-===== Pagina 45 =====
+- Idea generale: trovare un **iperpiano** separatore.
+- Cioè, uno che separi una classe dall'altra.
 
+![[Pasted image 20250918111902.png]]
+
+---
 # Ma quale?
 
 - Quale è il discriminante “migliore”?
 - Cosa significa addirittura migliore qui?
 
-- 0
-- -2
-- -4
+![[Pasted image 20250918111941.png]]
 
-- -4
-- -3
-- -2
-- -1
-- 0
-- 1
-- 2
-- 3
-
-- Etichetta
-- 0
-- 1
-
-32
-
-===== Pagina 46 =====
-
+---
 **Due visioni (e l'obbligatorio esempio del lancio della moneta)**
 
 - Supponiamo di avere una moneta e vogliamo decidere se è equa o no.
 - Qualcuno ha eseguito un esperimento da cui ha derivato questa stima:
 
-p(x)
-0.7
-0.6
-0.5
-0.4
-0.3
-0.2
-0.1
-0.0
+![[Pasted image 20250918112120.png]]
 
-Esito T C
-
-33
-
-===== Pagina 47 =====
-
-# Due visioni
+---
+**Due visioni**
 
 - E se i dati fossero riassunti invece in questo modo.
 - Questo ti fa ripensare la tua inferenza sulla moneta?
 
-Conteggio
-7
-6
-5
-4
-3
-2
-1
-0
+![[Pasted image 20250918112324.png]]
 
-C    T
-Esito
-
-34
-
-===== Pagina 48 =====
-
+---
 **Due visioni**
 
 - Quando stimiamo i parametri di un modello (a volte riferito come inferenza), dobbiamo applicare tutto ciò che sappiamo.
 - In particolare, dobbiamo stare attenti a quantificare ogni volta possibile la nostra fiducia nell'accuratezza delle nostre inferenze.
 
-0.5
-0.4
-0.3
-0.2
-0.1
-0.0
+![[Pasted image 20250918112610.png]]
 
-0.6
-0.5
-0.4
-0.3
-0.2
-0.1
-0.0
+---
+**Un esempio motivante**
 
-0.6
-0.5
-0.4
-0.3
-0.2
-0.1
-0.0
+- Tornando al nostro semplice problema di regressione: osserviamo una variabile di input a valori reali $x$ e vogliamo predire una variabile target a valori reali $t$.
 
-0.7
-0.6
-0.5
-0.4
-0.3
-0.2
-0.1
-0.0
-
-Esito T C Esito T C Esito T C Esito T C
-
-35
-
-===== Pagina 49 =====
-
-# Un esempio motivante
-
-- Tornando al nostro semplice problema di regressione: osserviamo una variabile di input a valori reali \( x \) e vogliamo predire una variabile target a valori reali \( t \).
-- Ai fini della dimostrazione, consideriamo un esempio artificiale di dati generati sinteticamente:
-  \[ y = f(x|w) + \varepsilon. \]
+- Ai fini della dimostrazione, consideriamo un esempio artificiale di dati generati sinteticamente: $y = f(x|w) + \varepsilon$
 
 - Ci viene dato un training set di coppie \((x, y)\) campionate da \( p(x, y) \).
-- Obiettivo: apprendere la funzione sottostante \( f \) che ha generato questi dati.
-- In questo modo, per \( \hat{x} \) non visto possiamo usare \( f(\hat{x}|w^*) \) per predire il target \( \hat{y} \).
+- Obiettivo: apprendere la funzione sottostante $f$ che ha generato questi dati.
+- In questo modo, per $\hat{x}$ non visto possiamo usare $f(\hat{x}|w^*)$ per predire il target $\hat{y}$.
 
-===== Pagina 50 =====
+![[Pasted image 20250918113923.png]]
 
+---
 # Un esempio motivante
 
 - Modelliamo questo problema come uno di fitting di curve, per esempio usando un modello polinomiale:
