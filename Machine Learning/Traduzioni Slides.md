@@ -308,6 +308,7 @@ Problema di minimizzazione => integro su tutti i valori x,y => expectation di un
 - Importante: $(x_i, y_i) \sim p(x, y)$
 
 - Possiamo allora approssimare l'obiettivo con la perdita attesa empirica(empirical expected loss/empirical risk minimization): $$h^* = \arg\min_{h \in \mathcal{H}} \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(h(x_i), y_i)$$
+	26
 ---
 **Abbiamo finito ora?**
 
@@ -321,15 +322,17 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 - E riguardo a quella spaventosa minimizzazione?
 - Infine, e riguardo a $\mathcal{X}$ e $\mathcal{Y}$ => occhio alle rappresentazioni fra spazio di partenza e fine => tipo immagini e classificazione come output => che cosa devo avere come output?
 
+	27
 ---
 **Generalizzare**
 
 - Torniamo all'esempio semplice, ma cosa succede se abbiamo dati distribuiti come sotto?
 - Processo: $y = f(x) + \varepsilon$ (dove $\varepsilon$ è rumore gaussiano).
 
-![[Pasted image 20250918100418.png]]
-=> Notare che il rumore ci aiuta a non essere troppo precisi nel trovare il modello corretto => utile per generalizzare
+	![[Pasted image 20250918100418.png]]
+	=> Notare che il rumore ci aiuta a non essere troppo precisi nel trovare il modello corretto => utile per generalizzare
 
+	28
 ---
 **Generalizzare**
 
@@ -338,54 +341,61 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 - Nel fare questo stiamo implicitamente cercando di apprendere quale sia la underlying $f$.
 - L'apprendimento dovrebbe essere indipendente da $\varepsilon$ (che non vogliamo catturare).
 
+	29
 ---
 **Un diverso tipo di problema**
 
 - A volte vogliamo capire come i dati sono generati da $N$ sorgenti.
 - Con l'obiettivo di discriminare le sorgenti l'una dall'altra.
 
-![[Pasted image 20250918110847.png]]
+	![[Pasted image 20250918110847.png]]
 
+	30
 ---
 **Discriminare**
 
 - Idea generale: trovare un **iperpiano** separatore.
 - Cioè, uno che separi una classe dall'altra.
 
-![[Pasted image 20250918111902.png]]
+	![[Pasted image 20250918111902.png]]
 
+	31
 ---
-# Ma quale?
+**Ma quale?**
 
 - Quale è il discriminante “migliore”?
 - Cosa significa addirittura migliore qui?
 
-![[Pasted image 20250918111941.png]]
+	![[Pasted image 20250918111941.png]]
 
+	32
 ---
 **Due visioni (e l'obbligatorio esempio del lancio della moneta)**
 
 - Supponiamo di avere una moneta e vogliamo decidere se è equa o no.
 - Qualcuno ha eseguito un esperimento da cui ha derivato questa stima:
 
-![[Pasted image 20250918112120.png]]
+	![[Pasted image 20250918112120.png]]
 
+	33
 ---
 **Due visioni**
 
 - E se i dati fossero riassunti invece in questo modo.
 - Questo ti fa ripensare la tua inferenza sulla moneta?
 
-![[Pasted image 20250918112324.png]]
+	![[Pasted image 20250918112324.png]]
 
+	33
 ---
 **Due visioni**
 
 - Quando stimiamo i parametri di un modello (a volte riferito come inferenza), dobbiamo applicare tutto ciò che sappiamo.
 - In particolare, dobbiamo stare attenti a quantificare ogni volta possibile la nostra fiducia nell'accuratezza delle nostre inferenze.
 
-![[Pasted image 20250918112610.png]]
+	![[Pasted image 20250918112610.png]]
 
+	34
 ---
 **Un esempio motivante**
 
@@ -393,143 +403,58 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 
 - Ai fini della dimostrazione, consideriamo un esempio artificiale di dati generati sinteticamente: $y = f(x|w) + \varepsilon$
 
-- Ci viene dato un training set di coppie \((x, y)\) campionate da \( p(x, y) \).
+- Ci viene dato un training set di coppie \((x, y)\) campionate da $p(x, y)$.
 - Obiettivo: apprendere la funzione sottostante $f$ che ha generato questi dati.
 - In questo modo, per $\hat{x}$ non visto possiamo usare $f(\hat{x}|w^*)$ per predire il target $\hat{y}$.
 
-![[Pasted image 20250918113923.png]]
+	![[Pasted image 20250918113923.png]]
 
+	36
 ---
-# Un esempio motivante
+**Un esempio motivante**
 
-- Modelliamo questo problema come uno di fitting di curve, per esempio usando un modello polinomiale:
+- Modelliamo questo problema come uno di "itting di curve", per esempio usando un modello polinomiale: $$y(x|w) = w_0 + w_1x + w_2x^2 + \cdots w_Mx^M$$$$= \sum_{j=0}^M w_j x^j$$
 
-\[y(x|w) = w_0 + w_1x + w_2x^2 + \cdots w_Mx^M\]
+- Nota come, anche se $y(x|w)$ è una funzione non lineare di $x$ , è una funzione lineare nei coefficienti $w$ (cioè i parametri del modello).
 
-\[= \sum_{j=0}^M w_j x^j\]
+- Per apprendimento intendiamo stimare i parametri “migliori” $w$  dal dataset
+  $D = \{(x_i, y_i) \mid i = 1, \ldots, N\}.$
 
-- Nota come, anche se \( y(x|w) \) è una funzione non lineare di \( x \), è una funzione lineare nei coefficienti \( w \) (cioè i parametri del modello).
+	37
+---
+**Un esempio motivante**
 
-- Per apprendimento intendiamo stimare i parametri “migliori” \( w \) dal dataset
-  \[  D = \{(x_i, y_i) \mid i = 1, \ldots, N\}.\]
-
-37
-
-===== Pagina 51 =====
-
-# Un esempio motivante
-
-- Cosa significa buono in questo contesto?
-- Beh, possiamo cominciare pensando di misurare l'errore nella funzione stimata in termini dei dati osservati:
-
-\[\mathcal{L}(w|D) = \frac{1}{2} \sum_{(x,t)\in D} \{y(x,w) - t\}^2\]
-
-- Che è una funzione quadratica in \( w \), quindi le sue derivate sono lineari.
-- E \(\mathcal{L}(w|D)\) ha un unico minimizzatore \( w^* \).
+- Cosa significa **buono** in questo contesto?
+- Beh, possiamo cominciare pensando di misurare l'errore nella funzione stimata in termini dei dati osservati:$$\mathcal{L}(w|D) = \frac{1}{2} \sum_{(x,t)\in D} \{y(x,w) - t\}^2$$
+- Che è una funzione quadratica in $w$, quindi le sue derivate sono lineari.
+- E $\mathcal{L}(w|D)$ ha un unico minimizzatore $w^*$.
 - Abbiamo finito?
 
-===== Pagina 52 =====
+	![[Pasted image 20250922225233.png]]
 
-# Un esempio motivante
+	38
+---
+**Un esempio motivante**
 
-- Non abbiamo finito. C'è un iperparametro del nostro modello che abbiamo convenientemente dimenticato: l'ordine del polinomio \( M \).
+- Non abbiamo finito. C'è un *iperparametro* del nostro modello che abbiamo convenientemente dimenticato: l'ordine del polinomio $M$.
+	![[Pasted image 20250922225414.png]]
+	![[Pasted image 20250922225534.png]]
 
-\[M = 0\]
-
-\[t\]
-
-\[0\]
-
-\[-1\]
-
-\[0\]
-
-\[x\]
-
-\[1\]
-
-\[t\]
-
-\[0\]
-
-\[-1\]
-
-\[0\]
-
-\[x\]
-
-\[1\]
-
-\[M = 1\]
-
-39
-
-===== Pagina 53 =====
-
-# Un esempio motivante
-
-- Non abbiamo finito. C'è un iperparametro del nostro modello che abbiamo convenientemente dimenticato: l'ordine del polinomio \( M \).
-
-\[M = 3\]
-
-\[t\]
-
-\[0\]
-
-\[x\]
-
-\[1\]
-
-\[t\]
-
-\[0\]
-
-\[-1\]
-
-\[0\]
-
-\[x\]
-
-\[1\]
-
-\[M = 9\]
-
-40
-
-===== Pagina 54 =====
-
+	39-40
+---
 **Un esempio motivante**
 
 - Il problema rimanente è la selezione del modello, ed è un elemento fondamentale dell'apprendimento automatico. Come potremmo affrontarlo?
+- Otteniamo intuizione sull'**underfitting** e sull'**overfitting** disegnando un test set indipendente e tracciando $E_{RMS} = \sqrt{2\mathcal{L}(w^*|D)/N}$
 
-41
-
-===== Pagina 55 =====
-
-# Un esempio motivante
-
-- Il problema rimanente è la selezione del modello, ed è un elemento fondamentale dell'apprendimento automatico. Come potremmo affrontarlo?
-- Otteniamo intuizione sull'underfitting e sull'overfitting disegnando un test set indipendente e tracciando \( E_{RMS} = \sqrt{2\ell(w^*|D)}/N \)
-
+	![[Pasted image 20250922230632.png]]
+	
+	41-42
 ---
+## La Gen-X Insegna alla Gen-Y e alla Gen-Z (su X, Y e Z)
 
-### Diagramma
-- **Training Test**
-  - \( E_{RMS} \)
-  - \( 0.5 \)
-  - \( 0 \)
-  - \( 3 \)
-  - \( M \)
-  - \( 6 \)
-  - \( 9 \)
-
-===== Pagina 56 =====
-
-**La Gen-X Insegna alla Gen-Y e alla Gen-Z**
-**(su X, Y e Z)**
-
-===== Pagina 57 =====
-
+	43
+---
 **Un po' di me**
 
 >
