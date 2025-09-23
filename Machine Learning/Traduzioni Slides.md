@@ -18,7 +18,6 @@ Prof. Andrew D. Bagdanov (andrew.bagdanov AT unifi.it)
 **DELL'INFORMAZIONE**
 
 ---
-
 ## Introduzione
 
 ---
@@ -31,14 +30,16 @@ Alla fine di questa lezione avrete:
 - Compreso la formulazione della Minimizzazione del Rischio Empirico dell'apprendimento.
 - Acquisito intuizioni di base sui componenti principali dell'approccio di minimizzazione del rischio e su cosa significano.
 
+	2
 ---
 
 **Il mondo di "domani"**
 
 - Link al video
 
-![[Pasted image 20250917223153.png]]
+	![[Pasted image 20250917223153.png]]
 
+	3
 ---
 **Cos'è l'Apprendimento Automatico?**
 
@@ -51,8 +52,9 @@ Alla fine di questa lezione avrete:
 - Negli anni successivi il suo ambito si è espanso e contratto.
 - Un modo di pensare l'apprendimento automatico è:
 
-$$\text{Apprendimento Automatico} = \text{(Statistica Computazionale + Ottimizzazione)} + \text{Dati (di solito molti)}$$
+	$$\text{Apprendimento Automatico} = \text{(Statistica Computazionale + Ottimizzazione)} + \text{Dati (di solito molti)}$$
 
+	4
 ---
 **Cos'è l'Apprendimento Automatico?**
 
@@ -64,6 +66,7 @@ $$\text{Apprendimento Automatico} = \text{(Statistica Computazionale + Ottimizza
 - Cioè, è operativa invece che cognitiva.
 - Alan Turing iniziò questa tendenza cambiando la domanda da “Le macchine possono pensare?” a “Le macchine possono fare ciò che noi (come entità pensanti) possiamo fare?”.
 
+	5
 --- 
 **Apprendimento supervisionato versus non supervisionato**
 
@@ -74,6 +77,7 @@ $$\text{Apprendimento Automatico} = \text{(Statistica Computazionale + Ottimizza
 - In questo corso introduttivo ci limiteremo per lo più all'apprendimento supervisionato.
 - Nota che esiste, in effetti, uno spettro completo di regimi di supervisione: supervisionato, debolmente supervisionato, semi-supervisionato, auto-supervisionato, non supervisionato. (algoritmi non supervisionati ci so a data mining)
 
+	6
 ---
 **Apprendimento supervisionato: un esempio**
 
@@ -85,6 +89,7 @@ $$\text{Apprendimento Automatico} = \text{(Statistica Computazionale + Ottimizza
 - Idealmente, desideriamo inferire una **relazione** tra altezza e peso che spieghi i dati.
 - Un buon primo passo è di solito visualizzare.
 
+	7
 ---
 **Apprendimento supervisionato: un esempio**
 
@@ -93,6 +98,7 @@ $$\text{Apprendimento Automatico} = \text{(Statistica Computazionale + Ottimizza
 
 ![[Pasted image 20250917230650.png]]
 
+	8
 ---
 **Apprendimento supervisionato: un esempio**
 
@@ -101,6 +107,7 @@ $$\text{Apprendimento Automatico} = \text{(Statistica Computazionale + Ottimizza
 
 ![[Pasted image 20250917230839.png]]
 
+	9
 ---
 **Apprendimento supervisionato: un esempio**
 
@@ -109,8 +116,9 @@ $$\text{Apprendimento Automatico} = \text{(Statistica Computazionale + Ottimizza
 
 ![[Pasted image 20250917231024.png]]
 
-In alcune parti potremmo fare meglio in altre peggio... Come migliorare? avendo più punti e solo con due parametri devo decidere quale sia il miglior modello che generalizza i dati.
+- In alcune parti potremmo fare meglio in altre peggio... Come migliorare? avendo più punti e solo con due parametri devo decidere quale sia il miglior modello che generalizza i dati.
 
+	10
 ----
 ## Organizzazione e Obiettivi del Corso
 
@@ -126,6 +134,7 @@ In alcune parti potremmo fare meglio in altre peggio... Come migliorare? avendo 
   - Cos'è un prodotto scalare (punto) tra due vettori?  
   - Cos'è la norma di un vettore? Cosa ha a che fare con il prodotto scalare?
 
+	11
 ---
 **Prerequisiti (Statistica e Teoria della Probabilità)**
 
@@ -135,6 +144,7 @@ In alcune parti potremmo fare meglio in altre peggio... Come migliorare? avendo 
   - Cos'è la **Regola di Bayes**? Cosa significa e come possiamo derivarla?
   - Cos'è una Variabile Casuale? Cos'è il Valore Atteso di una (funzione di una) variabile casuale?
 
+	12
 ---
 **Prerequisiti (Informatica)**
 
@@ -143,6 +153,7 @@ In alcune parti potremmo fare meglio in altre peggio... Come migliorare? avendo 
   - Le sessioni di laboratorio saranno svolte utilizzando Python e il suo eccellente ecosistema per la programmazione numerica.
   - Per favore utilizzate Questo Autovalutazione delle Competenze di Programmazione per verificare che la vostra conoscenza e competenza sia almeno da qualche parte tra i livelli A2 e B1.
 
+	13
 ---
 **Organizzazione**
 
@@ -152,6 +163,7 @@ Questo corso è sui **Fondamenti dell'Apprendimento Automatico**, e in esso trat
 
 - Apprendimento Automatico: **Macchine a Vettori di Supporto** (SVM), modelli kernel, modelli grafici (NO), alberi decisionali, metodi ensemble, boosting, bagging, media bayesiana di modelli, foreste casuali, Expectation Maximization (EM), stima della densità di misture.
 
+	14
 ---
 **Organizzazione**
 
@@ -159,6 +171,7 @@ Questo corso è sui **Fondamenti dell'Apprendimento Automatico**, e in esso trat
 - Argomenti Speciali e Applicazioni: Reti Neurali Ricorrenti a Memoria a Lungo-Termine (LSTM) (NO), elaborazione del linguaggio naturale e modelli linguistici (Transformers), Reti Neurali Convoluzionali (CNN), apprendimento auto-supervisionato, apprendimento continuo, adattamento del dominio, transfer learning.
 - Strumenti, Tecniche e Best Practices: programmazione numerica, visualizzazione, diagnostica del modello e monitoraggio dell'addestramento, scikit-learn (buono per per documentazione), PyTorch(framework scelto principalmente per machine learning).
 
+	15
 ---
 **Una Timeline Approssimativa del Materiale**
 
@@ -174,6 +187,7 @@ Questo corso è sui **Fondamenti dell'Apprendimento Automatico**, e in esso trat
 	- Reti Profonde: Percettroni Multistrato (MLP), Reti Neurali Convoluzionali (CNN).
 	- Argomenti Avanzati: Reti Neurali Ricorrenti a Memoria a Lungo-Termine (LSTM), Transfer learning, Apprendimento auto-supervisionato, Transformers.
 
+	16
 ---
 **Laboratori**
 
@@ -191,6 +205,7 @@ Questo corso è sui **Fondamenti dell'Apprendimento Automatico**, e in esso trat
 
 - Verranno utilizzati solo *i tre (3) voti più alti dei laboratori* (cioè potete saltarne uno).
 
+	17
 ---
 **Valutazione dello Studente**
 
@@ -205,7 +220,8 @@ Questo corso è sui **Fondamenti dell'Apprendimento Automatico**, e in esso trat
 
 - Importante: Il voto dell'esame intermedio è valido per i primi quattro appelli finali successivi alla fine del corso (cioè fino e incluso l'appello di Pasqua).
 - Importante: Se usate il voto dell'esame intermedio, l'esame finale coprirà solo la seconda metà del corso. Altrimenti, l'esame finale è comprensivo.
- 
+
+	18
 ---
 **Obiettivi di Alto Livello**
 
@@ -215,6 +231,7 @@ Questo corso è sui **Fondamenti dell'Apprendimento Automatico**, e in esso trat
 - Per impiegare l'Apprendimento Automatico nella pratica, dobbiamo familiarizzare con alcuni strumenti teorici.
 - Questi strumenti ci aiuteranno a modellare problemi di apprendimento, valutare le performance dei sistemi di apprendimento e quantificare la fiducia nelle nostre soluzioni.
 
+	19
 ---
 **Obiettivi: Teoria e Pratica**
 
@@ -226,7 +243,8 @@ Facciamo un passo indietro e pensiamo a obiettivi più astratti:
 - Tuttavia, per quel 5% rimanente diventa improvvisamente indispensabile – specialmente quando si cerca di capire perché le cose non funzionano come previsto.
 - Quindi, non preoccupatevi se non afferrate ogni intuizione o derivazione dalle versioni abbreviate qui. (il bro ci dirà cosa è effettivamente più importante)
 - Assimilate, costruite intuizione sulla teoria che informerà la vostra pratica.
-
+	
+	20
 ---
 **Buoni libri**
 
@@ -243,6 +261,7 @@ Facciamo un passo indietro e pensiamo a obiettivi più astratti:
 
 - Il terzo è una grande risorsa online per tutti i tipi di deep learning.
 
+	21
 ---
 **Ma... Sembra un sacco di lavoro.**
 
@@ -259,6 +278,7 @@ Facciamo un passo indietro e pensiamo a obiettivi più astratti:
 
 - Il punto: L'organizzazione del corso è progettata per aiutarvi a avere successo, e ad averlo in tempo.
 
+	22
 ---
 **Buone e cattive notizie (per lo più buone, davvero)**
 
@@ -267,6 +287,7 @@ Facciamo un passo indietro e pensiamo a obiettivi più astratti:
 I vostri giorni di apprendimento in ambienti di apprendimento strutturati sono (quasi) finiti.
 => Define your learning objectives? 
 
+	23
 ---
 **Cosa ci si aspetta da voi (e dal vostro professore (io))**
 
@@ -276,6 +297,7 @@ I vostri giorni di apprendimento in ambienti di apprendimento strutturati sono (
 - È in grado di comunicare conclusioni, così come le conoscenze, motivazioni e considerazioni che le sottendono, in modo chiaro e non ambiguo a un pubblico di specialisti o non specialisti.
 - Possiede le capacità di apprendimento che gli/le permettono di intraprendere uno studio successivo con un carattere largamente auto-diretto o autonomo.
 
+	24
 ---
 ## Generalizzare la nostra Intuizione
 
@@ -298,6 +320,7 @@ Un obiettivo di apprendimento:
 $$h^* = \arg \min_{h \in \mathcal{H}} \mathbb{E}_p[\mathcal{L}(h(x), y)] =$$ $$\arg \min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y) p(x, y) dxdy$$
 Problema di minimizzazione => integro su tutti i valori x,y => expectation di una loss value tramite una likelihood sui dati => cerco di penalizzare il più possibile quei valori che hanno una alta similirità ma anche un loss value molto alta! (vado a vedere il valore restituito da h e confronto con y) => questo fra tutte le combinazioni di x e y 
 
+	25
 ---
 **Abbiamo finito?**
 
@@ -453,37 +476,33 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 ---
 ## La Gen-X Insegna alla Gen-Y e alla Gen-Z (su X, Y e Z)
 
-	43
 ---
 **Un po' di me**
 
->
+- Foto di bagdy
 
->
-
->
-
-===== Pagina 58 =====
-
+	43
+---
 **I primi anni: anni '80 e '90 (big math)**
 
-Matematica: grandi cardinali e determinacy
+**Matematica: grandi cardinali e determinacy**
 
 - Il mio primo amore è stata la matematica, che ho studiato alla University of Nevada, Las Vegas (sì, quella Las Vegas).
 - Specificamente, teoria descrittiva degli insiemi e la relazione tra Ipotesi dei Grandi Cardinali, determinacy di giochi semplici su insiemi di numeri reali, e la consistenza di tutta la matematica.
 
-===== Pagina 59 [text layer] =====
-
+	44
+---
 **I primi anni: anni '80 e '90 (elaborazione di immagini)**
-Matematica: grandi cardinali e determinacy
+
+**Matematica: grandi cardinali e determinacy**
+
 - In parallelo, ho lavorato su problemi di stima di immagini low-level.
 - Specificamente, sulla stima di orientamenti locali e globali in immagini di documenti scannerizzati.
 - La novità all'epoca, era investigare come stimare in domini compressi.
-45
 
-===== Pagina 60 =====
-
-# Gli anni di Amsterdam: primi anni 2000 (visione)
+	45
+---
+**Gli anni di Amsterdam: primi anni 2000 (visione)**
 
 - Nel 1999 mi sono trasferito in Europa per un dottorato in Analisi di Informazione Multimediale alla *Universiteit van Amsterdam*:
   - Visione low-level: gradient boosting e inversione di mezzitoni.
@@ -491,10 +510,8 @@ Matematica: grandi cardinali e determinacy
   - Modelli a grafo: analisi del layout di immagini con First-order Gaussian Graphs.
   - Programmazione funzionale: modelli formali di programmi di visione.
 
-46
-
-===== Pagina 61 =====
-
+	46
+---
 **Non c'è tempo, lasciatemi riassumere...**
 
 - Anni '60 (California): Nato, Los Angeles.
@@ -506,50 +523,25 @@ Matematica: grandi cardinali e determinacy
 - Primi anni 2010 (Firenze/Barcellona): Capo Progetto, Computer Vision Center, Barcellona; Professore a contratto, Universitat Autonoma de Barcelona; Capo Unità di Ricerca, MICC, Università di Firenze, Borsista Ramon y Cajal, Computer Vision Center, Barcellona; utente Emacs; Deadhead.
 - Oggi: Professore DINFO, Università di Firenze; utente Emacs; Deadhead.
 
-47
-
-===== Pagina 62 =====
-
+	47
+---
 **Sì, ma cosa fai, tipo adesso?**
 
-- In questo momento la mia ricerca si focalizza su problemi di apprendimento continuo in visione artificiale e linguaggio:
+- In questo momento la mia ricerca si focalizza su problemi di **apprendimento continuo** in visione artificiale e linguaggio:
 
-Task A (appross. diagonale)
+![[Pasted image 20250923123304.png]]
 
-Task B
-
-Task A
-
-Task B
-
-Task A
-
-Task B
-
-===== Pagina 63 =====
-
+	48
+---
 **Inoltre, giochi!**
 
 - Con un dottorando (Alessandro Sestini) ricerco anche tecniche di Apprendimento per Rinforzo Profondo per costruire Agenti Non Giocatore (NPA) intelligenti.
+	
+	![[Pasted image 20250923123424.png]]
 
+	49
 ---
-
-**Livello 10**
-
-**DeepCrawl**
-
-HP: 20120
-Gwenf. Ltd
-Rip: 1641, Amp 2
-Nessuno
-
-Azioni
-
-49
-
-===== Pagina 64 =====
-
-# Filosofia e stile di insegnamento
+**Filosofia e stile di insegnamento**
 
 - L'apprendimento è più efficace quando è uno scambio interattivo piuttosto che uno stare-lì-e-ascoltare passivo.
 - Il mio lavoro come professore è mettere la mia conoscenza a vostra disposizione.
@@ -557,15 +549,12 @@ Azioni
 - Se non capite qualcosa, interrompetemi e chiedetemi di chiarire.
 - [ Parabola del 'ne so così tanto' ]
 
-50
+	50
+---
+## Osservazioni Conclusive
 
-===== Pagina 65 =====
-
-**Osservazioni Conclusive**
-
-===== Pagina 66 =====
-
-# Costruzione di Comunità: Il Discord UniFI AI
+---
+**Costruzione di Comunità: Il Discord UniFI AI**
 
 - Abbiamo creato un Server Discord per ospitare discussioni sull'Intelligenza Artificiale.
 - C'è un canale dedicato per il corso di Fondamenti di Apprendimento Automatico (FML).
@@ -573,10 +562,9 @@ Azioni
 - Importante: questo è un forum pubblico, quindi siate gentili, siate rispettosi e divertitevi.
 
 https://discord.gg/tUkgrgXdXE
-51
-
-===== Pagina 67 =====
-
+	
+	51
+---
 **La strada da percorrere**
 
 - Nella prossima lezione tratteremo alcune preliminari (per lo più matematiche) che saranno utili durante tutto il corso.
@@ -587,26 +575,659 @@ https://discord.gg/tUkgrgXdXE
 
 – Johannes Keppler
 
-52
+	52
+---
+**Letture e Compiti a Casa**
 
-===== Pagina 68 =====
+- **Lettura Assegnata**:
+	- Bishop: Capitolo 1 (1.1, 1.3, 1.4)
 
-# Letture e Compiti a Casa
-
-## Lettura Assegnata:
-
-- Bishop: Capitolo 1 (1.1, 1.3, 1.4)
-
-## Compiti a Casa:
+- **Compiti a Casa**:
 
 1. Familiarizzate con l'UCI Machine Learning Repository di dataset liberamente disponibili per la ricerca sul ML.
 
 2. Meditate sull'esempio del lancio della moneta e pensate a come potremmo mitigare i problemi discussi durante la lezione (cioè come prendere pulitamente in considerazione la nostra confidenza sulla nostra stima).
    Suggerimento: Pensatela come un problema di stima sequenziale e usate la Regola di Bayes.
 
-53
-
-[file content end]
+	53
 ---
 
-Ho mantenuto i termini tecnici in inglese (Machine Learning, overfitting, input, output, dataset, ecc.) come è comune nella letteratura accademica italiana, ma ho tradotto tutto il resto in modo letterale. Ho anche mantenuto la struttura con i segni `#` e `##` per i titoli e le formule matematiche intatte.
+---
+# Preliminari
+
+---
+## Introduzione
+
+---
+**Obiettivi della lezione**
+
+Alla fine di questa lezione avrete:
+
+- Rinfrescato la memoria sui concetti e operazioni di base dell'algebra lineare.
+- Rinfrescato la memoria sulle regole di base della teoria della probabilità, cioè le regole della somma e del prodotto.
+- Rinfrescato la memoria sulle probabilità condizionate e il teorema di Bayes.
+- Acquisito un'intuizione di base sulla teoria decisionale probabilistica.
+- Compreso intuitivamente la Maledizione della Dimensionalità.
+
+	2
+---
+**La matematica del 21esimo secolo**
+
+- Padroneggiare l'apprendimento automatico contemporaneo richiede una gamma di strumenti e discipline...
+
+	![[Pasted image 20250923144539.png]]
+	
+	3
+---
+ **Algebra lineare**
+
+- Skyler Speakerman si è recentemente riferito all'Algebra Lineare come alla *matematica per il 21esimo Secolo*.
+- Questo potrebbe essere leggermente iperbolico, ma l'algebra lineare è assolutamente centrale per il moderno apprendimento automatico.
+- L'algebra lineare ci permette di trattare dati ad alta dimensionalità in modo formale e preciso.
+- Ci permetterà di modellare gli input agli algoritmi di ML come punti in spazi ad alta dimensionalità.
+- E successivamente di modellare trasformazioni funzionali di questi input in spazi delle caratteristiche.
+- E infine, di modellare le trasformazioni successive che portano agli output (es. decisioni o azioni o stime).
+
+	4
+---
+**Algebra lineare (continua)**
+
+- Cos'è un'**immagine**? È una struttura dati, con larghezza e altezza e profondità, più un array corrispondente di dati grezzi?
+- Possiamo continuare... Cos'è una registrazione audio? O un documento di testo.
+- Piuttosto che definire strutture *ad hoc*, vogliamo trattare tutto allo stesso modo.
+- Un'immagine a colori 512 × 512 è un vettore in uno spazio vettoriale $512 \times 512 \times 3$ -dimensionale.
+
+	5
+---
+**Probabilità e statistica**
+
+- Forse un po' a sorpresa, probabilità e statistica sono meno importanti per il moderno apprendimento automatico.
+- A volte vorremo dare un'interpretazione probabilistica a un modello o a un output del modello.
+- Tuttavia, la maggior parte dei modelli di deep learning sono definiti come pure trasformazioni di input in output.
+- Spesso, queste interpretazioni probabilistiche sono mere finzioni convenienti.
+- Come vedremo, statistica e probabilità sono molto utili come strumenti per analizzare i risultati.
+
+	6
+---
+**Probabilità e statistica (continua)**
+
+- Per molti problemi vorremo che i nostri modelli producano una distribuzione di probabilità sui possibili esiti.
+- Prendiamo un semplice problema di classificazione: data un'immagine in input, stimare quale cifra è raffigurata.
+
+	![[Pasted image 20250923145034.png]]
+
+---
+**Probabilità e statistica**
+
+- Per altri problemi potremmo voler qualificare gli output del modello.
+- Questo è il caso in molti problemi di regressione dove gli output in alcuni punti potrebbero essere più certi di altri.
+
+	![[Pasted image 20250923145127.png]]
+	
+	8
+---
+**Calcolo e ottimizzazione**
+
+- Molti (beh, la maggior parte) problemi di apprendimento sono formulati come problemi di ottimizzazione in (potenzialmente moltissime) variabili multiple.
+- Ciò significa che apprendere significa stimare questi problemi minimizzando una qualche funzione obiettivo.
+
+	![[Pasted image 20250923145225.png]]
+
+	9
+---
+## Preliminari Matematici: Algebra Lineare
+
+---
+**Vettori e spazi vettoriali**
+
+- Vettori e spazi vettoriali sono fondamentali per l'algebra lineare.
+- I vettori descrivono linee, piani e iperpiani nello spazio.
+- Ci permettono di eseguire calcoli che esplorano relazioni in spazi multi-dimensionali.
+- Nella sua forma più semplice, un vettore è un oggetto matematico che ha sia **magnitudine** che **direzione**.
+- Scriviamo i vettori usando una varietà di notazioni, ma di solito li scriveremo così:
+$$v = \begin{bmatrix} 2 \\ 1 \end{bmatrix}$$
+
+- Il simbolo in grassetto ci fa sapere che è un vettore.
+
+	10
+---
+**Vettori e spazi vettoriali (continua)**
+
+- Cosa significa avere direzione e magnitudine?
+- Beh, aiuta guardare una visualizzazione (in al massimo tre dimensioni):
+
+	![[Pasted image 20250923150215.png]]
+	
+	11
+---
+**Vettori e spazi vettoriali (continua)**
+
+Più formalmente, diciamo che **v** è un vettore in $n$ dimensioni (o piuttosto, **v** è un vettore nello spazio vettoriale $\mathbb{R}^n$) se: $$v = \begin{bmatrix} v_1 \\ v_2 \\ \vdots \\ v_n
+\end{bmatrix}$$
+per $v_i \in \mathbb{R}$. Nota che usiamo simboli regolari (cioè non in grassetto) per riferirci ai singoli elementi di **v**.
+
+	12
+---
+**Operazioni sui vettori**
+
+- **Definizione (Operazioni vettoriali fondamentali)**
+	- **Addizione vettoriale**: se **u** e **v** sono vettori in $\mathbb{R}^n$, allora anche $w = u + v$ lo è (dove definiamo $w_i = u_i + v_i$).
+	- **Moltiplicazione per scalare**: se **v** è un vettore in $\mathbb{R}^n$, allora anche **w** = c**v** lo è per qualsiasi $c \in \mathbb{R}$ (definiamo $w_i = cv_i$).
+	- **Prodotto scalare** (punto): se **u**  e **v** sono vettori in $\mathbb{R}^n$ , definiamo il prodotto scalare o punto come: $$u \cdot v = \sum_{i=1}^{n} u_i v_i$$
+	- **Norma vettoriale** (o magnitudine, o lunghezza): se **v** è un vettore in $\mathbb{R}^n$, allora definiamo la norma o lunghezza di **v** come:$$\|u\| = \sqrt{u \cdot u}$$
+	13
+---
+**Visualizzare i vettori (in 2D)**
+
+- L'addizione vettoriale è facile da interpretare in 2D:
+
+	![[Pasted image 20250923152032.png]]
+
+	14
+---
+**Visualizzare il prodotto scalare**
+
+- Il prodotto scalare o punto è correlato alle direzioni e alle magnitudini dei due vettori:
+
+	![[Pasted image 20250923152116.png]]
+	
+- Infatti, è facile ricavare il coseno tra due vettori qualsiasi.
+- Nota che queste proprietà si generalizzano a qualsiasi numero di dimensioni.
+- Domanda: come possiamo testare se due vettori sono perpendicolari (ortogonali)?
+
+	15
+---
+**Formalizzare l'intuizione**
+
+- **Definizione** (Mappa Bilineare)
+	Una funzione $\Omega : V \times V \to \mathbb{R}$ è una mappa bilineare dallo spazio vettoriale $V$ a $\mathbb{R}$ se e solo se:$$\Omega(\lambda x + \psi y, z) = \lambda \Omega(x, z) + \psi \Omega(y, z)$$ $$\Omega(x, \lambda y + \psi z) = \lambda \Omega(x, y) + \psi \Omega(x, z)$$	per qualsiasi $x, y, z \in V$.
+
+- $\Omega$ è chiamata **simmetrica** se $\Omega(x, y) = \Omega(y, x)$ per tutti $x, y \in V$.
+- $\Omega$ è chiamata definita positiva se:$$\Omega(x, x) \geq 0 \space \forall \space x, \text{ e } \Omega(x, x) = 0 \text{ sse } x = 0$$
+	16
+---
+**Formalizzare l'intuizione**
+
+**Definizione (Prodotto Interno e Spazio con Prodotto Interno)**
+
+- Sia **V** un qualsiasi spazio vettoriale e $\Omega : V \times V \to \mathbb{R}$ una qualsiasi mappa *bilineare* da **V** a $\mathbb{R}$. Allora:
+	- Se $\Omega$ è simmetrica e definita positiva, $\Omega$ è chiamata un *prodotto interno* su **V**. Di solito scriviamo $\langle x,y\rangle$ invece di $\Omega(x,y)$.
+	- La coppia $(V,\Omega)$ (o $(V,\langle\cdot,\cdot\rangle)$ ) per prodotto interno $\Omega$ è chiamata **spazio con prodotto interno** o *spazio vettoriale con prodotto interno*. Se: $$\Omega(x,y) = x^Ty \space ,  (V,\Omega)$$ è chiamato **spazio vettoriale euclideo**.
+
+- I prodotti interni ci permettono di formalizzare le nostre intuizioni geometriche su lunghezza, ortogonalità e distanza.
+
+	17
+---
+**Proiezioni ortogonali**
+
+
+//Inserire sketch se lo fa
+
+	18
+--- 
+**Matrici: basi**
+
+- Una matrice dispone i numeri in righe e colonne, così:
+$$A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}$$
+
+- Nota che le matrici sono generalmente nominate con una **lettera maiuscola** in grassetto. Ci riferiamo agli elementi della matrice usando l'equivalente minuscolo con un pedice indicatore di riga e colonna: $$A = \begin{bmatrix}
+a_{1,1} & a_{1,2} & a_{1,3} \\
+a_{2,1} & a_{2,2} & a_{2,3}
+\end{bmatrix}$$
+- Qui diciamo che **A** è una matrice di dimensione $2 \times 3$.
+- Equivalentemente: $A \in \mathbb{R}^{2 \times 3}$.
+
+	19
+----
+**Matrici: operazioni aritmetiche**
+
+- Le matrici supportano operazioni aritmetiche comuni:
+  - Per sommare due matrici della stessa dimensione, basta sommare gli elementi corrispondenti in ogni matrice:$$\begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix} + \begin{bmatrix} 6 & 5 & 4 \\ 3 & 2 & 1 \end{bmatrix} = \begin{bmatrix} 7 & 7 & 7 \\ 7 & 7 & 7 \end{bmatrix}$$
+- Ogni matrice ha due righe di tre colonne (quindi le descriviamo come matrici $2 \times 3$).
+- Sommare matrici **A** + **B**  risulta in una nuova matrice **C** dove $c_{i,j} = a_{i,j} + b_{i,j}$.
+- Questa definizione elemento per elemento si generalizza a sottrazione, moltiplicazione e divisione.
+
+	20
+---
+**Matrici: operazioni aritmetiche (continua)**
+
+- Negli esempi precedenti, siamo stati in grado di aggiungere e sottrarre le matrici, perché gli operandi (le matrici su cui operiamo) sono conformi per l'operazione specifica (in questo caso, addizione o sottrazione).
+- Per essere conformi per addizione e sottrazione, gli operandi devono avere lo stesso numero di righe e colonne
+- Ci sono diversi requisiti di conformabilità per altre operazioni, come la moltiplicazione di matrici.
+
+	21
+---
+**Matrici: operazioni aritmetiche unarie**
+
+- La negazione di una matrice è solo una matrice con il segno di ogni elemento invertito:$$C = \begin{bmatrix} -5 & -3 & -1 \\ 1 & 3 & 5 \end{bmatrix}$$ $$-C = \begin{bmatrix} 5 & 3 & 1 \\ -1 & -3 & -5 \end{bmatrix}$$
+- La trasposta di una matrice scambia l'orientamento delle sue righe e colonne.
+- Lo indichi con un apice **T**, così: $$\begin{bmatrix}1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}^T = \begin{bmatrix}1 & 4 \\2 & 5 \\3 & 6\end{bmatrix}$$
+	22
+---
+**Matrici: moltiplicazione di matrici**
+
+- Moltiplicare le matrici è un po' più complesso dell'aritmetica elemento per elemento vista finora.
+- Ci sono due casi da considerare, la moltiplicazione per scalare (moltiplicare una matrice per un singolo numero)$$2 \times \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix} = \begin{bmatrix} 2 & 4 & 6 \\ 8 & 10 & 12 \end{bmatrix}$$
+- E la moltiplicazione di matrici per prodotto scalare: $$\text{AB} = \text{C}, \quad \text{dove } c_{i,j} = \sum_{k=1}^{n} a_{i,k} b_{k,j}$$
+- Cosa possiamo inferire sulle dimensioni conformi di A e B? Qual è la dimensione di C.
+
+	23
+---
+**Matrici: la moltiplicazione è solo prodotti scalari**
+
+- Per moltiplicare due matrici, stiamo in realtà calcolando il prodotto scalare di righe e colonne.
+- Eseguiamo questa operazione applicando la regola RC - moltiplicando sempre (facendo il punto) Righe per Colonne.
+- Perché funzioni, il numero di colonne nella prima matrice deve essere lo stesso del numero di righe nella seconda matrice in modo che le matrici siano conformi.
+- Un esempio:$$\begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix} \cdot
+\begin{bmatrix} 9 & 8 \\ 7 & 6 \\ 5 & 4 \end{bmatrix} = \begin{bmatrix} 7 & 7 \\ 7 & 7 \end{bmatrix}$$
+	24
+---
+**Matrici: inverse**
+
+- La matrice identità **I**  è una matrice quadrata con tutti uno sulla diagonale e zero ovunque.
+- Quindi, **IA** = **AI**, e **Iv** = **v**.
+- L'inversa di una matrice quadrata **A** è denotata $A^{-1}$.
+- $A^{-1}$ è l'unica (se esiste) matrice tale che:$$A^{-1}A = AA^{-1} = I$$
+	25
+---
+**Matrici: risolvere sistemi di equazioni**
+
+- Possiamo ora usarlo a nostro vantaggio: $$\begin{bmatrix} 67.9 & 1.0 \\ 67.9 & 1.0 \end{bmatrix} \begin{bmatrix} m \\ b \end{bmatrix} = \begin{bmatrix} 170.85 \\ 122.50 \end{bmatrix} $$
+-  Moltiplicando entrambi i lati per l'inversa: $$\begin{bmatrix} 67.9 & 1.0 \\ 67.9 & 1.0 \end{bmatrix}^{-1} \begin{bmatrix} 67.9 & 1.0 \\ 67.9 & 1.0 \end{bmatrix} \begin{bmatrix} m \\ b \end{bmatrix} = \begin{bmatrix} 67.9 & 1.0 \\ 67.9 & 1.0 \end{bmatrix}^{-1} \begin{bmatrix} 170.85 \\ 122.50 \end{bmatrix} $$
+- E abbiamo: $$I \begin{bmatrix} m \\ b \end{bmatrix} = \begin{bmatrix} 67.9 & 1.0 \\ 67.9 & 1.0 \end{bmatrix}^{-1} \begin{bmatrix} 170.85 \\ 122.50 \end{bmatrix} $$
+	26
+---
+**Matrici: lineare versus affine**
+
+- La moltiplicazione di matrici calcola trasformazioni lineari di spazi vettoriali.
+- Siamo anche interessati a trasformazioni affini che non preservano necessariamente l'origine:
+- Una trasformazione affine è una trasformazione lineare seguita da una traslazione: $$f(x) = Ax + b$$
+- Nota: una trasformazione affine in \( n \) dimensioni può essere modellata da una trasformazione lineare in \( n + 1 \) dimensioni.
+
+	27
+---
+**Tensori: Una struttura generale per dati densi**
+
+- Non c'è niente di magico in una dimensione (vettori) o due dimensioni (matrici).
+- In effetti, gli strumenti che usiamo sono completamente generici in quanto possiamo definire array densi e omogenei di dati numerici di qualsiasi dimensionalità.
+- Il termine generico per questo è tensore, e tutta la matematica si generalizza a dimensioni arbitrarie.
+
+- Esempio: un'immagine a colori è naturalmente modellata come un tensore in tre dimensioni (due spaziali, una cromatica).
+ 
+- Esempio: un batch di b immagini a colori di dimensione $32 \times 32$ è facilmente modellato semplicemente aggiungendo una nuova dimensione:  **B** $\in \mathbb{R}^{b \times 32 \times 32 \times 3}$.
+
+	28
+---
+## Preliminari Matematici: Probabilità e Statistica
+
+--- 
+**Teoria della probabilità: un esempio motivante**
+
+Consideriamo il classico esempio dell'Urna:
+
+- Abbiamo due urne (rossa e blu) i cui contenuti esatti sono sconosciuti, ma che contengono pezzi di frutta (mele e arance).
+- Si estrae un pezzo di frutta da un'urna scelta a caso, diciamo con probabilità 0.4 e 0.6.
+
+===== Pagina 34 =====
+
+# Teoria della probabilità: un esempio motivante
+
+Consideriamo il classico esempio dell'Urna (scatola):
+
+- In questo caso abbiamo una variabile casuale \( B \) (box) definita dalla sua distribuzione:
+  \[  p(B = \text{blu}) = 0.6 \, \text{e} \, p(B = \text{rosso}) = 0.4\]
+
+- Abbiamo anche una variabile casuale \( F \) (frutta) che dipende da \( B \) – dipendente perché la sua distribuzione dipende dalla scatola scelta.
+
+===== Pagina 35 =====
+
+# Teoria della probabilità: un esempio motivante
+
+Consideriamo il classico esempio dell'Urna (scatola):
+
+- Qual è la probabilità complessiva di scegliere una mela? (cioè \( p(F = \text{mela}) \) – una probabilità che chiaramente dipende anche da \( p(B) \)).
+- Se la frutta scelta è un'arancia, qual è la probabilità che provenga dalla scatola blu (cioè \( p(B = \text{blu} | F = \text{arancia}) \))
+
+===== Pagina 36 =====
+
+# Teoria della probabilità: un esempio motivante
+
+La distribuzione congiunta di due variabili casuali:
+
+- La chiave per analizzare tali domande è la distribuzione di probabilità congiunta di tutte le variabili coinvolte.
+- Deriveremo le regole della somma e del prodotto della teoria della probabilità (che sono probabilmente più vicine alle \( F = ma \) e \( V = IR \) del ML).
+
+===== Pagina 37 =====
+
+# Il caso generale
+
+Consideriamo il caso generale:
+
+- Come stimiamo la distribuzione congiunta delle variabili casuali \( X \) e \( Y \) (senza alcuna conoscenza a priori)?
+- Preleviamo un campione:
+  \[  \{(x_i, y_i) \mid i = 1, 2, \ldots N\} \]
+  estratto indipendentemente dalla distribuzione congiunta \( p(X, Y) \) e facciamo un istogramma.
+
+|      | \( c_i \) |
+|---|---|
+| \( y_j \) | \( n_{ij} \) |
+|      | \( x_i \) |
+
+33
+
+===== Pagina 38 [text layer] =====
+
+**Il caso generale**
+Consideriamo il caso generale:
+• Definiamo nij come il numero di campioni che cadono nella cella (i, j) – cioè la cella
+corrispondente a (xi, yj) – dell'istogramma.
+• Inoltre: ci sarà il numero totale di volte che X assume il valore xi e rj il numero totale
+di volte che Y assume il valore yj
+}
+}
+ci
+rj
+yj
+xi
+nij
+34
+
+===== Pagina 39 =====
+
+# Il caso generale
+
+Questo istogramma cattura (beh, stima) tutto ciò di cui abbiamo bisogno:
+
+- La probabilità congiunta \( p(X, Y) \) è:
+  \[  p(X = x_i, Y = y_j) = \frac{n_{ij}}{N}\]
+
+- La probabilità marginale di \( X \) che assume valore \( x_i \) è:
+  \[  p(X = x_i) = \frac{c_i}{N} = \sum_j p(X = x_i, Y = x_j)\]
+
+===== Pagina 40 =====
+
+# Il caso generale
+
+Ora, vediamo come condizionare le probabilità:
+
+- Guarda solo quegli eventi congiunti per cui \( X = x_i \).
+- Scriviamo la frazione di tali eventi per cui \( Y = y_j \) come:
+
+\[p(Y = y_j | X = x_i) = \frac{n_{ij}}{c_i}\]
+
+- Possiamo derivarlo dalla probabilità congiunta:
+
+\[p(X = x_i, Y = y_j) = \frac{n_{ij}}{N} = \frac{n_{ij}}{c_i} \cdot \frac{c_i}{N} = p(Y = y_j | X = x_i) p(X = x_i)\]
+
+\[\begin{array}{cccc}
+y_j & n_{ij} & r_j \\
+x_i & & \\
+\end{array}\]
+
+36
+
+===== Pagina 41 =====
+
+# Teoria della Probabilità per l'Apprendimento Automatico
+
+- Invocheremo frequentemente le due regole della probabilità:
+  \[    \text{regola della somma: } p(X) = \sum_{Y} p(X, Y)\]
+  \[    \text{regola del prodotto: } p(X, Y) = p(Y | X)p(X)\]
+
+- E useremo frequentemente la regola di Bayes:
+  \[    p(Y | X) = \frac{p(X | Y)p(Y)}{p(X)}\]
+
+- Questo assume un significato speciale quando applicato all'inferenza parametrica:
+  \[    p(\mathbf{w} | \mathcal{D}) = \frac{p(\mathcal{D} | \mathbf{w})p(\mathbf{w})}{p(\mathcal{D})}\]
+  \[    \text{posterior} \propto \text{verosimiglianza dei dati} \times \text{prior}\]
+
+37
+
+===== Pagina 42 =====
+
+**Teoria della Probabilità per l'Apprendimento Automatico**
+
+- Un'operazione importante usando le probabilità è trovare medie pesate di funzioni:
+  \[  \mathbb{E}[f] = \sum_{x} p(x) f(x) \quad (\text{o} \int p(x) f(x) dx)\]
+
+- In entrambi i casi, se abbiamo un campione finito di \( N \) punti dalla distribuzione \( p(x) \) possiamo approssimare l'aspettativa:
+  \[  \mathbb{E}[f] \approx \sum_{i} p(x_i) f(x_i)\]
+
+- La distribuzione Gaussiana sarà nostra amica, quindi le covarianze sono importanti:
+  \[  \text{cov}(x,x) = \mathbb{E}_x \{ [x - \mathbb{E}[x]] \} \{ x^T - \mathbb{E}[x^T] \} \\
+    = \mathbb{E}_x [xx^T] - \mathbb{E}[x] \mathbb{E}[x^T]\]
+
+38
+
+===== Pagina 43 =====
+
+**La distribuzione Gaussiana (a proposito di covarianza)**
+
+- La distribuzione Gaussiana univariata è super importante:
+
+\[N(x | \mu, \sigma) = \frac{1}{(2\pi\sigma^2)^{1/2}} \exp\{-\frac{1}{2\sigma^2}(x - \mu)^2\}\]
+
+- Così come la distribuzione Gaussiana multivariata, che useremo estesamente:
+
+\[N(x | \mu, \Sigma) = \frac{1}{(2\pi)^{D/2}} \frac{1}{|\Sigma|^{1/2}} \exp\{-\frac{1}{2}(x - \mu)^T\Sigma^{-1}(x - \mu)\}\]
+
+- Qui \(\mu\) è un vettore \(D\) dimensionale (la media) e \(\Sigma\) è la matrice di covarianza \(D \times D\).
+
+39
+
+===== Pagina 44 =====
+
+# Teoria decisionale e classificazione supervisionata
+
+- Proviamo ad espandere la nostra crescente intuizione per includere problemi di classificazione.
+- La teoria della probabilità ci dà un modo principiato per rappresentare e quantificare l'incertezza, quindi usiamola!
+- Supponiamo di avere un input \( x \) insieme a un vettore \( y \) di variabili target.
+- Per problemi di regressione, \( y \) saranno variabili continue, mentre per problemi di classificazione rappresenterà etichette di classe.
+- La distribuzione congiunta \( p(x, y) \) ci dà un quadro completo dell'incertezza associata a queste variabili.
+
+===== Pagina 45 =====
+
+# Teoria decisionale e classificazione supervisionata
+
+- Come esempio, supponiamo che \( x \) sia una radiografia a 512 × 512 pixel di un paziente e vogliamo decidere se il paziente ha il cancro:
+
+\[f(x) =
+\begin{cases}
+0 & \text{se il paziente ha il cancro} \\
+1 & \text{altrimenti}
+\end{cases}\]
+
+- Come potrebbe apparire il nostro dataset? Beh, probabilmente un insieme di coppie:
+
+\[D = \{(x_1, y_1), (x_2, y_2), \ldots, (x_N, y_N)\}\]
+
+- Dobbiamo prima affrontare il problema dell'inferenza: determinare la distribuzione congiunta \( p(x, y) \) (di solito estremamente difficile).
+- Poi dobbiamo decidere come agire in modo ottimale per un specifico \( p(x', y) \) (spesso molto facile).
+
+===== Pagina 46 =====
+
+# Teoria decisionale e classificazione supervisionata
+
+- Quindi, quando otteniamo un'immagine \( x \), il nostro obiettivo è decidere a quale delle due classi appartiene.
+- Possiamo derivare informazioni su questa decisione dalla distribuzione posterior:
+
+\[p(C_k | x) = \frac{p(x | C_k) p(C_k)}{p(x)} \\
+= \frac{\text{verosimiglianza dei dati } x \text{ prior}}{\text{evidenza}}\]
+
+- Ma, la domanda saliente rimane: come decidiamo?
+
+42
+
+===== Pagina 47 =====
+
+# Teoria decisionale e classificazione supervisionata
+
+La decisione ottimale teorica:
+
+- Minimizzare il tasso di errata classificazione atteso.
+
+\[p(\text{errata class.}) = p(x \in \mathcal{R}_1, C_2) + p(x \in \mathcal{R}_2, C_1)\]
+
+\[= \int_{\mathcal{R}_1} p(x, C_2) dx + \int_{\mathcal{R}_2} p(x, C_1) dx\]
+
+---
+
+**Legenda:**
+
+- \( x_0 \)
+- \( \hat{x} \)
+- \( p(x, C_1) \)
+- \( p(x, C_2) \)
+- \( \hat{x} \)
+- \( R_1 \)
+- \( R_2 \)
+- \( x \)
+
+43
+
+===== Pagina 48 =====
+
+# Teoria decisionale e classificazione supervisionata
+
+- Opzione 1: stimare le densità condizionate di classe \( p(x|C_k) \) individualmente, insieme alle probabilità prior \( p(C_k) \), poi usare il teorema di Bayes per calcolare il posterior.
+
+\[p(C_k|x) = \frac{p(x|C_k)p(C_k)}{p(x)}\]
+
+- Opzione 2: stimare direttamente le probabilità posterior.
+- Opzione 3: saltare tutto il mumbo jumbo bayesiano e stimare direttamente una funzione discriminante.
+
+44
+
+===== Pagina 49 [text layer] =====
+
+**Teoria decisionale e classificazione supervisionata**
+Ci sono ragioni pratiche per scegliere un approccio:
+p(x|C1)
+p(x|C2)
+x
+densità di classe
+0
+0.2
+0.4
+0.6
+0.8
+1
+0
+1
+2
+3
+4
+5
+x
+p(C1|x)
+p(C2|x)
+0
+0.2
+0.4
+0.6
+0.8
+1
+0
+0.2
+0.4
+0.6
+0.8
+1
+1.2
+45
+
+===== Pagina 50 =====
+
+# La Maledizione della Dimensionalità
+
+- Considera un problema di classificazione a 3 classi con misere due dimensioni di input:
+
+\[\begin{array}{ccc}
+ & 2 & \\
+x_7 & 1.5 & \\
+0.5 & 0 & \\
+0 & 0.25 & 0.5 & 0.75 & 1 \\
+\end{array}\]
+
+\[\begin{array}{ccc}
+ & 2 & \\
+x_6 & 1.5 & \\
+0 & 0.25 & 0.5 & 0.75 & 1 \\
+\end{array}\]
+
+46
+
+===== Pagina 51 [text layer] =====
+
+**La Maledizione della Dimensionalità**
+• Man mano che aggiungiamo dimensioni di input, il numero di bin in qualsiasi discretizzazione dello
+spazio cresce esponenzialmente.
+• La morale: arricchire l'input (aggiungendo dimensioni) non rende il nostro
+problema più facile.
+x1
+D = 1
+x1
+x2
+D = 2
+x1
+x2
+x3
+D = 3
+47
+
+===== Pagina 52 =====
+
+# Allineamento Notazionale e La Strada da Percorrere
+
+===== Pagina 53 =====
+
+# Allineamento Notazionale
+
+- I vettori saranno denotati in carattere minuscolo, romano, grassetto: x.
+- Tutti i vettori sono assunti essere vettori colonna.
+- Lettere maiuscole, grassetto romano denotano matrici: M.
+- La trasposta di vettori e matrici è indicata dall'apice \( T \): \( x^T, M^T \).
+- La notazione \((w_1, \ldots, w_n)\) denota un vettore riga di \( n \) dimensioni.
+- Il corrispondente vettore colonna è scritto come \( w = (w_1, \ldots, w_n)^T \).
+- L'aspettativa di \( f(x, y) \) rispetto a una v.c. \( x \) è scritta come \( \mathbb{E}_x[f(x, y)] \).
+- Se \( x \) è condizionata su z, l'aspettativa condizionata è \( \mathbb{E}_x[f(x) | z] \)
+- La varianza di \( f(x) \) è denotata da \( var[f(x)] \), e la covarianza come \( cov[x, y] \).
+
+===== Pagina 54 =====
+
+**La strada da percorrere**
+
+- In questa lezione abbiamo visto una breve panoramica di alto livello di alcuni dei concetti base di algebra lineare e teoria della probabilità.
+- Questa è solo teoria sufficiente per farci iniziare il nostro viaggio nell'Apprendimento Automatico.
+- Introdurremo, secondo necessità, concetti più avanzati man mano che procediamo (es. ottimizzazione basata su gradiente, proprietà speciali della densità Gaussiana, spazi di Hilbert, ecc.).
+- Prossimamente:
+  - Ci tufferemo in uno studio di modelli lineari per la regressione.
+  - Vedremo come modellare previsioni di output continui usando funzioni lineari dell'input.
+  - Vedremo come adattare questi modelli, come proiezioni di base non lineari possono arricchirli e come quantificare la fiducia nelle loro previsioni.
+
+49
+
+===== Pagina 55 =====
+
+**Compiti a Casa e Letture**
+
+===== Pagina 56 =====
+
+# Compiti a Casa e Letture
+
+## Lettura Assegnata:
+
+- Bishop: Capitoli 1 e 2 (1.5, 2.3)
+
+## Compiti a Casa:
+
+1. Una mappa lineare \(\pi : V \to U\) da uno spazio vettoriale \(V\) a uno spazio vettoriale \(U\) è chiamata proiezione se \(\pi \circ \pi = \pi\) (cioè \(\pi\) è idempotente). Dimostra che la proiezione ortogonale da \(V\) su un sottospazio \(U\) è effettivamente una proiezione.
+
+2. Mostra che la moda di una distribuzione Gaussiana \(\mathcal{N}(\mu, \sigma)\) è data da \(\mu\).
+
+
+[file content end]
+
+---
+
+Ho mantenuto la struttura, la formattazione (titoli, elenchi, formule matematiche) e il tono formale dell'originale. I termini tecnici sono stati lasciati in inglese dove comune nella letteratura italiana (es. "machine learning", "deep learning", "input", "output", "dataset"), mentre il resto è stato tradotto in modo letterale.
