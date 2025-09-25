@@ -364,6 +364,8 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 - Nel fare questo stiamo implicitamente cercando di apprendere quale sia la underlying $f$.
 - L'apprendimento dovrebbe essere indipendente da $\varepsilon$ (che non vogliamo catturare).
 
+	![[Pasted image 20250925103824.png]]
+
 	29
 ---
 **Un diverso tipo di problema**
@@ -378,7 +380,7 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 **Discriminare**
 
 - Idea generale: trovare un **iperpiano** separatore.
-- Cioè, uno che separi una classe dall'altra.
+- Cioè, uno che **separi una classe dall'altra**.
 
 	![[Pasted image 20250918111902.png]]
 
@@ -391,6 +393,8 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 
 	![[Pasted image 20250918111941.png]]
 
+	=> Ci viene così in aiuto la loss function => per scegliere quale retta preferire rispetto ad un altra!
+	
 	32
 ---
 **Due visioni (e l'obbligatorio esempio del lancio della moneta)**
@@ -399,7 +403,8 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 - Qualcuno ha eseguito un esperimento da cui ha derivato questa stima:
 
 	![[Pasted image 20250918112120.png]]
-
+	testa vs croce => quanto è credibile questo outcome? 
+	
 	33
 ---
 **Due visioni**
@@ -408,6 +413,7 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 - Questo ti fa ripensare la tua inferenza sulla moneta?
 
 	![[Pasted image 20250918112324.png]]
+	Forse meglio questo... anche qui come scelgo l'approccio migliore?
 
 	33
 ---
@@ -422,11 +428,12 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 ---
 **Un esempio motivante**
 
-- Tornando al nostro semplice problema di regressione: osserviamo una variabile di input a valori reali $x$ e vogliamo predire una variabile target a valori reali $t$.
+- Tornando al nostro semplice problema di *regressione*: osserviamo una variabile di input a valori reali $x$ e vogliamo predire una **variabile target** a valori reali $t$.
 
-- Ai fini della dimostrazione, consideriamo un esempio artificiale di dati generati sinteticamente: $y = f(x|w) + \varepsilon$
+- Ai fini della dimostrazione, consideriamo un esempio artificiale di dati generati sinteticamente: $y = f(x|w) + \varepsilon$ (con **w** il vettore dei parametri del modello)
+	 => il rumore ci ha portato a questi dati
 
-- Ci viene dato un training set di coppie \((x, y)\) campionate da $p(x, y)$.
+- Ci viene dato un **training set** di coppie \((x, y)\) campionate da $p(x, y)$.
 - Obiettivo: apprendere la funzione sottostante $f$ che ha generato questi dati.
 - In questo modo, per $\hat{x}$ non visto possiamo usare $f(\hat{x}|w^*)$ per predire il target $\hat{y}$.
 
@@ -436,11 +443,11 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 ---
 **Un esempio motivante**
 
-- Modelliamo questo problema come uno di "itting di curve", per esempio usando un modello polinomiale: $$y(x|w) = w_0 + w_1x + w_2x^2 + \cdots w_Mx^M$$$$= \sum_{j=0}^M w_j x^j$$
+- Modelliamo questo problema come uno di "fitting di curve", per esempio usando un modello polinomiale: $$y(x|w) = w_0 + w_1x + w_2x^2 + \cdots w_Mx^M$$$$= \sum_{j=0}^M w_j x^j$$ mi diventa  semplicemente il prodotto dei due vettori **x** e **w** => ottengo un qualsiasi polinomio di qualsiasi grado
 
-- Nota come, anche se $y(x|w)$ è una funzione non lineare di $x$ , è una funzione lineare nei coefficienti $w$ (cioè i parametri del modello).
+- Nota come, anche se $y(x|w)$ è una funzione **non lineare** di $x$ , è una **funzione lineare** nei coefficienti $w$ (cioè i parametri del modello).
 
-- Per apprendimento intendiamo stimare i parametri “migliori” $w$  dal dataset
+- Per *apprendimento* intendiamo stimare i parametri “migliori” $w$  dal dataset
   $D = \{(x_i, y_i) \mid i = 1, \ldots, N\}.$
 
 	37
@@ -448,29 +455,30 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 **Un esempio motivante**
 
 - Cosa significa **buono** in questo contesto?
-- Beh, possiamo cominciare pensando di misurare l'errore nella funzione stimata in termini dei dati osservati:$$\mathcal{L}(w|D) = \frac{1}{2} \sum_{(x,t)\in D} \{y(x,w) - t\}^2$$
-- Che è una funzione quadratica in $w$, quindi le sue derivate sono lineari.
-- E $\mathcal{L}(w|D)$ ha un unico minimizzatore $w^*$.
+- Beh, possiamo cominciare pensando di misurare **l'errore nella funzione** stimata in termini dei dati osservati:$$\mathcal{L}(w|D) = \frac{1}{2} \sum_{(x,t)\in D} \{y(x,w) - t\}^2$$
+- Che è una funzione **quadratica** in $w$, (e anche monotona) quindi le sue derivate sono lineari => funzione anche convessa => ha un unico minimizzatore!
+- E $\mathcal{L}(w|D)$ ha un unico minimizzatore $w^*$.  => minore è la loss e migliore è modello  => sempre se abbiamo scelto una buona loss => avere loss pari a zero può essere segno di overfitting
 - Abbiamo finito?
-
-	![[Pasted image 20250922225233.png]]
+	![[Pasted image 20250925104216.png]]
 
 	38
 ---
 **Un esempio motivante**
 
 - Non abbiamo finito. C'è un *iperparametro* del nostro modello che abbiamo convenientemente dimenticato: l'ordine del polinomio $M$.
-	![[Pasted image 20250922225414.png]]
-	![[Pasted image 20250922225534.png]]
+	![[Pasted image 20250925104352.png]]
+	Sembra abbastanza buona...
+	
+	![[Pasted image 20250925104416.png]]Qui la loss è anche zero => ma le prossime predizioni non sono molto buone... sulla scelta della M bisogna stare attenti al rischio di overfitting...
 
 	39-40
 ---
 **Un esempio motivante**
 
 - Il problema rimanente è la selezione del modello, ed è un elemento fondamentale dell'apprendimento automatico. Come potremmo affrontarlo?
-- Otteniamo intuizione sull'**underfitting** e sull'**overfitting** disegnando un test set indipendente e tracciando $E_{RMS} = \sqrt{2\mathcal{L}(w^*|D)/N}$
-
-	![[Pasted image 20250922230632.png]]
+- Otteniamo intuizione sull'**underfitting** e sull'**overfitting** disegnando un test set indipendente e tracciando $$E_{RMS} = \sqrt{2\mathcal{L}(w^*|D)/N}$$
+	![[Pasted image 20250925104512.png]]
+	=> esempio di crossvalidation => validation curve => fittiamo il modello alla crescita del grado del polinomio... ad un certo punto noto che il polinomio non generalizza più! compie grossi errori nella fase di test!
 	
 	41-42
 ---
@@ -479,7 +487,7 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 ---
 **Un po' di me**
 
-- Foto di bagdy
+- Foto di bagdy => piazza della signorina lololol
 
 	43
 ---
@@ -530,12 +538,13 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 - In questo momento la mia ricerca si focalizza su problemi di **apprendimento continuo** in visione artificiale e linguaggio:
 
 ![[Pasted image 20250923123304.png]]
-
+ => passando a risolvere task B rischio di dimenticarmi i parametri ottenuti come migliori per il task A => cerco delle soluzioni che mi soddisfano entrambi i task
+ 
 	48
 ---
 **Inoltre, giochi!**
 
-- Con un dottorando (Alessandro Sestini) ricerco anche tecniche di Apprendimento per Rinforzo Profondo per costruire Agenti Non Giocatore (NPA) intelligenti.
+- Con un dottorando (Alessandro Sestini) ricerco anche tecniche di Apprendimento per Rinforzo Profondo (*Deep reinforcement learning*) per costruire Agenti Non Giocatore (NPA) intelligenti.
 	
 	![[Pasted image 20250923123424.png]]
 
@@ -571,7 +580,7 @@ https://discord.gg/tUkgrgXdXE
 - Più specificamente, tratterò alcuni concetti fondamentali di algebra lineare, statistica e probabilità, e le importanti proprietà della distribuzione Gaussiana.
 - Costruiremo anche un'intuizione sul perché l'Apprendimento Automatico è difficile attraverso un'analisi della Maledizione della Dimensionalità.
 
-“Tycho possiede le osservazioni più accurate del mondo, ma gli manca un architetto capace di costruire un edificio partendo dai suoi dati.”
+“Tycho possiede le osservazioni più accurate del mondo, ma gli manca un architetto capace di costruire un edificio partendo dai suoi dati.” => keplero letteramente machine learning prima di tutti
 
 – Johannes Keppler
 
@@ -592,8 +601,7 @@ https://discord.gg/tUkgrgXdXE
 	53
 ---
 
----
-# Preliminari
+# Preliminari Matematici
 
 ---
 ## Introduzione
@@ -632,16 +640,17 @@ Alla fine di questa lezione avrete:
 ---
 **Algebra lineare (continua)**
 
-- Cos'è un'**immagine**? È una struttura dati, con larghezza e altezza e profondità, più un array corrispondente di dati grezzi?
+- Cos'è un'**immagine**? È una **struttura dati**, con larghezza e altezza e profondità, più un array corrispondente di dati grezzi?
 - Possiamo continuare... Cos'è una registrazione audio? O un documento di testo.
 - Piuttosto che definire strutture *ad hoc*, vogliamo trattare tutto allo stesso modo.
-- Un'immagine a colori 512 × 512 è un vettore in uno spazio vettoriale $512 \times 512 \times 3$ -dimensionale.
+
+- Un'immagine a colori 512 × 512 è un vettore in uno spazio vettoriale $512 \times 512 \times 3$ -dimensionale. => tipo un vettore con associato ad ogni pixel i valori di r-g-b => vettore molto grande ma comunque un vettore! (vectorized/linearized version) => ci posso fare quindi operazioni matriciali! 
 
 	5
 ---
 **Probabilità e statistica**
 
-- Forse un po' a sorpresa, probabilità e statistica sono meno importanti per il moderno apprendimento automatico.
+- Forse un po' a sorpresa, probabilità e statistica sono **meno importanti** per il moderno apprendimento automatico. => danno comunque tool importanti per ML
 - A volte vorremo dare un'interpretazione probabilistica a un modello o a un output del modello.
 - Tuttavia, la maggior parte dei modelli di deep learning sono definiti come pure trasformazioni di input in output.
 - Spesso, queste interpretazioni probabilistiche sono mere finzioni convenienti.
@@ -651,25 +660,28 @@ Alla fine di questa lezione avrete:
 ---
 **Probabilità e statistica (continua)**
 
-- Per molti problemi vorremo che i nostri modelli producano una distribuzione di probabilità sui possibili esiti.
+- Per molti problemi vorremo che i nostri modelli producano una **distribuzione di probabilità** sui possibili esiti.
 - Prendiamo un semplice problema di classificazione: data un'immagine in input, stimare quale cifra è raffigurata.
 
 	![[Pasted image 20250923145034.png]]
+	=> somma delle probabilità dovrebbe dare 1...
 
+	7
 ---
 **Probabilità e statistica**
 
-- Per altri problemi potremmo voler qualificare gli output del modello.
-- Questo è il caso in molti problemi di regressione dove gli output in alcuni punti potrebbero essere più certi di altri.
+- Per altri problemi potremmo voler *qualificare* gli output del modello.
+- Questo è il caso in molti problemi di regressione dove gli output in alcuni punti potrebbero essere **più certi** di altri. => in questi casi ho informazioni locali
 
 	![[Pasted image 20250923145127.png]]
-	
+	=> dove area più ristretta vorrei più confidenza perchè magari ho più dati di input e viceversa meno confidenza (area più larga) per meno dati
+
 	8
 ---
 **Calcolo e ottimizzazione**
 
-- Molti (beh, la maggior parte) problemi di apprendimento sono formulati come problemi di ottimizzazione in (potenzialmente moltissime) variabili multiple.
-- Ciò significa che apprendere significa stimare questi problemi minimizzando una qualche funzione obiettivo.
+- Molti (beh, la maggior parte) problemi di apprendimento sono formulati come problemi di **ottimizzazione** in (potenzialmente moltissime) variabili multiple.
+- Ciò significa che apprendere significa stimare questi problemi **minimizzando una qualche funzione obiettivo**. => funzione di *discesa* del gradiente => problema di local/global minimum oppure di divergenza
 
 	![[Pasted image 20250923145225.png]]
 
@@ -687,13 +699,13 @@ Alla fine di questa lezione avrete:
 - Scriviamo i vettori usando una varietà di notazioni, ma di solito li scriveremo così:
 $$v = \begin{bmatrix} 2 \\ 1 \end{bmatrix}$$
 
-- Il simbolo in grassetto ci fa sapere che è un vettore.
+- Il simbolo in grassetto ci fa sapere che è un **vettore**.
 
 	10
 ---
 **Vettori e spazi vettoriali (continua)**
 
-- Cosa significa avere direzione e magnitudine?
+- Cosa significa avere *direzione* e *magnitudine*?
 - Beh, aiuta guardare una visualizzazione (in al massimo tre dimensioni):
 
 	![[Pasted image 20250923150215.png]]
@@ -702,9 +714,9 @@ $$v = \begin{bmatrix} 2 \\ 1 \end{bmatrix}$$
 ---
 **Vettori e spazi vettoriali (continua)**
 
-Più formalmente, diciamo che **v** è un vettore in $n$ dimensioni (o piuttosto, **v** è un vettore nello spazio vettoriale $\mathbb{R}^n$) se: $$v = \begin{bmatrix} v_1 \\ v_2 \\ \vdots \\ v_n
+- Più formalmente, diciamo che **v** è un vettore in $n$ dimensioni (o piuttosto, **v** è un vettore nello spazio vettoriale $\mathbb{R}^n$) se: $$v = \begin{bmatrix} v_1 \\ v_2 \\ \vdots \\ v_n
 \end{bmatrix}$$
-per $v_i \in \mathbb{R}$. Nota che usiamo simboli regolari (cioè non in grassetto) per riferirci ai singoli elementi di **v**.
+- per $v_i \in \mathbb{R}$. Nota che usiamo simboli regolari (cioè non in grassetto) per riferirci ai singoli elementi di **v**.
 
 	12
 ---
@@ -712,9 +724,9 @@ per $v_i \in \mathbb{R}$. Nota che usiamo simboli regolari (cioè non in grasset
 
 - **Definizione (Operazioni vettoriali fondamentali)**
 	- **Addizione vettoriale**: se **u** e **v** sono vettori in $\mathbb{R}^n$, allora anche $w = u + v$ lo è (dove definiamo $w_i = u_i + v_i$).
-	- **Moltiplicazione per scalare**: se **v** è un vettore in $\mathbb{R}^n$, allora anche **w** = c**v** lo è per qualsiasi $c \in \mathbb{R}$ (definiamo $w_i = cv_i$).
+	- **Moltiplicazione per scalare**: se **v** è un vettore in $\mathbb{R}^n$, allora anche **w** = c**v** lo è per qualsiasi $c \in \mathbb{R}$ (definiamo $w_i = cv_i$). => "scalare perché scalano il vettore"
 	- **Prodotto scalare** (punto): se **u**  e **v** sono vettori in $\mathbb{R}^n$ , definiamo il prodotto scalare o punto come: $$u \cdot v = \sum_{i=1}^{n} u_i v_i$$
-	- **Norma vettoriale** (o magnitudine, o lunghezza): se **v** è un vettore in $\mathbb{R}^n$, allora definiamo la norma o lunghezza di **v** come:$$\|u\| = \sqrt{u \cdot u}$$
+	- **Norma vettoriale** (o magnitudine, o lunghezza): se **v** è un vettore in $\mathbb{R}^n$, allora definiamo la norma o lunghezza di **v** come:$$\|u\| = \sqrt{u \cdot u}$$ (norma euclidea di default)
 	13
 ---
 **Visualizzare i vettori (in 2D)**
@@ -730,14 +742,16 @@ per $v_i \in \mathbb{R}$. Nota che usiamo simboli regolari (cioè non in grasset
 - Il prodotto scalare o punto è correlato alle direzioni e alle magnitudini dei due vettori:
 
 	![[Pasted image 20250923152116.png]]
+	=> proietto un vettore sull'altro... => uso la direzione di **b** per misurare **a**
 	
 - Infatti, è facile ricavare il coseno tra due vettori qualsiasi.
-- Nota che queste proprietà si generalizzano a qualsiasi numero di dimensioni.
-- Domanda: come possiamo testare se due vettori sono perpendicolari (ortogonali)?
+- Nota che queste proprietà si generalizzano a **qualsiasi numero di dimensioni**.
+
+- Domanda: come possiamo testare se due vettori sono perpendicolari (ortogonali)? => prodotto scalare nullo!
 
 	15
 ---
-**Formalizzare l'intuizione**
+**Formalizzare l'intuizione** (skippata)
 
 - **Definizione** (Mappa Bilineare)
 	Una funzione $\Omega : V \times V \to \mathbb{R}$ è una mappa bilineare dallo spazio vettoriale $V$ a $\mathbb{R}$ se e solo se:$$\Omega(\lambda x + \psi y, z) = \lambda \Omega(x, z) + \psi \Omega(y, z)$$ $$\Omega(x, \lambda y + \psi z) = \lambda \Omega(x, y) + \psi \Omega(x, z)$$	per qualsiasi $x, y, z \in V$.
@@ -793,7 +807,7 @@ a_{2,1} & a_{2,2} & a_{2,3}
 
 - Negli esempi precedenti, siamo stati in grado di aggiungere e sottrarre le matrici, perché gli operandi (le matrici su cui operiamo) sono conformi per l'operazione specifica (in questo caso, addizione o sottrazione).
 - Per essere conformi per addizione e sottrazione, gli operandi devono avere lo stesso numero di righe e colonne
-- Ci sono diversi requisiti di conformabilità per altre operazioni, come la moltiplicazione di matrici.
+- Ci sono diversi requisiti di *conformabilità* per altre operazioni, come la moltiplicazione di matrici.
 
 	21
 ---
@@ -809,7 +823,7 @@ a_{2,1} & a_{2,2} & a_{2,3}
 - Moltiplicare le matrici è un po' più complesso dell'aritmetica elemento per elemento vista finora.
 - Ci sono due casi da considerare, la moltiplicazione per scalare (moltiplicare una matrice per un singolo numero)$$2 \times \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix} = \begin{bmatrix} 2 & 4 & 6 \\ 8 & 10 & 12 \end{bmatrix}$$
 - E la moltiplicazione di matrici per prodotto scalare: $$\text{AB} = \text{C}, \quad \text{dove } c_{i,j} = \sum_{k=1}^{n} a_{i,k} b_{k,j}$$
-- Cosa possiamo inferire sulle dimensioni conformi di A e B? Qual è la dimensione di C.
+- Cosa possiamo inferire sulle dimensioni conformi di A e B? Qual è la dimensione di C. => per essere conforme l'altezza delle matrici deve essere la stessa => stesso k
 
 	23
 ---
@@ -820,6 +834,8 @@ a_{2,1} & a_{2,2} & a_{2,3}
 - Perché funzioni, il numero di colonne nella prima matrice deve essere lo stesso del numero di righe nella seconda matrice in modo che le matrici siano conformi.
 - Un esempio:$$\begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix} \cdot
 \begin{bmatrix} 9 & 8 \\ 7 & 6 \\ 5 & 4 \end{bmatrix} = \begin{bmatrix} 7 & 7 \\ 7 & 7 \end{bmatrix}$$
+	=>  Faccio prodotto scalare fra vettori!
+	
 	24
 ---
 **Matrici: inverse**
@@ -839,10 +855,11 @@ a_{2,1} & a_{2,2} & a_{2,3}
 ---
 **Matrici: lineare versus affine**
 
-- La moltiplicazione di matrici calcola trasformazioni lineari di spazi vettoriali.
+- La moltiplicazione di matrici calcola **trasformazioni lineari** di spazi vettoriali.
 - Siamo anche interessati a trasformazioni affini che non preservano necessariamente l'origine:
-- Una trasformazione affine è una trasformazione lineare seguita da una traslazione: $$f(x) = Ax + b$$
-- Nota: una trasformazione affine in \( n \) dimensioni può essere modellata da una trasformazione lineare in \( n + 1 \) dimensioni.
+
+- Una trasformazione affine è una trasformazione **lineare** seguita da una traslazione: $$f(x) = Ax + b$$
+- Nota: una trasformazione affine in **n** dimensioni può essere modellata da una trasformazione lineare in **n + 1** dimensioni.  => utile anche per le trasformazioni lineari!
 
 	27
 ---
@@ -868,168 +885,126 @@ Consideriamo il classico esempio dell'Urna:
 - Abbiamo due urne (rossa e blu) i cui contenuti esatti sono sconosciuti, ma che contengono pezzi di frutta (mele e arance).
 - Si estrae un pezzo di frutta da un'urna scelta a caso, diciamo con probabilità 0.4 e 0.6.
 
-===== Pagina 34 =====
+	![[Pasted image 20250925113459.png]]
 
-# Teoria della probabilità: un esempio motivante
-
-Consideriamo il classico esempio dell'Urna (scatola):
-
-- In questo caso abbiamo una variabile casuale \( B \) (box) definita dalla sua distribuzione:
-  \[  p(B = \text{blu}) = 0.6 \, \text{e} \, p(B = \text{rosso}) = 0.4\]
-
-- Abbiamo anche una variabile casuale \( F \) (frutta) che dipende da \( B \) – dipendente perché la sua distribuzione dipende dalla scatola scelta.
-
-===== Pagina 35 =====
-
-# Teoria della probabilità: un esempio motivante
+	29
+---
+**Teoria della probabilità: un esempio motivante**
 
 Consideriamo il classico esempio dell'Urna (scatola):
 
-- Qual è la probabilità complessiva di scegliere una mela? (cioè \( p(F = \text{mela}) \) – una probabilità che chiaramente dipende anche da \( p(B) \)).
-- Se la frutta scelta è un'arancia, qual è la probabilità che provenga dalla scatola blu (cioè \( p(B = \text{blu} | F = \text{arancia}) \))
+- In questo caso abbiamo una variabile casuale **B** (box) definita dalla sua distribuzione:
+  $p(B = \text{blu}) = 0.6 \, \text{e} \, p(B = \text{rosso}) = 0.4$
 
-===== Pagina 36 =====
+- Abbiamo anche una variabile casuale **F** (frutta) che dipende da **B** – dipendente perché la sua distribuzione dipende dalla scatola scelta.
+	
+	![[Pasted image 20250925113459.png]]
+	
+	30
+---
+**Teoria della probabilità: un esempio motivante**
 
-# Teoria della probabilità: un esempio motivante
+Consideriamo il classico esempio dell'Urna (scatola):
+
+- Qual è la probabilità complessiva di scegliere una mela? (cioè $p(F = \text{mela})$ – una probabilità che chiaramente dipende anche da $p(B)$).
+- Se la frutta scelta è un'arancia, qual è la probabilità che provenga dalla scatola blu (cioè $p(B = \text{blu} | F = \text{arancia})$)
+	
+	![[Pasted image 20250925113459.png]]
+
+	31
+---
+**Teoria della probabilità: un esempio motivante**
 
 La distribuzione congiunta di due variabili casuali:
 
 - La chiave per analizzare tali domande è la distribuzione di probabilità congiunta di tutte le variabili coinvolte.
 - Deriveremo le regole della somma e del prodotto della teoria della probabilità (che sono probabilmente più vicine alle \( F = ma \) e \( V = IR \) del ML).
 
-===== Pagina 37 =====
-
-# Il caso generale
-
-Consideriamo il caso generale:
-
-- Come stimiamo la distribuzione congiunta delle variabili casuali \( X \) e \( Y \) (senza alcuna conoscenza a priori)?
-- Preleviamo un campione:
-  \[  \{(x_i, y_i) \mid i = 1, 2, \ldots N\} \]
-  estratto indipendentemente dalla distribuzione congiunta \( p(X, Y) \) e facciamo un istogramma.
-
-|      | \( c_i \) |
-|---|---|
-| \( y_j \) | \( n_{ij} \) |
-|      | \( x_i \) |
-
-33
-
-===== Pagina 38 [text layer] =====
-
+	32
+---
 **Il caso generale**
+
 Consideriamo il caso generale:
-• Definiamo nij come il numero di campioni che cadono nella cella (i, j) – cioè la cella
-corrispondente a (xi, yj) – dell'istogramma.
-• Inoltre: ci sarà il numero totale di volte che X assume il valore xi e rj il numero totale
-di volte che Y assume il valore yj
-}
-}
-ci
-rj
-yj
-xi
-nij
-34
 
-===== Pagina 39 =====
+- Come stimiamo la distribuzione congiunta delle variabili casuali  **X** e **Y** (senza alcuna conoscenza a priori)?
+- Preleviamo un campione:  $\{(x_i, y_i) \mid i = 1, 2, \ldots N\}$  estratto indipendentemente dalla distribuzione congiunta \( p(X, Y) \) e facciamo un istogramma.
 
-# Il caso generale
+	![[Pasted image 20250925114033.png]]
+
+	33
+---
+**Il caso generale**
+
+- Consideriamo il caso generale:
+	- Definiamo $n_{ij}$ come il numero di campioni che cadono nella cella (i, j) – cioè la cella corrispondente a $(x_i, y_j)$ – dell'istogramma.
+	- Inoltre: ci sarà il numero totale di volte che **X** assume il valore $x_i$ e $r_j$ il numero totale di volte che **Y** assume il valore $y_j$
+
+	![[Pasted image 20250925114033.png]]
+	
+	34
+---
+**Il caso generale**
 
 Questo istogramma cattura (beh, stima) tutto ciò di cui abbiamo bisogno:
 
-- La probabilità congiunta \( p(X, Y) \) è:
-  \[  p(X = x_i, Y = y_j) = \frac{n_{ij}}{N}\]
+- La probabilità *congiunta* **p(X, Y)** è: $$p(X = x_i, Y = y_j) = \frac{n_{ij}}{N}$$
 
-- La probabilità marginale di \( X \) che assume valore \( x_i \) è:
-  \[  p(X = x_i) = \frac{c_i}{N} = \sum_j p(X = x_i, Y = x_j)\]
+- La probabilità *marginale* di **X** che assume valore $x_i$ è: $$p(X = x_i) = \frac{c_i}{N} = \sum_j p(X = x_i, Y = x_j)$$
+	35
+---
+**Il caso generale**
 
-===== Pagina 40 =====
+Ora, vediamo come **condizionare** le probabilità:
 
-# Il caso generale
+- Guarda solo quegli eventi congiunti per cui $X = x_i$.
+- Scriviamo la frazione di tali eventi per cui  $Y = y_j$ come: $$p(Y = y_j | X = x_i) = \frac{n_{ij}}{c_i}$$
+- Possiamo derivarlo dalla probabilità congiunta:$$p(X = x_i, Y = y_j) = \frac{n_{ij}}{N} = \frac{n_{ij}}{c_i} \cdot \frac{c_i}{N} = p(Y = y_j | X = x_i) p(X = x_i)$$
+	![[Pasted image 20250925114033.png]]
 
-Ora, vediamo come condizionare le probabilità:
-
-- Guarda solo quegli eventi congiunti per cui \( X = x_i \).
-- Scriviamo la frazione di tali eventi per cui \( Y = y_j \) come:
-
-\[p(Y = y_j | X = x_i) = \frac{n_{ij}}{c_i}\]
-
-- Possiamo derivarlo dalla probabilità congiunta:
-
-\[p(X = x_i, Y = y_j) = \frac{n_{ij}}{N} = \frac{n_{ij}}{c_i} \cdot \frac{c_i}{N} = p(Y = y_j | X = x_i) p(X = x_i)\]
-
-\[\begin{array}{cccc}
-y_j & n_{ij} & r_j \\
-x_i & & \\
-\end{array}\]
-
-36
-
-===== Pagina 41 =====
-
-# Teoria della Probabilità per l'Apprendimento Automatico
-
-- Invocheremo frequentemente le due regole della probabilità:
-  \[    \text{regola della somma: } p(X) = \sum_{Y} p(X, Y)\]
-  \[    \text{regola del prodotto: } p(X, Y) = p(Y | X)p(X)\]
-
-- E useremo frequentemente la regola di Bayes:
-  \[    p(Y | X) = \frac{p(X | Y)p(Y)}{p(X)}\]
-
-- Questo assume un significato speciale quando applicato all'inferenza parametrica:
-  \[    p(\mathbf{w} | \mathcal{D}) = \frac{p(\mathcal{D} | \mathbf{w})p(\mathbf{w})}{p(\mathcal{D})}\]
-  \[    \text{posterior} \propto \text{verosimiglianza dei dati} \times \text{prior}\]
-
-37
-
-===== Pagina 42 =====
-
+	36
+---
 **Teoria della Probabilità per l'Apprendimento Automatico**
 
-- Un'operazione importante usando le probabilità è trovare medie pesate di funzioni:
-  \[  \mathbb{E}[f] = \sum_{x} p(x) f(x) \quad (\text{o} \int p(x) f(x) dx)\]
+- Invocheremo frequentemente le due regole della probabilità:
+	- regola della **somma**: $$p(X) = \sum_{Y} p(X, Y)$$
+	- regola del **prodotto**:  $$p(X, Y) = p(Y | X)p(X)$$
 
-- In entrambi i casi, se abbiamo un campione finito di \( N \) punti dalla distribuzione \( p(x) \) possiamo approssimare l'aspettativa:
-  \[  \mathbb{E}[f] \approx \sum_{i} p(x_i) f(x_i)\]
+- E useremo frequentemente la regola di *Bayes*: $$p(Y | X) = \frac{p(X | Y)p(Y)}{p(X)}$$
 
-- La distribuzione Gaussiana sarà nostra amica, quindi le covarianze sono importanti:
-  \[  \text{cov}(x,x) = \mathbb{E}_x \{ [x - \mathbb{E}[x]] \} \{ x^T - \mathbb{E}[x^T] \} \\
-    = \mathbb{E}_x [xx^T] - \mathbb{E}[x] \mathbb{E}[x^T]\]
+- Questo assume un significato speciale quando applicato all'*inferenza parametrica*:  $$p(\mathbf{w} | \mathcal{D}) = \frac{p(\mathcal{D} | \mathbf{w})p(\mathbf{w})}{p(\mathcal{D})}$$$$\text{posterior} \propto \text{verosimiglianza dei dati} \times \text{prior}$$
+	37
+---
+**Teoria della Probabilità per l'Apprendimento Automatico**
 
-38
-
-===== Pagina 43 =====
-
+- Un'operazione importante usando le probabilità è trovare **medie pesate** di funzioni:$$  \mathbb{E}[f] = \sum_{x} p(x) f(x) \quad (\text{o} \int p(x) f(x) dx)$$
+- In entrambi i casi, se abbiamo un campione finito di **N** punti dalla distribuzione **p(x)** possiamo approssimare l'*aspettativa*:$$\mathbb{E}[f] \approx \sum_{i} p(x_i) f(x_i)$$
+- La **distribuzione Gaussiana** sarà nostra amica, quindi le *covarianze* sono importanti:$$  \text{cov}(x,x) = \mathbb{E}_x \{ [x - \mathbb{E}[x]] \} \{ x^T - \mathbb{E}[x^T] \} \\
+    = \mathbb{E}_x [xx^T] - \mathbb{E}[x] \mathbb{E}[x^T]$$
+	38
+---
 **La distribuzione Gaussiana (a proposito di covarianza)**
 
-- La distribuzione Gaussiana univariata è super importante:
+- La distribuzione Gaussiana *univariata* è super importante:$$\mathcal{N}(x | \mu, \sigma) = \frac{1}{(2\pi\sigma^2)^{1/2}} \exp\{-\frac{1}{2\sigma^2}(x - \mu)^2\}$$
+- Così come la distribuzione Gaussiana *multivariata*, che useremo estesamente:$$\mathcal{N}(x | \mu, \Sigma) = \frac{1}{(2\pi)^{D/2}} \frac{1}{|\Sigma|^{1/2}} \exp\{-\frac{1}{2}(x - \mu)^T\Sigma^{-1}(x - \mu)\}$$
+- Qui $\mu$ è un vettore $D$ dimensionale (**la media**) e $\Sigma$ è la *matrice di covarianza* $D \times D$.
 
-\[N(x | \mu, \sigma) = \frac{1}{(2\pi\sigma^2)^{1/2}} \exp\{-\frac{1}{2\sigma^2}(x - \mu)^2\}\]
-
-- Così come la distribuzione Gaussiana multivariata, che useremo estesamente:
-
-\[N(x | \mu, \Sigma) = \frac{1}{(2\pi)^{D/2}} \frac{1}{|\Sigma|^{1/2}} \exp\{-\frac{1}{2}(x - \mu)^T\Sigma^{-1}(x - \mu)\}\]
-
-- Qui \(\mu\) è un vettore \(D\) dimensionale (la media) e \(\Sigma\) è la matrice di covarianza \(D \times D\).
-
-39
-
-===== Pagina 44 =====
-
-# Teoria decisionale e classificazione supervisionata
+	39
+---
+**Teoria decisionale e classificazione supervisionata**
 
 - Proviamo ad espandere la nostra crescente intuizione per includere problemi di classificazione.
 - La teoria della probabilità ci dà un modo principiato per rappresentare e quantificare l'incertezza, quindi usiamola!
-- Supponiamo di avere un input \( x \) insieme a un vettore \( y \) di variabili target.
-- Per problemi di regressione, \( y \) saranno variabili continue, mentre per problemi di classificazione rappresenterà etichette di classe.
-- La distribuzione congiunta \( p(x, y) \) ci dà un quadro completo dell'incertezza associata a queste variabili.
 
-===== Pagina 45 =====
+- Supponiamo di avere un input **x** insieme a un vettore **y** di variabili target.
+- Per problemi di regressione, **y** saranno variabili continue, mentre per problemi di classificazione rappresenterà etichette di classe.
 
-# Teoria decisionale e classificazione supervisionata
+- La distribuzione congiunta **p(x, y)** ci dà un quadro completo dell'incertezza associata a queste variabili.
 
-- Come esempio, supponiamo che \( x \) sia una radiografia a 512 × 512 pixel di un paziente e vogliamo decidere se il paziente ha il cancro:
+	40
+---
+**Teoria decisionale e classificazione supervisionata**
+
+- Come esempio, supponiamo che **x** sia una radiografia a 512 × 512 pixel di un paziente e vogliamo decidere se il paziente ha il cancro:
 
 \[f(x) =
 \begin{cases}
@@ -1141,7 +1116,7 @@ p(C2|x)
 # La Maledizione della Dimensionalità
 
 - Considera un problema di classificazione a 3 classi con misere due dimensioni di input:
-
+	=> nearest neighbour classification (?)
 \[\begin{array}{ccc}
  & 2 & \\
 x_7 & 1.5 & \\
@@ -1160,8 +1135,8 @@ x_6 & 1.5 & \\
 ===== Pagina 51 [text layer] =====
 
 **La Maledizione della Dimensionalità**
-• Man mano che aggiungiamo dimensioni di input, il numero di bin in qualsiasi discretizzazione dello
-spazio cresce esponenzialmente.
+• Man mano che aggiungiamo dimensioni di input, il numero di "bins" in qualsiasi discretizzazione dello spazio cresce esponenzialmente. =>  ma quello dei dati non cresce allo stesso modo! => rischio di un sacco di bins vuoti!
+
 • La morale: arricchire l'input (aggiungendo dimensioni) non rende il nostro
 problema più facile.
 x1
