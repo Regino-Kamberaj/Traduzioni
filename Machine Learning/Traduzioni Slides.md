@@ -1004,172 +1004,88 @@ Ora, vediamo come **condizionare** le probabilità:
 ---
 **Teoria decisionale e classificazione supervisionata**
 
-- Come esempio, supponiamo che **x** sia una radiografia a 512 × 512 pixel di un paziente e vogliamo decidere se il paziente ha il cancro:
+- Come esempio, supponiamo che **x** sia una radiografia a 512 × 512 pixel di un paziente e vogliamo decidere se il paziente ha il cancro: $$f(x) = \begin{cases}  0 & \text{se il paziente ha il cancro} \\ 1 & \text{altrimenti} \end{cases}$$- Come potrebbe apparire il nostro **dataset**? Beh, probabilmente un insieme di coppie: $$\mathcal{D} = \{(x_1, y_1), (x_2, y_2), \ldots, (x_N, y_N)\}$$
+- Dobbiamo prima affrontare il problema dell'*inferenza*: determinare la distribuzione congiunta $p(x, y)$  (di solito estremamente difficile).
+- Poi dobbiamo decidere come agire in modo ottimale per un specifico p(**x'**, y) (spesso molto facile).
 
-\[f(x) =
-\begin{cases}
-0 & \text{se il paziente ha il cancro} \\
-1 & \text{altrimenti}
-\end{cases}\]
-
-- Come potrebbe apparire il nostro dataset? Beh, probabilmente un insieme di coppie:
-
-\[D = \{(x_1, y_1), (x_2, y_2), \ldots, (x_N, y_N)\}\]
-
-- Dobbiamo prima affrontare il problema dell'inferenza: determinare la distribuzione congiunta \( p(x, y) \) (di solito estremamente difficile).
-- Poi dobbiamo decidere come agire in modo ottimale per un specifico \( p(x', y) \) (spesso molto facile).
-
-===== Pagina 46 =====
-
-# Teoria decisionale e classificazione supervisionata
-
-- Quindi, quando otteniamo un'immagine \( x \), il nostro obiettivo è decidere a quale delle due classi appartiene.
-- Possiamo derivare informazioni su questa decisione dalla distribuzione posterior:
-
-\[p(C_k | x) = \frac{p(x | C_k) p(C_k)}{p(x)} \\
-= \frac{\text{verosimiglianza dei dati } x \text{ prior}}{\text{evidenza}}\]
-
-- Ma, la domanda saliente rimane: come decidiamo?
-
-42
-
-===== Pagina 47 =====
-
-# Teoria decisionale e classificazione supervisionata
-
-La decisione ottimale teorica:
-
-- Minimizzare il tasso di errata classificazione atteso.
-
-\[p(\text{errata class.}) = p(x \in \mathcal{R}_1, C_2) + p(x \in \mathcal{R}_2, C_1)\]
-
-\[= \int_{\mathcal{R}_1} p(x, C_2) dx + \int_{\mathcal{R}_2} p(x, C_1) dx\]
-
+	41
 ---
-
-**Legenda:**
-
-- \( x_0 \)
-- \( \hat{x} \)
-- \( p(x, C_1) \)
-- \( p(x, C_2) \)
-- \( \hat{x} \)
-- \( R_1 \)
-- \( R_2 \)
-- \( x \)
-
-43
-
-===== Pagina 48 =====
-
-# Teoria decisionale e classificazione supervisionata
-
-- Opzione 1: stimare le densità condizionate di classe \( p(x|C_k) \) individualmente, insieme alle probabilità prior \( p(C_k) \), poi usare il teorema di Bayes per calcolare il posterior.
-
-\[p(C_k|x) = \frac{p(x|C_k)p(C_k)}{p(x)}\]
-
-- Opzione 2: stimare direttamente le probabilità posterior.
-- Opzione 3: saltare tutto il mumbo jumbo bayesiano e stimare direttamente una funzione discriminante.
-
-44
-
-===== Pagina 49 [text layer] =====
-
 **Teoria decisionale e classificazione supervisionata**
-Ci sono ragioni pratiche per scegliere un approccio:
-p(x|C1)
-p(x|C2)
-x
-densità di classe
-0
-0.2
-0.4
-0.6
-0.8
-1
-0
-1
-2
-3
-4
-5
-x
-p(C1|x)
-p(C2|x)
-0
-0.2
-0.4
-0.6
-0.8
-1
-0
-0.2
-0.4
-0.6
-0.8
-1
-1.2
-45
 
-===== Pagina 50 =====
+- Quindi, quando otteniamo un'immagine **x**, il nostro obiettivo è decidere a quale delle due classi appartiene.
+- Possiamo derivare informazioni su questa decisione dalla distribuzione *posterior*:
+$$p(C_k | x) = \frac{p(x | C_k) p(C_k)}{p(x)} \\
+= \frac{\text{verosimiglianza dei dati } \text{x} \text{ prior}}{\text{evidenza}}$$
 
-# La Maledizione della Dimensionalità
+- Ma, la domanda saliente rimane: **come decidiamo?**
+
+	42
+---
+**Teoria decisionale e classificazione supervisionata**
+
+La decisione ottimale *teorica*:
+
+- Minimizzare il tasso di *classificazione errata* atteso.
+$$p(\text{errata class.}) = p(x \in \mathcal{R}_1, C_2) + p(x \in \mathcal{R}_2, C_1)$$
+$$= \int_{\mathcal{R}_1} p(x, C_2) dx + \int_{\mathcal{R}_2} p(x, C_1) dx$$
+	![[Pasted image 20250925231256.png]]
+	
+	43
+---
+**Teoria decisionale e classificazione supervisionata**
+
+- **Opzione 1**: stimare le densità condizionate di classe $p(x|C_k)$ individualmente, insieme alle probabilità a priori $p(C_k)$, poi usare il teorema di Bayes per calcolare la *posterior*.
+$$p(C_k|x) = \frac{p(x|C_k)p(C_k)}{p(x)}$$
+
+- Opzione 2: **stimare** direttamente le probabilità posterior.
+
+- Opzione 3: saltare tutto il mumbo jumbo bayesiano e stimare direttamente una *funzione discriminante*.
+	
+	44
+---
+**Teoria decisionale e classificazione supervisionata**
+
+- Ci sono ragioni pratiche per scegliere un approccio:
+	![[Pasted image 20250925231937.png]]
+
+	45
+---
+**La Maledizione della Dimensionalità**
 
 - Considera un problema di classificazione a 3 classi con misere due dimensioni di input:
 	=> nearest neighbour classification (?)
-\[\begin{array}{ccc}
- & 2 & \\
-x_7 & 1.5 & \\
-0.5 & 0 & \\
-0 & 0.25 & 0.5 & 0.75 & 1 \\
-\end{array}\]
-
-\[\begin{array}{ccc}
- & 2 & \\
-x_6 & 1.5 & \\
-0 & 0.25 & 0.5 & 0.75 & 1 \\
-\end{array}\]
-
-46
-
-===== Pagina 51 [text layer] =====
-
+	
+	![[Pasted image 20250925232135.png]]
+	
+	46
+---
 **La Maledizione della Dimensionalità**
-• Man mano che aggiungiamo dimensioni di input, il numero di "bins" in qualsiasi discretizzazione dello spazio cresce esponenzialmente. =>  ma quello dei dati non cresce allo stesso modo! => rischio di un sacco di bins vuoti!
 
-• La morale: arricchire l'input (aggiungendo dimensioni) non rende il nostro
-problema più facile.
-x1
-D = 1
-x1
-x2
-D = 2
-x1
-x2
-x3
-D = 3
-47
+- Man mano che aggiungiamo dimensioni di input, il numero di "bins" in qualsiasi discretizzazione dello spazio cresce esponenzialmente. =>  ma quello dei dati non cresce allo stesso modo! => rischio di un sacco di bins vuoti!
 
-===== Pagina 52 =====
+- La morale: arricchire l'input (aggiungendo dimensioni) ==non rende il nostro problema più facile==.
 
-# Allineamento Notazionale e La Strada da Percorrere
+	![[Pasted image 20250925232256.png]]
 
-===== Pagina 53 =====
+	47
+---
+## Allineamento Notazionale e La Strada da Percorrere
 
-# Allineamento Notazionale
+---
+**Allineamento Notazionale**
 
-- I vettori saranno denotati in carattere minuscolo, romano, grassetto: x.
+- I vettori saranno denotati in carattere minuscolo, romano, grassetto: **x**.
 - Tutti i vettori sono assunti essere vettori colonna.
-- Lettere maiuscole, grassetto romano denotano matrici: M.
-- La trasposta di vettori e matrici è indicata dall'apice \( T \): \( x^T, M^T \).
-- La notazione \((w_1, \ldots, w_n)\) denota un vettore riga di \( n \) dimensioni.
-- Il corrispondente vettore colonna è scritto come \( w = (w_1, \ldots, w_n)^T \).
-- L'aspettativa di \( f(x, y) \) rispetto a una v.c. \( x \) è scritta come \( \mathbb{E}_x[f(x, y)] \).
-- Se \( x \) è condizionata su z, l'aspettativa condizionata è \( \mathbb{E}_x[f(x) | z] \)
-- La varianza di \( f(x) \) è denotata da \( var[f(x)] \), e la covarianza come \( cov[x, y] \).
+- Lettere maiuscole, grassetto romano denotano matrici: **M**.
+- La trasposta di vettori e matrici è indicata dall'apice **T**: $x^T, M^T$.
+- La notazione $(w_1, \ldots, w_n)$ denota un vettore riga di *n* dimensioni.
+- Il corrispondente vettore colonna è scritto come $w = (w_1, \ldots, w_n)^T$.
+- Il valore atteso di $f(x, y)$ rispetto a una v.c. **x** è scritta come $\mathbb{E}_x[f(x, y)]$.
+- Se **x** è condizionata su z, il valore atteso condizionato è $\mathbb{E}_x[f(x) | z]$
+- La *varianza* di f(x) \) è denotata da $var[f(x)]$, e la *covarianza* come $cov[x, y]$.
 
-===== Pagina 54 =====
-
+	48
+---
 **La strada da percorrere**
 
 - In questa lezione abbiamo visto una breve panoramica di alto livello di alcuni dei concetti base di algebra lineare e teoria della probabilità.
@@ -1180,29 +1096,20 @@ D = 3
   - Vedremo come modellare previsioni di output continui usando funzioni lineari dell'input.
   - Vedremo come adattare questi modelli, come proiezioni di base non lineari possono arricchirli e come quantificare la fiducia nelle loro previsioni.
 
-49
+	49
+---
+## Compiti a Casa e Letture
 
-===== Pagina 55 =====
-
+---
 **Compiti a Casa e Letture**
 
-===== Pagina 56 =====
+- **Lettura Assegnata:**
+	- Bishop: Capitoli 1 e 2 (1.5, 2.3)
 
-# Compiti a Casa e Letture
-
-## Lettura Assegnata:
-
-- Bishop: Capitoli 1 e 2 (1.5, 2.3)
-
-## Compiti a Casa:
-
+**Compiti a Casa:**
 1. Una mappa lineare \(\pi : V \to U\) da uno spazio vettoriale \(V\) a uno spazio vettoriale \(U\) è chiamata proiezione se \(\pi \circ \pi = \pi\) (cioè \(\pi\) è idempotente). Dimostra che la proiezione ortogonale da \(V\) su un sottospazio \(U\) è effettivamente una proiezione.
 
 2. Mostra che la moda di una distribuzione Gaussiana \(\mathcal{N}(\mu, \sigma)\) è data da \(\mu\).
 
-
-[file content end]
-
+	50
 ---
-
-Ho mantenuto la struttura, la formattazione (titoli, elenchi, formule matematiche) e il tono formale dell'originale. I termini tecnici sono stati lasciati in inglese dove comune nella letteratura italiana (es. "machine learning", "deep learning", "input", "output", "dataset"), mentre il resto è stato tradotto in modo letterale.
