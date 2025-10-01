@@ -1752,4 +1752,279 @@ Alla fine di questa lezione avrete:
 	28
 ---
 
-# Modelli Lineari per la classificazione
+# 5 - Modelli Lineari per la classificazione
+
+---
+## Introduzione
+---
+**Classificazione e superfici decisionali**
+
+- L'obiettivo della classificazione è prendere un vettore di input $x$ e assegnarlo a una delle $K$ classi.
+- Denotiamo queste classi come $C_k$ per $k \in \{1, \ldots, K\}$.
+- L'ambiente più semplice è la classificazione a singola etichetta dove ogni $x$ appartiene esattamente a una classe.
+- Così lo spazio di input è diviso in regioni decisionali i cui confini sono chiamati bordi decisionali o superfici decisionali.
+- Considereremo prima modelli lineari dove queste superfici decisionali sono funzioni lineari dell'input $x$.
+- Dati le cui classi possono essere separate esattamente con superfici decisionali lineari sono chiamati linearmente separabili.
+
+	2
+---
+**Obiettivi della lezione**
+
+Alla fine di questa lezione avrete:
+
+- Compreso la geometria delle funzioni discriminanti lineari e come interpretarle.
+- Compreso come applicare i minimi quadrati per stimare i parametri di modelli discriminanti lineari.
+- Compreso le limitazioni dei minimi quadrati per l'adattamento di modelli di classificazione.
+- Compreso come il Discriminante Lineare di Fisher affronta alcune delle carenze dei minimi quadrati trovando una direzione "migliore" per la discriminazione.
+
+	3
+---
+## Funzioni Discriminanti Lineari
+---
+
+**Funzioni discriminanti per due classi**
+
+- La rappresentazione più semplice per un discriminante è una funzione lineare:$$y(x) = w^Tx + w_0$$
+- Ancora, $w$ è il vettore dei pesi e $w_0$ è un bias scalare.
+- Per la classificazione, il bias negativo è a volte chiamato soglia.
+- La regola decisionale: $$\text{classe}(x) = \begin{cases} C_1 & \text{se } w^Tx + w_0 \geq 0 \\ C_2 & \text{se } w^Tx + w_0 < 0 \end{cases}$$
+- La distanza normale dall'origine alla superficie decisionale è:$$\frac{w^Tx}{||w||} = -\frac{w_0}{||w||}$$
+	4
+---
+**La geometria dei discriminanti lineari**
+
+- Questa è la grafica a cui penso quando voglio ricordare come funziona la geometria del discriminante lineare:
+
+	![[Pasted image 20251001223839.png]]
+
+	5
+---
+**Incorporare il bias nella base**
+
+- Come con la regressione, a volte è conveniente usare una notazione compatta.
+- Quindi, introduciamo una dimensione fittizia $x_0 = 1$ e definiamo:
+						$\hat{w} = (w_0, w)^T$
+					
+						$\tilde{x} = (x_0 = 1, x)^T$
+					
+			così che $y(x) = \hat{w}^T \tilde{x}$
+
+- Quindi le superfici decisionali in questo spazio sono iperpiani $D$ dimensionali passanti per l'origine dello spazio aumentato $D + 1$ dimensionale.
+
+	6
+---
+
+**Classi multiple**
+
+- OK, ma i problemi a due classi sono davvero noiosi. E se ne abbiamo di più?
+- Potremmo usare $K - 1$ classificatori, ognuno risolvendo un problema a due classi separando una classe $C_k$ dai punti non in quella classe.
+- Questo è noto come classificatore one-versus-rest:
+
+	![[Pasted image 20251001224446.png]]
+	
+	7
+---
+**Classi multiple**
+
+- Torniamo alla lavagna... Usa $K(K-1)/2$ funzioni discriminanti binarie.
+- Una per ogni coppia di classi:
+
+	![[Pasted image 20251001224540.png]]
+
+	8
+---
+**Classi multiple**
+
+- Possiamo evitare tutti questi problemi se usiamo un singolo discriminante a K classi impiegando $k$ funzioni lineari:$$y_k(x) = w_k^T x + w_{k0}$$
+- Che possiamo anche impacchettare insieme in una singola moltiplicazione di matrici:$$y(x) = \tilde{W}^T \tilde{x}$$
+- Ora assegniamo semplicemente $x$ alla classe $C_k$ se $y_k(x) \geq y_j(x)$ per tutti $j \neq k$.
+
+	9
+---
+**Bordi decisionali per classi multiple**
+
+- Poiché stiamo prendendo un max su funzioni lineari, abbiamo regioni decisionali semplicemente connesse e convesse:
+
+	![[Pasted image 20251001225538.png]]
+	
+	10
+---
+## Minimi Quadrati per la Classificazione
+---
+
+**Un modello lineare compatto**
+
+- Per la regressione, i modelli lineari con una misura di errore ai minimi quadrati hanno portato a una semplice soluzione in forma chiusa.
+- Quindi, vediamo se possiamo riuscire a fare lo stesso trucco qui.
+- Ogni classe è descritta dal proprio modello lineare:$$y_{k}(x) = w_{k}^{T}x + w_{k0}$$
+- O, ancora meglio:$$y(x) = \tilde{W}^{T}\tilde{x}$$
+- È utile pensare a cosa sono le colonne di $\tilde{W}$.
+- Inoltre, quali dovrebbero essere i nostri target per la classificazione?
+
+	11
+---
+**Una soluzione analitica**
+
+- Risolviamo per $\tilde{W}$ minimizzando un errore somma-dei-quadrati.
+- Considera un training set $\{x_n, t_n\}$ per $n \in \{1, \ldots, N\}$.
+- E definisci una matrice $T$ la cui riga $n^{esima}$ è $t_n^T$.
+- Insieme a una corrispondente matrice $\tilde{X}$ la cui riga $n^{esima}$ è $\tilde{x}_n^T$.
+- Possiamo allora scrivere la funzione di errore come:$$E(\tilde{W}) = \frac{1}{2}Tr\left\{(\tilde{X}\tilde{W} - T)^T(\tilde{X}\tilde{W} - T)\right\}$$
+- Impostando il gradiente rispetto a $\tilde{W}$ a zero e risolvendo, arriviamo a:$$\tilde{W} = (\tilde{X}^T\tilde{X})^{-1}\tilde{X}^TT = \tilde{X}^{\dagger}T$$ 
+
+	12
+---
+**Una soluzione analitica**
+
+- Quindi abbiamo una bella forma analitica per un classificatore a K classi da dati:
+  $y(x) = \tilde{W}^T \tilde{x} = T^T (\tilde{X}^{\dagger})^T \tilde{x}$
+
+- Tuttavia, non è un classificatore molto buono:
+
+	![[Pasted image 20251001230826.png]]
+
+	13
+---
+## Discriminante Lineare di Fisher
+---
+
+**Classificazione lineare come riduzione di dimensionalità**
+
+- Un modo di pensare alla classificazione lineare con discriminanti è come una riduzione di dimensionalità a una dimensione.
+- Diamo un'occhiata ad alcuni esempi motivanti di questo...
+
+	14
+---
+**Separare le medie**
+
+- La nostra prima strategia potrebbe essere di calcolare le medie di ogni classe nello spazio delle feature:$$\mathbf{m}_1 = \frac{1}{N_1} \sum_{n=1}^{N_1} x_{1,n}, \quad \mathbf{m}_2 = \frac{1}{N_2} \sum_{n=1}^{N_2} x_{2,n}$$
+- E poi calcolare $\mathbf{w}$ in modo che la proiezione di questi due punti su di esso massimizzi la distanza tra le proiezioni:$$\mathbf{w}^T \mathbf{m}_2 - \mathbf{w}^T \mathbf{m}_1 = \mathbf{w}^T (\mathbf{m}_2 - \mathbf{m}_1)$$
+- Qualcuno vede un problema nel massimizzare questa espressione?
+
+	15
+---
+**Separare le medie**
+
+- La nostra prima strategia potrebbe essere di calcolare le medie di ogni classe nello spazio delle feature:$$m_1 = \frac{1}{N_1} \sum_{n=1}^{N_1} x_{1,n}, \quad m_2 = \frac{1}{N_2} \sum_{n=1}^{N_2} x_{2,n}$$
+- E poi calcolare $w$ in modo che la proiezione di questi due punti su di esso massimizzi la distanza tra le proiezioni:$$w^T m_2 - w^T m_1 = w^T (m_2 - m_1)$$
+- Qualcuno vede un problema nel massimizzare questa espressione?
+- Possiamo imporre il vincolo che $||w||_2 = 1$ nell'ottimizzazione (usando un moltiplicatore di Lagrange).
+- Il risultato è, non a sorpresa: $w \propto (m_2 - m_1)$
+
+	16
+---
+**Separare le medie**
+
+- Va bene? Cosa non funziona?
+
+	![[Pasted image 20251001231132.png]]
+
+	17
+---
+**Tenere conto dell'anisotropia**
+
+- Entrambe le distribuzioni di classe hanno matrici di covarianza fortemente non diagonali.
+- L'intuizione di Fisher era di massimizzare la varianza inter-classe, mentre simultaneamente minimizzava la varianza intra-classe nello spazio proiettato, 1-dimensionale.
+- La varianza within-class – anche chiamata compattezza – è:$$S_k^2 = \sum_{n=1}^{N_k} (w^T x_{k,n} - w^T m_k)^2$$
+- Il Criterio di Fisher è allora il rapporto tra la varianza between-class e la varianza within-class:$$J(w) = \frac{(w^T m_2 - w^T m_1)^2}{S_1^2 + S_2^2}$$
+	18
+---
+**Generalizzando**
+
+- Possiamo rendere between e within più espliciti scrivendo:$$J(w) = \frac{w^T S_B w}{w^T S_W w} \quad (\text{vedi Eq 4.27 e 4.28 in Bishop})$$
+- Dove qui $S_B$ è la covarianza between-class, e $S_W$ è la within-class.
+
+- Dopo aver differenziato e manipolato i termini, troviamo:$$(w^T S_B w) S_W w = (w^T S_W w) S_B w$$
+- Non ci interessa (per ora) la scala di $w$, quindi dopo aver eliminato i fattori scalari e moltiplicato per $S_W^{-1}$:$$w \propto S_W^{-1}(m_2 - m_1)$$
+	19
+---
+**Discriminante Lineare di Fisher per due classi**
+
+- Che funziona molto meglio:
+
+	![[Pasted image 20251001231407.png]]
+
+	20
+---
+**Relazione con i minimi quadrati**
+
+- L'approccio dei minimi quadrati alla classificazione basata su discriminanti lineari si basa sull'apprendere funzioni lineari che siano il più vicine possibile all'insieme dei valori target.
+- Il Criterio di Fisher, invece, cerca di massimizzare la separazione delle classi nello spazio discriminante.
+- Per il problema a due classi, possiamo mostrare che il discriminante di Fisher è in realtà un caso speciale del vecchio minimi quadrati.
+- Invece di usare un target di 1 per le probabilità target one-hot, useremo:$$t_n = \begin{cases} \frac{N}{N_1} & \text{se } x_n \in C_1 \\ -\frac{N}{N_2} & \text{se } x_n \in C_2 \end{cases}$$
+- Questa è una stima del prior reciproco per ogni classe.
+
+	21
+---
+**Relazione con i minimi quadrati**
+
+- Il nostro errore è ancora minimi quadrati:$$E = \frac{1}{2} \sum_{n=1}^{N} (w^T x_n + w_0 - t_n)^2$$
+- Impostando i gradienti a zero rispetto a $w_0$ e $w$:$$\sum_{n=1}^{N} (w^T x_n + w_0 - t_n) = 0$$$$\sum_{n=1}^{N} (w^T x_n + w_0 - t_n)x_n = 0$$
+	22
+---
+**Relazione con i minimi quadrati**
+
+- Risolvendo, troviamo (usando liberamente l'espressione per i nuovi target):$$w_0 = -\frac{w^T (N_1 m_1 + N_2 m_2)}{N}$$
+- E per la direzione:$$w \propto S^{-1}_W (m_2 - m_1)$$
+	23
+---
+## Osservazioni Conclusive
+---
+**Discriminanti lineari**
+
+- In questa introduzione abbiamo guardato i discriminanti lineari per la classificazione supervisionata.
+- Questi approcci sono approssimativamente equivalenti agli approcci geometrici per la regressione lineare.
+- In realtà, sono più simili alle soluzioni di massima verosimiglianza per la regressione, ma dobbiamo ancora aggiungere un'interpretazione probabilistica.
+- È importante avere una sensazione per la geometria dei discriminanti lineari.
+
+- Proiettiamo gli input sui pesi del modello $w$.
+- Questo vettore peso $w$ è perpendicolare alla superficie discriminante.
+- Un discriminante lineare riduce implicitamente a un problema di soglia unidimensionale.
+
+	24
+---
+**I minimi quadrati fanno schifo come classificatore**
+
+- La classificazione con minimi quadrati ha svantaggi significativi – più notablemente la sua sensibilità agli outlier.
+- Come vedremo, stiamo implicitamente facendo assunzioni sulla forma delle distribuzioni di classe quando usiamo i minimi quadrati.
+- Ciononostante, manteniamo ancora la soluzione in forma chiusa analitica offerta dai minimi quadrati.
+
+	25
+---
+**Discriminante Lineare di Fisher**
+
+- Se ruotiamo lo spazio in modo da massimizzare certe proprietà delle proiezioni di classe, possiamo fare meglio.
+- Questo è ciò che fa il Criterio di Fisher: massimizzare la varianza between-class, mentre minimizza la varianza within-class.
+- Fare questo migliora significativamente le performance di classificazione lineare.
+- Ma, mantiene ancora le belle proprietà analitiche dei minimi quadrati.
+
+	26
+---
+**La strada da percorrere**
+
+- Seguendo il nostro sviluppo per la regressione, nella prossima lezione daremo un'occhiata ai modelli probabilistici per la classificazione.
+- Guarderemo la classificazione da prospettive generative e discriminative.
+- E svilupperemo un approccio completamente bayesiano alla classificazione.
+- Questi modelli manterranno le proprietà lineari che siamo venuti a conoscere e amare, e ammetteranno soluzioni analitiche date alcune assunzioni chiave.
+
+	27
+---
+**Il Perceptron**
+
+- C'è un altro importante approccio geometrico alla classificazione con discriminanti lineari.
+- L'Algoritmo Perceptron è un importante precursore delle moderne Reti Neurali Artificiali (ANN).
+- Infatti, il Perceptron – cioè una funzione discriminante lineare – è il blocco fondamentale dei moderni modelli di reti neurali.
+- Ritarderemo, tuttavia, la nostra discussione sul Perceptron finché non staremo per tuffarci nei moderni modelli di Deep Learning.
+
+	28
+---
+**Letture e Compiti a Casa**
+
+- Lettura Assegnata:
+	- Bishop: Capitolo 4 (4.1 – 4.1.6)
+
+	29
+---
+# 6 - 
+
+
