@@ -1,5 +1,4 @@
 # 1 - Introduzione
----
 
 **Fondamenti di Apprendimento Automatico:**
 
@@ -50,9 +49,8 @@ Alla fine di questa lezione avrete:
 
 - Il termine Apprendimento Automatico risale ad Arthur Samuel negli anni '50.
 - Negli anni successivi il suo ambito si è espanso e contratto.
-- Un modo di pensare l'apprendimento automatico è:
-
-	$$\text{Apprendimento Automatico} = \text{(Statistica Computazionale + Ottimizzazione)} + \text{Dati (di solito molti)}$$
+- Un modo di pensare l'apprendimento automatico è: $\text{Apprendimento Automatico} = \text{(Statistica Computazionale + Ottimizzazione)}$ 
+						$+ \text{Dati (di solito molti)}$
 
 	4
 ---
@@ -93,19 +91,18 @@ Alla fine di questa lezione avrete:
 ---
 **Apprendimento supervisionato: un esempio**
 
-• Quindi, abbiamo una situazione come questa…
-• Cosa possiamo fare?
+-  Quindi, abbiamo una situazione come questa…
+-  Cosa possiamo fare?
 
-![[Pasted image 20250917230650.png]]
+	![[Pasted image 20250917230650.png]]
 
 	8
 ---
 **Apprendimento supervisionato: un esempio**
 
-- Beh, un po' di algebra delle scuole medie ci permette di connettere i punti:  $$y = 8.013x - 373.247$$ perché questo modello? => tipo perché non una parabola? 
-=> la retta è il modello più semplice! => con due sole variabili!
+- Beh, un po' di algebra delle scuole medie ci permette di connettere i punti:  $$y = 8.013x - 373.247$$ perché questo modello? => tipo perché non una parabola?  => la retta è il modello più semplice! => con due sole variabili!
 
-![[Pasted image 20250917230839.png]]
+	![[Pasted image 20250917230839.png]]
 
 	9
 ---
@@ -114,7 +111,7 @@ Alla fine di questa lezione avrete:
 - Ora supponiamo di avere molti più dati.
 - Il nostro “modello” generalizza?
 
-![[Pasted image 20250917231024.png]]
+	![[Pasted image 20250917231024.png]]
 
 - In alcune parti potremmo fare meglio in altre peggio... Come migliorare? avendo più punti e solo con due parametri devo decidere quale sia il miglior modello che generalizza i dati.
 
@@ -182,7 +179,7 @@ Questo corso è sui **Fondamenti dell'Apprendimento Automatico**, e in esso trat
 	- Metodi Locali: Metodi dei Vicini Più Prossimi, stima della densità non parametrica.
 	- Apprendimento Non Supervisionato: Analisi delle Componenti Principali (PCA), Modelli di Mistura Gaussiana (GMM), l'algoritmo Expectation-Maximization (EM).
 
-- **Parte II**: Apprendimento Profondo
+- **Parte II**: Apprendimento Profondo (deep learning)
 	- Modelli Connessionisti: Storia, apprendimento hebbiano, il Percettrone e l'apprendimento basato su gradiente.
 	- Reti Profonde: Percettroni Multistrato (MLP), Reti Neurali Convoluzionali (CNN).
 	- Argomenti Avanzati: Reti Neurali Ricorrenti a Memoria a Lungo-Termine (LSTM), Transfer learning, Apprendimento auto-supervisionato, Transformers.
@@ -284,8 +281,7 @@ Facciamo un passo indietro e pensiamo a obiettivi più astratti:
 
 - Tutti facciamo un respiro profondo prima di continuare a leggere:
 
-I vostri giorni di apprendimento in ambienti di apprendimento strutturati sono (quasi) finiti.
-=> Define your learning objectives? 
+- I vostri giorni di apprendimento in ambienti di apprendimento strutturati sono (quasi) finiti. => Define your learning objectives? 
 
 	23
 ---
@@ -312,13 +308,12 @@ Gli ingredienti:
 
 - Una **densità di probabilità congiunta** sconosciuta $p(x, y)$ su $\mathcal{X}$ e $\mathcal{Y}$. => mi aspetto qualche relazione fra i due spazi
 - Uno spazio di ipotesi $\mathcal{H}$ di funzioni da $\mathcal{X}$ a $\mathcal{Y}$. 
-- Una **funzione di perdita** $\mathcal{L} : \mathcal{Y} \times \mathcal{Y} \to \mathbb{R}$. => cerco la funzione migliore che approssima all'interno del mio spazio di Ipotesi => certe volte chiamata risk function => funzione di perdita alta quando la nostra funzione non si comporta bene!
+- Una **funzione di perdita** $\mathcal{L} : \mathcal{Y} \times \mathcal{Y} \to \mathbb{R}$. => cerco la funzione migliore che approssima all'interno del mio spazio di Ipotesi => certe volte chiamata *risk function* => funzione di perdita alta quando la nostra funzione non si comporta bene!
 
 Un obiettivo di apprendimento:
 
-- Assumendo che la vera $h \in \mathcal{H}$, possiamo semplicemente:
-$$h^* = \arg \min_{h \in \mathcal{H}} \mathbb{E}_p[\mathcal{L}(h(x), y)] =$$ $$\arg \min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y) p(x, y) dxdy$$
-Problema di minimizzazione => integro su tutti i valori x,y => expectation di una loss value tramite una likelihood sui dati => cerco di penalizzare il più possibile quei valori che hanno una alta similirità ma anche un loss value molto alta! (vado a vedere il valore restituito da h e confronto con y) => questo fra tutte le combinazioni di x e y 
+- Assumendo che la vera $h \in \mathcal{H}$, possiamo semplicemente:$$h^* = \arg \min_{h \in \mathcal{H}} \mathbb{E}_p[\mathcal{L}(h(x), y)] =$$ $$= \arg \min_{h \in \mathcal{H}} \int \mathcal{L}(h(x), y) p(x, y) dxdy$$
+- Problema di minimizzazione => integro su tutti i valori x,y => expectation di una loss value tramite una **likelihood sui dati** => cerco di penalizzare il più possibile quei valori che hanno una alta similarità ma anche un loss value molto alta! (vado a vedere il valore restituito da h e confronto con y) => questo fra tutte le combinazioni di x e y 
 
 	25
 ---
@@ -340,7 +335,7 @@ Problema di minimizzazione => integro su tutti i valori x,y => expectation di un
 - E riguardo a $\mathcal{L}$ ?
 - E riguardo a $\mathcal{H}$ ?
 
-Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo quadratica)... rischio di avere un modello che approssima troppo => extreme over-fitting
+Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo quadratica)... rischio di avere un modello **che approssima troppo** => extreme over-fitting
 
 - E riguardo a quella spaventosa minimizzazione?
 - Infine, e riguardo a $\mathcal{X}$ e $\mathcal{Y}$ => occhio alle rappresentazioni fra spazio di partenza e fine => tipo immagini e classificazione come output => che cosa devo avere come output?
@@ -457,7 +452,9 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 - Cosa significa **buono** in questo contesto?
 - Beh, possiamo cominciare pensando di misurare **l'errore nella funzione** stimata in termini dei dati osservati:$$\mathcal{L}(w|D) = \frac{1}{2} \sum_{(x,t)\in D} \{y(x,w) - t\}^2$$
 - Che è una funzione **quadratica** in $w$, (e anche monotona) quindi le sue derivate sono lineari => funzione anche convessa => ha un unico minimizzatore!
+
 - E $\mathcal{L}(w|D)$ ha un unico minimizzatore $w^*$.  => minore è la loss e migliore è modello  => sempre se abbiamo scelto una buona loss => avere loss pari a zero può essere segno di overfitting
+
 - Abbiamo finito?
 	![[Pasted image 20250925104216.png]]
 
@@ -465,7 +462,8 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 ---
 **Un esempio motivante**
 
-- Non abbiamo finito. C'è un *iperparametro* del nostro modello che abbiamo convenientemente dimenticato: l'ordine del polinomio $M$.
+- Non abbiamo finito. C'è un *iperparametro* del nostro modello che abbiamo convenientemente dimenticato: **l'ordine del polinomio $M$.**
+
 	![[Pasted image 20250925104352.png]]
 	Sembra abbastanza buona...
 	
@@ -603,9 +601,7 @@ https://discord.gg/tUkgrgXdXE
 
 # 2 - Preliminari Matematici
 
----
 ## Introduzione
-
 ---
 **Obiettivi della lezione**
 
@@ -671,7 +667,7 @@ Alla fine di questa lezione avrete:
 **Probabilità e statistica**
 
 - Per altri problemi potremmo voler *qualificare* gli output del modello.
-- Questo è il caso in molti problemi di regressione dove gli output in alcuni punti potrebbero essere **più certi** di altri. => in questi casi ho informazioni locali
+- Questo è il caso in molti problemi di regressione dove gli output in ==alcuni punti potrebbero essere **più certi** di altri.== => in questi casi ho informazioni locali
 
 	![[Pasted image 20250923145127.png]]
 	=> dove area più ristretta vorrei più confidenza perchè magari ho più dati di input e viceversa meno confidenza (area più larga) per meno dati
@@ -688,7 +684,6 @@ Alla fine di questa lezione avrete:
 	9
 ---
 ## Preliminari Matematici: Algebra Lineare
-
 ---
 **Vettori e spazi vettoriali**
 
@@ -762,11 +757,10 @@ $$v = \begin{bmatrix} 2 \\ 1 \end{bmatrix}$$
 ---
 **Formalizzare l'intuizione**
 
-**Definizione (Prodotto Interno e Spazio con Prodotto Interno)**
-
-- Sia **V** un qualsiasi spazio vettoriale e $\Omega : V \times V \to \mathbb{R}$ una qualsiasi mappa *bilineare* da **V** a $\mathbb{R}$. Allora:
-	- Se $\Omega$ è simmetrica e definita positiva, $\Omega$ è chiamata un *prodotto interno* su **V**. Di solito scriviamo $\langle x,y\rangle$ invece di $\Omega(x,y)$.
-	- La coppia $(V,\Omega)$ (o $(V,\langle\cdot,\cdot\rangle)$ ) per prodotto interno $\Omega$ è chiamata **spazio con prodotto interno** o *spazio vettoriale con prodotto interno*. Se: $$\Omega(x,y) = x^Ty \space ,  (V,\Omega)$$ è chiamato **spazio vettoriale euclideo**.
+- **Definizione (Prodotto Interno e Spazio con Prodotto Interno)**
+	- Sia **V** un qualsiasi spazio vettoriale e $\Omega : V \times V \to \mathbb{R}$ una qualsiasi mappa *bilineare* da **V** a $\mathbb{R}$ Allora:
+		- Se $\Omega$ è simmetrica e definita positiva, $\Omega$ è chiamata un *prodotto interno* su **V**. Di solito scriviamo $\langle x,y\rangle$ invece di $\Omega(x,y)$.
+		- La coppia $(V,\Omega)$ (o $(V,\langle\cdot,\cdot\rangle)$ ) per prodotto interno $\Omega$ è chiamata **spazio con prodotto interno** o *spazio vettoriale con prodotto interno*. Se: $$\Omega(x,y) = x^Ty \space ,  (V,\Omega)$$ è chiamato **spazio vettoriale euclideo**.
 
 - I prodotti interni ci permettono di formalizzare le nostre intuizioni geometriche su lunghezza, ortogonalità e distanza.
 
@@ -774,8 +768,7 @@ $$v = \begin{bmatrix} 2 \\ 1 \end{bmatrix}$$
 ---
 **Proiezioni ortogonali**
 
-
-//Inserire sketch se lo fa
+- //Inserire sketch se lo fa
 
 	18
 --- 
@@ -948,7 +941,6 @@ Consideriamo il caso generale:
 Questo istogramma cattura (beh, stima) tutto ciò di cui abbiamo bisogno:
 
 - La probabilità *congiunta* **p(X, Y)** è: $$p(X = x_i, Y = y_j) = \frac{n_{ij}}{N}$$
-
 - La probabilità *marginale* di **X** che assume valore $x_i$ è: $$p(X = x_i) = \frac{c_i}{N} = \sum_j p(X = x_i, Y = x_j)$$
 	35
 ---
@@ -979,26 +971,26 @@ Ora, vediamo come **condizionare** le probabilità:
 - Un'operazione importante usando le probabilità è trovare **medie pesate** di funzioni:$$  \mathbb{E}[f] = \sum_{x} p(x) f(x) \quad (\text{o} \int p(x) f(x) dx)$$
 - In entrambi i casi, se abbiamo un campione finito di **N** punti dalla distribuzione **p(x)** possiamo approssimare l'*aspettativa*:$$\mathbb{E}[f] \approx \sum_{i} p(x_i) f(x_i)$$
 - La **distribuzione Gaussiana** sarà nostra amica, quindi le *covarianze* sono importanti:$$  \text{cov}(x,x) = \mathbb{E}_x \{ [x - \mathbb{E}[x]] \} \{ x^T - \mathbb{E}[x^T] \} \\
-    = \mathbb{E}_x [xx^T] - \mathbb{E}[x] \mathbb{E}[x^T]$$
+    = \mathbb{E}_x [\mathbf{x}\mathbf{x}^T] - \mathbb{E}[\mathbf{x}] \mathbb{E}[\mathbf{x}^T]$$
 	38
 ---
 **La distribuzione Gaussiana (a proposito di covarianza)**
 
 - La distribuzione Gaussiana *univariata* è super importante:$$\mathcal{N}(x | \mu, \sigma) = \frac{1}{(2\pi\sigma^2)^{1/2}} \exp\{-\frac{1}{2\sigma^2}(x - \mu)^2\}$$=> al limite aumentando la $\sigma$ si passa alla distribuzione uniforme
 
-- Così come la distribuzione Gaussiana *multivariata*, che useremo estesamente:$$\mathcal{N}(x | \mu, \Sigma) = \frac{1}{(2\pi)^{D/2}} \frac{1}{|\Sigma|^{1/2}} \exp\{-\frac{1}{2}(x - \mu)^T\Sigma^{-1}(x - \mu)\}$$ => forma quadratica ma su più dimensioni
+- Così come la distribuzione Gaussiana *multivariata*, che useremo estesamente:$$\mathcal{N}(x | \mu, \mathbf{\Sigma}) = \frac{1}{(2\pi)^{D/2}} \frac{1}{|\mathbf{\Sigma}|^{1/2}} \exp\{-\frac{1}{2}(x - \mu)^T\mathbf{\Sigma}^{-1}(x - \mu)\}$$ => forma quadratica ma su più dimensioni
 
-- Qui $\mu$ è un vettore $D$ dimensionale (**la media**) e $\Sigma$ è la *matrice di covarianza* $D \times D$. => di solito simmetrica (diagonale) e positiva => allineati agli assi x e y => altrimenti per trovare le direzioni si trovano tramite autovettori
+- Qui $\mu$ è un vettore $D$ dimensionale (**la media**) e $\mathbf{\Sigma}$ è la *matrice di covarianza* $D \times D$. => di solito simmetrica (diagonale) e positiva => allineati agli assi x e y => altrimenti per trovare le direzioni si trovano tramite autovettori
 
 	39
 ---
 **Teoria decisionale e classificazione supervisionata** (skipped da qui in poi)
 
-- Proviamo ad espandere la nostra crescente intuizione per includere problemi di classificazione.
-- La teoria della probabilità ci dà un modo principiato per rappresentare e quantificare l'incertezza, quindi usiamola!
+- Proviamo ad espandere la nostra crescente intuizione per includere **problemi di classificazione.**
+- La teoria della probabilità ci dà un modo disciplinato per rappresentare e **quantificare l'incertezza,** quindi usiamola!
 
 - Supponiamo di avere un input **x** insieme a un vettore **y** di variabili target.
-- Per problemi di regressione, **y** saranno variabili continue, mentre per problemi di classificazione rappresenterà etichette di classe.
+- Per problemi di regressione, **y** saranno variabili continue, mentre per problemi di classificazione rappresenterà **etichette di classe**.
 
 - La distribuzione congiunta **p(x, y)** ci dà un quadro completo dell'incertezza associata a queste variabili.
 
@@ -1006,7 +998,8 @@ Ora, vediamo come **condizionare** le probabilità:
 ---
 **Teoria decisionale e classificazione supervisionata**
 
-- Come esempio, supponiamo che **x** sia una radiografia a 512 × 512 pixel di un paziente e vogliamo decidere se il paziente ha il cancro: $$f(x) = \begin{cases}  0 & \text{se il paziente ha il cancro} \\ 1 & \text{altrimenti} \end{cases}$$- Come potrebbe apparire il nostro **dataset**? Beh, probabilmente un insieme di coppie: $$\mathcal{D} = \{(x_1, y_1), (x_2, y_2), \ldots, (x_N, y_N)\}$$
+- Come esempio, supponiamo che **x** sia una radiografia a 512 × 512 pixel di un paziente e vogliamo decidere se il paziente ha il cancro: $$f(x) = \begin{cases}  0 & \text{se il paziente ha il cancro} \\ 1 & \text{altrimenti} \end{cases}$$
+- Come potrebbe apparire il nostro **dataset**? Beh, probabilmente un insieme di coppie: $$\mathcal{D} = \{(x_1, y_1), (x_2, y_2), \ldots, (x_N, y_N)\}$$
 - Dobbiamo prima affrontare il problema dell'*inferenza*: determinare la distribuzione congiunta $p(x, y)$  (di solito estremamente difficile).
 - Poi dobbiamo decidere come agire in modo ottimale per un specifico p(**x'**, y) (spesso molto facile).
 
@@ -1027,7 +1020,7 @@ $$p(C_k | x) = \frac{p(x | C_k) p(C_k)}{p(x)} \\
 
 La decisione ottimale *teorica*:
 
-- Minimizzare il tasso di *classificazione errata* atteso.
+- Minimizzare il tasso di *classificazione errata* (misclassification) atteso.
 $$p(\text{errata class.}) = p(x \in \mathcal{R}_1, C_2) + p(x \in \mathcal{R}_2, C_1)$$
 $$= \int_{\mathcal{R}_1} p(x, C_2) dx + \int_{\mathcal{R}_2} p(x, C_1) dx$$
 	![[Pasted image 20250925231256.png]]
@@ -1048,6 +1041,7 @@ $$p(C_k|x) = \frac{p(x|C_k)p(C_k)}{p(x)}$$
 **Teoria decisionale e classificazione supervisionata**
 
 - Ci sono ragioni pratiche per scegliere un approccio:
+
 	![[Pasted image 20250925231937.png]]
 
 	45
@@ -1111,40 +1105,13 @@ $$p(C_k|x) = \frac{p(x|C_k)p(C_k)}{p(x)}$$
 **Compiti a Casa:**
 1. Una mappa lineare \(\pi : V \to U\) da uno spazio vettoriale \(V\) a uno spazio vettoriale \(U\) è chiamata proiezione se \(\pi \circ \pi = \pi\) (cioè \(\pi\) è idempotente). Dimostra che la proiezione ortogonale da \(V\) su un sottospazio \(U\) è effettivamente una proiezione.
 
-2. Mostra che la moda di una distribuzione Gaussiana \(\mathcal{N}(\mu, \sigma)\) è data da \(\mu\).
+2. Mostra che la moda di una distribuzione Gaussiana $\mathcal{N}(\mu, \sigma)$ è data da $\mu$.
 
 	50
 ---
-
-#Ecco la traduzione del file `03-LinearModelsRegression.pdf` con le formule racchiuse tra `$` come richiesto per Obsidian:
-
----
-
-[file name]: 03-LinearModelsRegression.pdf
-[file content begin]
-===== Pagina 1 =====
-
-**Fondamenti di Apprendimento Automatico:**
-
-**Regressione Lineare, dalla Geometria alla Massima Verosimiglianza**
-
-Prof. Andrew D. Bagdanov (andrew.bagdanov AT unifi.it)
-
-**UNIVERSITÀ**
-**DEGLI STUDI**
-**FIRENZE**
-
-**DINFO**
-
-**DIPARTIMENTO DI**
-**INGEGNERIA**
-
-===== Pagina 2 =====
-
 # 3 - Regressione Lineare dalla geometria alla massima verosimiglianza
----
-## Introduzione
 
+## Introduzione
 ---
 **Obiettivi della lezione**
 
@@ -1166,7 +1133,6 @@ Alla fine di questa lezione avrete:
 	3
 ---
 ## Regressione Lineare come Adattamento di Curve Geometrico
-
 ---
 **Regressione Lineare dalle basi**
 
@@ -1178,11 +1144,11 @@ Alla fine di questa lezione avrete:
 ---
 **Uno spazio di ipotesi parametrico, lineare**
 
-- Considera prima la classe dei problemi di regressione univariata (un unico target per un singolo input) dove osserviamo coppie di osservazioni $(x_i, t_i)$, dove:
+- Consideriamo prima la classe dei problemi di regressione univariata (un unico target per un singolo input) dove osserviamo coppie di osservazioni $(x_i, t_i)$, dove:
   - $x_i \in \mathbb{R}$ sono osservazioni della variabile **indipendente**.
   - $t_i \in \mathbb{R}$ sono osservazioni della variabile **dipendente**. => t per variabile target
 
-- Assumiamo che la variabile dipendente sia relazionata alla variabile indipendente tramite una funzione $f$ che è sconosciuta **ma lineare** nei suoi parametri $\mathbf{w}$:$$y(x | \mathbf{w}) = w_0 + w_1 x$$$$= \mathbf{w}^T \begin{bmatrix} 1 \\ x \end{bmatrix}$$
+- Assumiamo che la variabile dipendente sia in relazione con la variabile indipendente tramite una funzione $f$ che è sconosciuta **ma lineare** nei suoi parametri $\mathbf{w}$:$$y(x | \mathbf{w}) = w_0 + w_1 x = \mathbf{w}^T \begin{bmatrix} 1 \\ x \end{bmatrix}$$
 	=> posso rappresentare dunque qualsiasi funzione lineare => ovvero qualsiasi retta!
 	
 	5
@@ -1191,9 +1157,12 @@ Alla fine di questa lezione avrete:
 
 - OK, abbiamo alcuni dati (cioè osservazioni della variabile indipendente e dipendente).
 - E abbiamo uno **spazio di ipotesi** convenientemente parametrizzato da **w**.
-- Per apprendere effettivamente qualcosa (cioè adattare il modello ai dati) abbiamo poi bisogno di una qualche sorta di *perdita* $\mathcal{L}$.
+- Per apprendere effettivamente qualcosa (cioè adattare il modello ai dati) abbiamo poi bisogno di una qualche sorta di *perdita*(loss) $\mathcal{L}$.
 - Questa perdita dovrebbe misurare la *cattiveria* di un'ipotesi arbitraria $w'$ – cioè, **alta perdita** indica un cattivo adattamento e bassa perdita uno buono.
-- Sarà una funzione dei parametri candidati e dei dati osservati  $D = \{(x_i, t_i) \mid i = 1, \ldots N\};$ $$E(w \mid D) = \frac{1}{2} \sum_{i=1}^{N} [y(x_i|w) - t_i]^2$$	=> provo a calcolare la somma degli errori quadrati => come distanza dei nostri punti dalla retta => metti sketch 
+
+- Sarà una funzione dei **parametri candidati** e dei dati osservati  $D = \{(x_i, t_i) \mid i = 1, \ldots N\};$ $$E(w \mid D) = \frac{1}{2} \sum_{i=1}^{N} [y(x_i|w) - t_i]^2$$=> provo a calcolare la somma degli errori quadrati => come distanza dei nostri punti alla retta
+
+	![[Pasted image 20251004225236.png]]
 	=> primo esempio di Loss => in regressione si parla di *error function* => come mai il quadrato? beh vorrei solo valori positivi ma anche una funzione semplice da derivare => per il problema di minimizzazione => trovare il $w$ che minimizza la funzione
 	
 	6
@@ -1201,28 +1170,27 @@ Alla fine di questa lezione avrete:
 **Regressione Lineare: una Critica della Ragione Pura**
 
 - Esamineremo più in dettaglio questa scelta di **perdita**.
-- Ma, per ora consideriamo le proprietà, buone e cattive, di questa formulazione. $$E(w | D) = \sum_{i=1}^{N} [(w_0 + w_i x_i) - t_i]^2$$ $$\nabla_w \ E(w | D) =\frac{1}{2} \sum_{i=1}^{N} \nabla_w \ [(w_0 + w_i x_i) - t_i]^2$$ => per la linearità della derivazione
+- Ma, per ora consideriamo le proprietà, buone e cattive, di questa formulazione. $$E(\mathbf{w} | D) = \sum_{i=1}^{N} [(w_0 + w_i x_i) - t_i]^2$$ ne considero la derivata secondo la direzione $\mathbf{w}$
+ $$\nabla_w \ E(\mathbf{w} | D) =\frac{1}{2} \sum_{i=1}^{N} \nabla_w \ [(w_0 + w_i x_i) - t_i]^2$$ => per la linearità della derivazione
  $$= \sum_{i=1}^{N}[(w_0 + w_i x_i) - t_i] \ \nabla_w \ [(w_0 + w_i x_i) - t_i]$$
-$$= \sum_{i=1}^{N}e_i[1 \ x_i]^T$$ => avendo sostituito la prima parte con la funzione di errore
-
-=> $w_{t+1} = w_t - \eta \nabla E(w_t | D)$ => metodo di discesa del gradiente => $\eta$ controlla quanto ci muoviamo in direzione dell'antigradiente => *learning rate* => difficile da parametrizzare! 
+$$= \sum_{i=1}^{N}e_i[1 \ x_i]^T$$ => avendo sostituito la prima parte con la funzione di errore, mentre la derivata della seconda parte si riottene semplicemente $x_i$ (il resto rimane costante)
+=> Ma $$w_{t+1} = w_t - \eta \nabla E(w_t | D)$$ => rappresenta esattamente il metodo di discesa del gradiente => $\eta$ controlla quanto ci muoviamo in direzione dell'antigradiente => *learning rate* => difficile da parametrizzare! => si rischia di "saltare" il punto di minimo
 
 	7
----
+---parametri saranno a zero
 ## Regressione Lineare e Stima di Massima Verosimiglianza
-
 ---
 **Stima di Massima Verosimiglianza (MLE) e Minimi Quadrati**
 
 - La nostra interpretazione geometrica è un esempio di stima puntuale dei parametri del modello: ci dà una soluzione $w^*$ che è un **singolo punto** nello spazio dei parametri.
 
-- Vorremmo spostarci verso un modello probabilistico di regressione lineare.
+- Vorremmo spostarci verso un modello **probabilistico** di regressione lineare.
 - Questo dovrebbe, idealmente:
-  - Permetterci di ragionare probabilisticamente sulla qualità della nostra soluzione.
+  - Permetterci di ragionare probabilisticamente sulla ==qualità della nostra soluzione==.
   - Permetterci di **quantificare la fiducia** nella qualità delle singole previsioni.
   - Permetterci di "infornare" **conoscenza a priori** su soluzioni probabili. 
 
-- Il nostro primo passo è la Stima di Massima Verosimiglianza (MLE) dei parametri ottimali $w$ dati i dati osservati $D$. => stavolta vogliamo stimare la massima verosimiglianza per i dati generati
+- Il nostro primo passo è la *Stima di Massima Verosimiglianza* (MLE - maximum likelihood estimation) dei parametri ottimali $w$ dati i dati osservati $D$. => stavolta vogliamo stimare la massima verosimiglianza per i dati generati dai parametri scelti.
 - Primo, **irrobustiamo** un po' il nostro modello per permettere funzioni polinomiali dell'input.
 
 	8
@@ -1230,33 +1198,36 @@ $$= \sum_{i=1}^{N}e_i[1 \ x_i]^T$$ => avendo sostituito la prima parte con la fu
 **Modelli lineari con funzioni di base**
 
 - Il modello lineare più semplice per la regressione usa solo combinazioni lineari delle variabili di input $x = (x_1, \ldots, x_D)^T$:$$y(x | w) = w_0 + w_1 x_1 + \ldots + w_D x_D$$ $$= \mathbf{w}^T \begin{bmatrix} 1 \\ x_1 \\ ... \\ x_D  \end{bmatrix}$$
- => si passa a punti in $D$ dimensioni => dopo due si parla di iperpiano che divide i nostri punti
+ => si passa a punti in $D$ dimensioni => dopo due si parla di iperpiano che divide i nostri punti (prima consideravamo rette e via via aumentavamo il grado => qui si aumentano le dimensioni)
 
-- Questa è una **funzione lineare** sia in $w$ (buono => permette di derivare e riottenere la nostra funzione di error di partenza!) che in $x$ (molto limitante!).
+- Questa è una **funzione lineare** sia in $w$ (buono => permette di derivare e riottenere la nostra funzione di error di partenza) che in $x$ (molto limitante!).
 
-- Quindi, possiamo permettere combinazioni lineari di funzioni **non lineari** fisse dell'input:$$y(x | w) = w_0 + \sum_{j=1}^{M-1} w_j \phi_j(x)$$
-	=> Aggiungo *funzioni base* (che producono un singolo scalare) come $\phi_0 (x) = 1$, $\phi_1(x) = x$ ... faccio il "basis mapping" $$ \phi(x) = \begin{bmatrix} \phi_0(x) \\ \phi_1(x) \\ ... \end{bmatrix}$$	$$y(x| \mathbf{w},D)= \mathbf{w}^T \mathbf{\phi(x)}$$
+- Quindi, possiamo permettere combinazioni lineari di funzioni **non lineari** fisse dell'input:$$y(\mathbf{x} | \mathbf{w}) = w_0 + \sum_{j=1}^{M-1} w_j \phi_j(x)$$
+	=> Aggiungo *funzioni base* (che producono un singolo scalare) come $\phi_0 (x) = 1$, $\phi_1(x) = x$ ... faccio il "basis mapping" $$\phi(x) = \begin{bmatrix} \phi_0(x) \\ \phi_1(x) \\ ... \end{bmatrix}$$ tipo $$\phi(x) = \begin{bmatrix} 1 \\ x \\ x^2 \\ x^3 \end{bmatrix}$$
+- Riassumendo: $$y(\mathbf{x}| \mathbf{w},D)= \mathbf{w}^T \mathbf{\phi(x)}$$
 	9
 ---
 **Modelli lineari con funzioni di base**
 
 - $w_0$ è conosciuto come parametro di bias e permette per qualsiasi offset fisso nell'output.
-- È spesso conveniente definire una funzione di base fittizia $\phi_0(x) = 1$ così possiamo scrivere in modo compatto:$$y(x | w) = \sum_{j=0}^{M-1} w_j \phi_j(x)= w^T \phi(x)$$
-
+- È spesso conveniente definire una funzione di base fittizia $\phi_0(x) = 1$ così possiamo scrivere in modo compatto:$$y(\mathbf{x} | \mathbf{w}) = \sum_{j=0}^{M-1} w_j \phi_j(x)= \mathbf{w}^T \mathbf{\phi(x)}$$
 - Dove $w = (w_0, \ldots, w_{M-1})^T$ e $\phi = (\phi_0, \ldots, \phi_{M-1})^T$
 - Funzioni di base comuni: $$\phi_i(x) = x^i \quad \phi_i = \exp\{-\frac{(x - \mu_i)^2}{2s^2}\} \quad \phi_i(x) = \tanh(x)$$
-				Polinomiale                 Gaussiana                       Sigmoide
-	=> con la gaussiana possiamo tipo prendere diverse medie e vedere a quale si avvicina di più (inserire sketch) => mapping di uno scalare ad un vettore di 3 valori => quanti sceglierne (scelta sull'M) ? boh si vedrà dopo con crossvalidation
+				Polinomiale                 Gaussiana                       Funzione di squashing
+				
+	=> con la gaussiana possiamo tipo prendere diverse medie e vedere a quale si avvicina di più al nostro punto target
+	 ![[Pasted image 20251004234754.png]]
+	=> mapping di uno scalare ad un vettore di 3 valori => quanti sceglierne (scelta sull'M) ? boh si vedrà dopo con crossvalidation
 
 	10
 ---
 **Massima verosimiglianza e minimi quadrati**
 
 - Pulito, ma dove sono le nostre *probabilità* in tutto questo?!
-- Torniamo alla nostra assunzione originale che la nostra variabile *target* è la realizzazione di una funzione *deterministica* $y(x| w)$ con rumore gaussiano additivo:$$t = y(x | w) + \epsilon$$
-- Dove $\epsilon$ è una variabile casuale gaussiana **a media zero**, con **precisione** $\beta$. => precisione che nella gaussiana è inversamente proporzionale alla varianza $\sigma$ => $\beta \prop \frac{1}{\sigma^2}$
+- Torniamo alla nostra assunzione originale che la nostra variabile *target* è la realizzazione di una funzione *deterministica* $y(\mathbf{x}| \mathbf{w})$ con rumore gaussiano additivo:$$t = y(\mathbf{x} | \mathbf{w}) + \epsilon$$
+- Dove $\epsilon$ è una variabile casuale gaussiana **a media zero**, con **precisione** $\beta$. => precisione che nella gaussiana è inversamente proporzionale alla varianza $\sigma$ => $\beta \propto \frac{1}{\sigma^2}$
 
-- Così, possiamo scrivere:$$p(t | x, w, \beta) = \mathcal{N}(t | y(x | w), \beta^{-1})$$
+- Così, possiamo scrivere:$$p(t | \mathbf{x}, \mathbf{w}, \beta) = \mathcal{N}(t \ | \ y(\mathbf{x} | \mathbf{w}), \beta^{-1})$$
 - Ottimo! Una distribuzione di probabilità! Ora apprendiamo qualcosa dai dati...
 
 	11
@@ -1272,11 +1243,11 @@ $$= \sum_{i=1}^{N}e_i[1 \ x_i]^T$$ => avendo sostituito la prima parte con la fu
 ---
 **Massima verosimiglianza e minimi quadrati**
 
-- Ora considera un dataset di input $X = \{x_1, \ldots, x_N\}$
+- Ora considera un dataset di input $\mathbf{X} = \{x_1, \ldots, x_N\}$
 - Insieme a valori target corrispondenti $t = (t_1, \ldots, t_N)^T$.
-- Assumendo che questi campioni siano tutti identicamente e indipendentemente estratti da $p(t | x, w, \beta)$, possiamo scrivere:$$p(t | X, w, \beta) = \prod_{n=1}^N \mathcal{N}(t_n | y(x_n, w), \beta^{-1})$$ => dati X,w,$\beta$ calcola la probabilità di ottenere i miei punti target secondo la legge delle probabilità indipendenti	$$= \prod_{n=1}^N \mathcal{N}(t_n | w^T \phi(x_n), \beta^{-1})$$=> se ci sono punti molto distanti a probabilità zero => la probabilità si abbassa molto!
+- Assumendo che questi campioni siano tutti **identicamente e indipendentemente** estratti da $p(t | \mathbf{x}, \mathbf{w}, \beta)$, possiamo scrivere:$$p(t | \mathbf{X}, \mathbf{w}, \beta) = \prod_{n=1}^N \mathcal{N}(t_n | y(\mathbf{x_n}, \mathbf{w}), \beta^{-1})$$ => dati **X**,**w**,$\beta$ calcolo la probabilità di ottenere i miei punti target secondo la legge delle probabilità indipendenti	$$= \prod_{n=1}^N \mathcal{N}(t_n | \mathbf{w}^T \phi(\mathbf{x}_n), \beta^{-1})$$=> se ci sono punti molto distanti a probabilità zero => la probabilità si abbassa molto!
 
-- E abbiamo un'espressione di verosimiglianza (molto scomoda) per i nostri dati sotto un modello specifico. => potenzialmente i punti sono parecchi => prodotto incoveniente => rischio di avere problemi di underflow per valori molto prossimi a zero
+- E abbiamo un'espressione di verosimiglianza (likelihood) molto scomoda per i nostri dati sotto un modello specifico. => potenzialmente i punti sono parecchi => prodotto incoveniente => rischio di avere problemi di underflow per valori molto prossimi a zero
 
 	13
 ---
@@ -1284,22 +1255,22 @@ $$= \sum_{i=1}^{N}e_i[1 \ x_i]^T$$ => avendo sostituito la prima parte con la fu
 
 - Per la maggior parte dei problemi di apprendimento supervisionato non siamo interessati a modellare la distribuzione degli input.
 - Quindi X apparirà sempre nelle variabili condizionanti e per ora lo ometteremo per sgomberare la notazione.
-- Prendere i logaritmi aiuta a semplificare la verosimiglianza (grazie in parte alla forma esponenziale della Gaussiana):$$\ln p(t |X, w, \beta) = \sum_{n=1}^{N} \ln \mathcal{N}(t_n | w^T \phi(x_n), \beta^{-1})$$ => il logaritmo di prodotti diventa una somma di logaritmi => ottengo una gaussiana univariata (riguarda gaussiana) => exponenziale sparisce!
+- Prendere i logaritmi aiuta a semplificare la verosimiglianza (grazie in parte alla forma esponenziale della Gaussiana):$$\ln p(t |X, w, \beta) = \sum_{n=1}^{N} \ln \mathcal{N}(t_n | w^T \phi(x_n), \beta^{-1})$$ => il logaritmo di prodotti diventa una somma di logaritmi => ottengo una gaussiana univariata (riguarda gaussiana) => esponenziale sparisce!
 $$= \frac{N}{2} (\ln \beta - \ln(2\pi)) - \frac{\beta}{2} \sum_{n=1}^{N} \{ t_n - w^T \phi(x_n) \}^2$$
-	=> prima parte che non dipende dalla scelta del modello => la seconda invece è proprio la nostra funzione di errore che con il meno sarà appunto minimizzata (per trovare il max)
+	=> prima parte che non dipende dalla scelta del modello => **la seconda invece è proprio la nostra funzione di errore** (vista geometricamente) che con il meno sarà appunto minimizzata (per trovare il max => vogliamo max questa probabilità)
 
 	14
 ---
 **Massima verosimiglianza e minimi quadrati**
 
-- Massimizziamo questa *verosimiglianza* in $w$. Prima il gradiente:$$\nabla \ln p(t | w, \beta) = \beta \sum_{n=1}^{N} [t_n - w^T \phi(x_n)] \phi(x_n)^T$$
+- Massimizziamo questa *verosimiglianza* in $\mathbf{w}$. Prima il gradiente:$$\nabla \ln p(t | w, \beta) = \beta \sum_{n=1}^{N} [t_n - w^T \phi(x_n)] \phi(x_n)^T$$
 - E impostiamolo a **zero**:$$0 = \sum_{n=1}^{N} t_n \phi(x_n)^T - w^T \left( \sum_{n=1}^{N} \phi(x_n) \phi(x_n)^T \right)$$
-- Che dopo aver risolto per $w$ ci dà:$$w_{ML} = (\Phi^T \Phi)^{-1} \Phi^T t$$
+- Che dopo aver risolto per $\mathbf{w}$ ci dà:$$\mathbf{w}_{ML} = (\Phi^T \Phi)^{-1} \Phi^T t$$
 	15
 ---
 **Massima verosimiglianza e minimi quadrati**
 
-- Questa soluzione $(\Phi^T\Phi)^{-1}\Phi^T$ usa la matrice del disegno:
+- Questa soluzione $(\Phi^T\Phi)^{-1}\Phi^T$ usa la matrice del disegno (*design matrix* ?):
 $$\Phi = \begin{pmatrix}
 \phi_0(x_1) & \phi_1(x_1) & \cdots & \phi_{M-1}(x_1)\\
 \phi_0(x_2) & \phi_1(x_2) & \cdots & \phi_{M-1}(x_2)\\
@@ -1309,8 +1280,8 @@ $$\Phi = \begin{pmatrix}
 => **le righe corrispondono ai singoli dati** => una riga per ogni punto nel dataset (x1, x2, ...) => e la funzione base applicata ai punti => transposed e messa in una matrice
 
 - Un modo facile per pensare a $\Phi$:
-  - Una riga è la valutazione di tutte le funzioni di base sul corrispondente campione di training (dimensionalità M).
-  - Una colonna è la corrispondente funzione di base valutata su tutti i campioni di training (dimensionalità N).
+  - Una **riga** è la ==valutazione di **tutte** le funzioni di base== sul corrispondente campione di training (dimensionalità M).
+  - Una **colonna** è **la corrispondente** funzione di base valutata su tutti i campioni di training (dimensionalità N).
 - $\Phi^{\dagger} \equiv (\Phi^T\Phi)^{-1}\Phi^T$ è chiamata Pseudo-Inversa di Moore-Penrose.
 
 	16
@@ -1374,8 +1345,8 @@ $$\Phi = \begin{pmatrix}
 
 	![[Pasted image 20250929230908.png]]
 
-	=> Voglio capire almeno quando sto overfittando... => al grado 9 ho bisogno di grandi valori per far passare esattamente nei punti => vado fuori scala 
-	=> Possiamo pensare di tenere le nostre soluzioni entro un certo range di valori
+	=> Voglio capire almeno quando sto overfittando... => al grado 9 ho bisogno di grandi valori per far passare esattamente nei punti => vado fuori scala => in genere vado molto male quando ottengo dei valori di magnitudine molto grandi
+	=> Possiamo pensare di tenere le nostre soluzioni entro un certo range di valori.
 
 	23
 ---
@@ -1384,19 +1355,18 @@ $$\Phi = \begin{pmatrix}
 - Considereremo obiettivi di regressione di questa forma:  $$E_D(\mathbf{w}) + \lambda E_W(\mathbf{w})$$
 - Dove $E_D$ continuerà ad essere il nostro **errore ai minimi quadrati** con funzioni di base $\phi$. => dipendente dal Dataset e i parametri del modello
 
-- Il termine $E_W$ è chiamato *regolarizzatore* dei pesi (o solo regolarizzatore), e uno molto comune è la norma al quadrato dei pesi del modello: $$E_W(\mathbf{w}) = \frac{1}{2} \mathbf{w}^T \mathbf{w} = || \mathbf{x}||_2^2$$ => dipende solo dai parametri (i pesi) => questo esempio è regolarizzatore L2
+- Il termine $E_W$ è chiamato *regolarizzatore* dei pesi (o solo regolarizzatore), e uno molto comune è la norma al quadrato dei pesi del modello: $$E_W(\mathbf{w}) = \frac{1}{2} \mathbf{w}^T \mathbf{w} = || \mathbf{x}||_2^2$$ => ==dipende solo dai parametri ==(i pesi) => questo esempio è regolarizzatore L2
 
-- Quindi, la funzione di **errore totale da minimizzare** diventa:$$E(\mathbf{w}) = \frac{1}{2} \sum_{n=1}^{N} \{ t_n - \mathbf{w}^T \phi(\mathbf{x_n}) \}^2 + \frac{\lambda}{2} \mathbf{w}^T \mathbf{w}$$=> $\lambda$ serve a scegliere il range di valori da accettare (intensity of the regularizator)=> in questo modo tutti i valori troppo al di fuori del range vengono pagati tanto!
+- Quindi, la funzione di **errore totale da minimizzare** diventa:$$E(\mathbf{w}) = \frac{1}{2} \sum_{n=1}^{N} \{ t_n - \mathbf{w}^T \phi(\mathbf{x_n}) \}^2 + \frac{\lambda}{2} \mathbf{w}^T \mathbf{w}$$=> $\lambda$ serve a scegliere il range di valori da accettare (intensity of the regularizator) => in questo modo tutti i valori troppo al di fuori del range vengono pagati tanto!
 
 	24
 ---
 **Minimi quadrati regolarizzati**
 
-- Questa funzione di errore regolarizzata: $$E(w) = \frac{1}{2} \sum_{n=1}^{N} \{ t_n - w^T \phi(x_n) \}^2 + \frac{\lambda}{2} w^T w$$
-- È ancora una funzione quadratica in $w$, e la $w$ ottimale è:$$w_{ML} = (\lambda I + \Phi^T \Phi)^{-1} \Phi^T t$$ => notare che l'aggiunta della costante aiuta a rendere invertibile la matrice
+- Questa funzione di errore regolarizzata: $$E(w) = \frac{1}{2} \sum_{n=1}^{N} \{ t_n - \mathbf{w}^T \phi(x_n) \}^2 + \frac{\lambda}{2} \mathbf{w}^T \mathbf{w}$$
+- È ancora una funzione quadratica in $\mathbf{w}$, e la $\mathbf{w}$ ottimale è:$$\mathbf{w}_{ML} = (\lambda I + \Phi^T \Phi)^{-1} \Phi^T t$$ => notare che l'aggiunta della costante aiuta a rendere invertibile la matrice!
 
-- La stima di Massima Verosimiglianza del parametro di imprecisione $\beta$ può anche essere derivata massimizzando $p(t | w, \beta)$ rispetto a $\beta$:$$\frac{1}{\beta_{ML}} = \frac{1}{N} \sum_{i=1}^{N} [t_n - w_{ML}^T \phi(x_i)]^2$$
-
+- La stima di Massima Verosimiglianza del parametro di imprecisione $\beta$ può anche essere derivata massimizzando $p(t | w, \beta)$ rispetto a $\beta$:$$\frac{1}{\beta_{ML}} = \frac{1}{N} \sum_{i=1}^{N} [t_n - \mathbf{w}_{ML}^T \phi(x_i)]^2$$
 	25
 ---
 **Demo Live!**
@@ -1411,24 +1381,24 @@ $$\Phi = \begin{pmatrix}
 ---
 **Minimi quadrati regolarizzati**
 
-- Un errore regolarizzato più generale è: $$\frac{1}{2} \sum_{n=1}^{N} \{ t_n - w^T \phi(x_n) \}^2 + \frac{\lambda}{2} \sum_{j=1}^{M} |w_j|^q$$
+- Un errore regolarizzato più **generale** è: $$\frac{1}{2} \sum_{n=1}^{N} \{ t_n - w^T \phi(x_n) \}^2 + \frac{\lambda}{2} \sum_{j=1}^{M} |w_j|^q$$
 	![[Pasted image 20250929231614.png]]
 
-	=> Per q=1 si parla di "sparse solution"... q=2 => small norm solution
+	=> Per q=1 si parla di "sparse solution" => accetto punti anche con valori dei parametri nulli
+	=> Per q=2 => small norm (magnitude) solution
 	27
 ---
 **Minimi quadrati regolarizzati**
 
-- Un errore regolarizzato più generale è: $$\frac{1}{2} \sum_{n=1}^{N} [t_n - w^T \phi(x_n)]^2 + \frac{\lambda}{2} \sum_{j=1}^{M} |w_j|^q$$
-	![[Pasted image 20250929231658.png]] (da sostuire con sketch)
+- Un errore regolarizzato più generale è:
+	 ![[Pasted image 20251005175435.png]]
 	=> bisogna trovare quindi il punto migliore sia per $E_D$ che $E_W$:
 		=> Nel primo caso lo trovo equidistante a 1
-		=> Nel secondo caso si nota che alcuni parametri saranno a zero! => sparse solution!
+		=> Nel secondo caso si nota che alcuni ==parametri saranno a zero==! => sparse solution!
 
 	28
 ---
 ## Osservazioni conclusive
-
 ---
 **Vecchia Cara Regressione Lineare (tm)**
 
@@ -1437,13 +1407,13 @@ $$\Phi = \begin{pmatrix}
 - In effetti, abbiamo visto quanto è flessibile la regressione lineare **con funzioni di base**.
 - Quindi possiamo adattare modelli non lineari ai dati usando la pura regressione lineare.
 - La soluzione di **Massima Verosimiglianza** ha anche una forma analitica, che è semplicemente extra bella. => si ritorna alla squared error function!
-- Con questo modello di adattamento di curve (le spline sono in realtà un'istanza di questo) possiamo adattare molti fenomeni.
+- Con questo modello di adattamento di curve (le spline sono in realtà un'istanza di questo) possiamo ==adattare molti fenomeni==.
 
 	29
 ---
 **La strada da percorrere**
 
-- Gli stimatori puramente geometrici e MLE che abbiamo sviluppato sono esempi di stime puntuali.
+- Gli stimatori puramente geometrici e MLE che abbiamo sviluppato sono esempi di **stime puntuali**.
 - Risultano in un singolo punto nello spazio dei parametri che è una stima ottimale (per qualche appropriata definizione di "ottimale").
 - Ma, non possiamo portare tutti i nostri strumenti statistici all'opera e quantificare vari tipi di fiducia.
 - Nella prossima lezione svilupperemo una teoria bayesiana della regressione lineare che affronta questo problema.
@@ -1511,16 +1481,13 @@ Alla fine di questa lezione avrete:
 ---
 **Un ottimo teorico**
 
-- Per funzioni di perdita quadratiche possiamo mostrare che il predittore ottimale è dato da:
-  $h(x) = \mathbb{E}[t | x] = \int tp(t | x)dt$
+- Per funzioni di perdita quadratiche possiamo mostrare che il predittore ottimale è dato da:$$h(x) = \mathbb{E}[t | x] = \int tp(t | x)dt$$
 
 - Che è solo l'aspettativa condizionata di $t$ dato $x$.
 
 - Nota che non abbiamo fatto niente con questo risultato: il punto dell'Apprendimento Automatico, in un certo senso, è di stimare questo $p(t | x)$.
 
-- Cioè, vogliamo fare qualcosa come trovare un $y$ che minimizzi questo errore:
-  $\{y(x; D) - h(x)\}^2$
-
+- Cioè, vogliamo fare qualcosa come trovare un $y$ che minimizzi questo errore:$$\{y(x; D) - h(x)\}^2$$
 - Questo esprime la perdita inflitta per un singolo input $x$ quando si usa la stima $y(x; D)$.
 
 	5
@@ -1528,13 +1495,16 @@ Alla fine di questa lezione avrete:
 **Bias, varianza e rumore irriducibile**
 
 - Prendendo l'aspettativa rispetto a $D$ e considerando tutti i possibili input, arriviamo (alla fine) a qualcosa che assomiglia a: 
-	- perdita attesa $= \text{(bias)}^2 + \text{varianza} + \text{rumore}$, dove:$$\text{(bias)}^2 = \int \left\{ \mathbb{E}_D [y(x; D)] - h(x) \right\}^2 p(x) dx$$$$\text{varianza} = \int \mathbb{E}_D \left[ \{ y(x; D) - \mathbb{E}_D [y(x; D)] \}^2 \right] p(x) dx$$$$\text{rumore} = \int \int \{ h(x) - t \}^2 dx dt$$
+	- perdita attesa $= \text{(bias)}^2 + \text{varianza} + \text{rumore}$, dove:$$\text{(bias)}^2 = \int \left\{ \mathbb{E}_D [y(x; D)] - h(x) \right\}^2 p(x) dx$$$$\text{varianza} = \int \mathbb{E}_D \left[ \{ y(x; D) - \mathbb{E}_D [y(x; D)] \}^2 \right] p(x) dx$$ => faccio la media su tutti i campioni e la faccio pesare secondo la sua distribuzione di probabilità (inserire sketch)
+	$$\text{rumore} = \int \int \{ h(x) - t \}^2 dx dt$$
+	=> Errore irriducibile sempre presente 
+	
 	6
 ---
 **Regolarizzazione, bias e varianza**
 
 - Bias e varianza dipendono dalla complessità del modello.
-- Bassa complessità, implica alto bias e bassa varianza:
+- Bassa complessità, implica **alto bias** e bassa varianza: (a destra c'è la media dei modelli)
 
 	![[Pasted image 20250930120147.png]]
 	
@@ -1543,7 +1513,7 @@ Alla fine di questa lezione avrete:
 **Regolarizzazione, bias e varianza**
 
 - Bias e varianza dipendono dalla complessità del modello.
-- Rilassando il coefficiente di regolarizzazione, si riduce il bias e aumenta la varianza:
+- **Rilassando il coefficiente di regolarizzazione**, si riduce il bias e aumenta la varianza:
 
 	![[Pasted image 20250930120342.png]]
 
@@ -1556,21 +1526,34 @@ Alla fine di questa lezione avrete:
 
 	![[Pasted image 20250930120423.png]]
 
+	=> Va sempre meglio? boh dipende dal numero di dati... se pochi si tende a overfittare troppo se tanti avere grossa regolarizzazione porta a scartarne tanti
+	
 	9
 ---
 **Regolarizzazione, bias e varianza**
 
-- Tutto questo è molto bello, ma questi integrali sono completamente intrattabili.
+- Tutto questo è molto bello, **ma questi integrali sono completamente intrattabili.** => dovrei ogni volta calcolarli su tutto il dataset...
 - Questi integrali sono medie su dataset, quindi dovremmo avere un ensemble di dataset indipendenti...
 - Ed è quasi impossibile stimare robustamente bias e varianza.
 - Vedremo metodi più pratici per stimare tradeoff empirici ottimali.
 
 	![[Pasted image 20250930120608.png]]
 
+	+Aggiungi sketch di confronto fra train e validation => ho un punto ottimale dove cambiano le cose => come trovarlo? boh prova via esperimenti
+
 	10
 ---
 ## Regressione Lineare Bayesiana
 
+- (Prima esempio coin flip => calcolo MLE da inserire => alla fine arrivo alla prob come numero di teste / numero di teste+croci => approccio frequentista => si assume che il Dataset sia generato da uno specifico (ma sconosciuto $\theta$))
+- Approccio Bayesiano => Assumi che $\theta$ sia preso da una distribuzione non conosciuta su $[0,1]$ (distribuzione parametrica) => a quel punto stima quella distribuzione => non abbiamo una singola risposta ma varie soluzioni che ci possono andare bene.
+- Sostanzialmente al posto di trovare la $\theta$ data il campione di dati => vogliamo trovare la distribuzione dei dati, data la probabilità a priori $\theta$ => questo mi dà la possibilità di capire come il modello si adatta a particolari probabilità
+- Vale per bayes quindi $$P(\theta|D) = \frac{P(D|\theta) P(\theta)}{P(D)}$$dove $P(D)= \int P(D,\theta) d \theta$ => difficile nel deep learning in quanto devo calcolare appunto su tutti i dati...
+- Mi evito così di dover guardare ai parametri del modello... 
+- Quale potrebbe essere la prior? la beta ha proprietà carine da vedere successivamente => *conjugate prior* per la binomiale => invece di fare i prodotti faccio le somme su diversi dati => in pratica da una binomiale riottengo la beta da poter riapplicare 
+
+	+Aggiungere passaggi sulla dimostrazione della proporzionalità 
+	+Aggiungere anche disegno sulla *Beta* => a seconda dei risultati ottengo certe prior => fino a che al limite perdo l'importanza della prior sul modello => se nell'approccio frequentista non ho una prior qui si... al limite la MLE solution è la stessa di quella dell'approccio bayesiano => ottengo una distribuzione prior che non mi dà nessuna informazione 
 ---
 **Non sono felice**
 
@@ -1586,7 +1569,7 @@ Alla fine di questa lezione avrete:
   - La mia regressione restituisce un $w_{ML}$ dai dati $D$. Fantastico, ma quanto è affidabile quel $w_{ML}$, davvero? Quanto credo che sia vicino al vero $w^*$ che assumiamo abbia generato $D$.
   - Prevedo un $t$ su qualche nuovo input $x'$ usando $t' = y(x', w_{ML})$. Fantastico, ma quanto credo in questo $t'$? Questa fiducia è costante in tutto lo spazio di input?
   - E se ho conoscenza a priori (cioè una credenza sulla mia distribuzione dei parametri $p(w)$) posso incorporarla nella mia stima di $w_{ML}$?
-- L'ampia classe delle tecniche bayesiane ci dà esattamente questi strumenti sfruttando verosimiglianza, prior ed evidenza.
+- L'ampia classe delle tecniche bayesiane ci dà **esattamente questi strumenti sfruttando verosimiglianza, prior ed evidenza.**
 
 	12
 ---
@@ -1594,8 +1577,10 @@ Alla fine di questa lezione avrete:
 
 - E se addestrassimo un modello usando dati $D_1$.
 - Poi, domani, qualcuno ci rovescia addosso nuovi dati $D_2$.
-- Cosa possiamo fare? Dobbiamo addestrare l'intero modello da zero usando $D = \bigcup_i D_i$?
+- Cosa possiamo fare? Dobbiamo addestrare l'intero modello da zero usando $D = \bigcup_i D_i$? 
 
+	=> Anche qui abbiamo un approccio sequenziale ma stavolta sulla prior....
+	
 	13
 ---
 **La distribuzione dei parametri**
@@ -1603,26 +1588,26 @@ Alla fine di questa lezione avrete:
 - Vogliamo quantificare la nostra fiducia in un modello specifico $w^*$ stimato da $D$.
 - Ricorda sempre la tua regola di Bayes: $$p(w | t) = \frac{\text{verosimiglianza dei dati} \times \text{prior}}{\text{evidenza}}$$
 - Abbiamo già derivato una verosimiglianza per i dati dato il modello:$$p(t | w, \beta) = \prod_{n=1}^{N} \mathcal{N}(t_n | w^T \phi(x_n), \beta^{-1})$$
-- Abbiamo bisogno di una distribuzione **prior** $p(w)$ che esprima la nostra credenza a priori sui valori probabili che $w$ potrebbe assumere.
-- Nota la forma della verosimiglianza dei dati e che la moltiplicheremo con questo prior.
+- Abbiamo bisogno di una distribuzione **prior** $p(w)$ che esprima la nostra credenza a priori sui valori probabili che $w$ potrebbe assumere. => vogliamo scegliere quindi una prior che "reagisca" bene con la nostra likelihood
+- Nota la forma della verosimiglianza dei dati e che la moltiplicheremo con questo prior. 
 
 	14
 ---
 **La distribuzione dei parametri**
 
 - Scegliamo il nostro prior prima di tutto in modo che sia un'aspettativa ragionevole.
-- Per esempio, potremmo aspettarci che i nostri pesi siano *vicini* a zero, in media, con una certa varianza attesa attorno a zero.
+- Per esempio, potremmo aspettarci che i nostri pesi siano *vicini* a zero (non necessario ma aiuta con la modellazione => alcune volte si standardizzano i dati per farsi che siano in questo modo), in media, **con una certa varianza attesa attorno a zero**.
 - Scegliamo anche la forma del nostro prior in modo che "giochi bene" con la verosimiglianza: $$p(w | \alpha) = \mathcal{N}(w | 0, \alpha^{-1})$$
-- Questo è un *Prior Coniugato Gaussiano*, che significa semplicemente che quando lo moltiplichiamo con una verosimiglianza gaussiana, il posterior risultante è anche gaussiano: $$p(w | t) = p(t | w, \beta^{-1}) p(w | \alpha)$$                                                                            $= \mathcal{N}(w | m_N, S_N),$
-						dove     $m_N = \beta S_N \Phi^T t$ 
-						e            $S_N^{-1} = \alpha I + \beta \Phi^T \Phi$$
+- Questo è un *Prior Coniugato Gaussiano*, che significa semplicemente che quando lo moltiplichiamo con una verosimiglianza gaussiana,==il posterior risultante è anche gaussiano:==$$p(w | t) = p(t | w, \beta^{-1}) p(w | \alpha)$$                                                                            $= \mathcal{N}(w | m_N, S_N),$
+						dove     $m_N = \beta S_N \Phi^T t$ => ottengo multivariate gaussian, in alcuni casi anche in più dimensioni
+						e            $S_N^{-1} = \alpha I + \beta \Phi^T \Phi$
 
 	15
 ---
 **La distribuzione dei parametri**
 
 - Mantenere tutto bello e gaussiano ha molti vantaggi – il log posterior è: $$\ln p(w | t) = -\frac{\beta}{2} \sum_{n=1}^{N} \{ t_n - w^T \phi(x_n) \}^2 - \frac{\alpha}{2} w^T w + const$$
-- Ti sembra familiare?
+- Ti sembra familiare? => riottengo la squared error e il termine regolarizzatore $||\mathbf{w}||^2$ => solo che aggiungo i termini probabilistici secondo $\alpha$ e $\beta$
 
 	16
 ---
@@ -1634,8 +1619,9 @@ Alla fine di questa lezione avrete:
 - Ma nota che abbiamo qualcosa intrinsecamente più potente qui.
 
 - Abbiamo raggiunto alcuni dei nostri obiettivi:
-  - Possiamo quantificare la fiducia in una soluzione $w^*$ (dovrebbe essere chiaro).
-  - Possiamo anche apprendere in modo incrementale quando arrivano nuovi dati (probabilmente non così chiaro).
+  - Possiamo **quantificare la fiducia** in una soluzione $w^*$ (dovrebbe essere chiaro).
+  - Possiamo anche **apprendere in modo incrementale** quando arrivano nuovi dati (probabilmente non così chiaro).
+  => in fin dei conti la MAP (maximum a prior) estimation di $\mathbf{w}^*$ con $\mathcal{N}(w|0, \alpha \mathcal{I})$ prior è equivalente alla regolazzazion secondo MLE
 
 - Diamo un'occhiata a un semplice esempio di adattamento di una linea...
 
@@ -1647,13 +1633,14 @@ Alla fine di questa lezione avrete:
 - Quando iniziamo a osservare dati, usiamo la regola di Bayes per aggiornare la credenza.
 	
 	![[Pasted image 20250930124127.png]]
+	=> parto da una likelihood nulla e solo una prior con uno spazio di dati => campiono quindi dalla prior ottenendo la nostra likelihood => a questo punto comincio a osservare i dati => data likelihood fra $w_0$ e $w_1$ => aggiorno la mia prior moltiplicando la prior per la likelihood => update della belief e così via osservando altri dati...
 
 	18
 ---
 **La distribuzione dei parametri**
 
 - Man mano che continuiamo a osservare dati, continuiamo a usare la regola di Bayes per aggiornare la credenza.
-- Alla fine, la varianza si riduce e ci stabilizziamo su una stima posterior attorno alla soluzione ML.
+- Alla fine, la varianza si riduce e ci stabilizziamo **su una stima posterior attorno alla soluzione ML.** => la posterior ci dice qualcosa sulla distribuzione dei nostri dati => si capisce dunque se possiamo essere confident dei nostri dati e fermarci oppure continuare con altre osservazioni
 
 	![[Pasted image 20250930124230.png]]
 
@@ -1662,18 +1649,22 @@ Alla fine di questa lezione avrete:
 **Distribuzione predittiva**
 
 - Nota che non abbiamo detto niente sulle previsioni dal nostro modello.
-- Se produco un output $y(x, w^*)$, quanto sono felice con esso? Dipende da $x$ in qualche modo?
-- In pratica, non ci importerebbe meno del valore effettivo di $w$, vogliamo solo previsioni!
-- Definiamo allora la distribuzione predittiva come: $$p(t | \mathbf{t}, \alpha, \beta) = \int p(t | w, \beta) p(w | \mathbf{t}, \alpha, \beta) dw$$
-- Il primo modo di guardare questo è come una media (cioè aspettativa) di verosimiglianze condizionate, dove l'aspettativa è rispetto al posterior (distribuzione dei parametri).
+- Se produco un output $y(x, w^*)$, quanto "sono felice" con esso? Dipende da $x$ in qualche modo?
+- In pratica, non ci importerebbe meno del valore effettivo di $w$, vogliamo solo previsioni! => e quanto ci posso credere in queste previsioni...
 
+- Definiamo allora la distribuzione predittiva come: $$p(t | \mathbf{t}, \alpha, \beta) = \int p(t | w, \beta) p(w | \mathbf{t}, \alpha, \beta) dw$$ => moltiplico per la posterior parameter density => how likely are this parameters
+
+- Il primo modo di guardare questo è **come una media (cioè aspettativa) di verosimiglianze condizionate**, dove l'aspettativa è rispetto al posterior (distribuzione dei parametri). => prediction su un insieme di modelli...
+
+	=> notare ho due gaussiane => si fa la convoluzione di due gaussiane riottenendo una gaussiana
+	
 	20
 ---
 **Distribuzione predittiva**
 
 - Se scaviamo nella natura gaussiana di entrambe queste, e notiamo che la distribuzione predittiva è una convoluzione di due gaussiane, possiamo derivare una forma analitica: $$p(t | \mathbf{t}, \alpha, \beta) = N(t | m_N^T \phi(x), \sigma_N^2(x)),$$                                                     dove $\sigma_N^2(x) = \frac{1}{\beta} + \phi(x)^T S_N \phi(x)$
 
-- $1/\beta$ rappresenta il rumore nei nostri dati, e $\sigma_N^2$ rappresenta l'incertezza nella nostra stima dei parametri.
+- $1/\beta$ rappresenta il rumore nei nostri dati, e $\sigma_N^2$ rappresenta l'incertezza nella nostra stima dei parametri. => adesso anche la varianza dipende dai nostri dati!
 
 - Nota anche che $\sigma_{N+1}^2(x) < \sigma_N^2(x)$, quindi più dati sono sempre una cosa buona.
 
@@ -1685,6 +1676,8 @@ Alla fine di questa lezione avrete:
 
 	![[Pasted image 20250930143351.png]]
 
+	=> Posso dire dove sono abbastanza confident o meno della mia previsione => a seconda di dove ho il mio support
+	
 	22
 ---
 **Distribuzione predittiva**
