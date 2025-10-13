@@ -1753,11 +1753,11 @@ Alla fine di questa lezione avrete:
 **Classificazione e superfici decisionali**
 
 - L'obiettivo della classificazione è prendere un vettore di input $x$ e assegnarlo a una delle $K$ classi.
-- Denotiamo queste classi come $C_k$ per $k \in \{1, \ldots, K\}$.
+- Denotiamo queste classi come $C_k$ per $k \in \{1, \ldots, K\}$. => multi-class oppure single label classification
 - L'ambiente più semplice è la classificazione a singola etichetta dove ogni $x$ appartiene esattamente a una classe.
 - Così lo spazio di input è diviso in regioni decisionali i cui confini sono chiamati bordi decisionali o superfici decisionali.
 - Considereremo prima modelli lineari dove queste superfici decisionali sono funzioni lineari dell'input $x$.
-- Dati le cui classi possono essere separate esattamente con superfici decisionali lineari sono chiamati linearmente separabili.
+- Dati le cui classi ==possono essere separate== esattamente con superfici decisionali lineari sono chiamati **linearmente separabili**. => esistono classi in cui non è assolutamente possibili separabili le classi in modo lineare => che fare? usare sempre rette oppure modelli più complessi? 
 
 	2
 ---
@@ -1765,10 +1765,10 @@ Alla fine di questa lezione avrete:
 
 Alla fine di questa lezione avrete:
 
-- Compreso la geometria delle funzioni discriminanti lineari e come interpretarle.
+- Compreso la **geometria** delle funzioni discriminanti lineari e come interpretarle. => inner product of vectors
 - Compreso come applicare i minimi quadrati per stimare i parametri di modelli discriminanti lineari.
 - Compreso le limitazioni dei minimi quadrati per l'adattamento di modelli di classificazione.
-- Compreso come il Discriminante Lineare di Fisher affronta alcune delle carenze dei minimi quadrati trovando una direzione "migliore" per la discriminazione.
+- Compreso come il *Discriminante Lineare di Fisher* affronta alcune delle carenze dei minimi quadrati trovando una direzione "migliore" per la discriminazione.
 
 	3
 ---
@@ -1777,11 +1777,12 @@ Alla fine di questa lezione avrete:
 
 **Funzioni discriminanti per due classi**
 
-- La rappresentazione più semplice per un discriminante è una funzione lineare:$$y(x) = w^Tx + w_0$$
-- Ancora, $w$ è il vettore dei pesi e $w_0$ è un bias scalare.
+- La rappresentazione più semplice per un **discriminante** è una funzione lineare:$$y(\mathbf{x}) = \mathbf{w}^Tx + \mathbf{w}_0$$
+- Ancora, $\mathbf{w}$ è il vettore dei pesi e $w_0$ è un bias scalare.
 - Per la classificazione, il bias negativo è a volte chiamato soglia.
-- La regola decisionale: $$\text{classe}(x) = \begin{cases} C_1 & \text{se } w^Tx + w_0 \geq 0 \\ C_2 & \text{se } w^Tx + w_0 < 0 \end{cases}$$
-- La distanza normale dall'origine alla superficie decisionale è:$$\frac{w^Tx}{||w||} = -\frac{w_0}{||w||}$$
+- La regola decisionale: $$\text{classe}(\mathbf{x}) = \begin{cases} C_1 & \text{se } \mathbf{w}^T\mathbf{x} + \mathbf{w}_0 \geq 0 \\ C_2 & \text{se } \mathbf{w}^T\mathbf{x} + \mathbf{w}_0 < 0 \end{cases}$$ => creo due regioni di spazio a seconda dei valori => al confine che succede? non si sà => "we just flip a coin"
+	=> Notare passo da dimensione 2 a una singola dimensione => il prodotto scalare restituisce appunto uno scalare! (inserire sketch)
+	- La **distanza normale** dall'origine alla superficie decisionale è:$$\frac{\mathbf{w}^T\mathbf{x}}{||\mathbf{w}||} = -\frac{w_0}{||\mathbf{w}||}$$ => normata in quanto non ci interessa la norma di **w**
 	4
 ---
 **La geometria dei discriminanti lineari**
@@ -1789,6 +1790,10 @@ Alla fine di questa lezione avrete:
 - Questa è la grafica a cui penso quando voglio ricordare come funziona la geometria del discriminante lineare:
 
 	![[Pasted image 20251001223839.png]]
+=> Partiamo guardando il vettore **w** => questo risulta perpendicolare al *decision boundary* => se prendiamo due punti $x_a$ e $x_b$ avremmo: $$\mathbf{w}^T\mathbf{x_a} = \mathbf{w}^T\mathbf{x_b} = 0$$ $$\mathbf{w}^T(\mathbf{x_a} - \mathbf{x_b}) = 0$$ => dunque $\mathbf{w}^T$ risulta perpendicolare alla *decision surface*  
+
+- Ci chiediamo poi quanto risulta distante **x** dalla nostra *decision surface* => faccio di nuovo prodotto scalare sulla direzione di **w** => vorremo però che questa distanza sia indipendente dalle norme dei vettori => farò quindi la normalizzazione per $||\mathbf{w}||$  
+- Lunghezza che sarà complessiva dall'origine => dunque per ottenere solo la distanza tolgo il mio $w_0$ che è appunto la traslazione del piano dall'origine.
 
 	5
 ---
@@ -1796,63 +1801,66 @@ Alla fine di questa lezione avrete:
 
 - Come con la regressione, a volte è conveniente usare una notazione compatta.
 - Quindi, introduciamo una dimensione fittizia $x_0 = 1$ e definiamo:
-						$\hat{w} = (w_0, w)^T$
+						$\tilde{\mathbf{w}} = (w_0, \mathbf{w})^T$
 					
-						$\tilde{x} = (x_0 = 1, x)^T$
+						$\tilde{x} = (x_0 = 1, \mathbf{x})^T$
 					
-			così che $y(x) = \hat{w}^T \tilde{x}$
+	così che                             $y(x) = \tilde{\mathbf{w}}^T \tilde{\mathbf{x}}$ => embedding
 
-- Quindi le superfici decisionali in questo spazio sono iperpiani $D$ dimensionali passanti per l'origine dello spazio aumentato $D + 1$ dimensionale.
+- Quindi le superfici decisionali in questo spazio sono ==iperpiani $D$ dimensionali passanti== per l'origine dello spazio (non ho più il bias) aumentato $D + 1$ dimensionale.  => non solo conveniente per la notazione ma anche per le computazioni
 
 	6
 ---
-
 **Classi multiple**
 
 - OK, ma i problemi a due classi sono davvero noiosi. E se ne abbiamo di più?
 - Potremmo usare $K - 1$ classificatori, ognuno risolvendo un problema a due classi separando una classe $C_k$ dai punti non in quella classe.
-- Questo è noto come classificatore one-versus-rest:
+- Questo è noto come classificatore *one-versus-rest*(ovr):
 
 	![[Pasted image 20251001224446.png]]
-	
+=> tengo un esempio come quello della mia classe mentre il resto degli esempi è delle altre
+
 	7
 ---
 **Classi multiple**
 
-- Torniamo alla lavagna... Usa $K(K-1)/2$ funzioni discriminanti binarie.
-- Una per ogni coppia di classi:
+- Torniamo alla lavagna... Usa $K(K-1)/2$ funzioni discriminanti binarie. => one-versus-one => una classe "contro" un altra 
+- **Una per ogni coppia di classi**:
 
 	![[Pasted image 20251001224540.png]]
+	=> in questa regione dovremmo classificare $C_1$ e $C_2$  e $C_3$  => potremmo incastrarci in zone ambigue => vorremmo ridurre questa regione ad un singolo punto.
 
 	8
 ---
 **Classi multiple**
 
-- Possiamo evitare tutti questi problemi se usiamo un singolo discriminante a K classi impiegando $k$ funzioni lineari:$$y_k(x) = w_k^T x + w_{k0}$$
-- Che possiamo anche impacchettare insieme in una singola moltiplicazione di matrici:$$y(x) = \tilde{W}^T \tilde{x}$$
-- Ora assegniamo semplicemente $x$ alla classe $C_k$ se $y_k(x) \geq y_j(x)$ per tutti $j \neq k$.
+- Possiamo evitare tutti questi problemi se usiamo un **singolo** discriminante **a K classi** impiegando $k$ funzioni lineari:$$y_k(\mathbf{x}) = \mathbf{w}_k^T \mathbf{x} + w_{k0}$$
+- Che possiamo anche impacchettare insieme in una ==singola moltiplicazione di matrici==:$$y(x) = \tilde{W}^T \tilde{x}$$ (metti sketch) => nel prodotto ottengo le varie $y_k(\mathbf{x})$
 
+- Ora assegniamo semplicemente $x$ alla classe $C_k$ se $y_k(\mathbf{x}) \geq y_j(\mathbf{x})$ per tutti $j \neq k$. => sostanzialmente vado alla ricerca di $$\text{argmax}_k \ y_k(\mathbf{x})$$
 	9
 ---
 **Bordi decisionali per classi multiple**
 
-- Poiché stiamo prendendo un max su funzioni lineari, abbiamo regioni decisionali semplicemente connesse e convesse:
+- Poiché stiamo prendendo un max **su funzioni lineari**, abbiamo regioni decisionali semplicemente connesse e **convesse**:
 
 	![[Pasted image 20251001225538.png]]
-	
+	=> presi qualsiasi due punti sulla retta che traccio $y_k(\hat{\mathbf{x}})$ rimane il massimo => in particolare ho un solo valore massimo per ogni regione => tranne nei punti di incontro delle regioni => lì ho ancora ambiguità su quale sia il valore massimo
+
+	=> Per risolvere quindi i casi di classificazione negativa rispetto alle 3 regioni => diremo semplicemente che associerò il punto alla classe che risulta con distanza negativa minore. => risulterà come la più vicina alla classe. (metti sketch)
 	10
 ---
 ## Minimi Quadrati per la Classificazione
 ---
-
 **Un modello lineare compatto**
 
 - Per la regressione, i modelli lineari con una misura di errore ai minimi quadrati hanno portato a una semplice soluzione in forma chiusa.
 - Quindi, vediamo se possiamo riuscire a fare lo stesso trucco qui.
-- Ogni classe è descritta dal proprio modello lineare:$$y_{k}(x) = w_{k}^{T}x + w_{k0}$$
-- O, ancora meglio:$$y(x) = \tilde{W}^{T}\tilde{x}$$
-- È utile pensare a cosa sono le colonne di $\tilde{W}$.
-- Inoltre, quali dovrebbero essere i nostri target per la classificazione?
+- Ogni classe è descritta dal proprio modello lineare:$$y_{k}(\mathbf{x}) = \mathbf{w}_{k}^{T}\mathbf{x} + w_{k0}$$
+- O, ancora meglio:$$y(\mathbf{x}) = \tilde{W}^{T}\tilde{\mathbf{x}}$$
+- È utile pensare a cosa sono le **colonne** di $\tilde{W}$. => vedi sketch di prima
+- Inoltre, quali dovrebbero essere i nostri **target** per la classificazione? 
+- Aggiungi sketch => parto da una y dove per colonna mi dice l'esempio a quale classe appartiene. => il prodotto fra "W^T" e "x" mi restituisce dunque il risultati del classificatore => ogni campione avrà un solo risultato positivo o un solo risultato negativo
 
 	11
 ---
@@ -1872,27 +1880,29 @@ Alla fine di questa lezione avrete:
 - Quindi abbiamo una bella forma analitica per un classificatore a K classi da dati:
   $y(x) = \tilde{W}^T \tilde{x} = T^T (\tilde{X}^{\dagger})^T \tilde{x}$
 
-- Tuttavia, non è un classificatore molto buono:
+- Tuttavia, non è un classificatore molto buono: => highly sensed agli outliers... cerco di classificare correttamente gli esempi outlier che mi portano a modificare il discriminante...
 
 	![[Pasted image 20251001230826.png]]
 
+- Da qui un primo problema => Least squares sta facendo assunzione implicite => tipo non ci sono outliers e noise di tipo gaussiano...
+- Il problema principale sono però gli *hard targets*: classifico ad esempio in modo diretto solo come 0 e 1
 	13
 ---
 ## Discriminante Lineare di Fisher
 ---
-
 **Classificazione lineare come riduzione di dimensionalità**
 
-- Un modo di pensare alla classificazione lineare con discriminanti è come una riduzione di dimensionalità a una dimensione.
+- Un modo di pensare alla classificazione lineare con discriminanti è come una riduzione di dimensionalità a una dimensione. => che direzione prendere con w? => come capisco quale w divide al meglio i punti? Andiamo a guardare una w che separa al meglio i *centroidi* dei nostri punti.
 - Diamo un'occhiata ad alcuni esempi motivanti di questo...
 
 	14
 ---
 **Separare le medie**
 
-- La nostra prima strategia potrebbe essere di calcolare le medie di ogni classe nello spazio delle feature:$$\mathbf{m}_1 = \frac{1}{N_1} \sum_{n=1}^{N_1} x_{1,n}, \quad \mathbf{m}_2 = \frac{1}{N_2} \sum_{n=1}^{N_2} x_{2,n}$$
-- E poi calcolare $\mathbf{w}$ in modo che la proiezione di questi due punti su di esso massimizzi la distanza tra le proiezioni:$$\mathbf{w}^T \mathbf{m}_2 - \mathbf{w}^T \mathbf{m}_1 = \mathbf{w}^T (\mathbf{m}_2 - \mathbf{m}_1)$$
-- Qualcuno vede un problema nel massimizzare questa espressione?
+- La nostra prima strategia potrebbe essere di calcolare le **medie** di ogni classe nello spazio delle feature:$$\mathbf{m}_1 = \frac{1}{N_1} \sum_{n=1}^{N_1} x_{1,n}, \quad \mathbf{m}_2 = \frac{1}{N_2} \sum_{n=1}^{N_2} x_{2,n}$$
+- E poi calcolare $\mathbf{w}$ in modo che la proiezione di questi due punti su di esso **massimizzi** la distanza tra le proiezioni: $$\mathbf{w}^T \mathbf{m}_2 - \mathbf{w}^T \mathbf{m}_1 = \mathbf{w}^T (\mathbf{m}_2 - \mathbf{m}_1)$$ (per trovare il nostro piano che massimizzi la distanza fra i centroidi)
+
+- Qualcuno vede un problema nel **massimizzare** questa espressione? => può andare all'infinito anche così...  devo limitare la norma altrimenti non ho soluzioni
 
 	15
 ---
@@ -1901,7 +1911,7 @@ Alla fine di questa lezione avrete:
 - La nostra prima strategia potrebbe essere di calcolare le medie di ogni classe nello spazio delle feature:$$m_1 = \frac{1}{N_1} \sum_{n=1}^{N_1} x_{1,n}, \quad m_2 = \frac{1}{N_2} \sum_{n=1}^{N_2} x_{2,n}$$
 - E poi calcolare $w$ in modo che la proiezione di questi due punti su di esso massimizzi la distanza tra le proiezioni:$$w^T m_2 - w^T m_1 = w^T (m_2 - m_1)$$
 - Qualcuno vede un problema nel massimizzare questa espressione?
-- Possiamo imporre il vincolo che $||w||_2 = 1$ nell'ottimizzazione (usando un moltiplicatore di Lagrange).
+- Possiamo imporre il **vincolo** che $||w||_2 = 1$ nell'ottimizzazione (usando un moltiplicatore di Lagrange).
 - Il risultato è, non a sorpresa: $w \propto (m_2 - m_1)$
 
 	16
@@ -1918,11 +1928,12 @@ Alla fine di questa lezione avrete:
 
 - Entrambe le distribuzioni di classe hanno matrici di covarianza fortemente non diagonali.
 - L'intuizione di Fisher era di massimizzare la varianza inter-classe, mentre simultaneamente minimizzava la varianza intra-classe nello spazio proiettato, 1-dimensionale.
-- La varianza within-class – anche chiamata compattezza – è:$$S_k^2 = \sum_{n=1}^{N_k} (w^T x_{k,n} - w^T m_k)^2$$
-- Il Criterio di Fisher è allora il rapporto tra la varianza between-class e la varianza within-class:$$J(w) = \frac{(w^T m_2 - w^T m_1)^2}{S_1^2 + S_2^2}$$
+- La varianza within-class – anche chiamata **compattezza** – è:$$S_k^2 = \sum_{n=1}^{N_k} (w^T x_{k,n} - w^T m_k)^2$$ => misuro nello spazio proiettato (ovvero i punti sulla mia **w**) quanto risulta mia distanza
+
+- Il Criterio di Fisher è allora il rapporto tra la varianza **between-class** e la varianza **within-class**:$$J(w) = \frac{(w^T m_2 - w^T m_1)^2}{S_1^2 + S_2^2}$$
 	18
 ---
-**Generalizzando**
+**Generalizzando** (skipped)
 
 - Possiamo rendere between e within più espliciti scrivendo:$$J(w) = \frac{w^T S_B w}{w^T S_W w} \quad (\text{vedi Eq 4.27 e 4.28 in Bishop})$$
 - Dove qui $S_B$ è la covarianza between-class, e $S_W$ è la within-class.
@@ -1939,7 +1950,7 @@ Alla fine di questa lezione avrete:
 
 	20
 ---
-**Relazione con i minimi quadrati**
+**Relazione con i minimi quadrati** (boh si possono fare anche con i quadrati ma skipped also)
 
 - L'approccio dei minimi quadrati alla classificazione basata su discriminanti lineari si basa sull'apprendere funzioni lineari che siano il più vicine possibile all'insieme dei valori target.
 - Il Criterio di Fisher, invece, cerca di massimizzare la separazione delle classi nello spazio discriminante.
@@ -2018,6 +2029,607 @@ Alla fine di questa lezione avrete:
 
 	29
 ---
-# 6 - 
+# 6 - Modelli Lineari per la classificazione - Modelli probabilistici
 
+## Introduzione
+---
+**Approcci probabilistici alla classificazione**
 
+- Nella scorsa lezione abbiamo esaminato i modelli lineari per la classificazione da una prospettiva puramente geometrica.
+- Come la regressione ai minimi quadrati, questi mancano della capacità di quantificare la fiducia nelle loro previsioni.
+- In questa lezione esamineremo la classificazione lineare da tre prospettive probabilistiche:
+  - **Generativa**: in cui una verosimiglianza dei dati condizionata alla classe e dei prior sulle classi verranno utilizzati per derivare una regola di classificazione.
+  - **Discriminativa**: in cui la distribuzione posteriori delle classi viene stimata direttamente.
+  - **Bayesiana**: in cui approssimiamo la distribuzione dei parametri dalla verosimiglianza dei dati e dal prior e poi integriamo per fare previsioni.
+
+	2
+---
+**Obiettivi della lezione**
+
+Alla fine di questa lezione:
+
+- Comprenderete l'approccio generativo alla classificazione e come i discriminanti lineari e quadratici derivino da assunzioni sulle verosimiglianze condizionate alla classe.
+- Comprenderete l'approccio discriminativo della regressione logistica alla classificazione e come la loss di log-verosimiglianza negativa possa essere utilizzata per addestrarlo.
+- Comprenderete le basi (e i limiti) dell'approccio bayesiano alla classificazione e perché sia necessaria l'inferenza approssimata.
+
+	3
+---
+## Modelli Probabilistici Generativi
+---
+**Ancora, dove sono le probabilità?!**
+
+- Ancora una volta, ci troviamo con un bel modello, ma completamente incapace di fornire una qualsiasi misura di fiducia.
+- Considereremo ora un tipo specifico di visione generativa che porterà naturalmente (tramite la regola di Bayes) proprio a una tale misura.
+- Come abbiamo visto per i modelli di regressione lineare, troveremo anche connessioni tra le visioni probabilistica e geometrica.
+
+	4
+---
+**Un modello generativo**
+
+- Per problemi a $K = 2$ classi, possiamo scrivere il posterior per la classe $C_1$ come: $$p(C_1 | x) = \frac{p(x | C_1)p(C_1)}{p(x | C_1)p(C_1) + p(x | C_2)p(C_2)} = \frac{1}{1 + \exp(-a)} \equiv \sigma(a(x))$$
+per $$a = \ln{\frac{p(x | C_1)p(C_1)}{p(x | C_2)p(C_2)}}$$
+- Scrivere il posterior in questo modo potrebbe sembrare una perdita di tempo.
+- Tuttavia, vedremo che questo aiuta a generalizzare i nostri risultati, specialmente quando $a(x)$ ha una forma semplice.
+
+	5
+---
+$\sigma$, un vecchio amico
+
+- La funzione $\sigma(\cdot)$ è nota come funzione sigmoide logistica.
+- Svolge un ruolo importante in molti modelli di classificazione.
+- È molto importante per le Reti Neurali Artificiali.
+
+	![[Pasted image 20251011193638.png]]
+
+	6
+---
+**Problemi a K classi**
+
+- Per il caso di $K > 2$: $$p(C_k | x) = \frac{p(x | C_k) p(C_k)}{\sum_j p(x | C_j) p(C_j)} = \frac{\exp(a_k)}{\sum_j \exp(a_j)}$$
+- Questo è noto come esponenziale normalizzato o funzione softmax.
+- Vediamo cosa succede per una scelta specifica di $a_k$.
+
+	7
+---
+**Modelli generativi con input continui**
+
+- Possiamo assumere che le densità condizionate alla classe (un altro nome per la verosimiglianza) siano Gaussiane con matrici di covarianza uguali:
+- Quindi, la densità per la classe $C_k$ è: $$p(x | C_k) = \frac{1}{(2\pi)^{D/2}|\Sigma|^{-1}} \exp\left\{-\frac{1}{2}(x - \mu_k)^T\Sigma^{-1}(x - \mu_k)\right\}$$
+- Se consideriamo solo la prima classe, e ricordando l'analisi che abbiamo fatto sulla forma del posterior, abbiamo:$$p(C_1 | x) = \sigma(w^Tx + w_0)$$dove $w = \Sigma^{-1}(\mu_1 - \mu_2)$ e $w_0 = -\frac{1}{2}\mu_1^T\Sigma^{-1}\mu_1 + \frac{1}{2}\mu_2^T\Sigma^{-1}\mu_2 + \ln\frac{p(C_1)}{p(C_2)}$
+
+	8
+---
+**Modelli generativi con input continui**
+
+- I termini quadratici in $x$ si sono cancellati (a causa del $\Sigma$ comune).
+- Le frontiere di decisione sono lineari nello spazio di input.
+
+	![[Pasted image 20251011194038.png]]
+
+	9
+---
+**Modelli generativi con input continui**
+
+- Per il caso generale di K classi, usiamo il softmax invece della sigmoide.
+- Abbiamo:$$a_k(x) = w_k^T x + w_{k0}$$dove $w_k = \sum^{-1} \mu_k$ e $w_{k0} = \frac{1}{2} \mu_k^T \sum^{-1} \mu_k + \ln p(C_k)$
+
+- Le frontiere di decisione risultanti sono dove due dei posteriori sono uguali.
+- Questo corrisponde al tasso di errata classificazione minimo (ancora una funzione lineare di $x$).
+
+	10
+---
+**Modelli generativi con input continui**
+
+- Se rilassiamo il requisito che tutte le matrici di covarianza siano uguali, i termini quadratici non si cancellano più.
+- Il risultato è un classificatore di Bayes quadratico.
+
+	![[Pasted image 20251011194251.png]]
+
+	11
+---
+## Modelli Probabilistici Discriminativi
+---
+**Generative versus discriminative**
+
+- Abbiamo visto che la probabilità posterior in un problema a 2 classi può essere scritta come una sigmoide logistica di una funzione lineare di **x**.
+- Analogamente, per il caso multi-classe abbiamo una funzione softmax su una funzione lineare di **x**.
+- Questi sono esempi di quelli che sono noti come modelli lineari generalizzati.
+- Per scelte specifiche delle distribuzioni condizionate alla classe possiamo usare la massima verosimiglianza per stimare i loro parametri (e quelli dei prior).
+- Questi sono a volte chiamati modelli generativi, perché potremmo generare campioni **x** campionando dal marginale $p(x)$.
+- E se, invece, usassimo direttamente la forma funzionale del modello lineare generalizzato per discriminare?
+
+	12
+---
+**Funzioni di base fisse**
+
+- Abbiamo sviluppato tutti i classificatori per lavorare direttamente sull'input originale $x$.
+- Tuttavia, tutto ciò che abbiamo derivato funziona ugualmente bene se usiamo un vettore di funzioni di base $\phi(x)$.
+- Le frontiere risultanti sono lineari nello spazio delle feature $\phi$, ma non lineari nello spazio originale.
+
+	![[Pasted image 20251011194425.png]]
+
+	13
+---
+**Regressione logistica**
+
+- Abbiamo appena visto che possiamo scrivere il posterior per un problema a 2 classi come: $$p(C_1 | \phi) = \sigma(\mathbf{w}^T\phi)$$
+- Questo è chiamato (in modo confusionario) un modello di regressione logistica.
+- Per uno spazio delle feature $M$-dimensionale, questo modello ha $M$ parametri.
+- Il modello generativo richiederebbe $2M$ parametri per le medie, più $M(M+1)/2$ parametri per la matrice di covarianza.
+- Possiamo usare la Massima Verosimiglianza per adattare i parametri di questo modello, grazie alla forma conveniente della derivata della sigmoide logistica:$$\frac{d}{da}\sigma(a) = \sigma(a)(1 - \sigma(a))$$
+	14
+---
+**Regressione logistica**
+
+- Per il dataset $D = \{\phi_n, t_n\}$, dove $t_n \in \{0, 1\}$ e $\phi_n = \phi(x)$, la verosimiglianza è: $$p(\mathbf{t} | \mathbf{w}) = \prod_{n=0}^{N} y_n^{t_n} \{1 - y_n\}^{1 - t_n}$$dove $\mathbf{t} = (t_1, t_2, \ldots t_N)^T$ e $y_n = p(C_1 | \phi_n) = \sigma(\mathbf{w}^T \phi_n)$
+
+- Per la nostra funzione di errore useremo la Log-verosimiglianza Negativa: $$E(\mathbf{w}) = -\ln p(\mathbf{t} | \mathbf{w}) = -\sum_{n=1}^{N} \{t_n \ln y_n + (1 - t_n) \ln(1 - y_n)\}$$
+	15
+---
+**Regressione logistica**
+
+- Scrivendo la funzione di errore in questo modo: $$E(\mathbf{w}) = -\sum_{n=1}^{N} \{ t_n \ln y_n + (1 - t_n) \ln (1 - y_n) \}$$
+- E ricordando che $y_n = \sigma (\mathbf{w}^T \phi_n)$.
+- E usando la nostra osservazione sulla derivata della sigmoide logistica:$$\frac{d}{da} \sigma (a) = \sigma (a)(1 - \sigma (a))$$
+- Ci permette di vedere più esplicitamente la connessione tra verosimiglianza e pesi $\mathbf{w}$:$$\nabla_{\mathbf{w}} E(\mathbf{w}) = \sum_{n=1}^{N} (y_n - t_n) \phi_n$$
+	16
+---
+**Regressione logistica**
+
+- Qui vediamo perché il modello è chiamato regressione logistica: $$\nabla_{\mathbf{w}} E(\mathbf{w}) = \sum_{n=1}^{N} (y_n - t_n) \phi_n$$
+- Questo è lo stesso aggiornamento di apprendimento sequenziale per la regressione lineare con funzioni di base fisse $\phi$.
+
+- E vediamo che l'obiettivo è regredire il target $t_n \in \{0, 1\}$ da $\phi(x)$.
+
+- Nota: questa soluzione di Massima Verosimiglianza è altamente soggetta a overfitting quando $C_1$ e $C_2$ sono linearmente separabili.
+
+- In questo caso, $||w||_2$ andrà all'infinito, convergendo a una stima posterior in cui per tutti $x$, e per qualche $k$, $p(C_k | x) = 1$.
+
+	17
+---
+## Regressione Logistica Bayesiana
+---
+**La ricetta per il ML Bayesiano**
+
+- Abbiamo sviluppato un passo verso una ricetta per l'apprendimento bayesiano completo nella nostra discussione sulla regressione.
+- Proviamo ad applicarla al nostro problema di classificazione:
+  1. Decidere un prior $p(\mathbf{w})$.
+  2. Massimizzare il posterior risultante per arrivare a una distribuzione dei parametri $p(\mathbf{w} | \mathbf{t})$.
+  3. Derivare la distribuzione predittiva $p(C_k | \mathbf{\Phi}, \mathbf{t})$ che possiamo usare su nuovi dati $\phi(x)$.
+
+- Il passo 1 è "facile" – sebbene sia una delle critiche principali dell'apprendimento bayesiano.
+- I passi 2 e 3 sono, sfortunatamente, intrattabili: la distribuzione posterior sui parametri non è più Gaussiana.
+
+- Vediamo cosa possiamo fare.
+
+	18
+---
+**L'approssimazione di Laplace**
+
+- Primo, assumiamo un prior Gaussiano: $p(\mathbf{w}) = \mathcal{N}(\mathbf{w} | m_0, S_0)$.
+- Primo passo, approssimare la distribuzione dei parametri.
+- Un metodo semplice è noto come Approssimazione di Laplace che usa la migliore approssimazione Gaussiana.$$q(\mathbf{w}) = \mathcal{N}(\mathbf{w} | \mathbf{w}_{MAP}, S_N)$$
+- Dove i parametri sono derivati dalla stima Maximum a Posteriori (MAP) della media e della covarianza ottenuta minimizzando un'approssimazione del secondo ordine del vero posterior.
+
+	19
+---
+**L'approssimazione di Laplace**
+
+- Ecco un esempio di approssimazione di $p(z) \propto \exp(-z^2/2) \sigma(20z+4)$:
+
+	![[Pasted image 20251011195804.png]]
+
+	20
+---
+**La distribuzione predittiva**
+
+- Armati di questa approssimazione possiamo ora scrivere la distribuzione predittiva (approssimata):$$p(C_1 | \phi, \mathbf{t}) = \int p(C_1 | \phi, \mathbf{w})p(\mathbf{w} | \mathbf{t})d\mathbf{w} \approx \int \sigma(\mathbf{w}^T\phi)q(\mathbf{w})d\mathbf{w}$$
+- Questa è una convoluzione di una sigmoide logistica e di una Gaussiana, che può essere approssimata (dopo derivazioni molto lunghe) come: $$p(C_1 | \phi, \mathbf{t}) \approx \sigma(\kappa(\sigma_a^2)\mu_a)$$dove $\kappa(\sigma^2) = (1 + \pi\sigma_a^2/8)^{-1/2}$  
+- per $\sigma_a^2 = \text{var}[a] = \phi^T S_N\phi$ e $\mu_a = \mathbf{w}_{MAP}^T \phi$
+
+	21
+---
+## Considerazioni Conclusive
+---
+**Modelli probabilistici generativi**
+
+- La visione generativa di $p(C_k | x)$ è allettante per una serie di ragioni.
+- Sotto la stima di Massima Verosimiglianza dei parametri, stimiamo semplicemente una distribuzione per le verosimiglianze condizionate alla classe $p(x|C_k)$ e per i prior $p(C_k)$.
+- Per il caso Gaussiano, queste stime risultano essere quelle "usuali".
+- Se assumiamo covarianza uguale per tutte le classi, il risultato è un classificatore lineare.
+- Invece, se stimiamo un $\Sigma_k$ per ogni classe il classificatore risultante è quadratico nell'input.
+
+	22
+---
+**Regressione Logistica**
+
+- La regressione logistica è un modello estremamente importante perché quasi tutte le Deep Neural Networks per la classificazione eseguono una regressione logistica multi-classe.
+- Una Deep Network stima l'embedding delle feature $\phi(x)$, poi viene applicata una funzione lineare e il softmax.
+- Quindi viene applicata una loss di Log-verosimiglianza Negativa – anche nota come Entropia Incrociata.
+- Nonostante i suoi problemi, è un modello abbastanza adatto per l'ottimizzazione incrementale basata sul gradiente.
+- Importante: il fatto che le uscite sommino a uno, significa poco in termini di interpretazione probabilistica del risultato.
+
+	23
+---
+**Regressione Logistica Bayesiana**
+
+- L'inferenza bayesiana esatta è intrattabile a causa della complessità della verosimiglianza dei dati.
+- E della necessità di normalizzare il posterior – non possiamo più ignorare il fattore di evidenza nella regola di Bayes.
+- Ci sono tecniche molto sofisticate per approssimare i posterior normalizzati:
+  - Metodo di Laplace: approssimare con una Gaussiana.
+  - Inferenza Variazionale: adattare una distribuzione proxy al posterior.
+  - Metodi Monte Carlo: usare il campionamento di Markov per l'integrazione.
+
+	24
+---
+**Letture e Compiti**
+
+Lettura Raccomandata:
+
+- Bishop: Capitolo 4 (4.2, 4.3, 4.4*, 4.5*)
+
+	25
+---
+# 7 - SVM Lineare
+
+## Introduzione
+---
+**Motivazioni**
+
+- Consideriamo un semplice problema di classificazione linearmente separabile:
+
+	![[Pasted image 20251013223453.png]]
+
+	2
+---
+**Motivazioni: un approccio probabilistico**
+
+- Abbiamo strumenti per questi problemi, ad esempio un discriminante lineare generativo:
+
+	![[Pasted image 20251013224603.png]]
+
+	3
+---
+**Motivazioni: sensibilità agli outlier**
+
+- Un problema con molti approcci probabilistici è la sensibilità agli outlier:
+
+	![[Pasted image 20251013225123.png]]
+
+	4
+---
+**Motivazioni: sensibilità agli outlier**
+
+- L'effetto sull'iperpiano separatore è più evidente da vicino:
+
+	![[Pasted image 20251013225156.png]]
+
+	5
+---
+**Motivazioni: alcuni outlier sono peggiori di altri...**
+
+- I metodi che trattano tutti i campioni allo stesso modo possono degradare rapidamente:
+	
+	![[Pasted image 20251013225235.png]]
+
+	6
+---
+**Motivazioni: classificatori a margine, qualche intuizione**
+
+- Possiamo riformulare un obiettivo di classificazione in termini del solo margine?
+
+	![[Pasted image 20251013223453.png]]
+
+	7
+---
+**Obiettivi della lezione**
+
+Dopo questa lezione:
+
+- Avrete acquisito una comprensione più profonda della geometria della classificazione e di come il ridimensionamento del margine sia correlato al parametro $w$ del discriminante lineare.
+- Comprenderete la forma primale del Classificatore a Margine Massimo – noto anche come Macchina a Vettori di Supporto (SVM).
+- Comprenderete come la forma duale della SVM sia derivata dal Lagrangiano della formulazione del margine massimo.
+- Comprenderete come le variabili slack possono essere introdotte nella formulazione SVM per gestire dataset non linearmente separabili.
+- Sarete in grado di interpretare le variabili duali e come identificano i vettori di supporto nel training set.
+
+	8
+---
+## Il Margine
+---
+**Preliminari: un po' di algebra lineare**
+
+- Definizione (Mappa Bilineare)
+	Una funzione $\Omega : V \times V \to \mathbb{R}$ è una *mappa bilineare* dallo spazio vettoriale $V$ a $\mathbb{R}$ se e solo se:$$\Omega(\lambda x + \psi y, z) = \lambda \Omega(x, z) + \psi \Omega(y, z)$$$$\Omega(x, \lambda y + \psi z) = \lambda \Omega(x, y) + \psi \Omega(x, z)$$per ogni $x, y, z \in V$.
+
+	- $\Omega$ è chiamata simmetrica se $\Omega(x, y) = \Omega(y, x)$ per tutti $x, y \in V$.  
+	- $\Omega$ è chiamata definita positiva se:$$\Omega(x, x) \geq 0 \text{ per tutti } x, \text{ e } \Omega(x, x) = 0 \text{ se e solo se } x = 0$$
+	9
+---
+**Preliminari: un po' di algebra lineare**
+
+- **Definizione (Prodotto Interno e Spazio con Prodotto Interno)**
+	Sia $V$ uno spazio vettoriale qualsiasi e $\Omega : V \times V \to \mathbb{R}$ una mappa bilineare da $V$ a $\mathbb{R}$. Allora:
+	- Se $\Omega$ è simmetrica e definita positiva, $\Omega$ è chiamata prodotto interno su $V$. Di solito scriviamo $\langle x,y\rangle$ invece di $\Omega(x,y)$.
+	- La coppia $(V,\Omega)$ (o $(V,\langle\cdot,\cdot\rangle)$) per il prodotto interno $\Omega$ è chiamata spazio con prodotto interno o spazio vettoriale con prodotto interno. Se $\Omega(x,y) = x^Ty$, $(V,\Omega)$ è chiamato spazio vettoriale Euclideo.
+
+- I prodotti interni ci permettono di formalizzare le nostre intuizioni geometriche su lunghezza, ortogonalità e distanza.
+
+	10
+---
+## Classificatori a Margine Massimo
+---
+**Il problema di classificazione (geometrico)**
+
+- Un modo utile di pensare alla classificazione è che:
+  1. Rappresentiamo i dati in $\mathbb{R}^D$.
+  2. Partizioniamo $\mathbb{R}^D$ in modo tale che campioni con la stessa etichetta (e nessun campione con etichette diverse) cadano nella stessa partizione.
+
+- Considereremo un partizionamento conveniente – quello di separare $\mathbb{R}^D$ in due metà usando un iperpiano separatore.
+
+- Consideriamo una funzione $f: \mathbb{R}^D \to \mathbb{R}$ definita come:$$f(x; w, b) = \langle w, x \rangle + b$$
+- Definiamo un iperpiano che partiziona il nostro spazio usando $f$ come: $$H = \{x | f(x; w, b) = \langle w, x \rangle + b = 0\}$$	11
+---
+**La relazione tra w e H**
+
+- L'iperpiano definito da w e b è perpendicolare a w.
+- Per vederlo, prendiamo due punti qualsiasi $x_1$ e $x_2$ in H e consideriamo:$$f(x_1) - f(x_2) = \langle w, x_1 \rangle + b - \langle w, x_2 \rangle - b = \langle w, x_1 - x_2 \rangle$$
+	12
+---
+**Come usiamo w e b**
+
+- Quando ci viene presentato un campione di test $x$, lo classificheremo in base a quale lato dell'iperpiano giace: $$\text{class}(x) = \begin{cases} +1 & \text{se } f(x; w, b) \geq 0 \\ -1 & \text{se } f(x; w, b) < 0 \end{cases}$$
+- Quando addestriamo su dati $\{(x_i, y_i) | i = 1, \ldots, N\}$, cerchiamo $w$ e $b$ tali che tutti i campioni cadano sul lato corretto dell'iperpiano:$$\langle w, x_i \rangle + b \geq 0 \quad \text{quando} \quad y_i = +1$$$$\langle w, x_i \rangle + b < 0 \quad \text{quando} \quad y_i = -1$$
+- Queste condizioni sono spesso combinate nella forma più compatta:$$y_i(\langle w, x_i \rangle + b) \geq 0$$	13
+---
+**Il margine**
+
+- Il margine è definito come la distanza tra un iperpiano separatore e il punto più vicino ad esso.
+- Il nostro obiettivo è massimizzare questa distanza, ma cos'è?
+
+	![[Pasted image 20251013230630.png]]
+
+	14
+---
+
+**Pagina 19**
+Massimizzare il margine
+
+- La distanza perpendicolare tra qualsiasi punto $x_n$ e un iperpiano definito da $\langle w, x \rangle + b = 0$ è:  $$\frac{y_n(\langle w, x_n \rangle + b)}{||w||}$$
+- Vogliamo massimizzare la minima di queste distanze:$$\arg \max_{w, b} \left\{ \frac{1}{||w||} \min_{n} [y_n(\langle w, x_n \rangle + b)] \right\}$$
+  soggetto ai vincoli che $y_n(\langle w, x \rangle + b) \geq 0$
+
+- Questo è un problema di ottimizzazione scomodo a causa del max/min e del punto più vicino che cambia.
+
+	15
+---
+**Massimizzare il margine**
+
+- Notiamo, tuttavia, che possiamo scalare liberamente $w$ e $b$ senza cambiare la distanza tra punti e iperpiano.
+- Quindi, possiamo scalare in modo che $\langle w, x_a \rangle + b = 1$ per il punto più vicino $x_a$.
+- Sia $r$ la distanza ortogonale da $x_a$ all'iperpiano.
+- Allora, la proiezione ortogonale di $x_a$ sull'iperpiano è:
+
+$x_a' = x_a - r \frac{w}{||w||}$
+
+- Sostituiamo questo nel fatto che $x_a'$ giace sull'iperpiano:
+
+$\langle w, x_a - r \frac{w}{||w||} \rangle + b = 0$
+
+---
+
+**Pagina 21**
+Massimizzare il margine
+
+- Sostituiamo questo nel fatto che $x_a'$ giace sull'iperpiano:
+  $\langle w, x_a - r\frac{w}{||w||} \rangle + b = 0$
+
+- Ora, sfruttando la bilinearità del prodotto interno:
+  $\langle w, x_a \rangle + b - r\frac{\langle w, w \rangle}{||w||} = 0$
+
+- Ricordando che $x_a$ giace sul margine, arriviamo a:
+  $r = \frac{1}{||w||}$
+
+---
+
+**Pagina 22**
+# La forma canonica della SVM a Margine Rigido
+
+- Combinando la massimizzazione del margine con i vincoli arriviamo a:
+
+$\max_{w,b} \frac{1}{||w||}$
+
+soggetto a  
+$y_n(\langle w, x_n \rangle + b) \geq 1 \text{ per tutti } n = 1, \ldots, N$
+
+- Oppure, la più comune rappresentazione canonica della SVM a Margine Rigido:
+
+$\min_{w,b} \frac{1}{2}||w||^2$
+
+soggetto a  
+$y_n(\langle w, x_n \rangle + b) \geq 1 \text{ per tutti } n = 1, \ldots, N$
+
+---
+
+**Pagina 23**
+# Trovare w e b
+
+- Abbiamo un problema di programmazione quadratica convessa in $D$ variabili con vincoli lineari.
+- Per risolvere un tale problema, possiamo formare la funzione Lagrangiana:
+
+$L(w, b, a) = \frac{1}{2} ||w||^2 - \sum_{n=1}^{N} a_n \left\{ y_n(\langle w, x_n \rangle + b) - 1 \right\}$
+
+- Impostando $\frac{\partial}{\partial w} L = 0$ e $\frac{\partial}{\partial b} L = 0$ otteniamo:
+
+$w = \sum_{n=1}^{N} a_n y_n x_n$
+
+$0 = \sum_{n=1}^{N} a_n y_n$
+
+---
+
+**Pagina 24**
+# Trovare w e b
+
+- Sostituendo questo valore di **w** e il vincolo su $\sum_n a_n y_n$ nel Lagrangiano:
+
+$\max_a \left\{ \sum_{n=1}^N a_n - \frac{1}{2} \sum_{n=1}^N \sum_{m=1}^N a_n a_m y_n y_m \langle x_n, x_m \rangle \right\}$
+
+soggetto a $a_n \geq 0$, per $n = 1, \ldots, N$
+
+$\sum_{n=1}^N a_n y_n = 0$
+
+- Questa è la rappresentazione duale della SVM a Margine Rigido, ancora un problema di programmazione quadratica, ma in $N$ variabili  
+- La complessità per risolvere problemi quadratici in $N$ variabili è $O(N^3)$.
+
+---
+
+**Pagina 25**
+Usare la SVM: il "Supporto" nelle Macchine a Vettori di Supporto
+
+- Per usare il classificatore sostituiamo nuovamente il nostro w nella funzione di decisione:
+
+$f(x) = \sum_{n=1}^{N} a_n y_n \langle x, x_n \rangle + b$
+
+- Le condizioni di Karush-Kuhn-Tucker (KKT) significano che la soluzione soddisfa:
+
+$a_n \geq 0 \\
+y_n f(x_n) - 1 \geq 0 \\
+a_n \{ y_n f(x_n) - 1 \} = 0$
+
+- Quindi, per tutti $n$ o $a_n = 0$ o $y_n f(x_n) = 1$.
+
+- Gli $x_n$ per cui $a_n > 0$ e $y_n f(x_n) = 1$ sono chiamati vettori di supporto.
+
+---
+
+**Pagina 26**
+# Macchine a Kernel Sparse (aka SVM)
+
+- Nota che solo i vettori di supporto contribuiscono alla classificazione:
+
+$f(x) = \sum_{n=1}^{N} a_n y_n \langle x, x_n \rangle + b = \sum_{m \in SV} a_m y_m \langle x, x_m \rangle + b$
+
+- Questo è il motivo per cui le SVM sono anche più generalmente conosciute come Macchine a Kernel Sparse.
+- (Vedremo da dove viene il kernel nella prossima lezione...)
+
+---
+
+**Pagina 27**
+# SVM e classificazione robusta
+
+- Abbiamo un classificatore lineare che ora è robusto agli outlier:
+
+[Grafico: SVM con vettori di supporto]
+
+Classe = +1  
+Classe = -1  
+Vettori di Supporto
+
+---
+
+**Pagina 28**
+Il Classificatore a Margine Morbido
+
+---
+
+**Pagina 29**
+# Distribuzioni di classe sovrapposte
+
+- Fino ad ora abbiamo assunto che il nostro problema sia linearmente separabile.
+- Questo, chiaramente, quasi mai accade.
+
+[Grafico: classi non linearmente separabili]
+
+Classe = +1  
+Classe = -1
+
+---
+
+**Pagina 30**
+# Consentire misclassificazioni dei campioni di training
+
+- Per consentire la possibilità che alcuni campioni di training siano misclassificati, introduciamo variabili slack $\xi_n$:
+
+$\xi_n = 
+\begin{cases} 
+0 & \text{se } x_n \text{ è sul o sul lato corretto del margine} \\
+|y_n - \langle w, x_n \rangle + b| & \text{altrimenti}
+\end{cases}$
+
+[Grafico: illustrazione delle variabili slack]
+
+$\xi > 1$  
+$\xi < 1$  
+$\xi = 0$
+
+---
+
+**Pagina 31**
+Il problema di ottimizzazione con slack
+
+- Il nuovo problema di ottimizzazione diventa:
+
+$\min_{w,b} \frac{1}{2} ||w||^2 + C \sum_{n=1}^{N} \xi_n$
+
+soggetto a $y_n(\langle w, x_n \rangle + b) \geq 1 - \xi_n$ per tutti $n = 1, \ldots, N$
+
+- E dopo aver formato il Lagrangiano e risolto per le variabili duali (Bishop pagine 332-334):
+
+$\max_a \left\{ \sum_{n=1}^{N} a_n - \frac{1}{2} \sum_{n=1}^{N} \sum_{m=1}^{N} a_n a_m y_n y_m \langle x_n, x_m \rangle \right\}$
+
+soggetto a $0 \leq a_n \leq C$, per $n = 1, \ldots, N$
+
+$\sum_{n=1}^{N} a_n y_n = 0$
+
+---
+
+**Pagina 32**
+La soluzione a Margine Morbido
+
+- La forma del risultato è quasi identica al caso a margine rigido.
+- Nota, tuttavia, che i vettori di supporto ora includono campioni misclassificati.
+- Poiché la penalità per la misclassificazione scala linearmente con $\xi$, la SVM a margine morbido non è robusta agli outlier.
+
+[Grafico: SVM a margine morbido con vettori di supporto e slack]
+
+Classe = +1  
+Classe = -1  
+Vettori di Supporto  
+Slack
+
+---
+
+**Pagina 33**
+Considerazioni Conclusive
+
+---
+
+**Pagina 34**
+# La Macchina a Vettori di Supporto
+
+- La SVM lineare è un classificatore potente che è robusto agli outlier (nel caso a margine rigido).
+- Può essere adattata per gestire problemi che non sono linearmente separabili.
+- Ma questo ha il costo di introdurre un iperparametro $C$ che bilancia il costo della misclassificazione con la massimizzazione del margine.
+- Il vero vantaggio della SVM è che è un problema quadratico convesso che ha una soluzione unica e ammette algoritmi efficienti.
+- Nella prossima lezione vedremo come possiamo estendere questa teoria a frontiere di decisione non lineari.
+
+---
+
+**Pagina 35**
+# Letture e Compiti
+
+## Lettura Raccomandata:
+
+- Bishop: Capitolo 7 (7.1), Capitolo 6 (6.1, 6.2)
+
+## Compiti:
+
+- Mostrare che $\Omega(x, y) = x^Ty$ è un prodotto interno.
+
+- Mostrare che, per $V = \mathbb{R}^2$, $\Omega(x, y) = x_1y_1 - (x_1y_2 + x_2y_1) + 2x_2y_2$ è un prodotto interno.
+
+- Mostrare che possiamo scalare il margine di una costante arbitraria $\gamma$ (cioè  
+  $y_n(\langle w, x_n \rangle + b) \geq \gamma$) e la soluzione per l'iperpiano a margine massimo non cambia.
+
+---
+
+Tutte le formule sono ora correttamente formattate con `$` e il contenuto è completamente tradotto in italiano.
