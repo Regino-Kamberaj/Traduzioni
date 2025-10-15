@@ -1,8 +1,4 @@
-# 1 - Introduzione
-
 **Fondamenti di Apprendimento Automatico:**
-
-**Introduzione e Concetti di Base**
 
 Prof. Andrew D. Bagdanov (andrew.bagdanov AT unifi.it)
 
@@ -17,6 +13,9 @@ Prof. Andrew D. Bagdanov (andrew.bagdanov AT unifi.it)
 **DELL'INFORMAZIONE**
 
 ---
+# 1 - Introduzione
+
+
 ## Introduzione
 
 ---
@@ -1437,7 +1436,6 @@ $$\Phi = \begin{pmatrix}
 
 # 4 - Regressione Lineare Bayesiana
 
----
 ## Introduzione
 
 ---
@@ -1747,7 +1745,6 @@ Alla fine di questa lezione avrete:
 
 # 5 - Modelli Lineari per la classificazione
 
----
 ## Introduzione
 ---
 **Classificazione e superfici decisionali**
@@ -1989,7 +1986,7 @@ Alla fine di questa lezione avrete:
 ---
 **I minimi quadrati fanno schifo come classificatore**
 
-- La classificazione con minimi quadrati ha svantaggi significativi – più notablemente la sua sensibilità agli outlier.
+- La classificazione con **minimi quadrati** ha svantaggi significativi => decent superfici di separazioni – più notevolmente la sua sensibilità agli outlier. (metti sketch)
 - Come vedremo, stiamo implicitamente facendo assunzioni sulla forma delle distribuzioni di classe quando usiamo i minimi quadrati.
 - Ciononostante, manteniamo ancora la soluzione in forma chiusa analitica offerta dai minimi quadrati.
 
@@ -1998,7 +1995,11 @@ Alla fine di questa lezione avrete:
 **Discriminante Lineare di Fisher**
 
 - Se ruotiamo lo spazio in modo da massimizzare certe proprietà delle proiezioni di classe, possiamo fare meglio.
-- Questo è ciò che fa il Criterio di Fisher: massimizzare la varianza between-class, mentre minimizza la varianza within-class.
+- Questo è ciò che fa il Criterio di Fisher: -
+	- **massimizzare** la varianza between-class
+	- mentre **minimizza** la varianza within-class. 
+	=> Ci dà un modo di valutare le diverse direzioni! (metti sketch)
+
 - Fare questo migliora significativamente le performance di classificazione lineare.
 - Ma, mantiene ancora le belle proprietà analitiche dei minimi quadrati.
 
@@ -2006,7 +2007,7 @@ Alla fine di questa lezione avrete:
 ---
 **La strada da percorrere**
 
-- Seguendo il nostro sviluppo per la regressione, nella prossima lezione daremo un'occhiata ai modelli probabilistici per la classificazione.
+- Seguendo il nostro sviluppo per la regressione, nella prossima lezione daremo un'occhiata ai modelli **probabilistici** per la classificazione.
 - Guarderemo la classificazione da prospettive generative e discriminative.
 - E svilupperemo un approccio completamente bayesiano alla classificazione.
 - Questi modelli manterranno le proprietà lineari che siamo venuti a conoscere e amare, e ammetteranno soluzioni analitiche date alcune assunzioni chiave.
@@ -2031,6 +2032,8 @@ Alla fine di questa lezione avrete:
 ---
 # 6 - Modelli Lineari per la classificazione - Modelli probabilistici
 
+(Riguardare sketch per diversi modelli per linear regression => Ridge regularization ha come regolarizzatore la norma al quadrato dei parametri)
+
 ## Introduzione
 ---
 **Approcci probabilistici alla classificazione**
@@ -2048,8 +2051,8 @@ Alla fine di questa lezione avrete:
 
 Alla fine di questa lezione:
 
-- Comprenderete l'approccio generativo alla classificazione e come i discriminanti lineari e quadratici derivino da assunzioni sulle verosimiglianze condizionate alla classe.
-- Comprenderete l'approccio discriminativo della regressione logistica alla classificazione e come la loss di log-verosimiglianza negativa possa essere utilizzata per addestrarlo.
+- Comprenderete l'**approccio generativo** alla classificazione e come i discriminanti lineari e quadratici derivino da assunzioni sulle verosimiglianze condizionate alla classe.
+- Comprenderete l'**approccio discriminativo** della *regressione logistica* (porta a questa) alla classificazione e come la loss di *log-verosimiglianza negativa* possa essere utilizzata per addestrarlo.
 - Comprenderete le basi (e i limiti) dell'approccio bayesiano alla classificazione e perché sia necessaria l'inferenza approssimata.
 
 	3
@@ -2066,8 +2069,9 @@ Alla fine di questa lezione:
 ---
 **Un modello generativo**
 
-- Per problemi a $K = 2$ classi, possiamo scrivere il posterior per la classe $C_1$ come: $$p(C_1 | x) = \frac{p(x | C_1)p(C_1)}{p(x | C_1)p(C_1) + p(x | C_2)p(C_2)} = \frac{1}{1 + \exp(-a)} \equiv \sigma(a(x))$$
-per $$a = \ln{\frac{p(x | C_1)p(C_1)}{p(x | C_2)p(C_2)}}$$
+- Per problemi a $K = 2$ classi, possiamo scrivere il **posterior per la classe** $C_1$ come (da bayes): $$p(C_1 | \mathbf{x}) = \frac{p(\mathbf{x} | C_1)p(C_1)}{p(\mathbf{x} | C_1)p(C_1) + p(\mathbf{x} | C_2)p(C_2)} = \frac{1}{1 + \exp(-a(\mathbf{x}))} \equiv \sigma(a(x))$$(sotto ho $p(\mathbf{x})$)
+per $$a(\mathbf{x}) = \ln{\frac{p(\mathbf{x} | C_1)p(C_1)}{p(\mathbf{x} | C_2)p(C_2)}}$$ => *log posterior ratio*
+
 - Scrivere il posterior in questo modo potrebbe sembrare una perdita di tempo.
 - Tuttavia, vedremo che questo aiuta a generalizzare i nostri risultati, specialmente quando $a(x)$ ha una forma semplice.
 
@@ -2086,42 +2090,53 @@ $\sigma$, un vecchio amico
 **Problemi a K classi**
 
 - Per il caso di $K > 2$: $$p(C_k | x) = \frac{p(x | C_k) p(C_k)}{\sum_j p(x | C_j) p(C_j)} = \frac{\exp(a_k)}{\sum_j \exp(a_j)}$$
-- Questo è noto come esponenziale normalizzato o funzione softmax.
+- Questo è noto come *esponenziale normalizzato* o **funzione softmax**. => sopra ho una log posterior probability della classe $C_k$ 
 - Vediamo cosa succede per una scelta specifica di $a_k$.
 
 	7
 ---
 **Modelli generativi con input continui**
 
-- Possiamo assumere che le densità condizionate alla classe (un altro nome per la verosimiglianza) siano Gaussiane con matrici di covarianza uguali:
-- Quindi, la densità per la classe $C_k$ è: $$p(x | C_k) = \frac{1}{(2\pi)^{D/2}|\Sigma|^{-1}} \exp\left\{-\frac{1}{2}(x - \mu_k)^T\Sigma^{-1}(x - \mu_k)\right\}$$
-- Se consideriamo solo la prima classe, e ricordando l'analisi che abbiamo fatto sulla forma del posterior, abbiamo:$$p(C_1 | x) = \sigma(w^Tx + w_0)$$dove $w = \Sigma^{-1}(\mu_1 - \mu_2)$ e $w_0 = -\frac{1}{2}\mu_1^T\Sigma^{-1}\mu_1 + \frac{1}{2}\mu_2^T\Sigma^{-1}\mu_2 + \ln\frac{p(C_1)}{p(C_2)}$
+- Possiamo assumere che le densità condizionate alla classe (un altro nome per la verosimiglianza) siano **Gaussiane** con **matrici di covarianza uguali**:
 
+- Quindi, la densità per la classe $C_k$ è: $$p(x | C_k) = \frac{1}{(2\pi)^{D/2}|\Sigma|^{-1}} \exp\left\{-\frac{1}{2}(x - \mu_k)^T\Sigma^{-1}(x - \mu_k)\right\}$$ => per ogni classe ho una particolare media => ma la covarianza rimane la stessa (sketch)
+
+- Se consideriamo solo la prima classe, e ricordando l'analisi che abbiamo fatto sulla forma del posterior, abbiamo:$$p(C_1 | \mathbf{x}) = \sigma(\mathbf{w}^T\mathbf{x} + w_0) = \sigma(a(\mathbf{x}))$$- dove $\mathbf{w} = \Sigma^{-1}(\mu_1 - \mu_2)$ e $w_0 = -\frac{1}{2}\mu_1^T\Sigma^{-1}\mu_1 + \frac{1}{2}\mu_2^T\Sigma^{-1}\mu_2 + \ln\frac{p(C_1)}{p(C_2)}$
+	(tutto questo ottenuto valutando p(C_1|x) con il log posterior ratio tramite gaussiane)
+	
 	8
 ---
 **Modelli generativi con input continui**
 
-- I termini quadratici in $x$ si sono cancellati (a causa del $\Sigma$ comune).
-- Le frontiere di decisione sono lineari nello spazio di input.
+- I termini quadratici in $\mathbf{x}$ si sono cancellati (a causa del $\Sigma$ comune).
+- Le frontiere di decisione(boundaries) sono lineari nello spazio di input.
 
 	![[Pasted image 20251011194038.png]]
+	A sinistra ho appunto $P(C_1|\mathbf{x})$ combined con $P(C_2|\mathbf{x})$  
+
++ Prendendo una direzione perpendicolare alla superficie di separazione e proiettando i punti di una della due classi, cosa otteniamo? esattamente la sigmoide! (metti sketch)
+
+- A seconda delle probabilità delle due classi il boundary sarà spostato verso una delle classi => nel caso invece di $P(C_1) = P(C_2) = 0.5$ (caso non informativo) alla il boundary sarà esattamente a metà => si può dunque modificare queste probabilità come una sorta di iperparametro in modo tale da avere particolari boundary
 
 	9
 ---
 **Modelli generativi con input continui**
 
 - Per il caso generale di K classi, usiamo il softmax invece della sigmoide.
-- Abbiamo:$$a_k(x) = w_k^T x + w_{k0}$$dove $w_k = \sum^{-1} \mu_k$ e $w_{k0} = \frac{1}{2} \mu_k^T \sum^{-1} \mu_k + \ln p(C_k)$
+- Abbiamo:$$a_k(\mathbf{x}) = \mathbf{w}_k^T \mathbf{x} + w_{k0}$$dove $\mathbf{w_k} = \sum^{-1} \mu_k$ e $w_{k0} = \frac{1}{2} \mu_k^T \sum^{-1} \mu_k + \ln p(C_k)$
 
 - Le frontiere di decisione risultanti sono dove due dei posteriori sono uguali.
 - Questo corrisponde al tasso di errata classificazione minimo (ancora una funzione lineare di $x$).
+
++ Ma perchè si parla di modello generativo? (metti sketch)
+	+ I Dati sono generati da un processo generativo (Dirichlet process) => per fare il passaggio successivo dal dataset stimo quindi le medie (come centroidi) e la Covarianza (per ottenerne una faccio la trasposizione all'origine), dunque le prior delle classi e a quel punto ho tutti i miei strumenti per generare il mio modello
 
 	10
 ---
 **Modelli generativi con input continui**
 
-- Se rilassiamo il requisito che tutte le matrici di covarianza siano uguali, i termini quadratici non si cancellano più.
-- Il risultato è un classificatore di Bayes quadratico.
+- Se rilassiamo il requisito che tutte le matrici di covarianza siano uguali(non sempre si può fare => metti sketch), ==i termini quadratici non si cancellano più==. 
+- Il risultato è un classificatore di Bayes **quadratico**.
 
 	![[Pasted image 20251011194251.png]]
 
@@ -2131,20 +2146,22 @@ $\sigma$, un vecchio amico
 ---
 **Generative versus discriminative**
 
-- Abbiamo visto che la probabilità posterior in un problema a 2 classi può essere scritta come una sigmoide logistica di una funzione lineare di **x**.
+- Abbiamo visto che la probabilità posterior in un problema a 2 classi può essere scritta come una sigmoide logistica di **una funzione lineare** di **x**.
 - Analogamente, per il caso multi-classe abbiamo una funzione softmax su una funzione lineare di **x**.
 - Questi sono esempi di quelli che sono noti come modelli lineari generalizzati.
-- Per scelte specifiche delle distribuzioni condizionate alla classe possiamo usare la massima verosimiglianza per stimare i loro parametri (e quelli dei prior).
+- Per scelte specifiche delle distribuzioni condizionate alla classe possiamo **usare la massima verosimiglianza** per stimare i loro parametri (e quelli dei prior).
 - Questi sono a volte chiamati modelli generativi, perché potremmo generare campioni **x** campionando dal marginale $p(x)$.
-- E se, invece, usassimo direttamente la forma funzionale del modello lineare generalizzato per discriminare?
+- E se, invece, usassimo **direttamente la forma funzionale** del modello lineare generalizzato per discriminare? => saltiamo direttamente alla distribuzione di x date le classi.
 
 	12
 ---
 **Funzioni di base fisse**
 
-- Abbiamo sviluppato tutti i classificatori per lavorare direttamente sull'input originale $x$.
-- Tuttavia, tutto ciò che abbiamo derivato funziona ugualmente bene se usiamo un vettore di funzioni di base $\phi(x)$.
-- Le frontiere risultanti sono lineari nello spazio delle feature $\phi$, ma non lineari nello spazio originale.
+- Abbiamo sviluppato tutti i classificatori per lavorare direttamente sull'input originale $\mathbf{x}$. => che succede se i dati non sono linearmente separabili? => dove metterò il mio treshold?
+
+- Tuttavia, tutto ciò che abbiamo derivato funziona ugualmente bene se usiamo un vettore di funzioni di base $\phi(x)$.  => provo ad usare polinomi (vedi sketch) => dati diventano separabili!  => questo è chiamato un explicit embedding (lo stesso dello functional basis mapping)
+
+- Le frontiere risultanti sono lineari nello spazio delle feature $\phi$, ma non lineari nello spazio originale => parto da un original input space non lineare ma arrivo comunque a frontiere lineari!
 
 	![[Pasted image 20251011194425.png]]
 
@@ -2153,17 +2170,20 @@ $\sigma$, un vecchio amico
 **Regressione logistica**
 
 - Abbiamo appena visto che possiamo scrivere il posterior per un problema a 2 classi come: $$p(C_1 | \phi) = \sigma(\mathbf{w}^T\phi)$$
-- Questo è chiamato (in modo confusionario) un modello di regressione logistica.
-- Per uno spazio delle feature $M$-dimensionale, questo modello ha $M$ parametri.
-- Il modello generativo richiederebbe $2M$ parametri per le medie, più $M(M+1)/2$ parametri per la matrice di covarianza.
-- Possiamo usare la Massima Verosimiglianza per adattare i parametri di questo modello, grazie alla forma conveniente della derivata della sigmoide logistica:$$\frac{d}{da}\sigma(a) = \sigma(a)(1 - \sigma(a))$$
+- Questo è chiamato (in modo confusionario) un modello di **regressione logistica**.
+- Per uno spazio delle feature $M$-dimensionale, questo modello ha **M parametri** => tanti quanti la dimensione della funzioni base. 
+- Il modello generativo richiederebbe $2M$ parametri per le medie, più $M(M+1)/2$ parametri per la matrice di covarianza. => se ho un problema a grandi dimensioni potrei avere problemi!
+
+- Possiamo usare la **Massima Verosimiglianza** per adattare i parametri di questo modello, grazie alla forma conveniente della derivata della sigmoide logistica:$$\frac{d}{da}\sigma(a) = \sigma(a)(1 - \sigma(a))$$
 	14
 ---
 **Regressione logistica**
 
-- Per il dataset $D = \{\phi_n, t_n\}$, dove $t_n \in \{0, 1\}$ e $\phi_n = \phi(x)$, la verosimiglianza è: $$p(\mathbf{t} | \mathbf{w}) = \prod_{n=0}^{N} y_n^{t_n} \{1 - y_n\}^{1 - t_n}$$dove $\mathbf{t} = (t_1, t_2, \ldots t_N)^T$ e $y_n = p(C_1 | \phi_n) = \sigma(\mathbf{w}^T \phi_n)$
+- Per il dataset $D = \{\phi_n, t_n\}$ (assumo che sia i.i.d), dove $t_n \in \{0, 1\}$ e $\phi_n = \phi(x_n)$, la verosimiglianza è: $$p(\mathbf{t} | \mathbf{w}) = \prod_{n=1}^{N} y_n^{t_n} \{1 - y_n\}^{1 - t_n}$$dove $\mathbf{t} = (t_1, t_2, \ldots t_N)^T$ e $y_n = p(C_1 | \phi_n) = \sigma(\mathbf{w}^T \phi_n)$ => output del modello per parametri **w**
+- Dunque se appartiene alla classe uno vorremo che $y_n$ sia parecchio alta, viceversa bassa per spingere $1 -y_n$
 
-- Per la nostra funzione di errore useremo la Log-verosimiglianza Negativa: $$E(\mathbf{w}) = -\ln p(\mathbf{t} | \mathbf{w}) = -\sum_{n=1}^{N} \{t_n \ln y_n + (1 - t_n) \ln(1 - y_n)\}$$
+- Per la nostra funzione di errore useremo la **Log-verosimiglianza Negativa** (o binary cross-entropy Loss): $$E(\mathbf{w}) = -\ln p(\mathbf{t} | \mathbf{w}) = -\sum_{n=1}^{N} \{t_n \ln y_n + (1 - t_n) \ln(1 - y_n)\}$$ => tramite log passo a somma di termini => $t_n$ vengono usati come switches per i termini.
+
 	15
 ---
 **Regressione logistica**
@@ -2171,7 +2191,13 @@ $\sigma$, un vecchio amico
 - Scrivendo la funzione di errore in questo modo: $$E(\mathbf{w}) = -\sum_{n=1}^{N} \{ t_n \ln y_n + (1 - t_n) \ln (1 - y_n) \}$$
 - E ricordando che $y_n = \sigma (\mathbf{w}^T \phi_n)$.
 - E usando la nostra osservazione sulla derivata della sigmoide logistica:$$\frac{d}{da} \sigma (a) = \sigma (a)(1 - \sigma (a))$$
-- Ci permette di vedere più esplicitamente la connessione tra verosimiglianza e pesi $\mathbf{w}$:$$\nabla_{\mathbf{w}} E(\mathbf{w}) = \sum_{n=1}^{N} (y_n - t_n) \phi_n$$
+- Ci permette di vedere più esplicitamente la connessione tra verosimiglianza e pesi $\mathbf{w}$$$\nabla_{\mathbf{w}} E(\mathbf{w}) = \sum_{n=1}^{N} (y_n - t_n) \phi_n$$=> $\nabla_{\mathbf{w}} E(\mathbf{w}) =-\nabla_{\mathbf{w}}\sum_{n=1}^{N} \{ t_n \ln y_n + (1 - t_n) \ln (1 - y_n) \} =$ 
+		$-\nabla_{\mathbf{w}}\sum_{n=1}^{N} \{ t_n \ln \sigma(\mathbf{w}^T\phi_n) + (1 - t_n) \ln (1 - \sigma(\mathbf{w}^T\phi_n) \} =$
+		$\sum_{n=1}^{N} [ t_n \frac{1}{\sigma(\mathbf{w}^T\phi_n)}\sigma(\mathbf{w}^T\phi_n)(1- \sigma(\mathbf{w}^T\phi_n))(-\phi_n)$ $+ (1 - t_n) \frac{1}{\sigma(\mathbf{w}^T\phi_n)}\sigma(\mathbf{w}^T\phi_n)(1- \sigma(\mathbf{w}^T\phi_n))(\phi_n)]=$ $\sum_{n=1}^{N}\phi_n[y_n - t_ny_n-t_n+t_ny_n]$
+
+	=> Riottengo una combinazione lineare delle funzioni base!
+	=> Non esiste però soluzione analitica per la ricerca del minimo.
+	
 	16
 ---
 **Regressione logistica**
@@ -2183,7 +2209,7 @@ $\sigma$, un vecchio amico
 
 - Nota: questa soluzione di Massima Verosimiglianza è altamente soggetta a overfitting quando $C_1$ e $C_2$ sono linearmente separabili.
 
-- In questo caso, $||w||_2$ andrà all'infinito, convergendo a una stima posterior in cui per tutti $x$, e per qualche $k$, $p(C_k | x) = 1$.
+- In questo caso, $||w||_2$ andrà all'infinito, convergendo a una stima posterior in cui per tutti $x$, e per qualche $k$, $p(C_k | x) = 1$. => all'infinito avrò al posto della sigmoide la step function!
 
 	17
 ---
@@ -2197,8 +2223,8 @@ $\sigma$, un vecchio amico
   2. Massimizzare il posterior risultante per arrivare a una distribuzione dei parametri $p(\mathbf{w} | \mathbf{t})$.
   3. Derivare la distribuzione predittiva $p(C_k | \mathbf{\Phi}, \mathbf{t})$ che possiamo usare su nuovi dati $\phi(x)$.
 
-- Il passo 1 è "facile" – sebbene sia una delle critiche principali dell'apprendimento bayesiano.
-- I passi 2 e 3 sono, sfortunatamente, intrattabili: la distribuzione posterior sui parametri non è più Gaussiana.
+- Il passo 1 è "facile" – sebbene sia una delle critiche principali dell'apprendimento bayesiano. => assunzioni sulla prior
+- I passi 2 e 3 sono, sfortunatamente, intrattabili: la distribuzione posterior sui parametri **non è più Gaussiana**. => non abbiamo conoscenze sulla forma inoltre abbiamo una non linearità
 
 - Vediamo cosa possiamo fare.
 
@@ -2218,10 +2244,11 @@ $\sigma$, un vecchio amico
 - Ecco un esempio di approssimazione di $p(z) \propto \exp(-z^2/2) \sigma(20z+4)$:
 
 	![[Pasted image 20251011195804.png]]
+	=> beh vicina ma non esatta.
 
 	20
 ---
-**La distribuzione predittiva**
+**La distribuzione predittiva** (skipped)
 
 - Armati di questa approssimazione possiamo ora scrivere la distribuzione predittiva (approssimata):$$p(C_1 | \phi, \mathbf{t}) = \int p(C_1 | \phi, \mathbf{w})p(\mathbf{w} | \mathbf{t})d\mathbf{w} \approx \int \sigma(\mathbf{w}^T\phi)q(\mathbf{w})d\mathbf{w}$$
 - Questa è una convoluzione di una sigmoide logistica e di una Gaussiana, che può essere approssimata (dopo derivazioni molto lunghe) come: $$p(C_1 | \phi, \mathbf{t}) \approx \sigma(\kappa(\sigma_a^2)\mu_a)$$dove $\kappa(\sigma^2) = (1 + \pi\sigma_a^2/8)^{-1/2}$  
@@ -2234,16 +2261,16 @@ $\sigma$, un vecchio amico
 **Modelli probabilistici generativi**
 
 - La visione generativa di $p(C_k | x)$ è allettante per una serie di ragioni.
-- Sotto la stima di Massima Verosimiglianza dei parametri, stimiamo semplicemente una distribuzione per le verosimiglianze condizionate alla classe $p(x|C_k)$ e per i prior $p(C_k)$.
+- Sotto la stima di Massima Verosimiglianza dei parametri, stimiamo semplicemente una **distribuzione per le verosimiglianze** condizionate alla classe $p(x|C_k)$ e per i prior $p(C_k)$.
 - Per il caso Gaussiano, queste stime risultano essere quelle "usuali".
-- Se assumiamo covarianza uguale per tutte le classi, il risultato è un classificatore lineare.
-- Invece, se stimiamo un $\Sigma_k$ per ogni classe il classificatore risultante è quadratico nell'input.
+- Se assumiamo covarianza uguale per tutte le classi, il risultato è un **classificatore lineare**.
+- Invece, se stimiamo un $\Sigma_k$ per ogni classe il classificatore risultante è **quadratico** nell'input.
 
 	22
 ---
 **Regressione Logistica**
 
-- La regressione logistica è un modello estremamente importante perché quasi tutte le Deep Neural Networks per la classificazione eseguono una regressione logistica multi-classe.
+- La regressione logistica è un modello estremamente importante perché quasi tutte le Deep Neural Networks per la classificazione eseguono una regressione logistica multi-classe. => evita di fare i calcoli per la distribuzione per le verosimiglianze dei dati.
 - Una Deep Network stima l'embedding delle feature $\phi(x)$, poi viene applicata una funzione lineare e il softmax.
 - Quindi viene applicata una loss di Log-verosimiglianza Negativa – anche nota come Entropia Incrociata.
 - Nonostante i suoi problemi, è un modello abbastanza adatto per l'ottimizzazione incrementale basata sul gradiente.
@@ -2253,12 +2280,13 @@ $\sigma$, un vecchio amico
 ---
 **Regressione Logistica Bayesiana**
 
-- L'inferenza bayesiana esatta è intrattabile a causa della complessità della verosimiglianza dei dati.
+- L'inferenza bayesiana esatta è **intrattabile** a causa della complessità della verosimiglianza dei dati.
 - E della necessità di normalizzare il posterior – non possiamo più ignorare il fattore di evidenza nella regola di Bayes.
 - Ci sono tecniche molto sofisticate per approssimare i posterior normalizzati:
   - Metodo di Laplace: approssimare con una Gaussiana.
   - Inferenza Variazionale: adattare una distribuzione proxy al posterior.
   - Metodi Monte Carlo: usare il campionamento di Markov per l'integrazione.
+	=> Al momento tecniche solo approx che però dovesserò portare a risulatati soddisfacenti potrebbe portare a grosse novità nel campo del ml => in quanto evito tutti i passaggi iniziali sui dati!
 
 	24
 ---
@@ -2267,6 +2295,8 @@ $\sigma$, un vecchio amico
 Lettura Raccomandata:
 
 - Bishop: Capitolo 4 (4.2, 4.3, 4.4*, 4.5*)
+
++Notare che per tutti i modelli considerati fino adesso qualsiasi dato ha stesso peso/importanza per la scelta dei parametri/boundary dei nostri dati => questo fa sì che i nostro modello sia molto soggetto agli outliers!
 
 	25
 ---
@@ -2407,204 +2437,111 @@ Massimizzare il margine
 - Notiamo, tuttavia, che possiamo scalare liberamente $w$ e $b$ senza cambiare la distanza tra punti e iperpiano.
 - Quindi, possiamo scalare in modo che $\langle w, x_a \rangle + b = 1$ per il punto più vicino $x_a$.
 - Sia $r$ la distanza ortogonale da $x_a$ all'iperpiano.
-- Allora, la proiezione ortogonale di $x_a$ sull'iperpiano è:
-
-$x_a' = x_a - r \frac{w}{||w||}$
-
-- Sostituiamo questo nel fatto che $x_a'$ giace sull'iperpiano:
-
-$\langle w, x_a - r \frac{w}{||w||} \rangle + b = 0$
-
+- Allora, la proiezione ortogonale di $x_a$ sull'iperpiano è: $$x_a' = x_a - r \frac{w}{||w||}$$
+- Sostituiamo questo nel fatto che $x_a'$ giace sull'iperpiano: $$\langle w, x_a - r \frac{w}{||w||} \rangle + b = 0$$
+	16
 ---
+**Massimizzare il margine**
 
-**Pagina 21**
-Massimizzare il margine
-
-- Sostituiamo questo nel fatto che $x_a'$ giace sull'iperpiano:
-  $\langle w, x_a - r\frac{w}{||w||} \rangle + b = 0$
-
-- Ora, sfruttando la bilinearità del prodotto interno:
-  $\langle w, x_a \rangle + b - r\frac{\langle w, w \rangle}{||w||} = 0$
-
-- Ricordando che $x_a$ giace sul margine, arriviamo a:
-  $r = \frac{1}{||w||}$
-
+- Sostituiamo questo nel fatto che $x_a'$ giace sull'iperpiano:  $$\langle w, x_a - r\frac{w}{||w||} \rangle + b = 0$$
+- Ora, sfruttando la bilinearità del prodotto interno: $$\langle w, x_a \rangle + b - r\frac{\langle w, w \rangle}{||w||} = 0$$
+- Ricordando che $x_a$ giace sul margine, arriviamo a: $$r = \frac{1}{||w||}$$17
 ---
+**La forma canonica della SVM a Margine Rigido**
 
-**Pagina 22**
-# La forma canonica della SVM a Margine Rigido
+- Combinando la massimizzazione del margine con i vincoli arriviamo a:$$\max_{w,b} \frac{1}{||w||}$$soggetto a  $y_n(\langle w, x_n \rangle + b) \geq 1 \text{ per tutti } n = 1, \ldots, N$
 
-- Combinando la massimizzazione del margine con i vincoli arriviamo a:
+- Oppure, la più comune rappresentazione canonica della SVM a Margine Rigido:$$\min_{w,b} \frac{1}{2}||w||^2$$soggetto a  $y_n(\langle w, x_n \rangle + b) \geq 1 \text{ per tutti } n = 1, \ldots, N$
 
-$\max_{w,b} \frac{1}{||w||}$
-
-soggetto a  
-$y_n(\langle w, x_n \rangle + b) \geq 1 \text{ per tutti } n = 1, \ldots, N$
-
-- Oppure, la più comune rappresentazione canonica della SVM a Margine Rigido:
-
-$\min_{w,b} \frac{1}{2}||w||^2$
-
-soggetto a  
-$y_n(\langle w, x_n \rangle + b) \geq 1 \text{ per tutti } n = 1, \ldots, N$
-
+	18
 ---
-
-**Pagina 23**
-# Trovare w e b
+**Trovare w e b**
 
 - Abbiamo un problema di programmazione quadratica convessa in $D$ variabili con vincoli lineari.
-- Per risolvere un tale problema, possiamo formare la funzione Lagrangiana:
-
-$L(w, b, a) = \frac{1}{2} ||w||^2 - \sum_{n=1}^{N} a_n \left\{ y_n(\langle w, x_n \rangle + b) - 1 \right\}$
-
-- Impostando $\frac{\partial}{\partial w} L = 0$ e $\frac{\partial}{\partial b} L = 0$ otteniamo:
-
-$w = \sum_{n=1}^{N} a_n y_n x_n$
-
-$0 = \sum_{n=1}^{N} a_n y_n$
-
+- Per risolvere un tale problema, possiamo formare la funzione Lagrangiana: $$L(w, b, a) = \frac{1}{2} ||w||^2 - \sum_{n=1}^{N} a_n \left\{ y_n(\langle w, x_n \rangle + b) - 1 \right\}$$
+- Impostando $\frac{\partial}{\partial w} L = 0$ e $\frac{\partial}{\partial b} L = 0$ otteniamo:$$w = \sum_{n=1}^{N} a_n y_n x_n$$ $$0 = \sum_{n=1}^{N} a_n y_n$$
+	19
 ---
+**Trovare w e b**
 
-**Pagina 24**
-# Trovare w e b
-
-- Sostituendo questo valore di **w** e il vincolo su $\sum_n a_n y_n$ nel Lagrangiano:
-
-$\max_a \left\{ \sum_{n=1}^N a_n - \frac{1}{2} \sum_{n=1}^N \sum_{m=1}^N a_n a_m y_n y_m \langle x_n, x_m \rangle \right\}$
-
-soggetto a $a_n \geq 0$, per $n = 1, \ldots, N$
-
-$\sum_{n=1}^N a_n y_n = 0$
-
+- Sostituendo questo valore di **w** e il vincolo su $\sum_n a_n y_n$ nel Lagrangiano: $$\max_a \left\{ \sum_{n=1}^N a_n - \frac{1}{2} \sum_{n=1}^N \sum_{m=1}^N a_n a_m y_n y_m \langle x_n, x_m \rangle \right\}$$soggetto a $a_n \geq 0$, per $n = 1, \ldots, N$ $$\sum_{n=1}^N a_n y_n = 0$$
 - Questa è la rappresentazione duale della SVM a Margine Rigido, ancora un problema di programmazione quadratica, ma in $N$ variabili  
 - La complessità per risolvere problemi quadratici in $N$ variabili è $O(N^3)$.
 
+	20
 ---
+**Usare la SVM: il "Supporto" nelle Macchine a Vettori di Supporto**
 
-**Pagina 25**
-Usare la SVM: il "Supporto" nelle Macchine a Vettori di Supporto
-
-- Per usare il classificatore sostituiamo nuovamente il nostro w nella funzione di decisione:
-
-$f(x) = \sum_{n=1}^{N} a_n y_n \langle x, x_n \rangle + b$
-
+- Per usare il classificatore sostituiamo nuovamente il nostro w nella funzione di decisione:$$f(x) = \sum_{n=1}^{N} a_n y_n \langle x, x_n \rangle + b$$
 - Le condizioni di Karush-Kuhn-Tucker (KKT) significano che la soluzione soddisfa:
-
-$a_n \geq 0 \\
-y_n f(x_n) - 1 \geq 0 \\
-a_n \{ y_n f(x_n) - 1 \} = 0$
+	- $a_n \geq 0$
+	- $y_n f(x_n) - 1 \geq 0$
+	- $a_n \{ y_n f(x_n) - 1 \} = 0$
 
 - Quindi, per tutti $n$ o $a_n = 0$ o $y_n f(x_n) = 1$.
 
 - Gli $x_n$ per cui $a_n > 0$ e $y_n f(x_n) = 1$ sono chiamati vettori di supporto.
 
+	21
 ---
+**Macchine a Kernel Sparse (aka SVM)**
 
-**Pagina 26**
-# Macchine a Kernel Sparse (aka SVM)
-
-- Nota che solo i vettori di supporto contribuiscono alla classificazione:
-
-$f(x) = \sum_{n=1}^{N} a_n y_n \langle x, x_n \rangle + b = \sum_{m \in SV} a_m y_m \langle x, x_m \rangle + b$
-
+- Nota che solo i vettori di supporto contribuiscono alla classificazione:$$f(x) = \sum_{n=1}^{N} a_n y_n \langle x, x_n \rangle + b = \sum_{m \in SV} a_m y_m \langle x, x_m \rangle + b$$
 - Questo è il motivo per cui le SVM sono anche più generalmente conosciute come Macchine a Kernel Sparse.
 - (Vedremo da dove viene il kernel nella prossima lezione...)
 
+	22
 ---
-
-**Pagina 27**
-# SVM e classificazione robusta
+**SVM e classificazione robusta**
 
 - Abbiamo un classificatore lineare che ora è robusto agli outlier:
 
-[Grafico: SVM con vettori di supporto]
+	![[Pasted image 20251015222528.png]]
 
-Classe = +1  
-Classe = -1  
-Vettori di Supporto
-
+	23
 ---
-
-**Pagina 28**
-Il Classificatore a Margine Morbido
-
+## Il Classificatore a Margine Morbido
 ---
-
-**Pagina 29**
-# Distribuzioni di classe sovrapposte
+**Distribuzioni di classe sovrapposte**
 
 - Fino ad ora abbiamo assunto che il nostro problema sia linearmente separabile.
 - Questo, chiaramente, quasi mai accade.
 
-[Grafico: classi non linearmente separabili]
+	![[Pasted image 20251015222642.png]]
 
-Classe = +1  
-Classe = -1
-
+	24
 ---
+**Consentire misclassificazioni dei campioni di training**
 
-**Pagina 30**
-# Consentire misclassificazioni dei campioni di training
-
-- Per consentire la possibilità che alcuni campioni di training siano misclassificati, introduciamo variabili slack $\xi_n$:
-
-$\xi_n = 
+- Per consentire la possibilità che alcuni campioni di training siano misclassificati, introduciamo variabili slack $\xi_n$: $$\xi_n = 
 \begin{cases} 
 0 & \text{se } x_n \text{ è sul o sul lato corretto del margine} \\
 |y_n - \langle w, x_n \rangle + b| & \text{altrimenti}
-\end{cases}$
+\end{cases}$$
+	![[Pasted image 20251015222743.png]]
 
-[Grafico: illustrazione delle variabili slack]
-
-$\xi > 1$  
-$\xi < 1$  
-$\xi = 0$
-
+	25
 ---
+**Il problema di ottimizzazione con slack**
 
-**Pagina 31**
-Il problema di ottimizzazione con slack
+- Il nuovo problema di ottimizzazione diventa: $$\min_{w,b} \frac{1}{2} ||w||^2 + C \sum_{n=1}^{N} \xi_n$$soggetto a $y_n(\langle w, x_n \rangle + b) \geq 1 - \xi_n$ per tutti $n = 1, \ldots, N$
 
-- Il nuovo problema di ottimizzazione diventa:
-
-$\min_{w,b} \frac{1}{2} ||w||^2 + C \sum_{n=1}^{N} \xi_n$
-
-soggetto a $y_n(\langle w, x_n \rangle + b) \geq 1 - \xi_n$ per tutti $n = 1, \ldots, N$
-
-- E dopo aver formato il Lagrangiano e risolto per le variabili duali (Bishop pagine 332-334):
-
-$\max_a \left\{ \sum_{n=1}^{N} a_n - \frac{1}{2} \sum_{n=1}^{N} \sum_{m=1}^{N} a_n a_m y_n y_m \langle x_n, x_m \rangle \right\}$
-
-soggetto a $0 \leq a_n \leq C$, per $n = 1, \ldots, N$
-
-$\sum_{n=1}^{N} a_n y_n = 0$
-
+- E dopo aver formato il Lagrangiano e risolto per le variabili duali (Bishop pagine 332-334):$$\max_a \left\{ \sum_{n=1}^{N} a_n - \frac{1}{2} \sum_{n=1}^{N} \sum_{m=1}^{N} a_n a_m y_n y_m \langle x_n, x_m \rangle \right\}$$soggetto a $0 \leq a_n \leq C$, per $n = 1, \ldots, N$ $$\sum_{n=1}^{N} a_n y_n = 0$$
+	26
 ---
-
-**Pagina 32**
-La soluzione a Margine Morbido
+**La soluzione a Margine Morbido**
 
 - La forma del risultato è quasi identica al caso a margine rigido.
 - Nota, tuttavia, che i vettori di supporto ora includono campioni misclassificati.
 - Poiché la penalità per la misclassificazione scala linearmente con $\xi$, la SVM a margine morbido non è robusta agli outlier.
 
-[Grafico: SVM a margine morbido con vettori di supporto e slack]
+	![[Pasted image 20251015222929.png]]
 
-Classe = +1  
-Classe = -1  
-Vettori di Supporto  
-Slack
-
+	27
 ---
-
-**Pagina 33**
-Considerazioni Conclusive
-
+## Considerazioni Conclusive
 ---
-
-**Pagina 34**
-# La Macchina a Vettori di Supporto
+**La Macchina a Vettori di Supporto**
 
 - La SVM lineare è un classificatore potente che è robusto agli outlier (nel caso a margine rigido).
 - Può essere adattata per gestire problemi che non sono linearmente separabili.
@@ -2612,24 +2549,19 @@ Considerazioni Conclusive
 - Il vero vantaggio della SVM è che è un problema quadratico convesso che ha una soluzione unica e ammette algoritmi efficienti.
 - Nella prossima lezione vedremo come possiamo estendere questa teoria a frontiere di decisione non lineari.
 
+	28
 ---
+**Letture e Compiti**
 
-**Pagina 35**
-# Letture e Compiti
+- Lettura Raccomandata:
+	- Bishop: Capitolo 7 (7.1), Capitolo 6 (6.1, 6.2)
 
-## Lettura Raccomandata:
+- Compiti:
+	- Mostrare che $\Omega(x, y) = x^Ty$ è un prodotto interno.
+	- Mostrare che, per $V = \mathbb{R}^2$, $\Omega(x, y) = x_1y_1 - (x_1y_2 + x_2y_1) + 2x_2y_2$ è un prodotto interno.
+	- Mostrare che possiamo scalare il margine di una costante arbitraria $\gamma$ (cioè   $y_n(\langle w, x_n \rangle + b) \geq \gamma$) e la soluzione per l'iperpiano a margine massimo non cambia.
 
-- Bishop: Capitolo 7 (7.1), Capitolo 6 (6.1, 6.2)
-
-## Compiti:
-
-- Mostrare che $\Omega(x, y) = x^Ty$ è un prodotto interno.
-
-- Mostrare che, per $V = \mathbb{R}^2$, $\Omega(x, y) = x_1y_1 - (x_1y_2 + x_2y_1) + 2x_2y_2$ è un prodotto interno.
-
-- Mostrare che possiamo scalare il margine di una costante arbitraria $\gamma$ (cioè  
-  $y_n(\langle w, x_n \rangle + b) \geq \gamma$) e la soluzione per l'iperpiano a margine massimo non cambia.
-
+	29
 ---
+# 9 - Il trick del Kernel e SVMs Non-lineari
 
-Tutte le formule sono ora correttamente formattate con `$` e il contenuto è completamente tradotto in italiano.
