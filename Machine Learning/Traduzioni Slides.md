@@ -18,9 +18,7 @@ Ricorda
 ---
 # 1 - Introduzione
 
-
 ## Introduzione
-
 ---
 **Obiettivi della Lezione**
 
@@ -120,7 +118,6 @@ Alla fine di questa lezione avrete:
 	10
 ----
 ## Organizzazione e Obiettivi del Corso
-
 ---
 **Prerequisiti (Matematica)**
 
@@ -298,7 +295,6 @@ Facciamo un passo indietro e pensiamo a obiettivi più astratti:
 	24
 ---
 ## Generalizzare la nostra Intuizione
-
 ---
 **Apprendimento Automatico in (un guscio di noce matematicamente denso)**
 
@@ -483,7 +479,6 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 	41-42
 ---
 ## La Gen-X Insegna alla Gen-Y e alla Gen-Z (su X, Y e Z)
-
 ---
 **Un po' di me**
 
@@ -561,7 +556,6 @@ Scegliendo ad esempio un h* che sia esattamente y e una loss qualsiasi (tipo qua
 	50
 ---
 ## Osservazioni Conclusive
-
 ---
 **Costruzione di Comunità: Il Discord UniFI AI**
 
@@ -2381,7 +2375,8 @@ Lettura Raccomandata:
 - Consideriamo un semplice problema di classificazione linearmente separabile:
 
 	![[Pasted image 20251013223453.png]]
-
+	=> Quanti piani ci sono ? beh infiniti che dividano le due classi => quale sarà il migliore?
+	
 	2
 ---
 **Motivazioni: un approccio probabilistico**
@@ -2397,7 +2392,7 @@ Lettura Raccomandata:
 - Un problema con molti approcci probabilistici è la **sensibilità agli outlier**:
 
 	![[Pasted image 20251013225123.png]] 
-	=> Il discriminante viene mandato giù e non diventa più un buon classificatore
+	=> Il discriminante viene mandato giù e non diventa più un buon classificatore => basta un solo outlier a far abbassare la media e quindi il boundary (hyperplane) => ho infatti una dipendenza da tutti i punti del mio train set!
 	=>Notare che anche media e covarianza non diventano più molto rappresentativi della classe
 	
 	4
@@ -2414,7 +2409,11 @@ Lettura Raccomandata:
 
 - I metodi che trattano tutti i campioni allo stesso modo possono degradare rapidamente:
 	
-	![[Pasted image 20251013225235.png]]
+	![[Pasted image 20251013225235.png]] 
+	- In questo caso è presente un outlier nel punto -50 che fa variare completamente la media => me ne basta anche uno solo!
+	- Il piano separatore non ha alcun senso! 
+
+- Un' idea può essere l'outlier remover => elimino i dati considerati come meno probabili
 
 	6
 ---
@@ -2426,6 +2425,10 @@ Lettura Raccomandata:
 
 	![[Pasted image 20251013223453.png]]
 
+	![[Pasted image 20251028163711.png]]
+	=> I 3/4 punti sui margini saranno gli unici punti che definiscono il margin plane
+	=> Aggiungendo outliers a punti infiniti non cambia la cosa in quanto il piano è definito in quel modo!
+	
 	7
 ---
 **Obiettivi della lezione**
@@ -2472,100 +2475,116 @@ Dopo questa lezione:
 
 - Considereremo un partizionamento conveniente – quello di separare $\mathbb{R}^D$ in due metà usando un iperpiano separatore.
 
-- Consideriamo una funzione $f: \mathbb{R}^D \to \mathbb{R}$ definita come:$$f(x; w, b) = \langle w, x \rangle + b$$
-- Definiamo un iperpiano che partiziona il nostro spazio usando $f$ come: $$H = \{x | f(x; w, b) = \langle w, x \rangle + b = 0\}$$	=> Sottospazio a valori nulli!
+- Consideriamo una funzione $f: \mathbb{R}^D \to \mathbb{R}$ definita come:$$f(\mathbf{x}; \mathbf{w}, b) = \langle \mathbf{w}, \mathbf{x} \rangle + b$$
+- Definiamo un **iperpiano** che partiziona il nostro spazio usando $f$ come: $$H = \{\mathbf{x} | f(\mathbf{x}; \mathbf{w}, b) = \langle \mathbf{w}, \mathbf{x} \rangle + b = 0\}$$	=> Sottospazio a valori nulli!
+	- Come capisco che questo è l'iperpiano che separa? è questo perpendicolare a **w**??
 
 	11
 ---
 **La relazione tra w e H**
 
-- L'iperpiano definito da w e b è perpendicolare a w.
-- Per vederlo, prendiamo due punti qualsiasi $x_1$ e $x_2$ in H e consideriamo:$$f(x_1) - f(x_2) = \langle w, x_1 \rangle + b - \langle w, x_2 \rangle - b = \langle w, x_1 - x_2 \rangle$$
+- La risposta è si! => L'iperpiano definito da w e b è perpendicolare a w.w
+- Per vederlo, prendiamo due punti qualsiasi $x_1$ e $x_2$ in H e consideriamo:$$f(\mathbf{x_1}) - f(\mathbf{x_2}) = \langle \mathbf{w}, \mathbf{x_1} \rangle + b - \langle \mathbf{w}, x_2 \rangle - b = \langle \mathbf{w}, \mathbf{x_1} - \mathbf{x_2} \rangle$$ => ma siccome entrambi i punti fanno parte del piano allora per entrambi $f(x_i) = 0$, dunque l'inner product fra **w** e $\mathbf{x_1}-\mathbf{x_2}$ è pari a zero! => H contiene tutti qui vettori la cui loro differenza moltiplicata per **w** è nulla! => tutto quello che sta sul piano è perpendicolare a **w**
+
 	12
 ---
 **Come usiamo w e b**
 
 - Quando ci viene presentato un campione di test $x$, lo classificheremo in base a **quale lato dell'iperpiano** giace: $$\text{class}(x) = \begin{cases} +1 & \text{se } f(x; w, b) \geq 0 \\ -1 & \text{se } f(x; w, b) < 0 \end{cases}$$
-- Quando addestriamo su dati $\{(x_i, y_i) | i = 1, \ldots, N\}$, cerchiamo $w$ e $b$ tali che tutti i campioni cadano sul lato corretto dell'iperpiano:$$\langle w, x_i \rangle + b \geq 0 \quad \text{quando} \quad y_i = +1$$
-$$\langle w, x_i \rangle + b < 0 \quad \text{quando} \quad y_i = -1$$
+- Quando addestriamo su dati $\{(x_i, y_i) | i = 1, \ldots, N\}$, cerchiamo $w$ e $b$ tali che tutti i campioni cadano sul lato corretto dell'iperpiano:$$\langle w, x_i \rangle + b \geq 0 \quad \text{quando} \quad y_i = +1$$$$\langle w, x_i \rangle + b < 0 \quad \text{quando} \quad y_i = -1$$
 	=> Se classe positiva discriminante positivo e vicercersa
 
-- Queste condizioni sono spesso combinate nella forma più compatta:$$y_i(\langle w, x_i \rangle + b) \geq 0$$ per ogni $n \in \{1,...,N\}$ => notare la scelta del +/- 1 per avere esempi positivi e negativi (invece del semplice 0/1) => in questo modo escludo quelli che non soddisfano la condizione
-
+- Queste condizioni sono spesso combinate nella forma più compatta:$$y_i(\langle w, x_i \rangle + b) \geq 0$$ per ogni $n \in \{1,...,N\}$ => notare la scelta del +/- 1 per avere esempi positivi e negativi (invece del semplice 0/1) => in questo modo escludo quelli che non soddisfano la condizione => inoltre posso compattare le due condizioni a una sola
 
 	13
 ---
 **Il margine**
 
-- Il margine è definito come la ==distanza tra un iperpiano separatore e il punto più vicino ad esso==.
-- Il nostro obiettivo è massimizzare questa distanza, ma cos'è?
+- Il margine è definito come la **==distanza** tra un iperpiano separatore e il **punto** più vicino ad esso==.
+- Il nostro obiettivo è massimizzare questa distanza, => in ogni situazione bisogna preferire l'iperpiano che massimizza il margin => in modo tale da separare al meglio le classi
 
 	![[Pasted image 20251013230630.png]] => notare adesso soddisfo da entrambe le parti
+
+- Quanto vale la distanza fra l'iperpiano e i punti??
 
 	14
 ---
 **Massimizzare il margine**
 
-- La distanza perpendicolare tra qualsiasi punto $x_n$ e un iperpiano definito da $\langle w, x \rangle + b = 0$ è:  $$\frac{y_n(\langle w, x_n \rangle + b)}{||w||}$$
-- Vogliamo **massimizzare** la **minima** di queste distanze:$$\arg \max_{w, b} \left\{ \frac{1}{||w||} \min_{n} [y_n(\langle w, x_n \rangle + b)] \right\}$$ => vogliamo massimizzare la distanza al punto più vicino 
+- La distanza **perpendicolare** tra qualsiasi punto $x_n$ e un iperpiano definito da $\langle w, x \rangle + b = 0$ è:  $$\frac{y_n(\langle w, x_n \rangle + b)}{||w||}$$ => sostanzialmente è una proiezione ortogonale dove moltiplico per il segno a seconda della posizione del punto. 
+  => divido per la norma di **w** in modo tale da non avere influenza su quanto è grande questo => misuro in modo unitario!
+
+- Vogliamo **massimizzare** la **minima** di queste distanze:$$\arg \max_{w, b} \left\{ \frac{1}{||w||} \min_{n} [y_n(\langle w, x_n \rangle + b)] \right\}$$ => vogliamo trovare w e b che massimizzano la distanza al punto (o i punti) più vicino 
   soggetto ai vincoli che $y_n(\langle w, x \rangle + b) \geq 0$ => questo per ogni punto! classificatori che non soddisfano verranno scartati!
 
-- Questo è un problema di ottimizzazione scomodo a causa del **max/min** e **del punto più vicino che cambia.** => muovendo la discriminant function cambia il punto/punti più vicini ad esso
+- Questo è un problema di ottimizzazione **scomodo** a causa del **max/min** e **del punto più vicino che cambia.** => muovendo la discriminant function cambia il punto/punti più vicini ad esso
 
 	15
 ---
 **Massimizzare il margine**
 
-- Notiamo, tuttavia, che possiamo **scalare** liberamente $\mathbf{w}$ e $b$ ==senza cambiare la distanza tra punti e iperpiano==. => verificare! => moltiplicando per uno scalare il sottospazio rimane lo stesso
-- Quindi, possiamo scalare in modo che $\langle w, x_a \rangle + b = 1$ per il punto più vicino $x_a$.
+- Notiamo, tuttavia, che possiamo **scalare** liberamente $\mathbf{w}$ e $b$ ==senza cambiare la distanza tra punti e iperpiano==. => verificare! (devono essere scalati allo stesso modo) => moltiplicando per uno scalare il sottospazio rimane lo stesso
+- Quindi, possiamo scalare in modo che $\langle w, x_a \rangle + b = 1$ (1)  per il punto più vicino $x_a$.
 
-- Sia $r$ la distanza ortogonale da $x_a$ all'iperpiano. (inserire sketch)
-- Allora, la proiezione ortogonale di $x_a$ sull'iperpiano è: $$x_a' = x_a - r \frac{\mathbf{w}}{||\mathbf{w}||}$$ => normalizzo per avere tutto unitario
+- Sia $r$ la distanza ortogonale da $x_a$ all'iperpiano.
 
-- Sostituiamo questo nel fatto che $x_a'$ giace sull'iperpiano: $$\langle \mathbf{w}, x_a - r \frac{\mathbf{w}}{||\mathbf{w}||} \rangle + b = 0$$
+	![[Pasted image 20251028182044.png]]
+	
+- Allora, la proiezione ortogonale di $x_a$ sull'iperpiano è: $$x_a' = x_a - r \frac{\mathbf{w}}{||\mathbf{w}||}$$ => normalizzo per avere tutto unitario	
+	
+- Sostituiamo questo nel fatto che $x_a'$ **giace sull'iperpiano**: $$\langle \mathbf{w}, x_a - r \frac{\mathbf{w}}{||\mathbf{w}||} \rangle + b = 0$$
 	16
 ---
 **Massimizzare il margine**
 
-- Sostituiamo questo nel fatto che $x_a'$ giace sull'iperpiano:  $$\langle \mathbf{w}, x_a - r\frac{\mathbf{w}}{||\mathbf{w}||} \rangle + b = 0$$
-- Ora, sfruttando la **bilinearità** del prodotto interno: $$\langle \mathbf{w}, x_a \rangle + b - r\frac{\langle \mathbf{w}, \mathbf{w} \rangle}{||\mathbf{w}||} = 0$$
-- Ricordando che $x_a$ giace sul margine, arriviamo a: $$r = \frac{1}{||\mathbf{w}||}$$17
+- Sostituiamo questo nel fatto che $x_a'$ giace sull'iperpiano:  $$\langle \mathbf{w}, x_a - r\frac{\mathbf{w}}{||\mathbf{w}||} \rangle + b = 0$$- Ora, sfruttando la **bilinearità** del prodotto interno: $$\langle \mathbf{w}, x_a \rangle + b - r\frac{\langle \mathbf{w}, \mathbf{w} \rangle}{||\mathbf{w}||} = 0$$- Ricordando che $x_a$ giace sul margine (abbiamo scalato il margine a 1 (1) ), arriviamo a: $$r = \frac{1}{||\mathbf{w}||}$$
+- Notare che imporre il vincolo richiesto significa chiedere anche di avere la norma di w pari a 1!
+
+	17
 ---
 **La forma canonica della SVM a Margine Rigido**
 
-- Combinando la massimizzazione del margine con i vincoli arriviamo a:$$\max_{\mathbf{w},b} \frac{1}{||\mathbf{w}||}$$soggetto a  $y_n(\langle \mathbf{w}, x_n \rangle + b) \geq 1 \text{ per tutti } n = 1, \ldots, N$
+- Combinando la massimizzazione del margine con i vincoli arriviamo a:$$\max_{\mathbf{w},b} \frac{1}{||\mathbf{w}||}$$soggetto a  $y_n(\langle \mathbf{w}, x_n \rangle + b) \geq 1 \text{ per tutti } n = 1, \ldots, N$ 
+	=> Ricordiamo che l'obiettivo era max il margine => ma anche quello di classificare in modo corretto tutti gli esempi
 
-- Oppure, la più comune rappresentazione canonica della SVM a Margine Rigido:$$\min_{\mathbf{w},b} \frac{1}{2}||\mathbf{w}||^2$$soggetto a  $y_n(\langle \mathbf{w}, x_n \rangle + b) \geq 1 \text{ per tutti } n = 1, \ldots, N$ => notare che però può capitare di avere un punto a distanza $c$ che scalandolo porta a una norma minore! => contraddizione! => ho trovato una soluzione migliore rispetto alla precedente.
-- Ho un problema convesso quadratico con vincoli lineari => soluzione in $\mathcal{O}(D^3)$
+- Oppure, la più comune rappresentazione canonica della ***SVM a Margine Rigido***:$$\min_{\mathbf{w},b} \frac{1}{2}||\mathbf{w}||^2$$soggetto a  $y_n(\langle \mathbf{w}, x_n \rangle + b) \geq 1 \text{ per tutti } n = 1, \ldots, N$ => notare che però può capitare di avere un punto a distanza $c$ che scalandolo porta a una norma minore! => contraddizione! => ho trovato una soluzione migliore rispetto alla precedente.
+- Ho un problema convesso quadratico con vincoli lineari => soluzione in $\mathcal{O}(D^3)$ => in questa forma è detta **forma primale**
 
 	18
 ---
 **Trovare w e b**
 
-- Abbiamo un problema di programmazione **quadratica convessa in $D$ variabili con vincoli lineari**.
-- Per risolvere un tale problema, possiamo formare la **funzione Lagrangiana**: $$L(w, b, a) = \frac{1}{2} ||w||^2 - \sum_{n=1}^{N} a_n \left\{ y_n(\langle w, x_n \rangle + b) - 1 \right\}$$ => aggiungo nuove variabili $a_n$ (variabili duali)
+- Abbiamo un problema di programmazione **quadratica convessa in $D$ variabili con vincoli lineari**. (D+1 per definire la direzione del piano) => abbiamo detto esistono soluzioni in $O(D^3)$ per tante variabili diventa un po' difficile da gestire...
 
-- Impostando $\frac{\partial}{\partial \mathbf{w}} L = 0$ e $\frac{\partial}{\partial b} L = 0$ (derivate parziali) otteniamo:$$w = \sum_{n=1}^{N} a_n y_n x_n$$ $$0 = \sum_{n=1}^{N} a_n y_n$$
+- Per risolvere un tale problema, possiamo formare la **funzione Lagrangiana**: $$L(w, b, a) = \frac{1}{2} ||w||^2 - \sum_{n=1}^{N} a_n \left\{ y_n(\langle w, x_n \rangle + b) - 1 \right\}$$ => aggiungo nuove variabili $a_n$ (variabili duali) => per togliere il vincolo di disuguaglianza
+
+- Impostando $\frac{\partial}{\partial \mathbf{w}} L = 0$ e $\frac{\partial}{\partial b} L = 0$ (derivate parziali) otteniamo:$$\mathbf{w} = \sum_{n=1}^{N} a_n y_n \mathbf{x}_n$$ => le variabili primale sono espresse come dati e variabili duali		 $$0 = \sum_{n=1}^{N} a_n y_n$$
+
 	19
 ---
 **Trovare w e b**
 
-- Sostituendo questo valore di **w** e il vincolo su $\sum_n a_n y_n$ nel Lagrangiano: $$\max_a \left\{ \sum_{n=1}^N a_n - \frac{1}{2} \sum_{n=1}^N \sum_{m=1}^N a_n a_m y_n y_m \langle x_n, x_m \rangle \right\}$$soggetto a $a_n \geq 0$, per $n = 1, \ldots, N$ $$\sum_{n=1}^N a_n y_n = 0$$
-- Questa è la rappresentazione **duale della SVM a Margine Rigido,** ancora un problema di programmazione quadratica, ma in $N$ variabili  
-- La complessità per risolvere problemi quadratici in $N$ variabili è $\mathcal{O}(N^3)$. => passo da D a N variabili! => ovvero il numero dei nostri punti.
+- Sostituendo questo valore di **w** e il vincolo su $\sum_n a_n y_n$ nel **Lagrangiano**: $$\max_a \left\{ \sum_{n=1}^N a_n - \frac{1}{2} \sum_{n=1}^N \sum_{m=1}^N a_n a_m y_n y_m \langle x_n, x_m \rangle \right\}$$soggetto a $a_n \geq 0$, per $n = 1, \ldots, N$ $$\sum_{n=1}^N a_n y_n = 0$$
+- Questa è la rappresentazione **duale della SVM a Margine Rigido,** ancora un problema di programmazione quadratica, ==ma in $N$ variabili==  
+- La complessità per risolvere problemi quadratici in $N$ variabili è $\mathcal{O}(N^3)$. => passo da D a N variabili! => ovvero il numero dei nostri punti. => a seconda delle dimensioni del problema vedo quale strategia conviene usare!
 - Guardando sulla forma del problema le nostre variabili interagiscono solo nella seconda parte e non nel vincolo => ho solo un prodotto interno delle coppie di $x_n$
 
 	20
 ---
-**Usare la SVM: il "Supporto" nelle Macchine a Vettori di Supporto**
+**Usare la SVM: il "Supporto" nelle Macchine a Vettori di Supporto** 
 
-- Per usare il classificatore sostituiamo nuovamente il nostro w nella funzione di decisione:$$f(x) = \sum_{n=1}^{N} a_n y_n \langle x, x_n \rangle + b$$
+=> Se geometricamente i vettori di supporto sono quelli che supportano il margin... cosa sono numericamente?
+
+- Per usare il classificatore (con un nuovo punto **x**) sostituiamo nuovamente il nostro **w** nella funzione di decisione:$$f(x) = \sum_{n=1}^{N} a_n y_n \langle x, x_n \rangle + b$$
 - Le condizioni di Karush-Kuhn-Tucker (KKT) significano che la soluzione soddisfa:
 	- $a_n \geq 0$
 	- $y_n f(x_n) - 1 \geq 0$
 	- $a_n \{ y_n f(x_n) - 1 \} = 0$
 
-- Quindi, per tutti $n$ o $a_n = 0$ o $y_n f(x_n) = 1$. => ogni punto nel dataset avremo o una variabile lagrangiana a zero oppure la distanza dal discriminante è pari a 1 => questi sono dunque i vettori a supporto del margine!
+- Quindi, per tutti $n$ o $a_n = 0$ o $y_n f(x_n) = 1$. => ogni punto nel dataset avremo o una variabile lagrangiana a zero oppure la distanza dal discriminante è pari a 1 => ==questi sono dunque i vettori a supporto del margine!== (vettori a variabili duali non nulle => contribuiscono nella somma! => le altre non hanno effetto sul classificatore!)
+
+	![[Pasted image 20251028232658.png]]
+	
 - Gli $x_n$ per cui $a_n > 0$ e $y_n f(x_n) = 1$ sono chiamati vettori di supporto. => tutto il resto dei punti con il duale a zero non va a contribuire per la nostra funzione di decisione! => la posizione dei nostri margini è individuata solo tramite i vettori di supporto
 
 	21
@@ -2573,16 +2592,16 @@ $$\langle w, x_i \rangle + b < 0 \quad \text{quando} \quad y_i = -1$$
 **Macchine a Kernel Sparse (aka SVM)**
 
 - Nota che solo i vettori di supporto contribuiscono alla classificazione:$$f(x) = \sum_{n=1}^{N} a_n y_n \langle x, x_n \rangle + b = \sum_{m \in SV} a_m y_m \langle x, x_m \rangle + b$$
-- Questo è il motivo per cui le SVM sono anche più generalmente conosciute come **Macchine a Kernel Sparse**.
+- Questo è il motivo per cui le SVM sono anche più generalmente conosciute come **Macchine a Kernel Sparse**. => uso solo un sottoinsieme dei punti per ottenere il mio classificatore!
 - (Vedremo da dove viene il kernel nella prossima lezione...)
 
 	22
 ---
 **SVM e classificazione robusta**
 
-- Abbiamo un classificatore lineare che ora è robusto agli outlier:
+- Abbiamo un classificatore lineare che ora è **robusto** agli outlier:
 
-	![[Pasted image 20251015222528.png]]
+	![[Pasted image 20251015222528.png]] => in blu i vettori a supporto!
 
 	23
 ---
@@ -2591,7 +2610,7 @@ $$\langle w, x_i \rangle + b < 0 \quad \text{quando} \quad y_i = -1$$
 **Distribuzioni di classe sovrapposte**
 
 - Fino ad ora abbiamo assunto che il nostro problema sia **linearmente separabile**.
-- Questo, chiaramente, quasi mai accade. => non sempre risolvibili con decision boundaries lineari
+- Questo, chiaramente, quasi **mai accade**. => non sempre risolvibili con decision boundaries lineari
 
 	![[Pasted image 20251015222642.png]]
 
@@ -2603,27 +2622,30 @@ $$\langle w, x_i \rangle + b < 0 \quad \text{quando} \quad y_i = -1$$
 \begin{cases} 
 0 & \text{se } x_n \text{ è sul o sul lato corretto del margine} \\
 |y_n - \langle w, x_n \rangle + b| & \text{altrimenti}
-\end{cases}$$
+\end{cases}$$ => Se sbaglio misuro quanto ho sbagliato! 
 	![[Pasted image 20251015222743.png]] 
-	=> mi dicono quindi quanto sono lontano dalla corretta classificazione! => prendiamo in considerazione anche questi punti anche se non classificati corretamente!
+	=> mi dicono quindi quanto sono lontano dalla corretta classificazione! => prendiamo in considerazione anche questi punti anche se non classificati correttamente! => se sono sul margine la distanza è esattamente 1 altrimenti maggiore o minore a seconda di dove si trova! 
 
 	25
 ---
 **Il problema di ottimizzazione con slack**
 
-- Il nuovo problema di ottimizzazione diventa: $$\min_{\mathbf{w},b} \frac{1}{2} ||\mathbf{w}||^2 + C \sum_{n=1}^{N} \xi_n$$soggetto a $y_n(\langle \mathbf{w}, x_n \rangle + b) \geq 1 - \xi_n$ per tutti $n = 1, \ldots, N$ => quello che mi dice il problema è quindi classifica il più possibile correttamente ma tieni il classificatore "semplice"
+- Il nuovo problema di ottimizzazione diventa: $$\min_{\mathbf{w},b} \frac{1}{2} ||\mathbf{w}||^2 + C \sum_{n=1}^{N} \xi_n$$soggetto a $y_n(\langle \mathbf{w}, x_n \rangle + b) \geq 1 - \xi_n$ per tutti $n = 1, \ldots, N$ => quello che mi dice il problema è quindi classifica il più possibile correttamente ma tieni il classificatore "semplice" => ovvero paga un costo il più basso possibile per ciò che sbagli => il tutto secondo il parametro C => che mi serve a dire quanto voglio pagare per gli errori!
 
-- E dopo aver formato il Lagrangiano e risolto per le variabili duali (Bishop pagine 332-334):$$\max_a \left\{ \sum_{n=1}^{N} a_n - \frac{1}{2} \sum_{n=1}^{N} \sum_{m=1}^{N} a_n a_m y_n y_m \langle x_n, x_m \rangle \right\}$$soggetto a $0 \leq a_n \leq C$, per $n = 1, \ldots, N$ $$\sum_{n=1}^{N} a_n y_n = 0$$
+- E dopo aver formato il Lagrangiano e risolto per le variabili duali (Bishop pagine 332-334): => si può rifare anche qui il duale $$\max_a \left\{ \sum_{n=1}^{N} a_n - \frac{1}{2} \sum_{n=1}^{N} \sum_{m=1}^{N} a_n a_m y_n y_m \langle x_n, x_m \rangle \right\}$$soggetto a $0 \leq a_n \leq C$, per $n = 1, \ldots, N$ $$\sum_{n=1}^{N} a_n y_n = 0$$ => si arriva alla stessa soluzione solo che ho un altro limite sulle variabili duali
+	
 	26
 ---
 **La soluzione a Margine Morbido**
 
 - La forma del risultato è quasi identica al caso a margine rigido.
 - Nota, tuttavia, che i vettori di supporto ora includono **campioni misclassificati**.
-- Poiché la penalità per la misclassificazione scala linearmente con $\xi$, la SVM a margine morbido **non è robusta agli outlier**. => ottengo errori numerici andando a rilassare i margini
+- Poiché la penalità per la misclassificazione scala **linearmente** con $\xi$, la SVM a margine morbido **non è robusta agli outlier**. => ottengo errori numerici andando a rilassare i margini
 
 	![[Pasted image 20251015222929.png]]
 
+	=> Si ottiene un modello più complesso in quanto ho un altro parametro da prendere in considerazione! => a seconda di come scelgo C ci sarà uno shift dei margin...
+	
 	27
 ---
 ## Considerazioni Conclusive
