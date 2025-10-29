@@ -2675,35 +2675,25 @@ Dopo questa lezione:
 # 8 - Il trick del Kernel e SVMs Non-lineari
 
 ## Introduzione
-
 ---
-
-**Pagina 4**
-# Motivazioni
+**Motivazioni**
 
 - Ora abbiamo un modo per adattare modelli lineari per problemi di classificazione:
 
-[Grafico: SVM lineare con vettori di supporto e slack]
+	![[Pasted image 20251029220829.png]]
 
-Classe = +1  
-Classe = -1  
-Vettori di Supporto  
-Slack
-
+	2
 ---
+**Considerazioni**
 
-**Pagina 5**
-# Considerazioni
-
-- Possiamo estendere questo modello per catturare frontiere di decisione non lineari in qualche modo?
-- Forse come abbiamo fatto con il classificatore generativo quadratico? O con i minimi quadrati?
+- Possiamo estendere questo modello per catturare frontiere di decisione **non lineari** in qualche modo?
+- Forse come abbiamo fatto con il *classificatore generativo quadratico*? O con i minimi quadrati?
 - C'è un modo per farlo senza complicare l'elegante forma degli obiettivi di apprendimento?
 - Non è immediatamente evidente come dovremmo farlo...
 
+	3
 ---
-
-**Pagina 6**
-# Obiettivi della lezione
+**Obiettivi della lezione**
 
 Dopo questa lezione:
 
@@ -2713,119 +2703,79 @@ Dopo questa lezione:
 - Comprenderete come le SVM non lineari possano essere adattate usando un kernel appropriato.
 - Sarete in grado di applicare SVM lineari e non lineari nella pratica per risolvere problemi di classificazione.
 
+	4
 ---
 
-**Pagina 7**
-Un'altra Vista della SVM Primal
-
+## Un'altra Vista della SVM Primal
 ---
-
-**Pagina 8**
-# SVM tramite Minimizzazione del Rischio Empirico
+**SVM tramite Minimizzazione del Rischio Empirico**
 
 - Possiamo derivare la Macchina a Vettori di Supporto ideando un rischio empirico invece di analizzare il margine.
-- Torniamo alla nostra classe di ipotesi $\mathcal{H}$ di funzioni discriminanti lineari:
-
-$f(x) = \langle w, x \rangle + b$
-
+- Torniamo alla nostra classe di ipotesi $\mathcal{H}$ di funzioni discriminanti lineari:$$f(x) = \langle w, x \rangle + b$$
 - Ma quale dovrebbe essere la nostra funzione di loss per $\mathcal{H}$ e un dataset  
   $D = \{ (x_n, y_n) | n = 1, \ldots N \}$?
-- Ricordiamo che la loss ideale sarebbe la loss zero-uno:
 
-$\mathcal{L}(w, b; D) = \sum_{n=1}^{N} 1(f(x_n) \neq y_n)$
-
+- Ricordiamo che la loss ideale sarebbe la loss zero-uno:$$\mathcal{L}(w, b; D) = \sum_{n=1}^{N} 1(f(x_n) \neq y_n)$$
 - Sfortunatamente, ricordiamo anche che questo risulta in un problema di ottimizzazione combinatoria che è NP-difficile...
 
+	5
 ---
-
-**Pagina 9**
-# SVM tramite Minimizzazione del Rischio Empirico
+**SVM tramite Minimizzazione del Rischio Empirico**
 
 - Quindi, quale dovrebbe essere la loss che risulta nella stessa SVM?
 - Considerando gli errori fatti da una SVM: crescono linearmente con quanto sono lontani dal lato corretto del margine.
-- Ciò di cui abbiamo bisogno è noto come **hinge loss**: (metti sketch)
-
-$\mathcal{L}(w, b; D) = \sum_{n=1}^{N} \max\{0, 1 - y_n(\langle w, x_n \rangle + b)\}$
-
-$= \sum_{n=1}^{N} \ell(x_n, y_n),$
-
-dove $$\ell(x, y) = 
+- Ciò di cui abbiamo bisogno è noto come **hinge loss**: $$\mathcal{L}(w, b; D) = \sum_{n=1}^{N} \max\{0, 1 - y_n(\langle w, x_n \rangle + b)\}$$$$= \sum_{n=1}^{N} \ell(x_n, y_n),$$dove $$\ell(x, y) = 
 \begin{cases} 
 0 & \text{se } y(\langle w, x \rangle + b) \geq 1 \\ 
 1 - y(\langle w, x \rangle + b) & \text{se } y(\langle w, x \rangle + b) < 1 
 \end{cases}$$
+	![[Pasted image 20251029221515.png]]
 	=> questo mi dice => se mi classifichi correttamente non paghi nulla (vince lo zero) => viceversa se ottieni un valore negativo paghi una penalità sempre più alta a seconda del valore che ottieni...
 	
+	6
 ---
-
-**Pagina 10**
-SVM tramite Minimizzazione del Rischio Empirico
-
-$\mathcal{L}(w, b; D) = \sum_{n=1}^{N} \max\{0, 1 - y_n(\langle w, x_n \rangle + b)\}$
+**SVM tramite Minimizzazione del Rischio Empirico**
+$$\mathcal{L}(w, b; D) = \sum_{n=1}^{N} \max\{0, 1 - y_n(\langle w, x_n \rangle + b)\}$$
 
 - Questo merita considerazione:
 
+	![[Pasted image 20251029222225.png]]
 	=> L'hinge loss non contribuisce in alcun modo per gli esempi classificati correttamente!
-	
----
 
-**Pagina 11**
-# SVM tramite Minimizzazione del Rischio Empirico
+	7
+---
+**SVM tramite Minimizzazione del Rischio Empirico**
 
 - Ci manca solo un pezzo del puzzle di ottimizzazione: il controllo della complessità del modello.
-- Ma sappiamo come farlo dalla nostra discussione sulla regressione lineare:
-
-$(w^*, b^*) = \arg\min_{w, b} \frac{1}{2} ||w||^2 + C \sum_{n=1}^{N} \max\{0, 1 - y_n(\langle w, x_n \rangle + b)\}$
-
+- Ma sappiamo come farlo dalla nostra discussione sulla regressione lineare:$$(w^*, b^*) = \arg\min_{w, b} \frac{1}{2} ||w||^2 + C \sum_{n=1}^{N} \max\{0, 1 - y_n(\langle w, x_n \rangle + b)\}$$
 - Abbiamo un problema di ottimizzazione non vincolato (ma ancora convesso) espresso in termini di una loss e un regolarizzatore.
 - Quindi: *la massimizzazione del margine può essere vista come regolarizzazione*.
 - L'iperparametro $C$ è usato per pesare la loss invece di $\lambda$ per il regolarizzatore.
 - Tuttavia, siamo limitati alla forma primal della SVM...
 
+	8
 ---
 
-**Pagina 12**
-Uno Sguardo più Dettagliato alla Forma Duale della SVM
-
+## Uno Sguardo più Dettagliato alla Forma Duale della SVM
 ---
+**Un Esercizio di Pattern Matching**
 
-**Pagina 13**
-# Un Esercizio di Pattern Matching
-
-- Torniamo alla forma duale della SVM:
-
-$\max_{a} \left\{ \sum_{n=1}^{N} a_n - \frac{1}{2} \sum_{n=1}^{N} \sum_{m=1}^{N} a_n a_m y_n y_m \langle x_n, x_m \rangle \right\}$
-
-soggetto a  
-$0 \leq a_n \leq C, \text{ per } n = 1, \ldots, N$
-
-$\sum_{n=1}^{N} a_n y_n = 0$
-
-- Nota che l'*unico* uso dei campioni di input è nel prodotto interno.
+- Torniamo alla forma duale della SVM:$$\max_{a} \left\{ \sum_{n=1}^{N} a_n - \frac{1}{2} \sum_{n=1}^{N} \sum_{m=1}^{N} a_n a_m y_n y_m \langle x_n, x_m \rangle \right\}$$soggetto a  $0 \leq a_n \leq C, \text{ per } n = 1, \ldots, N$ $$\sum_{n=1}^{N} a_n y_n = 0$$
+- Nota che ==l'*unico* uso dei campioni di input è nel prodotto interno.==
 - Questo significa che per apprendere abbiamo solo bisogno di calcolare prodotti interni tra i nostri campioni di input $x_n$.
 
+	9
 ---
-
-**Pagina 14**
-# Embedding esplicito
+**Embedding esplicito**
 
 - Ehi! Probabilmente possiamo usare un embedding esplicito $\phi : \mathbb{R}^D \to \mathcal{H}$ dei nostri dati in un nuovo spazio.
-- Lo abbiamo già fatto con un embedding polinomiale...
-- Il nuovo problema di ottimizzazione:
-
-$\max_{a} \left\{ \sum_{n=1}^{N} a_n - \frac{1}{2} \sum_{n=1}^{N} \sum_{m=1}^{N} a_n a_m y_n y_m \langle \phi(\mathbf{x}_n), \phi(\mathbf{x}_m) \rangle_\mathcal{H} \right\}$
-
-soggetto a  
-$0 \leq a_n \leq C, \text{ per } n = 1, \ldots, N$
-
-$\sum_{n=1}^{N} a_n y_n = 0$
-
+- Lo abbiamo già fatto con un **embedding polinomiale**...
+- Il nuovo problema di ottimizzazione:$$\max_{a} \left\{ \sum_{n=1}^{N} a_n - \frac{1}{2} \sum_{n=1}^{N} \sum_{m=1}^{N} a_n a_m y_n y_m \langle \phi(\mathbf{x}_n), \phi(\mathbf{x}_m) \rangle_\mathcal{H} \right\}$$soggetto a  $0 \leq a_n \leq C, \text{ per } n = 1, \ldots, N$ $$\sum_{n=1}^{N} a_n y_n = 0$$
 - Finché $(\mathcal{H}, \langle \cdot, \cdot \rangle_\mathcal{H})$ è uno spazio con prodotto interno, siamo a posto.
 
+	10
 ---
-
-**Pagina 15**
-# Embedding espliciti = Mappe di feature
+**Embedding espliciti = Mappe di feature**
 
 - **Embedding espliciti come questo sono solitamente chiamati mappe di feature.**  
 - Stiamo mappando una rappresentazione di feature in uno spazio a un'altra rappresentazione di feature in un nuovo spazio.  
@@ -2833,295 +2783,203 @@ $\sum_{n=1}^{N} a_n y_n = 0$
 - Il vantaggio principale della mappatura esplicita delle feature è che siamo liberi di usare combinazioni non lineari delle feature di input.  
 - Il classificatore risultante è lineare nel "nuovo" spazio delle feature, ma **non lineare** in quello originale.
 
+	11
 ---
-
-**Pagina 16**
-Non solo rose e fiori
+**Non solo rose e fiori**
 
 - Considera la mappa di feature polinomiale di grado $n$ da $\mathbb{R}^D \to \mathbb{R}^K$
 - Domanda: cos'è $K$? Quanti monomi di grado $\leq n$ ci sono in $D$ variabili di input?
+- Risposta:$$\binom{D+n-1}{n} = \frac{1}{(D-1)!}(n+1)^{D-1}$$ => può capitare di arrivare a milioni di parametri => overfitting! 
 
+	![[Pasted image 20251029224033.png]]
+
+	12
 ---
-
-**Pagina 17**
-Non solo rose e fiori
-
-- Considera la mappa di feature polinomiale di grado $n$ da $\mathbb{R}^D \to \mathbb{R}^K$
-- Domanda: cos'è $K$? Quanti monomi di grado $\leq n$ ci sono in $D$ variabili di input?
-- Risposta:
-
-$\binom{D+n-1}{n} = \frac{1}{(D-1)!}(n+1)^{D-1}$ => può capitare di arrivare a milioni di parametri => overfitting! 
-
-[Grafico: crescita combinatoria del numero di feature]
-
----
-
-**Pagina 18**
-Siamo fregati?
+**Siamo fregati?**
 
 - Beh, questo sembra senza speranza...
 - Se incorporo esplicitamente i miei dati, (letteralmente) esplodo la mia complessità spaziale.
 - C'è un modo per aggirare questa esplosione?
 - Se ci pensate, vi ho già dato un enorme spoiler...
 
+	13
 ---
 
-**Pagina 19**
-Il Kernel Trick
-
+## Il Kernel Trick
 ---
+**Abbiamo solo bisogno delle valutazioni del prodotto interno**
 
-**Pagina 20**
-Abbiamo solo bisogno delle valutazioni del prodotto interno
-
-- Tornando alla formulazione duale:
-  $\max_{a} \left\{ \sum_{n=1}^{N} a_n - \frac{1}{2} \sum_{n=1}^{N} \sum_{m=1}^{N} a_n a_m y_n y_m \langle \phi(\mathbf{x}_n), \phi(\mathbf{x}_m) \rangle_\mathcal{H} \right\}$
-  soggetto a $0 \leq a_n \leq C$, per $n = 1, \ldots, N$
-  $\sum_{n=1}^{N} a_n y_n = 0$
-
+- Tornando alla formulazione duale:$$\max_{a} \left\{ \sum_{n=1}^{N} a_n - \frac{1}{2} \sum_{n=1}^{N} \sum_{m=1}^{N} a_n a_m y_n y_m \langle \phi(\mathbf{x}_n), \phi(\mathbf{x}_m) \rangle_\mathcal{H} \right\}$$  soggetto a $0 \leq a_n \leq C$, per $n = 1, \ldots, N$ $$\sum_{n=1}^{N} a_n y_n = 0$$
 - Osserviamo che non abbiamo bisogno degli embedding $\phi(\mathbf{x}_n)$ e $\phi(\mathbf{x}_m)$.
-
 - Tutto ciò di cui abbiamo realmente bisogno è $\langle \phi(\mathbf{x}_n), \phi(\mathbf{x}_m) \rangle$.
+- Diamogli un nome (beh, due, più o meno):  $$k(\mathbf{x}, \mathbf{z}) = \langle \phi(\mathbf{x}), \phi(\mathbf{z}) \rangle_\mathcal{H} \quad (\text{funzione kernel } k)$$$$K[n, m] = \langle \phi(\mathbf{x}_n), \phi(\mathbf{x}_m) \rangle_\mathcal{H} \quad (\text{matrix kernel o di Gram } K)$$ => quando serve faccio riferimento alla matrice kernel!
 
-- Diamogli un nome (beh, due, più o meno):
-  $k(\mathbf{x}, \mathbf{z}) = \langle \phi(\mathbf{x}), \phi(\mathbf{z}) \rangle_\mathcal{H} \quad (\text{funzione kernel } k)$
-  $K[n, m] = \langle \phi(\mathbf{x}_n), \phi(\mathbf{x}_m) \rangle_\mathcal{H} \quad (\text{matrix kernel o di Gram } K)$ => quando serve faccio riferimento alla matrice kernel!
-
+	14
 ---
+**Forme duali di modelli lineari**
 
-**Pagina 21**
-# Forme duali di modelli lineari
-
-- Spesso la forma duale dei modelli lineari (ad esempio la SVM, ma vedi anche Bishop, capitolo 6.1) si basa solo su combinazioni lineari della funzione kernel $k$.
+- Spesso la forma **duale** dei modelli lineari (ad esempio la SVM, ma vedi anche Bishop, capitolo 6.1) si basa solo su combinazioni lineari della funzione kernel $k$.
 - La simmetria del prodotto interno implica che $k$ e $K$ sono simmetrici.
 - La definitezza positiva del prodotto interno implica che $K$ è una matrice semidefinita positiva (cioè $x^TKx \geq 0 \, \forall x$).
-- La funzione kernel più semplice è il kernel lineare:  
-$k(x,z) = x^Tz, \quad \text{corrispondente a } \phi(x) = x$
-
+- La funzione kernel più semplice è il kernel lineare:  $$k(x,z) = x^Tz, \quad \text{corrispondente a } \phi(x) = x$$
 - Il kernel trick (chiamato anche kernel substitution) si riferisce all'uso di funzioni kernel per sostituire i prodotti interni in modelli altrimenti lineari.
 
+	15
 ---
+**Costruire kernel**
 
-**Pagina 22**
-# Costruire kernel
-
-- Naturalmente, se la mappa di feature $\phi$ è trattabile, possiamo semplicemente usarla per definire il kernel corrispondente:  
-  $k(x,z) = \langle \phi(x), \phi(z) \rangle \, (\text{ovvio})$
-
+- Naturalmente, se la mappa di feature $\phi$ è trattabile, possiamo semplicemente usarla per definire il kernel corrispondente:  $$k(x,z) = \langle \phi(x), \phi(z) \rangle \, (\text{ovvio})$$
 - Ciò che vogliamo realmente è costruire kernel direttamente ed evitare l'embedding.
-
-- Considera questo esempio (assumendo $V = \mathbb{R}^2$):  
-  $k(x,z) = (x^Tz)^2$  
-    $= (x_1 z_1 + x_2 z_2)^2$  
-    $= ...$  
-    $= (x_1^2, \sqrt{2} x_1 x_2, x_2^2)(z_1^2, \sqrt{2} z_1 z_2, z_2^2)^T$
-
-- Quindi,  
-  $k(x,z) = (x^Tz)^2$  
-  corrisponde all'**embedding polinomiale** !  
+- Considera questo esempio (assumendo $V = \mathbb{R}^2$):  $$k(x,z) = (x^Tz)^2$$$$= (x_1 z_1 + x_2 z_2)^2 = ...$$$$= (x_1^2, \sqrt{2} x_1 x_2, x_2^2)(z_1^2, \sqrt{2} z_1 z_2, z_2^2)^T$$
+- Quindi,   $k(x,z) = (x^Tz)^2$  corrisponde all'**embedding polinomiale** !  
   $\phi(x) = (x_1^2, \sqrt{2} x_1 x_2, x_2^2)$ => tutti termini di secondo grado...
 
+	16
 ---
-
-**Pagina 23**
-# Costruire kernel
+**Costruire kernel**
 
 - Possiamo combinare kernel in modi che preservano la semidefinitezza positiva:
 Tramite kernel function possiamo implicitamente mappare i nostri dati in spazi a più dimensioni!
 
-## Tecniche per Costruire Nuovi Kernel.
+ - Tecniche per Costruire Nuovi Kernel.
+	 - Dati kernel validi $k_1(x, x')$ e $k_2(x, x')$, i seguenti nuovi kernel saranno anche validi:
+		- $k(x, x') = ck_1(x, x') \tag{6.13}$
+		- $k(x, x') = f(x)k_1(x, x')f(x') \tag{6.14}$
+		- $k(x, x') = q(k_1(x, x')) \tag{6.15}$
+		- $k(x, x') = \exp(k_1(x, x')) \tag{6.16}$
+		- $k(x, x') = k_1(x, x') + k_2(x, x') \tag{6.17}$
+		- $k(x, x') = k_1(x, x')k_2(x, x') \tag{6.18}$
+		- $k(x, x') = k_3(\phi(x), \phi(x')) \tag{6.19}$
+		- $k(x, x') = x^T A x' \tag{6.20}$
+		- $k(x, x') = k_a(x_a, x_a') + k_b(x_b, x_b') \tag{6.21}$
+		- $k(x, x') = k_a(x_a, x_a')k_b(x_b, x_b') \tag{6.22}$
+	
+	dove $c > 0$ è una costante, $f(\cdot)$ è una qualsiasi funzione, $q(\cdot)$ è un polinomio con coefficienti non negativi, $\phi(x)$ è una funzione da $x$ a $\mathbb{R}^M$, $k_3(\cdot, \cdot)$ è un kernel valido in $\mathbb{R}^M$, $A$ è una matrice simmetrica semidefinita positiva, $x_a$ e $x_b$ sono variabili (non necessariamente disgiunte) con $x = (x_a, x_b)$, e $k_a$ e $k_b$ sono funzioni kernel valide nei rispettivi spazi.
 
-Dati kernel validi $k_1(x, x')$ e $k_2(x, x')$, i seguenti nuovi kernel saranno anche validi:
-
-$k(x, x') = ck_1(x, x') \tag{6.13}$
-
-$k(x, x') = f(x)k_1(x, x')f(x') \tag{6.14}$
-
-$k(x, x') = q(k_1(x, x')) \tag{6.15}$
-
-$k(x, x') = \exp(k_1(x, x')) \tag{6.16}$
-
-$k(x, x') = k_1(x, x') + k_2(x, x') \tag{6.17}$
-
-$k(x, x') = k_1(x, x')k_2(x, x') \tag{6.18}$
-
-$k(x, x') = k_3(\phi(x), \phi(x')) \tag{6.19}$
-
-$k(x, x') = x^T A x' \tag{6.20}$
-
-$k(x, x') = k_a(x_a, x_a') + k_b(x_b, x_b') \tag{6.21}$
-
-$k(x, x') = k_a(x_a, x_a')k_b(x_b, x_b') \tag{6.22}$
-
-dove $c > 0$ è una costante, $f(\cdot)$ è una qualsiasi funzione, $q(\cdot)$ è un polinomio con coefficienti non negativi, $\phi(x)$ è una funzione da $x$ a $\mathbb{R}^M$, $k_3(\cdot, \cdot)$ è un kernel valido in $\mathbb{R}^M$, $A$ è una matrice simmetrica semidefinita positiva, $x_a$ e $x_b$ sono variabili (non necessariamente disgiunte) con $x = (x_a, x_b)$, e $k_a$ e $k_b$ sono funzioni kernel valide nei rispettivi spazi.
-
+	17
 ---
+**Costruire kernel**
 
-**Pagina 24**
-# Costruire kernel
-
-- Un kernel molto comunemente usato è il Gaussiano:  
-  $k(x, z) = \exp\left\{-\frac{\|x - z\|^2}{2\sigma^2}\right\}$
-
-- Possiamo vedere che è un kernel usando la tabella della slide precedente e espandendo il quadrato dentro l'esponenziale:  
-  $k(x, z) = \exp(-x^Tx/2\sigma^2)\exp(x^Tz/\sigma^2)\exp(-z^Tz/2\sigma^2)$
-
+- Un kernel molto comunemente usato è il Gaussiano: $$k(x, z) = \exp\left\{-\frac{\|x - z\|^2}{2\sigma^2}\right\}$$
+- Possiamo vedere che è un kernel usando la tabella della slide precedente e espandendo il quadrato dentro l'esponenziale: $$k(x, z) = \exp(-x^Tx/2\sigma^2)\exp(x^Tz/\sigma^2)\exp(-z^Tz/2\sigma^2)$$
 - È abbastanza facile mostrare che questo corrisponde a un embedding $\phi(\cdot)$ che mappa su uno spazio delle feature *infinito* dimensionale.
 
 ---
+**E allora?**
 
-**Pagina 25**
-E allora?
-
-- Dobbiamo solo fare lievi aggiustamenti al nostro problema di apprendimento:
-
-$\max_a \left\{ \sum_{n=1}^N a_n - \frac{1}{2} \sum_{n=1}^N \sum_{m=1}^N a_n a_m y_n y_m k(x_n, x_m) \right\}$
-
-soggetto a $0 \leq a_n \leq C$, per $n = 1, \ldots, N$
-
-$\sum_{n=1}^N a_n y_n = 0$
-
-- E al nostro classificatore:
-
-$f(x) = \sum_{n=1}^N a_n y_n k(x, x_n) + b$
-
-$= \sum_{z \in SV} a_n y_n k(x, z) + b$
-
+- Dobbiamo solo fare lievi aggiustamenti al nostro problema di apprendimento$$\max_a \left\{ \sum_{n=1}^N a_n - \frac{1}{2} \sum_{n=1}^N \sum_{m=1}^N a_n a_m y_n y_m k(x_n, x_m) \right\}$$soggetto a $0 \leq a_n \leq C$, per $n = 1, \ldots, N$ $$\sum_{n=1}^N a_n y_n = 0$$
+- E al nostro classificatore: $$f(x) = \sum_{n=1}^N a_n y_n k(x, x_n) + b$$$$= \sum_{z \in SV} a_n y_n k(x, z) + b$$
+	19
 ---
 
-**Pagina 26**
-Macchine a Vettori di Supporto nella Pratica
-
+## Macchine a Vettori di Supporto nella Pratica
 ---
-
-**Pagina 27**
-# Il Caso Multiclasse
+**Il Caso Multiclasse**
 
 - Ehi, aspetta un minuto... Abbiamo sviluppato le SVM solo per problemi di classificazione binaria.
 - Per il problema multiclasse generale, di solito usiamo un classificatore one-versus-rest e prendiamo semplicemente l'output massimo come nostra regola decisionale.
 
-[Diagramma: classificazione one-versus-rest]
+	![[Pasted image 20251001224446.png]]
 
-$R_1$ & $R_2$ \\
-$C_1$ & $C_3$ \\
-$\text{non } C_1$ & $\text{non } C_2$
-
+	20
 ---
-
-**Pagina 28**
-# Avvertenze
+**Avvertenze**
 
 - Le complessità temporali e spaziali dei risolutori SVM possono essere imprevedibili se non sapete cosa state facendo (cosa che ora tutti dovremmo sapere!).
 - La complessità temporale varierà in termini di quale risolutore viene usato.
 - Fortunatamente, ci sono molti pacchetti solidi disponibili per addestrare le SVM usando varie tecniche.
 
+	21
 ---
-
-**Pagina 29**
-LibLinear
+**LibLinear**
 
 - LibLinear è un risolutore SVM robusto e veloce con una storia molto lunga.
 - Il suo focus principale è risolvere la formulazione dell'obiettivo primal.
 - Può passare a un risolutore dual coordinate descent per problemi su larga scala.
 - Può sfruttare macchine multi-core (utile per il caso multiclasse).
 
-`class sklearn.svm.LinearSVC(
-    penalty='l2', loss='squared_hinge',
-    dual=True, tol=0.0001, C=1.0,
-    multi_class='ovr', fit_intercept=True,
-    intercept_scaling=1,
-    class_weight=None, verbose=0,
-    random_state=None, max_iter=1000
-)`
-
+- `class sklearn.svm.LinearSVC(`
+    `penalty='l2', loss='squared_hinge',`
+    `dual=True, tol=0.0001, C=1.0,`
+    `multi_class='ovr', fit_intercept=True,`
+    `intercept_scaling=1,`
+    `class_weight=None, verbose=0,`
+    `random_state=None, max_iter=1000` `)`
+	
+	22
 ---
-
-**Pagina 30**
-LibSVM
+**LibSVM**
 
 - LibSVM (dalle stesse brave persone che ci hanno portato LibLinear) è un risolutore SVM con una storia ancora più lunga.
 - È un risolutore dual, quindi sebbene fornisca flessibilità tramite il kernel trick, può scalare male in spazio (o tempo se K non è precalcolata).
 - Supporta un'ENORME varietà di formulazioni alternative dell'obiettivo SVM.
 
-`class sklearn.svm.SVC(
+- `class sklearn.svm.SVC(
     C=1.0, kernel='rbf',
     degree=3, gamma='scale', coef0=0.0,
     shrinking=True, probability=False, tol=0.001,
     cache_size=200, class_weight=None, verbose=False,
     max_iter=-1, decision_function_shape='ovr',
-    break_ties=False, random_state=None
-)`
+    break_ties=False, random_state=None	)`
 
+	23
 ---
-
-**Pagina 31**
-# Risolutori Stochastic Gradient
+**Risolutori Stochastic Gradient**
 
 - Per dataset molto grandi, l'opzione migliore è spesso risolvere direttamente la forma primal usando la Minimizzazione del Rischio Empirico.
 - Stochastic Gradient Descent (ne parleremo meglio quando arriveremo al Deep Learning) implementa questo in modo efficiente e sequenziale.
 
-`class sklearn.linear_model.SGDClassifier(
+- `class sklearn.linear_model.SGDClassifier(
     loss='hinge', *, penalty='l2', alpha=0.0001,
     l1_ratio=0.15, fit_intercept=True, max_iter=1000,
     tol=0.001, shuffle=True, verbose=0, epsilon=0.1,
     n_jobs=None, random_state=None, learning_rate='optimal',
     eta0=0.0, power_t=0.5, early_stopping=False,
     validation_fraction=0.1, n_iter_no_change=5,
-    class_weight=None, warm_start=False, average=False
-)`
+    class_weight=None, warm_start=False, average=False)`
 
+	24
 ---
-
-**Pagina 32**
-Kernel Personalizzati
+**Kernel Personalizzati**
 
 - Per i risolutori duali la selezione del kernel è chiave (e di solito richiede un'ampia crossvalidazione!)
 
 `kernel{‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’}, default='rbf'`
 
-Specifica il tipo di kernel da usare nell'algoritmo. Deve essere uno tra ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’ o un callable. Se non viene fornito nessuno, verrà usato ‘rbf’. Se viene fornito un callable, viene usato per pre-calcolare la matrice kernel dalle matrici di dati; quella matrice dovrebbe essere un array di forma (n_samples, n_samples).
+- Specifica il tipo di kernel da usare nell'algoritmo. Deve essere uno tra ‘linear’, ‘poly’, ‘rbf’, 'sigmoid’, ‘precomputed’ o un callable. Se non viene fornito nessuno, verrà usato ‘rbf’. Se viene fornito un callable, viene usato per pre-calcolare la matrice kernel dalle matrici di dati; quella matrice dovrebbe essere un array di forma (n_samples, n_samples).
 
+	25
 ---
+**Macchine a kernel e complessità del modello**
 
-**Pagina 33**
-Macchine a kernel e complessità del modello
-
-- Il kernel trick è un altro modo per affrontare il caso non linearmente separabile.
+- Il **kernel trick** è un altro modo per affrontare il caso non linearmente separabile.
 - È il modo principale per aumentare la complessità del modello senza cambiare la formulazione del modello sottostante.
+	
+	![[Pasted image 20251029231028.png]]
 
-[Grafico: SVM non lineare con kernel]
-
-Classe = +1  
-Classe = -1
-
+	26
 ---
 
-**Pagina 34**
-Considerazioni Conclusive
-
+## Considerazioni Conclusive
 ---
-
-**Pagina 35**
-# La Macchina a Vettori di Supporto
+**La Macchina a Vettori di Supporto**
 
 - Alla fine, le Macchine a Vettori di Supporto sono sempre macchine di apprendimento lineari (in qualche spazio).
 - Il kernel trick ci permette di definire un problema di apprendimento lineare (in uno spazio *potenzialmente infinito dimensionale*) che è non lineare nello spazio originale.
 - Come sempre, bisogna prestare attenzione quando si applica la SVM nella pratica.
 - Sapere come funzionano le formulazioni primal e dual renderà le loro prestazioni e robustezza molto più prevedibili nella pratica.
 
+	27
+---
+**Letture e Compiti**
+
+- Lettura Raccomandata:
+	- Bishop: Capitolo 7 (7.1), Capitolo 6 (6.1, 6.2)
+
+- Compiti:
+	- Convinciti che l'embedding $\phi(\cdot)$ corrispondente al kernel Gaussiano è infinito dimensionale.
+
+	28
 ---
 
-**Pagina 36**
-# Letture e Compiti
-
-## Lettura Raccomandata:
-
-- Bishop: Capitolo 7 (7.1), Capitolo 6 (6.1, 6.2)
-
-## Compiti:
-
-- Convinciti che l'embedding $\phi(\cdot)$ corrispondente al kernel Gaussiano è infinito dimensionale.
-
----
-
-Tutte le formule sono ora correttamente formattate con `$` e il contenuto è completamente tradotto in italiano.
+# 9 - 
