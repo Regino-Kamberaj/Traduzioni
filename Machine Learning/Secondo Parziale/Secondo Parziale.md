@@ -589,4 +589,313 @@ K-Nearest Neighbors Classification
 
 [[20-IntroDeepLearning.pdf]]
 
-# 21 - 
+# 21 - Deep Learning e algoritmo di Backpropagation
+
+## Introduzione
+---
+**Obiettivi della lezione**
+
+Dopo questa lezione saprete:
+
+- Capire come le reti ReLU (con almeno uno strato nascosto) possano approssimare con precisione desiderata qualsiasi funzione continua su un dominio compatto.
+- Capire come la **backpropagation** possa essere usata per calcolare in modo automatico ed efficiente i gradienti delle reti neurali.
+- Capire alcune delle insidie dell'Algoritmo di Backpropagation e come vengono mitigate nella pratica.
+
++Sketch => gli hidden layer preactivations non dipendono da tutti i parametri del modello! => se dunque vogliamo calcolare il gradiente $\nabla_{\theta} f(\mathbf{x}, \theta)$ potremmo suddividere questo secondo la chain rule su più parti => $$= \sigma' (f_{out}(\mathbf{z}, \theta)) \nabla_{\theta}f_{out}(\mathbf{z},\theta) = \sigma' (f_{out}(\mathbf{z}, \theta)) f'_{out}(\mathbf{z},\theta)\sigma' (f_{h}(\mathbf{x}, \theta))f'_h(\mathbf{x},\theta)$$ => Ho un prodotto fra derivate di funzioni lineari e funzioni di attivazione => a seconda del numero di layer avrò sempre più livelli della chain rule...
+
++Occhio però che se ho valori molto grandi (o molto piccoli) per la funzione di attivazione (caso della sigmoide) la loro derivata tende a zero => ho problemi di underflow/overflow in precisione! => *vanishing gradients* => bisogna stare attenti al magnitude dei valori per le funzioni di attivazione!
+
+	2
+---
+
+## Le Reti Neurali sono Approssimatori Universali di Funzioni
+---
+**Una funzione di esempio**
+
+- Considera una funzione $f[x, \phi]$ che mappa un input scalare $x$ a un output scalare $y$.
+- Questa funzione ha dieci parametri $\phi = \{ \phi_0, \phi_1, \phi_2, \phi_3, \theta_{10}, \theta_{11}, \theta_{20}, \theta_{21}, \theta_{30}, \theta_{31} \}$ (ho dei pesi e i bias dei layer nascosti) => ho un solo hidden layer e 3 neuroni
+- La definizione di $f[x, \phi]$ è: $$y = f[x, \phi]$$$$= \phi_0 + \phi_1 \sigma [\theta_{10} + \theta_{11}x] + \phi_2 \sigma [\theta_{20} + \theta_{21}x] + \phi_3 \sigma [\theta_{30} + \theta_{31}x]$$
+- La funzione di attivazione $\sigma$ che considereremo sarà l'Unità Lineare Rettificata (ReLU): $$\sigma[z] = \text{ReLU}[z] = \max(0, z) = 
+\begin{cases} 
+0 & \text{se } z < 0 \\
+z & \text{altrimenti}
+\end{cases}$$+ Sketch relu => ha discontinuità in zero ma fino a che hai input positivi ottieni derivate lineari.
+---
+**Una funzione di esempio**
+
+- Implementiamo questa funzione e vediamo quale famiglia rappresenta:
+
+```python
+def random_parameters(hidden=4):
+  W1 = np.random.normal(size=(hidden,1))
+  b1 = np.random.normal(size=(hidden,1))
+  W2 = np.random.normal(size=(hidden,1))
+  b2 = np.random.normal()
+  return (W1, b1, W2, b2)
+
+def relu(z):
+    return np.maximum(z, 0.0)
+
+def f(x, W1, b1, W2, b2):
+    return W2.T @ relu((W1*x.T + b1)) + b2
+```
+
+---
+**Una funzione di esempio**
+
+- Visualizzando alcune istanze casuali:
+	![[Pasted image 20251118090954.png]] => piecewise linear functions
+
+---
+**Una funzione di esempio**
+
+- Questa funzione rappresenta la famiglia parametrica di funzioni con al **massimo quattro segmenti lineari**. => regioni in cui la funzione è lineare
+- Cioè, la famiglia di funzioni lineari a tratti con fino a quattro regioni lineari. => applicando ReLU ne aggiungo quindi la non linearità (mantenendo magnitudine e direzione)
+- È utile scomporre il calcolo di $f[x, \phi]$ calcolando prima le quantità nascoste: 
+	- $h_1 = \sigma [\theta_{10} + \theta_{11}x]$
+	- $h_2 = \sigma [\theta_{20} + \theta_{21}x]$
+	- $h_3 = \sigma [\theta_{30} + \theta_{31}x]$.
+
+- Poi le combiniamo con: $$y = \phi_0 + \phi_1 h_1 + \phi_2 h_2 + \phi_3 h_3$$
+---
+**Una rete superficiale (shallow)**
+
+- Ogni regione lineare corrisponde a un pattern di attivazione nelle unità nascoste.
+- Quando un'unità viene "clippata" dall'attivazione ReLU, la definiamo inattiva.
+- La pendenza di ogni regione è determinata dalle pendenze originali $\theta_{*1}$ degli input attivi per questa regione e dai pesi $\phi_{*}$ applicati successivamente.
+- Ogni unità nascosta contribuisce con un "gomito" (joint) alla funzione, quindi con tre unità nascoste possono esserci quattro regioni lineari.
+
+---
+**Il Teorema di Approssimazione Universale (versione shallow)**
+
+- Se generalizziamo questo a $D$ unità nascoste: $$h_d = \sigma[\theta_{d0} + \theta_{d1}x] \text{ per } d \in \{1, \ldots, D\}$$
+- E le combiniamo nello stesso modo: $$y = \phi_0 + \sum_{d=1}^{D}\phi_d h_d$$
+- Il numero di unità nascoste in una rete shallow è una misura della capacità della rete. => quante piecewise region functions posso creare! => sostanzialmente creo dei pezzettini che mi approssimano la funzione a seconda delle hidden units usate (+ sketch) => anche se come visto prima non funziona per tutti ma varia a seconda dei parametri di quanti neuroni mi rimangono attivi.
+- Con capacità sufficiente, una rete shallow può descrivere qualsiasi funzione continua 1D definita su un sottoinsieme compatto della retta reale con precisione arbitraria.
+
+---
+**Il Teorema di Approssimazione Universale (versione shallow)**
+
+- Cosa succede se aumentiamo il numero di unità nascoste a 1000?
+	![[Pasted image 20251118092143.png]]
+
+	9
+---
+**L'Umile Rete Neurale**
+
+- Ovviamente stiamo descrivendo la stessa architettura che già conosciamo:
+	![[Pasted image 20251118092218.png]](magari oltre alla depth posso anche anche aumentare la width della mia hidden layer
+
+- Di solito pensiamo in termini di figure più semplice sulla destra
+- Importante: Il teorema di approssimazione Universale dice che esiste una rete con un singolo hidden layer per qualche D unità nascoste che approssima qualsiasi funzione continua $f$ per ogni precisione desiderata
+
+	10
+---
+
+## L'Algoritmo di Backpropagation
+---
+**Un'altra rete giocattolo**
+
+- Considera la seguente funzione: $$f[x, \phi] = \beta_3 + \omega_3 \cdot \cos \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot \sin \left[ \beta_0 + \omega_0 x \right] \right] \right]$$
+
+- Questa è una composizione delle funzioni $\cos[\bullet], \exp[\bullet], \sin[\bullet]$.
+- Con parametri $\phi = \{\beta_0, \omega_0, \beta_1, \omega_1, \beta_2, \omega_2, \beta_3, \omega_3\}$.
+- Supponiamo di avere una funzione di perdita ai minimi quadrati: $\ell_i = (f[x_i, \phi] - y_i)^2$. (single sample loss)
+- E che conosciamo i valori correnti di $\beta_0, \beta_1, \beta_2, \beta_3, \omega_0, \omega_1, \omega_2, \omega_3, x_i$, e $y_i$.
+- Potremmo ovviamente calcolare $\ell_i$, ma siamo invece interessati a calcolare come piccoli cambiamenti nei parametri $\phi$ cambino $\ell_i$.
+
+	11
+---
+**Il calcolo manuale è una rottura**
+
+- Potremmo calcolare le espressioni per le derivate parziali a **mano**:
+
+$\frac{\partial \ell_i}{\partial \omega_0} = -2 \left( \beta_3 + \omega_3 \cdot \cos \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot \sin \left[ \beta_0 + \omega_0 \cdot x_i \right] \right] \right] - y_i \right)$
+
+$\omega_1 \omega_2 \omega_3 \cdot x_i \cdot \cos \left[ \beta_0 + \omega_0 \cdot x_i \right] \cdot \exp \left[ \beta_1 + \omega_1 \cdot \sin \left[ \beta_0 + \omega_0 \cdot x_i \right] \right]$
+
+$\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot \sin \left[ \beta_0 + \omega_0 \cdot x_i \right] \right] \right]$.
+
+- Ma questo è ==una rottura== e – cosa più importante – estremamente ridondante! (also error prone)
+
+- Vediamo se possiamo derivare un algoritmo generico per calcolare le derivate di funzioni come questa...
+
+	12
+---
+**Il Grafo Computazionale di** $f[x, \phi]$
+
+- La chiave sta nel modo in cui scomponiamo questa composizione di funzioni:  
+  $f[x, \phi] = \beta_3 + \omega_3 \cdot \cos \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot \sin \left[ \beta_0 + \omega_0 x \right] \right] \right]$
+
++Metti sketch (potrei fare la stessa cosa con le matrici al posto dei scalare)
++Faccio quindi anche il calcolo della loss => come la minimizzo? => come ne calcolo il gradiente? => faccio backpropragation => per calcolare la derivata parziale sfrutto la chain rule ma anche per calcolare la derivata parziali dell'output ne rifaccio la chain rule! => tornando indietro ad ogni layer => questo sarà dipendente dall'activation fino a quel punto! => il forward pass è quindi salvarsi tutte le funzioni di attivazioni => mentre il backward pass è come faccio il calcolo delle mie derivate parziali
+
+	13
+---
+**FORWARD: Scomporre il grafo del calcolo**
+
+- Per primo, scriviamo il calcolo di $\ell_i$ come una sequenza di passi intermedi:
+	- $f[x_i, \phi] = \beta_3 + \omega_3 \cdot \cos \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot \sin \left[ \beta_0 + \omega_0 x_i \right] \right] \right]$
+	- $f_0 = \beta_0 + \omega_0 x_i$
+	- $h_1 = \sin [f_0]$
+	- $f_1 = \beta_1 + \omega_1 h_1$
+	- $h_2 = \exp [f_1]$
+	- $f_2 = \beta_2 + \omega_2 h_2$
+	- $h_3 = \cos [f_2]$
+	- $f_3 = \beta_3 + \omega_3 h_3 \, (\equiv f[x_i, \phi])$
+	- $l_i = (f_3 - y_i)^2$
+
+	14
+---
+**BACKWARD: La regola della catena**
+
+- Successivamente, calcoliamo le derivate di $\ell_i$ rispetto alle quantità intermedie **in ordine inverso**:  $$\frac{\partial \ell_i}{\partial f_3}, \quad \frac{\partial \ell_i}{\partial h_3}, \quad \frac{\partial \ell_i}{\partial f_2}, \quad \frac{\partial \ell_i}{\partial h_2}, \quad \frac{\partial \ell_i}{\partial f_1}, \quad \frac{\partial \ell_i}{\partial h_1}, \quad \text{e} \quad \frac{\partial \ell_i}{\partial f_0}$$
+- La prima di queste è semplice:$$\frac{\partial \ell_i}{\partial f_3} = 2(f_3 - y)$$
+- Lavorando all'indietro, la seconda può essere calcolata usando la regola della catena: $$\frac{\partial \ell_i}{\partial h_3} = \frac{\partial f_3}{\partial h_3} \frac{\partial \ell_i}{\partial f_3}$$ => ma la prima di queste l'ho già calcolata! (parte a destra)
+---
+**BACKWARD: Intuizione**
+
+- Questo primo passo all'indietro è: $$\frac{\partial \ell_i}{\partial h_3} = \frac{\partial f_3}{\partial h_3} \frac{\partial \ell_i}{\partial f_3}$$
+- Il lato sinistro chiede come $\ell_i$ cambia quando $h_3$ cambia.
+- Il lato destro dice che possiamo scomporre questo in:
+  1. Come $\ell_i$ cambia quando $f_3$ cambia; e
+  2. Come $f_3$ cambia quando $h_3$ cambia.
+
+- Otteniamo una **catena di eventi**: $h_3$ cambia $f_3$, che cambia $\ell_i$, e le derivate rappresentano gli effetti di questa catena.
+- Nota che abbiamo già calcolato $f_3$ e la prima di queste derivate $2(f_3 - y)$.
+
+---
+**BACKWARD: Continuiamo semplicemente**
+
+- Continuiamo a calcolare le derivate dell'output rispetto alle quantità intermedie: 
+	- $\frac{\partial \ell_i}{\partial f_2} = \frac{\partial h_3}{\partial f_2} \left( \frac{\partial f_3}{\partial h_3} \frac{\partial \ell_i}{\partial f_3} \right)$
+	- $\frac{\partial \ell_i}{\partial h_2} = \frac{\partial f_2}{\partial h_2} \left( \frac{\partial h_3}{\partial f_2} \frac{\partial f_3}{\partial h_3} \frac{\partial \ell_i}{\partial f_3} \right)$
+	- $\frac{\partial \ell_i}{\partial f_1} = \frac{\partial h_2}{\partial f_1} \left( \frac{\partial f_2}{\partial h_2} \frac{\partial h_3}{\partial f_2} \frac{\partial f_3}{\partial h_3} \frac{\partial \ell_i}{\partial f_3} \right)$
+	- $\frac{\partial \ell_i}{\partial h_1} = \frac{\partial f_1}{\partial h_1} \left( \frac{\partial h_2}{\partial f_1} \frac{\partial f_2}{\partial h_2} \frac{\partial h_3}{\partial f_2} \frac{\partial f_3}{\partial h_3} \frac{\partial \ell_i}{\partial f_3} \right)$
+	- $\frac{\partial \ell_i}{\partial f_0} = \frac{\partial h_1}{\partial f_0} \left( \frac{\partial f_1}{\partial h_1} \frac{\partial h_2}{\partial f_1} \frac{\partial f_2}{\partial h_2} \frac{\partial h_3}{\partial f_2} \frac{\partial f_3}{\partial h_3} \frac{\partial \ell_i}{\partial f_3} \right)$
+
+	17
+---
+**BACKWARD: Ma... la loss? E la forward pass?!**
+
+- Dobbiamo ancora calcolare come la perdita $\ell_i$ cambia in termini di cambiamenti ai parametri $\beta_k$ e $\omega_k!$
+
+- Ancora una volta, applichiamo la regola della catena: $$\frac{\partial l_i}{\partial \beta_k} = \frac{\partial f_k}{\partial \beta_k} \frac{\partial \ell_i}{\partial f_k}$$$$\frac{\partial l_i}{\partial \omega_k} = \frac{\partial f_k}{\partial \omega_k} \frac{\partial \ell_i}{\partial f_k}$$
+
+- E ancora: abbiamo già calcolato $\frac{\partial \ell_i}{\partial f_k}$!
+- Per $k > 0$ abbiamo:$$\frac{\partial f_k}{\partial \beta_k} = 1 \text{ e } \frac{\partial f_k}{\partial w_k} = h_k$$
+	18
+---
+**L'Algoritmo di Backpropagation Illustrato**
+
+- Passo 1: Calcola la forward pass (passaggio in avanti).
+	![[Pasted image 20251118095135.png]]
+
+- Passo 2: Propaga all'indietro i gradienti delle attivazioni intermedie.
+	![[Pasted image 20251118095144.png]]
+
+- Passo 3: Calcola le derivate parziali finali.
+	![[Pasted image 20251118095200.png]]
+
++metti sketch => derivata rispetto al bias... è 1!! => avrò sempre prodotti di qualcosa che abbiamo già e derivata parziale rispetto al parametro considerato! => che appunto nel caso lineare abbiamo bisogno di queste nel forward activation, mentre per i bias no siccome la loro derivata è 1
+
+	19
+---
+## Riflessioni sulla Backpropagation
+---
+**Riflessioni: problemi con la backprop**
+
+- Se l'algoritmo di backpropagation è così "semplice", perché non abbiamo usato le reti neurali dagli anni '70?
+- Ci sono una serie di problemi:
+  - **Unità saturanti**: molte funzioni di attivazione sono "piatte" nei loro valori estremi – questo risulta in gradienti quasi zero.
+  - **Gradienti che svaniscono (Vanishing gradients):** la backprop crea una lunga catena di gradienti moltiplicati – tutti tipicamente molto piccoli. => gradient starts collapsing!
+
+- Soluzione Parziale: usare funzioni di attivazione non saturanti:
+	![[Pasted image 20251118095932.png]]
+
+	20
+---
+**Riflessioni: altri problemi con la backprop**
+
+- Un altro problema è l'overparameterization: i (molto spesso) numerosi parametri nelle reti neurali possono portare a un facile overfitting.
+- Buon esercizio: contare il numero di pesi in un MLP (Multi-Layer Perceptron).
+- Soluzione parziale: usare la regolarizzazione per controllare la magnitudine dei pesi nella rete.
+
+	21
+---
+**Riflessioni: Discesa Stocastica del Gradiente (SGD)** skipped
+
+- Problema: cosa succede se $N$ (il numero di campioni di training) è molto grande?
+- Beh, finiamo per fare passi molto lenti – ogni iterazione della discesa del gradiente è una media sull'intero dataset.
+- Soluzione: approssimare il gradiente vero con il gradiente su un singolo esempio di training.
+
+ - **Discesa Stocastica del Gradiente Online**
+	- Scegli un vettore iniziale di parametri $\theta$ e un learning rate $\eta$.
+	- Ripeti fino a quando non viene trovato un minimo approssimativo:
+	   1. Mescola casualmente i campioni di training in $D$.
+	   2. Per ogni $(x,y)\in D$:
+		    $\theta := \theta - \eta \nabla_\theta \mathcal{L}(\{x,y\};\theta)$
+
+	22
+---
+**Riflessioni: Discesa Stocastica del Gradiente (continua)**
+
+- Un altro problema: valutare il gradiente su esempi singoli porta a passi molto rumorosi nello spazio dei parametri.
+- Un trucco per mitigare questo è usare il momentum: mantenere una media mobile dei gradienti che viene aggiornata lentamente.
+- Un'altra soluzione è usare i mini-batch: invece di un singolo campione, fare la media dei gradienti su un piccolo batch di campioni.
+- È comune usare una combinazione di mini-batch e momentum per stabilizzare l'addestramento.
+
+	23
+---
+**Riflessioni: Terminologia**
+
+- Alcuni termini utili per l'ottimizzazione nel deep learning:
+  - 1 epoca (epoch): un passaggio completo sui dati.
+  - 1 iterazione: un singolo passo di gradiente.
+  - N: numero di campioni di training.
+  - B: dimensione del batch (batch size).
+
+| Algoritmo                 | Iterazioni per epoca |
+|---------------------------|---------------------|
+| Batch Gradient Descent    | 1                   |
+| Stochastic Gradient Descent (SGD) | $N$             |
+| Mini-batch Gradient Descent | $\frac{N}{B}$   |
+
+	24
+---
+## Discussione
+---
+**Riflessioni sulla backpropagation**
+
+- Il riutilizzo efficiente di calcoli parziali durante il calcolo dei gradienti nei grafi computazionali è stato scoperto ripetutamente [Werbos (1974), Bryson et al. (1979), LeCun (1985), e Parker (1985)].
+
+- La descrizione più celebre di questa idea fu di Rumelhart et al. (1985), che coniarono anche il termine "backpropagation".
+
+- Questo lavoro diede il via a una nuova fase della ricerca sulle reti neurali: per la prima volta, era *pratico addestrare reti con strati nascosti*.
+
+- I progressi si bloccarono a causa (in retrospettiva) della mancanza di dati di addestramento, della potenza computazionale limitata e dell'uso di attivazioni sigmoide.
+
+- Applicazioni come NLP e Computer Vision non si basarono su modelli di reti neurali fino ai notevoli risultati di classificazione delle immagini di Krizhevsky et al. (2012).
+
+	25
+---
+**Le reti neurali e le vicissitudini della storia**
+
+- La ricerca sulle reti neurali fu effettivamente bloccata dal circa 1969 fino agli anni '80.
+- Le difficoltà nell'addestrare le reti (anche quelle con un solo strato nascosto) ne impedirono l'uso e lo sviluppo diffusi.
+- Esse rappresentano, tuttavia, una famiglia estremamente potente di funzioni che possiamo usare per modellare mappature complesse e non lineari dall'input all'output.
+- Addestrarle richiede ancora una delicata combinazione di arte, background matematico e molta pazienza.
+- La scoperta dell'algoritmo di backpropagation fu una pietra miliare importante, e per usare (e debugare) efficacemente i loop di addestramento, è essenziale sapere come funziona.
+
+	26
+---
+**La Strada Avanti**
+
+- Nella prossima lezione esamineremo alcune diverse architetture per le Reti Neurali Profonde (Deep Neural Networks).
+- Nello specifico, vedremo come le Reti Neurali Convoluzionali (CNNs) possono essere usate per processare efficientemente i dati immagine.
+- E vedremo come le CNNs sono in realtà solo Multilayer Perceptrons travestiti.
+- Esamineremo anche più da vicino alcune delle insidiLa Strada Avantie nell'addestrare reti profonde, e il bagaglio di trucchi che usiamo per evitarle (o per uscirne).
+
+	27
+
+# 22 - 

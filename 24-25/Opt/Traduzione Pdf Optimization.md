@@ -1772,7 +1772,7 @@ dove $\overline{W}^k$ è il **complemento** di $W_k$. La regola di aggiornamento
 La convergenza globale di questo schema dipende dal _working set selection rule_ ovvero la scelta delle variabili per ogni iterazione.
 Possibili regole di scelta che assicurano convergenza a punti stazionari includono:
 - *Regola ciclica*: $\exists M > 0 \space \text{t.c.} \space \forall i \in \{1,..., n\}, \forall k \space \exists \ell(k) \leq M  \space \text{t.c.} \space  i \in W^{k+\ell(k)}$ . Questa regola richiede che ogni variabile appare nel set di lavoro almeno ogni $M$ iterazioni; in questo modo, si previene che variabili importanti da ottimizzare vengano dimenticate.
-- *Regola di Gauss-Southwell*: $\forall k, i(k) \in W_k \space \text{if} \space | \nabla_{i(k)} f(x^k)| \geq | \nabla_i f(x^k)| \space \forall i \in \{1, ... , n\}$. Questa regola richiede di includere nella selezione delle variabili ad ogni iterazione, la variabile più "promettente" (che è quella associata alla derivata più grande). Questa strategia permette al limite, di portare a zero la più grande derivata parziale, ovvero portare a zero l'intero gradiente.
+- *Regola di Gauss-Southwell*: $\forall k, \exists i(k) \in W_k \space \text{t.c.} \space | \nabla_{i(k)} f(x^k)| \geq | \nabla_i f(x^k)| \space \forall i \in \{1, ... , n\}$. Questa regola richiede di includere nella selezione delle variabili ad ogni iterazione, la variabile più "promettente" (che è quella associata alla derivata parziale più grande). Questa strategia permette al limite, di portare a zero la più grande derivata parziale, ovvero portare a **zero l'intero gradiente**.
 
 ---
 
@@ -2280,7 +2280,7 @@ In questo caso, gli elementi della matrice $Q$ nel problema duale (27) diventano
 
 Senza addentrarci nella teoria dei kernel, ricordiamo che una funzione $k$ può essere usata come kernel se e solo se:
 - La matrice $Q$ è **semidefinita positiva** per ogni possibile dataset $D$ (garantendo che il problema duale sia convesso).
-- La funzione kernel rappresenta un **prodotto scalare** tra i punti dati mappati in uno spazio di dimensione potenzialmente maggiore.
+- La funzione kernel rappresenta un **prodotto scalare** tra i punti dati mappati in uno spazio di dimensione potenzialmente maggiore. => invece di usare come misura di similarità il prodotto scalare uso una funziona kernel! => il tutto di "nascosto" ovvero senza dover calcolare direttamenti prodotti scalari di funzioni a grosse dimensioni 
 
 In questi casi, la funzione decisionale assume la forma:
 
@@ -2299,9 +2299,24 @@ Per riassumere, le due principali ragioni per considerare il **problema duale** 
 
 ### 7.2 Risolvendo il problema duale
 
-Prima di riprendere il problema duale riguardare tecniche di decomposizione (capitolo 4.7)
+**Prima di riprendere il problema duale riguardare tecniche di decomposizione (capitolo 4.7)**
 
-In questa sezione mostriamo come il problema duale per l'addestramento di un SVM **non lineare** può essere risolto in modo efficiente. Richiamiamo prima la formulazione con alcune modifiche nella notazione per renderla più chiara dal punto di vista dell'ottimizzazione (28):
+(breve recup)
+Questo nel caso in cui l'informazione legata all'intero insieme di variabili non è gestibile. Oppure se fissando il valore di uno o più blocchi di variabili, il problema risultante può essere risolto in modo efficente (eventualmente tramite parallelizzazione) => del tipo l'ottimizazzione rispetto ad alcune variabili (nel caso di più variabili) => porta a casi efficienti da risolvere => tipo funzione non convessa in partenza diventa convessa.
+
++Esempio di algoritmo di decomposizione sequenziale => Gauss-Seidel:
+$$x_i^{k+1} \in argmin_{x_i \in \mathbb{R}} f (x_i^{n+1}, ... , x_{i-1}^{n+1}, x_i, x_{i+1}^n, ..., x_m^k)$$
+Il Quale converge a punti stazionari se:
+- f è convessa 
+- f è strettamente convessa rispetto a ogni blocco
+- m = 2
+
+I problemi principali avvengono quando nella scelta  di una variabile i risultati affligono le altre variabili. => oppure può capitare di rimbalzare e tornare allo stesso punto precedente per la discesa del gradiente.
+
+Altro esempio è il caso di decomposizione parallela: dove considero i diversi sottoproblemi fissando un blocco di variabili e vedo in parallelo quale mi porta alla soluzione migliore => caso di Jacobi: $$\xi_i^{k} \in argmin_{\xi_i \in \mathbb{R}^n} f (x_i^{n}, ... , x_{i-1}^{n}, \xi_i, x_{i+1}^n, ..., x_m^k)$$ dove $$x^{k+1} \in argmin f(x)$$
+In questa sezione mostriamo come il problema duale per l'addestramento di un SVM **non lineare** può essere risolto in modo efficiente. 
+
+Richiamiamo prima la formulazione con alcune modifiche nella notazione per renderla più chiara dal punto di vista dell'ottimizzazione (28):
 
 	$\min \frac{1}{2} x^T Q x - e^T x$
 
@@ -2309,27 +2324,30 @@ In questa sezione mostriamo come il problema duale per l'addestramento di un SVM
 
 dove $Q \in \mathbb{R}^{n \times n}$ è una matrice semi-definita positiva ($n$ è la dimensione del set di addestramento) e $e = (1, \dots, 1)^T$. Tipicamente, $n$ è grande e $Q$ è densa, fattori che contribuiscono alla difficoltà del problema. Un'ulteriore fonte di complessità è il vincolo lineare $a^T x = 0$. I vincoli box sono invece più facili da trattare, poiché sono **separabili per componente.**
 
-Questo problema è risolto in modo efficiente attraverso una strategia di decomposizione: a ogni iterazione 
-viene selezionato un **working set** $W \subset \{1, \dots, n\}$, con complemento $\overline{W} = \{1, \dots, n\} \setminus W$.
+Questo problema è risolto in modo efficiente attraverso una strategia di decomposizione: a ogni **iterazione** 
+viene selezionato un **working set** $W_k \subset \{1, \dots, n\}$, con complemento $\overline{W_k} = \{1, \dots, n\} \setminus W_k$.
 
 Il sottoproblema risultante (29) è quindi:
 
 	$\min_{x_W} f (x_W , x_{\overline{W}^k}) = \frac{1}{2} x_W^T Q_{W W} x_W - (e_W - Q_{W \overline{W}} x_{\overline{W}^k})^T x_W$
 
-	$\text{t.c.} \quad a_W^T x_W = -a_{\overline{W}}^T x_{\overline{W}^k}, \quad 0 \leq x_W \leq C$
+	$\text{t.c.} \quad a_W^T x_W = -a_{\overline{W}}^T x_{\overline{W}^k}, \quad 0 \leq x_W \leq C$ 
+
+Inoltre $$Q = (Q_{ww} Q_{w\overline{w}} Q_{\overline{w}w} Q_{\overline{w}\overline{w}})$$
 
 la cui soluzione è $x_W^\star$. Di conseguenza, le variabili vengono aggiornate come segue:
 
 	$x_i^{k+1} = \begin{cases} x_i^\star, & \text{se } i \in W, \\ x_i^k, & \text{se } i \notin W\end{cases}$
 
 A questo punto sorgono due domande.
-La prima riguarda la cardinalità minima di $W$: deve valere $|W| \geq 2$. Se fosse $W = \{i\}$, allora si avrebbe sempre $x^{k+1} = x^k$, poiché entrambi soddisfano il vincolo $a_W^T x_W = -a_{W^c}^T x_W^k$. (In particolare se prendessimo la cardinalità pari a 1, avremmo un valore sempre costante come soluzione che non ci permette alcuna condizione di discesa)
+1. La prima riguarda la **cardinalità minima** di $W$:
+- deve valere $|W| \geq 2$. Se fosse $W = \{i\}$, allora si avrebbe sempre $x^{k+1} = x^k$, poiché entrambi soddisfano il vincolo $a_W^T x_W = -a_{\overline{W}}^T x_{\overline{W}}^k$. (In particolare se prendessimo la cardinalità pari a 1, ==avremmo un valore sempre costante come soluzione== che non ci permette alcuna condizione di discesa) => non posso muovere la variabile senza rompere vincoli!
 
 Gli **algoritmi di decomposizione** si classificano in base alla cardinalità del working set:
 - Se $|W| = 2$, si parla di **Sequential Minimal Optimization (SMO)**, che non richiede l'uso di un solutore per il sottoproblema.
-- Se $|W| > 2$, l'algoritmo necessita di un solutore per trovare la soluzione di (29).
+- Se $|W| > 2$, l'algoritmo necessita di un *solutore* per trovare la soluzione di (29).
 
-La seconda questione riguarda la selezione di $W$, che approfondiremo nella prossima sezione.
+2. La seconda questione riguarda la selezione di $W$, che approfondiremo nella prossima sezione.
 #### 7.2.1 Sequential Minimal Optimization (SMO)
 
 Nel caso $|W| = 2$, il sottoproblema (29) diventa:
@@ -2345,7 +2363,7 @@ Ora ci concentriamo sulla strategia di selezione delle variabili nel sottoproble
 
 	$x^{k+1} = (x_1^k, \dots, x_i^{k+1}, \dots, x_j^{k+1}, \dots, x_n^k)$
 
-tale che sia **fattibile** e soddisfi: $f(x^{k+1}) < f(x^k)$
+tale che sia **fattibile** e soddisfi: $f(x^{k+1}) < f(x^k)$ ovvero sia ammissibile e porti ad un miglioramento della funzione obbiettivo => ovvero sia di discesa
 
 Per raggiungere questi obiettivi, dobbiamo identificare, a ogni passo, una direzione di discesa ammissibile ==che abbia esattamente due componenti non nulle==.
 
@@ -2459,20 +2477,15 @@ Questo conclude la dimostrazione.
 ---
 
 **Proposizione 7.4**
-La direzione $d_{i,j}$ definita come in (33)-(34) è una direzione di discesa per il Problema (28) se e solo se:
-
-	$\frac{\nabla_j f (\bar{x})}{a_j} < \frac{\nabla_i f (\bar{x})}{a_i}$
+La direzione $d_{i,j}$ definita come in (33)-(34) è una direzione di **discesa** per il Problema (28) se e solo se:$$\frac{\nabla_j f (\bar{x})}{a_j} > \frac{\nabla_i f (\bar{x})}{a_i}$$
 
 **Dimostrazione**
-Poiché $f$ è una funzione quadratica convessa, l==a direzione $d$ è una direzione di discesa in $\bar{x}$ se e solo se:==
+Poiché $f$ è una funzione quadratica convessa, l==a direzione $d$ è una direzione di discesa in $\bar{x}$ se e solo se:== $$\nabla f (\bar{x})^T d_{i,j} < 0$$
 
-	$\nabla f (\bar{x})^T d_{i,j} < 0$
+Esplicitando il prodotto scalare otteniamo:$$\frac{1}{a_i} \nabla_i f (\bar{x}) - \frac{1}{a_j} \nabla_j f (\bar{x}) < 0$$
 
-Esplicitando il prodotto scalare otteniamo:
-
-$\frac{1}{a_i} \nabla_i f (\bar{x}) - \frac{1}{a_j} \nabla_j f (\bar{x}) < 0$
-
-da cui segue la condizione: $\frac{\nabla_j f (\bar{x})}{a_j} < \frac{\nabla_i f (\bar{x})}{a_i}$
+da cui segue la condizione: $$\frac{\nabla_j f (\bar{x})}{a_j} > \frac{\nabla_i f (\bar{x})}{a_i}$$
+=> questo ci aiuta quindi a scegliere le variabili ad ogni iterazione
 
 ---
 ##### **Algoritmo 6: Sequential Minimal Optimization (SMO)**
@@ -2483,22 +2496,18 @@ Di seguito riportiamo il procedimento generale dell’algoritmo SMO.
 1. **Input**: $Q$, $a$ (vettore dei coefficienti), $C$  
 2. $x^0 = 0$;  
 3. $k = 0$;  
-4. $\nabla f (x^0) = -e$.
+4. $\nabla f (x^0) = -e$. => ho già calcolato il gradiente! (scegliendo x = 0)
 5. **Ciclo fino al soddisfacimento del criterio di arresto**:
-   - Selezionare $i \in R(x^k)$,  $j \in S(x^k)$ tali che:
-		 $\frac{\nabla_j f (x^k)}{a_j} < \frac{\nabla_i f (x^k)}{a_i}$
+   - Selezionare $i \in R(x^k)$,  $j \in S(x^k)$ tali che:$$\frac{\nabla_j f (x^k)}{a_j} > \frac{\nabla_i f (x^k)}{a_i}$$
+   - Definire il working set: $W = \{i, j\}$. => con le condizioni viste prima su $i$ e $j$
 
-   - Definire il working set: $W = \{i, j\}$.
-
-   - Risolvere analiticamente il problema:
-     $\min_{x_W} f (x_W, x^k_{\overline{W}}) \quad \text{s.t.} \quad a_W^T x_W = -a_{\overline{W}}^T x^k_{\overline{W}}, \quad 0 \leq x_W \leq C$
-
+   - Risolvere analiticamente il problema:$$arg\min_{x_W} f (x_W, x^k_{\overline{W}}) \quad \text{s.t.} \quad a_W^T x_W = -a_{\overline{W}}^T x^k_{\overline{W}}, \quad 0 \leq x_W \leq C$$
    - Sia $x^*_W$ la soluzione trovata al passo precedente.
 	   - Aggiornare le variabili:
 	     $x^{k+1}_h = \begin{cases} x^*_j & \text{se } h = j, \\ x^*_i & \text{se } h = i, \\x^k_h & \text{altrimenti}     \end{cases}$
 
-   - Aggiornare il gradiente:
-	$\nabla f (x^{k+1}) = \nabla f (x^k) + Q_i (x^{k+1}_i - x^k_i) + Q_j (x^{k+1}_j - x^k_j)$
+   - Aggiornare il gradiente:$$\nabla f (x^{k+1}) = \nabla f (x^k) + Q_i (x^{k+1}_i - x^k_i) + Q_j (x^{k+1}_j - x^k_j) = \nabla f (x^k) + Q (x^{k+1}- x^k)$$ => non prendo tutta la matrice dei kernel 0 => mi bastano due sole colonne in memoria
+
    - Incrementare $k$
 
 6. **Output**:  Restituire $x^k$
@@ -2517,7 +2526,7 @@ Questo permette di aggiornare il gradiente ==usando solo due colonne della matri
 Ammissibilità e discesa stretta sono sufficienti a garantire convergenza globale.
 #### 7.2.2 Proprietà di Convergenza di SMO con Regola di Selezione del Primo Ordine
 
-La scelta del working set $W = \{i, j\}$ è la chiave per ottenere proprietà di convergenza per SMO.
+La scelta del working set $W = \{i, j\}$ è la chiave per ottenere proprietà di **convergenza** per SMO.
 
 ---
 
@@ -2526,8 +2535,8 @@ Un punto $x^\star$ è un minimizzatore globale per il problema (28) se e solo se
 
 	$\max_{h \in R(x^\star)} \left( -\frac{\nabla_h f (x^\star)}{a_h} \right) \leq \min_{h \in S(x^\star)} \left( -\frac{\nabla_h f (x^\star)}{a_h} \right)$ (36)
 
-**Dimostrazione**
-Poiché il problema (28) è convesso con vincoli lineari, le condizioni di ottimalità KKT sono necessarie e sufficienti:
+**Dimostrazione** (skip this)
+Poiché il problema (28) è **convesso** con vincoli lineari, le condizioni di ottimalità KKT ==sono necessarie e sufficienti==:
 
 $\nabla_i L(x, \lambda, \xi, \hat{\xi}) = \nabla_i f (x) + \lambda a_i - \xi_i + \hat{\xi}_i = 0, \quad \forall i = 1, \dots, n$
 
@@ -2559,19 +2568,16 @@ otteniamo la disuguaglianza (36), completando la dimostrazione.
 **Corollario 7.6**
 
 Sia $x^k$ la soluzione attuale (ammissibile) e supponiamo che non sia ottimale.  
-Allora esistono $i \in R(x^k)$ e $j \in S(x^k)$ tali che:
-
-	$-\frac{\nabla_j f (x^k)}{a_j} > -\frac{\nabla_i f (x^k)}{a_i}$
-
+Allora esistono $i \in R(x^k)$ e $j \in S(x^k)$ tali che: $$-\frac{\nabla_j f (x^k)}{a_j} < -\frac{\nabla_i f (x^k)}{a_i}$$
 **Dimostrazione**
-Questo corollario è una conseguenza diretta della Proposizione 7.5.
+Questo corollario è una conseguenza diretta della Proposizione 7.5. => vale con il segno invertito
+
+=> coppia di questo tipo è detta *violating pair*
 
 ---
 
 **Definizione 7.1**
-La **coppia più violante** (_most violating pair_) alla soluzione ammissibile e non ottimale $x^k$ del problema (28) è la coppia di indici $(i^\star, j^\star)$ definita come:
-
-	$i^\star \in \arg \max_{h \in R(x^k)} \left( -\frac{\nabla_h f (x^k)}{a_h} \right), \quad j^\star \in \arg \min_{h \in S(x^k)} \left( -\frac{\nabla_h f (x^k)}{a_h} \right)$
+La **coppia più violante** (_most violating pair_) alla soluzione ammissibile e **non ottimale** $x^k$ del problema (28) è la coppia di indici $(i^\star, j^\star)$ definita come:$$i^\star \in \arg \max_{h \in R(x^k)} \left( -\frac{\nabla_h f (x^k)}{a_h} \right), \quad j^\star \in \arg \min_{h \in S(x^k)} \left( -\frac{\nabla_h f (x^k)}{a_h} \right)$$
 
 ---
 
@@ -2608,7 +2614,7 @@ Questa strategia porta all'algoritmo **SVMlight** (Algoritmo 7), un algoritmo di
 
 **Proposizione 7.7**
 
-La sequenza $\{x^k\}$ generata dall'algoritmo **SVMlight** ha punti limite, ognuno dei quali è una soluzione del problema (28).
+La sequenza $\{x^k\}$ generata dall'algoritmo **SVMlight** ha punti limite (punti di accumulazione), ognuno dei quali è una soluzione del problema (28) => ovver ognuno dei punti è un punto di minimo globale per il problema.
 
 ---
 
@@ -2621,6 +2627,7 @@ Possiamo definire due quantità:
 	$m(x) = \max_{h \in R(x)} \left( -\frac{\nabla_h f (x)}{a_h} \right),M(x) = \min_{h \in S(x)} \left( -\frac{\nabla_h f (x)}{a_h} \right)$
 
 Dalla **Proposizione 7.5**, sappiamo che $x^\star$ è una soluzione ottimale se e solo se:	$m(x^\star) \leq M(x^\star)$
+
 Dunque la seguente proposizione ci può dare un idea sul possibile criterio di arresto.
 
 ---
@@ -2633,7 +2640,7 @@ Siano m(x) e M(x) definiti come in (38). Allora, per ogni $\epsilon > 0$, l'algo
 
 entro un numero finito di iterazioni.
 
-La dimostrazione di questa proprietà richiede un ragionamento complesso, principalmente a causa della discontinuità delle funzioni m(x) e M(x).
+La dimostrazione di questa proprietà richiede un ragionamento complesso, principalmente a causa della discontinuità delle funzioni m(x) e M(x). => al limite gli indici potrebbero saltare ovvero potrebbero non essere più soddisfatte le condizioni 
 
 #### 7.2.3 Working Set Selection usando informazioni del secondo ordine
 
@@ -2883,7 +2890,7 @@ L’algoritmo di backpropagation consente il calcolo **efficiente dei gradienti*
 
 ![[Pasted image 20250204232818.png]]
 
-![[Pasted image 20250204232851.png]]![[Pasted image 20250204232851 1.png]
+![[Pasted image 20250204232851.png]][[Pasted image 20250204232851 1.png]
 
 Prima, tutte le operazioni elementari vengono mappate in un Computation Graph (Figura 16a), che è una struttura che permette di collegare quantità che dipendono l'una dall'altra. 
 In questo modo, le quantità calcolate che saranno necessarie per calcolare altri termini possono essere memorizzate in memoria, evitando calcoli duplicati.
