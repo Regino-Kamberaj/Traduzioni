@@ -587,7 +587,7 @@ K-Nearest Neighbors Classification
 
 # 20 - Introduzioni al Deep Learing
 
-[[20-IntroDeepLearning.pdf]]
+![[20-IntroDeepLearning.pdf]]
 
 # 21 - Deep Learning e algoritmo di Backpropagation
 
@@ -898,4 +898,661 @@ $\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot
 
 	27
 
-# 22 - 
+# 22 - CNN - Convolutional Neural Networks
+
+## Una Critica della Ragion Pura
+---
+
+[[22-CNNs.pdf]]
+
+- Sono principalmente immagini 
+
+	2-13
+---
+**Riconoscimento visivo: modelli impliciti**
+
+- Consideriamo una configurazione più o meno standard di apprendimento supervisionato per la classificazione visiva.
+- Possiamo immaginare una semplice pipeline come quella qui sotto.
+- Ogni fase ha il suo spazio di progettazione e scelte critiche da compiere.
+- Questo appealed allo scienziato informatico in noi poiché stiamo effettivamente dividendo, modularizzando e (si spera) conquistando.
+
+	![[Pasted image 20251125143604.png]]
+	
+	14
+---
+**Riconoscimento visivo: perché è difficile?**
+
+- È apparso un articolo nel 2000 che riassumeva lo stato dell'arte nel riconoscimento visivo [Smeulders et al., 2000].
+- Ha introdotto il divario sensoriale nella conversazione sul riconoscimento visivo:
+
+*Il divario sensoriale è il divario tra l'oggetto nel mondo e le informazioni in una descrizione (computazionale) derivata da una registrazione di quella scena.*
+
+- Pensateci un momento: lavoriamo sempre con una ricostruzione imperfetta del mondo reale.
+- Le immagini hanno una risoluzione finita, sono soggette a rumore, sono acquisite con un sensore che è un altro oggetto libero nel mondo.
+- Questo divario sensoriale deve essere superato per rendere il riconoscimento degli oggetti invariante rispetto agli artefatti incidentali della scena.
+
+	15
+---
+**Il divario semantico**
+
+- L'altro concetto chiave è il divario semantico:
+
+*Il divario semantico è la mancanza di coincidenza tra le informazioni che si possono estrarre dai dati visivi e l'interpretazione che gli stessi dati hanno per un utente in una data situazione.*
+
+![[Pasted image 20251125143921.png]]
+
+	16
+---
+**Il divario semantico**
+
+![[22-CNNs.pdf]]
+
+- Immagine dell'illusione di Adelson: scacchiera con quadrati A e B che appaiono di grigio diverso ma sono identici
+- Oppure fragole rosse ma non ci sono pixel rossi nell'immagine
+
+	17-18-19
+---
+**Contesto storico: Borsa delle Caratteristiche (Bag of Features)**
+
+- Questo era lo stato dell'arte nel 2011:
+	
+	![[Pasted image 20251125144404.png]]
+
+	19
+---
+**Contesto storico: Questo era un "gatto"**
+
+![[Pasted image 20251125145819.png]]
+
+	20
+---
+**Contesto storico: Ora "impara"**
+
+- Ad ogni rappresentazione di immagine era associata una (o più) etichette.
+- Poi le forniamo in input ad una SVM multi-classe.
+
+	![[Pasted image 20251125145850.png]]
+
+	21
+---
+**Contesto storico: Una ricetta**
+
+- Poi restituiva i confini decisionali ottimali tra tutte le classi (e tutte le altre).
+- Il processo è importante:
+  1. Primo: estrarre una rappresentazione artigianale di punti fiduciali.
+  2. Poi: codificarli in una rappresentazione globale dell'immagine.
+  3. Poi: adattare una SVM (con o senza kernel).
+
+- Pro: l'apprendimento effettivo ha pochi iperparametri (di solito solo uno).
+- Contro: molti elementi artigianali con molti (praticamente infiniti) iperparametri.
+- Contro: l'apprendimento è separato dalla rappresentazione.
+
+	22
+---
+**Obiettivi della lezione**
+
+Alla fine della lezione dovreste:
+
+- Comprendere le motivazioni storiche del *problema generale della visione artificiale* e il ruolo centrale svolto dal divario semantico.
+- Comprendere le differenze e le somiglianze tra le architetture dei modelli Perceptron Multistrato (MLP) e Rete Neurale Convoluzionale (CNN).
+- Comprendere alcuni dei recenti sviluppi storici e delle innovazioni tecnologiche che hanno reso possibile il *Rinascimento del Deep Learning*.
+- Comprendere le due famiglie fondamentali di architetture CNN e cosa le distingue l'una dall'altra.
+- Comprendere alcuni dei "trucchi" necessari per rendere le CNN efficaci nella pratica.
+
+	23
+---
+
+## Connectionismo: Da MLP a CNN
+---
+**L'attrattiva dell'apprendimento end-to-end**
+
+- Gli MLP hanno una serie di caratteristiche estremamente attraenti:
+  - È un modello end-to-end: possiamo addestrare tutto nel modello utilizzando un unico algoritmo di ottimizzazione.
+  - Gli MLP apprendono rappresentazioni dell'input e del classificatore.
+
+- Perché non possiamo semplicemente usare questo modello per i problemi di riconoscimento delle immagini?
+- Un MLP dovrebbe essere in grado di apprendere rappresentazioni di caratteristiche che a loro volta sono buone rappresentazioni per la classificazione.
+- Perché questo è problematico?
+- NOTA: Il trattamento e molte figure in questa sezione sono tratti dall'eccellente libro *Understanding Deep Learning*, di Simon Prince.
+- Raccomando caldamente questo libro.
+
+	24
+---
+**Su invarianza ed equivarianza**
+
+- Una funzione $f[x]$ è invariante alla trasformazione $t[x]$ se $f[t[x]] = f[x]$.
+- Una funzione $f[x]$ è equivariante alla trasformazione $t[x]$ se $f[t[x]] = t f[x]$.
+
+	![[Pasted image 20251125150129.png]]
+
+	25
+---
+**Convoluzioni unidimensionali**
+
+- L'operatore di convoluzione calcola una somma pesata dei valori vicini: $$h_i = \sigma[\beta_i + w_1x_{i-1} + w_2x_i + w_3x_{i+1}]$$$$= \sigma[\beta + \sum_{j=1}^3 w_jx_{i+j-1}]$$
+	![[Pasted image 20251125150224.png]]
+	
+	26
+---
+
+![[22-CNNs.pdf]]
+
+
+	26-30
+---
+**Da MLP a CNN (che sono ancora in realtà MLP)**
+
+- Un layer convoluzionale è un layer fully-connected con i pesi condivisi tra le diverse posizioni dell'immagine.
+- L'input di dimensione $w \times h \times c$ viene trasformato in un output di dimensione $w \times h \times c'$.
+- Gli output sono chiamati mappe di caratteristiche e sono derivati dalla convoluzione dell'immagine con $d'$ tensori 3D di dimensione $u \times v \times d$.
+- Quindi, il numero di parametri è "solo" $(u * v * c' * c) + c'$.
+
+	![[Pasted image 20251125150518.png]]
+
+	31
+---
+**Una CNN è davvero un MLP (travestito)**
+- Ma quello non sembra affatto un MLP…
+
+	![[Pasted image 20251125150610.png]]
+
+	32
+---
+**L'ingrediente finale: Layer di Pooling**
+
+- L'apprendimento di rappresentazioni funziona creando un collo di bottiglia semantico.
+- Forziamo la rete ad estrarre rappresentazioni significative che catturino caratteristiche semanticas.
+- Nelle CNN lo facciamo tramite Sotto-campionamento, Max Pooling e Mean Pooling:
+
+	![[Pasted image 20251125150657.png]]
+
+- Ora esamineremo alcune architetture CNN reali che renderanno tutto più chiaro.
+
+	33
+---
+
+## AlexNet: Lo sparo che si è sentito in tutto il mondo
+---
+**AlexNet: Contesto**
+
+- Daremo ora un'occhiata alla submission della International Large Scale Visual Recognition Competition (ILSVRC) che ha cambiato tutto [Krizhevsky et al., 2012].
+- Questa architettura affronta sistematicamente la maggior parte dei problemi legati all'addestramento di grandi architetture di rete su grandi dataset.
+- È una Rete Neurale Convoluzionale (CNN) universalmente chiamata AlexNet.
+- È anche una Rete Profonda perché ha molti layer nascosti.
+
+
+	34
+---
+**AlexNet: L'Architettura**
+
+-  Esaminiamo prima l'architettura complessiva e poi analizziamo in dettaglio come ogni componente affronta problemi specifici.
+- È anche utile esaminare come i dati fluiscono attraverso la rete.
+
+	![[Pasted image 20251125150842.png]]
+
+	35
+---
+**AlexNet: Pooling delle Caratteristiche**
+
+- Come nel modello Bag-of-Words, possiamo fare il pooling delle caratteristiche locali.
+- AlexNet utilizza regioni di pooling $3 \times 3$ con un passo (stride) di 2 pixel.
+  - Ciò significa che dopo alcuni layer convoluzionali la dimensione della mappa di caratteristiche è ridotta di un fattore 2.
+  - Usano il max pooling: in ogni mappa di caratteristiche, mantieni il valore massimo in ogni regione di pooling $3 \times 3$ sovrapposta (in ogni mappa di caratteristiche).
+  - Questo aiuta a contenere la dimensione delle mappe di caratteristiche propagate attraverso la rete.
+  - E aiuta anche a costruire rappresentazioni di livello superiore dell'immagine.
+  - Questo perché dimezzare la risoluzione dell'immagine equivale a raddoppiare la dimensione delle convoluzioni successive.
+
+	36
+---
+**AlexNet: Saturazione delle Unità**
+
+- Un'altra innovazione in AlexNet è l'uso della funzione di attivazione Rectified Linear Unit (ReLU). $$\sigma(x) = \max(0, x)$$
+- Questa funzione di attivazione non satura come le sigmoidi.
+- Il risultato è un accelerazione di 6 volte nell'addestramento.
+
+	![[Pasted image 20251125151433.png]]
+---
+**AlexNet: Ridurre l'Overfitting**
+
+- Anche con la condivisione dei pesi convoluzionali, AlexNet ha ancora 60M di parametri.
+- Per ridurre l'overfitting, gli autori usano due trucchi extra (ormai standard):
+  - Data augmentation: vengono generate traslazioni e riflessioni casuali delle immagini di input, più variazioni casuali nelle direzioni principali dello spazio RGB.
+  - Dropout: un trucco avanzato della comunità delle Reti Neurali che rimuove casualmente metà degli input a layer selezionati durante il training.
+
+	38
+---
+**AlexNet: Altri Trucchi**
+
+- L'articolo su AlexNet è un'ottima risorsa perché spiega tutti i trucchi necessari per far apprendere una rete profonda:
+  - Local response normalization: mantiene sotto controllo la variazione locale nelle mappe di caratteristiche (sezione 3.3).
+  - Momentum: limita l'effetto "skateboard" quando si seguono valli nella superficie di loss, equivalente alla regolarizzazione L1 (o L2) dei pesi (sezione 5).
+  - Mini-batch Stochastic Gradient Descent (SGD): con 1.2M campioni di training, non possiamo considerare l'intero dataset in un unico batch; invece, campioniamo casualmente mini-batch di 128 immagini (sezione 5).
+  - Multiple GPUs: AlexNet era troppo grande per stare in una singola GPU (nel 2012), quindi le mappe di caratteristiche sono divise su due GPU (sezione 3.2).
+  - Model averaging: i risultati state-of-the-art si ottengono addestrando multiple CNN e mediando gli output.
+
+	39
+---
+**AlexNet: Risultati**
+
+- La prova è nel pudding:
+
+| Modello        | Top-1 (val) | Top-5 (val) | Top-5 (test) |
+| -------------- | ----------- | ----------- | ------------ |
+| SIFT + FVs [7] | —           | —           | 26.2%        |
+| 1 CNN          | 40.7%       | 18.2%       |              |
+| 5 CNNs         | 38.1%       | 16.4%       | 16.4%        |
+| 1 CNN*         | 39.0%       | 16.6%       |              |
+| 7 CNNs*        | 36.7%       | 15.4%       | 15.3%        |
+
+- E nelle rappresentazioni che la rete apprende:
+
+	![[Pasted image 20251125151534.png]]
+
+	40
+---
+**AlexNet: Riflessioni**
+
+- AlexNet ha sconvolto il mondo del riconoscimento degli oggetti.
+- Molti elementi del modello non sono realmente nuovi.
+- Tuttavia, questo è stato il primo lavoro a dimostrare in modo convincente come sistemi di riconoscimento oggetti all'avanguardia possano essere addestrati end-to-end su problemi reali.
+- Ciò è stato reso possibile da una serie di sviluppi concomitanti:
+  - La disponibilità di enormi quantità di dati annotati (ImageNet, con 1.2M immagini di training).
+  - GPU moderne, che rendono le convoluzioni super veloci.
+  - Decenni di persistente sviluppo teorico (ReLU, backprop veloce, dropout, ecc.).
+
+	41
+---
+**Riflessioni: Le CNN sono davvero grandi**
+
+- Una delle prime osservazioni che si possono fare sulle CNN è che hanno un ENORME numero di parametri.
+- Anche reti state-of-the-art di dimensioni modeste possono avere dell'ordine di 150 milioni di parametri addestrabili.
+- Adattare tali modelli richiede enormi quantità di dati di training etichettati.
+
+	![[Pasted image 20251125151847.png]]
+
+	42
+---
+
+## La Famiglia delle Reti Molto Profonde
+---
+**VGG: Convoluzioni piccole, più profondità**
+
+- Ora che abbiamo AlexNet come punto di riferimento, possiamo guardare ad altre architetture CNN state-of-the-art.
+- La Famiglia di Reti VGG (VGG = Visual Geometry Group di Oxford) è un raffinamento dello stile AlexNet di CNN [Simonyan e Zisserman, 2014].
+- In questo lavoro gli autori hanno svolto un'esplorazione approfondita dello spazio dei parametri architetturali.
+- Hanno variato iperparametri (es. numero di layer, dimensione delle convoluzioni, ecc.).
+- E hanno stabilito un nuovo baseline per il riconoscimento oggetti basato su CNN.
+
+
+	43
+---
+**VGG: L'impostazione**
+
+- L'input alle reti è un tensore immagine fisso, $224 \times 224 \times 3$.
+- Il valore medio RGB viene prima sottratto da tutte le immagini di training per centrare i dati. => pixelwise mean and std
+- Tutte le **convoluzioni** hanno dimensione $3 \times 3 \times d$ o $1 \times 1 \times d$ (d è un numero arbitrario di mappe di caratteristiche) con un passo (stride) di 1. 
+- L'idea è: se hai bisogno di convoluzioni più grandi, ==basta andare più in profondità.==
+- Il max pooling viene eseguito su finestre non sovrapposte $2 \times 2$ con un passo di 2 (riduzione di 2x nella dimensione).
+- Tutti i layer nascosti utilizzano una funzione di attivazione ReLU, ma **non effettuano la local response normalization.**
+
+	44
+---
+**VGG: Le configurazioni**
+
+- Sono state considerate le seguenti configurazioni:
+
+	![[Pasted image 20251125152053.png]]
+	=> l'ultima parte della rete è la stessa di AlexNet => FC-1000 è un classificatore
+	=> sono comunque reti ancora più profonde e con ancora più parametri...
+	
+	45
+---
+**VGG: training**
+
+- La procedura di addestramento è simile ad AlexNet:
+  - L'addestramento viene effettuato ottimizzando l'obiettivo di regressione logistica multinomiale utilizzando la discesa del gradiente mini-batch.
+  - Il training è stato regolarizzato con decadimento del peso (weight decay) => ovvero reg L2 e **dropout** sui primi due layer fully-connected.
+  - Il learning rate è stato inizialmente impostato a $10^{-2}$ e diminuito di un fattore 10 quando l'accuratezza sul validation set smetteva di migliorare.
+  - L'apprendimento è stato fermato dopo 370K iterazioni (74 epoche).
+
+- Inizializzazione:
+  - Le CNN sono estremamente sensibili all'inizializzazione dei pesi. => altrimenti il learning va molto più lentamente! => queste dipendono da numero di input-output e inizializzazione gaussiana
+  - Per l'addestramento delle reti VGG, gli autori usano una combinazione di inizializzazione casuale e pre-training.
+
+
+	46
+---
+**VGG: Dimensione dell'immagine di training**
+
+- Nota che le immagini di training sono tutte scalate a $224 \times 224$ pixel prima di passarle attraverso la rete. => se le convoluzioni possono prendere qualsiasi input => non vale la stessa cosa per i layer fully connected => ai quali applichiamo flattened => tied to a single input size?
+- Questo è lo stesso di AlexNet, e chiaramente può influenzare il contenuto dell'immagine introducendo artefatti (considera immagini ritratto). => questo perchè bisogna fare scaling
+- Nelle reti VGG, le immagini vengono scalate *isotropicamente* in modo che la dimensione più piccola abbia una dimensione fissa.  => prendo una piccola parte dell'immagine
+- Poi una sotto-immagine di dimensione $224 \times 224$ viene ritagliata casualmente dall'immagine scalata.
+- Gli autori hanno valutato il ridimensionamento casuale tra **256** e 384 pixel per la dimensione più piccola. => dimensione più piccola sia della dimensione desiderata
+
+
+	47
+---
+**VGG: Dimensione dell'immagine di test**
+
+- Al momento del test, vengono valutate cinque strategie per il ridimensionamento dell'immagine:
+  - Dense: la rete è completamente convolutionalizzata (lo spiegherò nella prossima slide), valutata densamente sull'immagine di input, e i risultati sono pooled globalmente.
+  - Single-scale: viene utilizzata una singola scala isotropica.
+  - Multi-scale: come al momento del training, le immagini vengono scalate a tre scale isotropiche discrete.
+  - **Multi-crop**: da un output fully-convolutional vengono prese multiple ritagli (crop) casuali per il average pooling.  => strategia comune è fare random crops => e fare average del risultato
+
+
+	48
+---
+**VGG: Fully-convolutionalization**
+
+-  Di seguito è mostrato un diagramma di una tipica ConvNet.
+- Come possiamo renderla ==indipendente dalla dimensione dell'immagine?==
+
+![[Pasted image 20251125152232.png]]
+=> Mlp che prende in input immagini di 224/32 = 7 x 224x32 = 7
+
+- SI può pensare di considerare il primo layer di MLP come layer di convoluzione di dimensione 7x7x4096 (numero di output) => guardo a finestre di pixel di 7x7 e produco 4096 features per ogni patches => quello successivo come 1x1x4096 e infine 1x1x1000 => cosa fa convoluzione 1x1? considero tutti i pixel e faccio combinazione lineare di tutte le features! => a cui applico poi funzione di attivazione non lineare
+
+	49
+---
+**VGG: Risultati**
+
+- Anche considerando solo una singola scala di input, i risultati sono impressionanti.
+- Nota: **più profondo è meglio**, LRN non aiuta, il jittering di scala al test time sì.
+
+| Configurazione ConvNet (Tabella 1) | lato minore immagine train ($S$) | errore top-1 val. (%) | errore top-5 val. (%) |
+| ---------------------------------- | -------------------------------- | --------------------- | --------------------- |
+| A                                  | 256                              | 29.6                  | 10.4                  |
+| A-LRN                              | 256                              | 29.7                  | 10.5                  |
+| B                                  | 256                              | 28.7                  | 9.9                   |
+| C                                  | 384                              | 28.1                  | 9.3                   |
+| D                                  | [256;512]                        | 27.3                  | 8.8                   |
+| E                                  | [256;512]                        | 27.0                  | 8.8                   |
+
+	50
+---
+**VGG: Risultati**
+
+- L'uso di **scale multiple** porta a performance ancora migliori:
+
+	![[Pasted image 20251125152408.png]]
+
+- Così come la fusione di multiple strategie di cropping:
+
+	![[Pasted image 20251125152424.png]]
+
+- Notare che sono tutti risultati fatti per una sola rete => non vengono ancora usati modelli unsamble
+
+	51
+---
+**VGG: Noi versus Loro**
+
+- Infine, la media di modelli (model averaging) su modelli multi-scala, multi-crop porta a performance state-of-the-art:
+
+	![[Pasted image 20251125152504.png]]
+
+	52
+---
+**VGG: Analisi**
+
+- In questo articolo gli autori hanno migliorato significativamente rispetto alla generazione precedente andando più in profondità.
+- Ancora una volta, la maggior parte delle idee non sono nuove, ma l'esplorazione sistematica dello spazio di progettazione ha portato a miglioramenti significativi.
+- Nota che le reti sono più profonde, ma hanno un'impronta di memoria più piccola al momento del training grazie ad un bilanciamento attento della dimensione delle mappe di caratteristiche.
+- La valutazione densa (dense evaluation) della rete al momento del test può anche aumentare le performance, portando a reti fully convolutional che sono indipendenti dalla dimensione dell'immagine di input.
+- L'architettura è ancora una classica ConvNet.
+
+	53
+---
+
+## Reti Residuali Profonde: Sempre più Profonde
+---
+**ResNets: Introduzione**
+
+- Da quanto visto finora, sembra che reti più profonde generalizzino meglio.
+- Quindi, possiamo semplicemente ==continuare ad impilare sempre più layer a==lla fine delle nostre CNN? => possiamo aumentare ancora le performance della rete?
+- A parte le complicazioni computazionali (la memoria della GPU è finita), sembra che "dovrebbe funzionare e basta".
+- Esamineremo ora la nostra ultima architettura di rete state-of-the-art (conosciuta come ResNet) che esamina questa questione in dettaglio [He et al., 2016].
+
+
+	54
+---
+**ResNets: Più profondo non è meglio?**
+
+- Pensiero pre-ResNet: *Le reti più profonde dovrebbero sempre performare meglio – almeno sui dati di training.*
+
+![[Pasted image 20251127092244.png]]
+
+=> notare che in realtà non stiamo overfittando => ma allora che succede?
+
+	55
+---
+**ResNets: Aspetta, l'errore di training non dovrebbe essere più basso?**
+
+- Usando una costruzione artificiale, vediamo che almeno l'errore di training non dovrebbe aumentare con la profondità.
+- Basta copiare i pesi pre-addestrati da una rete normale in una rete più profonda con nuovi pesi inizializzati casualmente.
+
+	![[Pasted image 20251127092336.png]]
+
+	56
+---
+**ResNets: Obiettivi e Residui**
+
+- Diciamo che la rete sta apprendendo verso una qualche rappresentazione di caratteristiche ottimale $H(x)$.
+- La natura composizionale e feed-forward della CNN non aiuta realmente.
+
+	![[Pasted image 20251127092420.png]]
+
+=> Più calcolo i gradienti e più è probabile che alcuni di questi si azzerano!
+
+	57
+---
+**ResNets: Obiettivi e Residui**
+
+- Diciamo che la rete sta apprendendo verso una qualche rappresentazione di caratteristiche ottimale $H(x)$.
+- La natura composizionale e feed-forward della CNN non aiuta realmente.
+- Invece, possiamo aiutare la rete non richiedendole di passare attraverso tante informazioni.
+- Passa $x$ in avanti e aggiungilo all'output del blocco residuo – ora abbiamo "solo" bisogno di apprendere $H(x) - x$, il residuo $F(x)$.
+
+	![[Pasted image 20251127092657.png]]
+
+- L'idea è di aggiungere una skip connection => in modo tale che l'ultimo blocco non calcola l'intero target => ma solo la differenza (residual) fra target e funzione calcolata
+
+- Facendo questo ho un ulteriore calcolo da fare per il gradiente => aggiungo info
+
+	57
+---
+**ResNets: Confronto**
+
+-  Ecco un confronto di VGG19 e ResNet-34:
+
+(Diagramma delle architetture a confronto, che mostra come ResNet-34 sia più profonda ma abbia una complessità computazionale simile a VGG-19)
+
+![[Pasted image 20251127093025.png]]
+
+=> rete ancora più connessa! (scaling fra i blocchi per il residual connection) => non mi porto avanti tutti i residui ma li calcolo via via => altrimenti denseNets
+
+	58
+---
+**ResNets: Modularità Parametrica**
+
+- E questo è un modo comune di rappresentare parametricamente le varie configurazioni ResNet:
+
+	![[Pasted image 20251127093457.png]]
+
+- Notare non è presente MaxPooling => ma strided convolutions (cazzata?)
+- Infine non ho un fully connected MLP classifier => ma eseguo Average Pool =>  dove ogni vettore di pixel corrisponde al pixel di partenza => e di questi ne viene prese la media => avg pooling toglie quindi spatial dimension
+
+	59
+---
+**ResNets: Risultati**
+
+- **Le connessioni residue sono estremamente efficaci:**
+
+![[Pasted image 20251127094001.png]]
+=> Nelle ResNets, l'errore di training e test diminuisce all'aumentare dei layer, fino a 110 layer! 
+
+	60
+---
+**ResNet: Risultati**
+
+- E la prova, come sempre, è nel pudding:
+
+	![[Pasted image 20251127094113.png]]
+	=> Parto da shallow nets con SVM e vado avanti...
+
+	Resnet a 152 layers... sarà vero?? => da ResNet 50 in poi non ottengo prestazioni molto migliori...
+	
+	61
+---
+
+## CNN: I Trucchi del Mestiere
+---
+**CNN: Come si addestrano le CNN?**
+
+- Le CNN funzionano alla granCNN: I Trucchi del Mestierede, ma non è sempre rose e fiori farle funzionare.
+- La comunità ha sviluppato una serie di trucchi, tecniche ed euristiche che si sono dimostrate utili.
+- Esaminiamone alcuni.
+
+	62
+---
+**CNN: Batch Normalization**
+
+![[Pasted image 20251127094546.png]]
+
+=> Okay dopo backprop faccio cambiamento ai pesi => ma fino a dove scendo di livelli nel fare i cambiamenti? 
+=> boh non so come si passa a normalizzare e std il minibatch durante fase di training => aggiungo ulteriori parametri... => finito il training calcolo e salvo tutte le medie e le std dei vari layer per?...
+
+	63
+---
+**CNN: Dropout (un'altra idea "folle")**
+
+![[Pasted image 20251127095103.png]]
+
+- Con una potenza di calcolo illimitata, il modo migliore per "regolarizzare" un modello di dimensione fissa è fare la media delle previsioni di tutte le possibili impostazioni dei parametri, pesando ogni impostazione in base ==alla sua probabilità a posteriori== dati i dati di training. => tipo bayesian viewpoint – Srivastava et al. [2014]
+
+- Ci si rende conto che alcuni neuroni danno stesse info rispetto ad altri  (per metà del train questi non sono attivi) => posso pensare di eliminare metà delle attivazioni nel forward in modo randomico
+- => oppure calcolare tutte le attivazioni ma dividerle per 2...
+
++ Model.eval() vs model.train() 
+
+	64
+---
+**CNN: Cosa Sta Succedendo?**
+
+- Ricordate che prima ho menzionato che uno dei pregiudizi contro l'uso delle reti neurali era la mancanza di interpretabilità.
+- Non appena sono iniziati ad arrivare i risultati spettacolari delle CNN sul riconoscimento oggetti, i ricercatori hanno iniziato ad inventare nuovi modi per interpretare le viscere di queste enormi reti.
+- Al giorno d'oggi ci sono molti strumenti e trucchi che puoi usare per capire cosa ha appreso la rete.
+
+	65
+---
+**CNN: Cosa Sta Succedendo**
+
+- Un lavoro pionieristico ha esaminato proprio questo problema e l'articolo contiene un sacco di analisi interessanti su come funzionano queste reti [Zeiler e Fergus, 2014].
+- Parlerò solo di come le visualizzazioni delle attivazioni delle mappe di caratteristiche dimostrano cosa sta succedendo.
+
+	![[Pasted image 20251127095620.png]]
+
+	=> Dato il filtro => ottengo dei sample patches che rispondono a questi filtri... andando avanti con la rete ottengo immagini più  ragionevoli dal punto di vista semantico
+	
+	66
+---
+**CNN: Cosa Sta Succedendo**
+
+- Man mano che andiamo più in profondità nella rete, le attivazioni delle caratteristiche corrispondono a semantiche di livello superiore.
+
+	![[Pasted image 20251127100227.png]]
+
+	=> Filtri che appunto vanno a guardare a caratteristiche dell'immagine...
+
+	67
+---
+**CNN: Cosa Sta Succedendo**
+
+- Fino a quando le caratteristiche non indicano realmente la presenza di "occhi" e "facce di gatto", ecc.
+
+	![[Pasted image 20251127100406.png]]
+
+	68
+---
+**CNN: Cosa Sta Succedendo**
+
+- L'algoritmo Grad-CAM è un modo intuitivo per visualizzare, beh, cosa rende una mucca, una mucca [Selvaraju et al., 2017]:
+
+![[Pasted image 20251127100438.png]]
+=> ho una rete già addestrata in partenza => chiedo alla rete di mostrarmi dove si trova un particolare oggetto nell'immagine e questa cerca particolari feature in questa.
+
+	69
+---
+**CNN: Cosa Sta Succedendo**
+
+- L'algoritmo Grad-CAM è un modo intuitivo per visualizzare, beh, cosa rende una mucca, una mucca [Selvaraju et al., 2017]:
+
+![[Pasted image 20251127100704.png]]
+
+	69
+---
+
+## Discussione
+---
+**Discussione: Il peso della supervisione**
+
+- Quanto valgono davvero 1.5M di annotazioni [Zhang et al., 2016]?
+
+- Se le etichette sono equamente probabili, un insieme casuale di etichette ImageNet contiene circa $1.5\text{M} \ast \log_2(1000) \approx 15\text{Mbit}$.
+
+	![[Pasted image 20251127110842.png]]
+
+	70
+---
+**Discussione: Lo stato dell'arte**
+
+- Abbiamo fatto molta strada in pochi anni.
+
+	![[Pasted image 20251127111001.png]]
+	
+- Grafico di **Accuratezza Top-1 (%)** vs **Numero di Parametri**:
+	- AlexNet: ~60% accuratezza, ~60M parametri
+	- VGG-16: ~70% accuratezza, ~130M parametri  
+	- ResNet-50: ~75% accuratezza, ~25M parametri
+	- DenseNet-121: ~75% accuratezza, ~8M parametri
+
+	71
+---
+**Discussione: CNN e la strada da percorrere**
+
+![[Pasted image 20251127111212.png]]
+
+	72
+---
+**Bibliografia i**
+
+- Riferimenti:
+	- A. Canziani, A. Paszke, and E. Culurciello. An analysis of deep neural network models for practical applications. arXiv preprint arXiv:1605.07678, 2016.
+	- M. A. Fischler and R. A. Elschlager. The representation and matching of pictorial structures. *IEEE Transactions on computers*, (1):67–92, 1973.
+	- K. He, X. Zhang, S. Ren, and J. Sun. Deep residual learning for image recognition. In *Proceedings of the IEEE conference on computer vision and pattern recognition*, pages 770–778, 2016.
+	- S. Ioffe and C. Szegedy. Batch normalization: Accelerating deep network training by reducing internal covariate shift. arXiv preprint arXiv:1502.03167, 2015.
+	- A. Krizhevsky, I. Sutskever, and G. E. Hinton. Imagenet classification with deep convolutional neural networks. In *Advances in neural information processing systems*, pages 1097–1105, 2012.
+
+	73
+---
+**Bibliografia ii**
+
+- D. Marr. Vision: A computational investigation into the human representation and processing of visual information, 1982.
+- L. G. Roberts. *Machine perception of three-dimensional solids*. PhD thesis, Massachusetts Institute of Technology, 1963.
+- R. R. Selvaraju, M. Cogswell, A. Das, R. Vedantam, D. Parikh, and D. Batra. Grad-cam: Visual explanations from deep networks via gradient-based localization. In *Proceedings of the IEEE International Conference on Computer Vision*, pages 618–626, 2017.
+- K. Simonyan and A. Zisserman. Very deep convolutional networks for large-scale image recognition. *arXiv preprint arXiv:1409.1556*, 2014.
+- A. W. Smeulders, M. Worring, S. Santini, A. Gupta, and R. Jain. Content-based image retrieval at the end of the early years. *IEEE Transactions on Pattern Analysis & Machine Intelligence*, (12):1349–1380, 2000.
+- N. Srivastava, G. Hinton, A. Krizhevsky, I. Sutskever, and R. Salakhutdinov. Dropout: A simple way to prevent neural networks from overfitting. *Journal of Machine Learning Research*, 15:1929–1958, 2014. URL http://jmlr.org/papers/v15/srivastava14a.html.
+
+	74
+---
+**Bibliografia III**
+
+- M. D. Zeiler and R. Fergus. Visualizing and understanding convolutional networks. In *European conference on computer vision*, pages 818–833. Springer, 2014.
+- C. Zhang, S. Bengio, M. Hardt, B. Recht, and O. Vinyals. Understanding deep learning requires rethinking generalization. *arXiv preprint arXiv:1611.03530*, 2016.
+
+	75
+---
+
+# 23 - 
