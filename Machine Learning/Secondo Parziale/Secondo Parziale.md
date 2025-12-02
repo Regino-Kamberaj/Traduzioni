@@ -1503,6 +1503,8 @@ Alla fine della lezione dovreste:
 
 	![[Pasted image 20251127110842.png]]
 
+	=> Semantic gap => un sacco di info da comprimere in pochi bit... => extremely  easy to over fit! => se usiamo un piccolo dataset facile overfit
+	
 	70
 ---
 **Discussione: Lo stato dell'arte**
@@ -1516,6 +1518,8 @@ Alla fine della lezione dovreste:
 	- VGG-16: ~70% accuratezza, ~130M parametri  
 	- ResNet-50: ~75% accuratezza, ~25M parametri
 	- DenseNet-121: ~75% accuratezza, ~8M parametri
+
+=> Ormai i transformes hanno billions di parametri! => giganteschi
 
 	71
 ---
@@ -1555,4 +1559,6 @@ Alla fine della lezione dovreste:
 	75
 ---
 
-# 23 - 
+# 23 - CNN: Temi avanzati
+
+![[23-CNNs-Part2.pdf]]
