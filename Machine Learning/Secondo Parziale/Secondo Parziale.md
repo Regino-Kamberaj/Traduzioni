@@ -16,11 +16,11 @@
 
 Dopo questa lezione:
 
-- Comprenderete come il bagging (o bootstrap aggregation) possa essere usato per generare dataset multipli da uno singolo.
-- Comprenderete come i committee sono formati addestrando modelli multipli su dataset bootstrap.
+- Comprenderete come il **bagging** (o bootstrap aggregation) possa essere usato per generare dataset multipli da uno singolo.
+- Comprenderete come i *committee* sono formati addestrando modelli multipli su dataset bootstrap.
 - Comprenderete come e perché i committee riducono l'errore del modello attraverso la media.
 - Comprenderete come il boosting funziona per addestrare una sequenza di weak learner e come questi learner sono combinati in un committee più forte tramite pesatura.
-- Comprenderete come i modelli ad albero partizionano lo spazio in regioni cuboidi e come apprendere la loro struttura e parametri.
+- Comprenderete come i **modelli ad albero** partizionano lo spazio in regioni cuboidi e come apprendere la loro struttura e parametri.
 
 	3
 ---
@@ -28,7 +28,7 @@ Dopo questa lezione:
 ---
 **Il potere del consenso**
 
-- Abbiamo visto tempo fa in una delle nostre prime lezioni come il campionamento di modelli multipli e la **media** aiuti a ridurre la varianza: => anche bayes faceva così => cosindera tutti i possibili i modelli e poi ne faceva la media => intrattabile però 
+- Abbiamo visto tempo fa in una delle nostre prime lezioni come il campionamento di modelli multipli e la **media** aiuti ==a ridurre la varianza:== => anche bayes faceva così => considera tutti i possibili i modelli e poi ne faceva la media => intrattabile però 
 - Possiamo sfruttare questo senza un modello **completamente** Bayesiano?
 
 	![[Pasted image 20250930120423.png]]
@@ -38,20 +38,23 @@ Dopo questa lezione:
 **Campionamento Bootstrap**
 
 - Consideriamo un problema di regressione in cui stiamo prevedendo un singolo target continuo.
-- L'approccio di riduzione della varianza funzionava addestrando un modello a **basso bias** su dataset multipli e mediando gli output.
+- L'approccio di riduzione della varianza funzionava addestrando un modello a **basso bias** su ==dataset multipli== e mediando gli output.
 - In pratica abbiamo solo un dataset, tuttavia.
-- Il *metodo bootstrap* funziona campionando $M$ dataset di dimensione $N' < N$ da $D$ con **reinserimento**. => tipo abbiamo diverse copie di uno stesso dato e alcuni dataset hanno dati che altri non hanno
-- Ognuno di questi dataset bootstrap riflette la distribuzione sottostante di $D$ ma è incompleto.
+- Il *metodo bootstrap* funziona campionando (uniformemente) $M$ dataset di dimensione $N' < N$ da $D$ con **reinserimento**. => tipo abbiamo diverse copie di uno stesso dato e alcuni dataset hanno dati che altri non hanno
+- Ognuno di questi dataset bootstrap riflette la distribuzione sottostante di $D$ ma è **incompleto**.
+
+- Ad es: $$D = (0,1,2,3)$$ con $N'=3$ posso avere: $D_1 =(0,0,2)$, $D_2 = (1,2,3)$, $D_3 = (0,1,1)$
 
 	5
 ---
 **Bootstrap aggregation (o bagging)**
 
 - Possiamo quindi adattare un modello $y_m(x)$ a ogni **dataset bootstrap** (usando qualsiasi metodo).
-- E poi formare il modello *committee* mediando gli $M$ **modelli base**:$$y_{\text{com}}(x) = \frac{1}{M} \sum_{m=1}^{M} y_m(x)$$ => si fa la media di tutte le predizioni
+- E poi formare il modello *committee* **mediando** gli $M$ **modelli base**:$$y_{\text{com}}(\mathbf{x}) = \frac{1}{M} \sum_{m=1}^{M} y_m(\mathbf{x})$$ => ==si fa la media di tutte le predizioni==
+
 - Perchè può essere una buona idea?
-- Indichiamo con $h(x)$ la **vera** funzione di regressione che genera $D$.
-- L'output di ogni modello può essere scritto come questa funzione vera **più un errore**:$$y_m(x) = h(x) + \epsilon_m(x)$$ => tipo misuro la differenza rispetto al modello reale
+- Indichiamo con $h(\mathbf{x})$ la **vera** funzione di regressione che genera $\mathcal{D}$.
+- L'output di ogni modello può essere scritto come questa funzione vera **più un errore**:$$y_m(\mathbf{x}) = h(\mathbf{x}) + \epsilon_m(\mathbf{x})$$ => tipo misuro la differenza rispetto al modello reale
 - Nota che non abbiamo ancora fatto nulla – eccetto identificare l'errore in ognuno dei nostri modelli.
 
 	6
@@ -59,14 +62,14 @@ Dopo questa lezione:
 **Quantificare l'errore**
 
 - L'errore quadratico **atteso** di ogni modello è allora:$$\mathbb{E}_x \left[ \{ h(x) - y_m(x) \}^2 \right] = \mathbb{E}_x \left[ \varepsilon_m(x)^2 \right]$$
-- E l'errore medio dei modelli individuali è: (su tutti gli errori)$$E_{\text{av}} = \frac{1}{M} \sum_{m=1}^{M} \mathbb{E}_x \left[ \varepsilon_m(x)^2 \right]$$
-- Ancora, non abbiamo detto nulla di sconvolgente: l'errore quadratico medio commesso dai modelli è la media di tutti gli errori quadratici commessi dai modelli.
+- E l'**errore medio** dei **modelli** individuali è: (su tutti gli errori)$$E_{\text{av}} = \frac{1}{M} \sum_{m=1}^{M} \mathbb{E}_x \left[ \varepsilon_m(x)^2 \right]$$
+- Ancora, non abbiamo detto nulla di sconvolgente: l'==errore quadratico medio commesso dai modelli è la media di tutti gli errori quadratici commessi dai modelli==.
 
 	7
 ---
 **L'errore del committee**
 
-- Possiamo calcolare l'errore atteso del committee similmente:$$E_{\text{com}} = \mathbb{E}_x \left[ \left\{ \frac{1}{M} \sum_{m=1}^M h(x) - y_m(x) \right\}^2 \right]$$ =>sostanzialmente porto dentro h(x)$$= \mathbb{E}_x \left[ \left\{ \frac{1}{M} \sum_{m=1}^M \varepsilon_m(x) \right\}^2 \right]$$ => si risemplifica e ottengo l'errore solo che in questo il quadrato sta fuori => $(\varepsilon_1 +\varepsilon_2 +---)^2$
+- Possiamo calcolare l'errore atteso del committee similmente: (porto dentro la sommatoria) $$E_{\text{com}} = \mathbb{E}_x \left[ \left\{ \frac{1}{M} \sum_{m=1}^M h(x) - y_m(x) \right\}^2 \right]$$ => sostanzialmente porto dentro h(x)$$= \mathbb{E}_x \left[ \left\{ \frac{1}{M} \sum_{m=1}^M \varepsilon_m(x) \right\}^2 \right]$$ => si risemplifica e ottengo l'errore solo che in questo il quadrato sta fuori => $(\varepsilon_1 +\varepsilon_2 +---)^2$
 
 - OK, ma elevare al quadrato quella $\sum$ sarà un gran casino...
 
@@ -78,16 +81,17 @@ Dopo questa lezione:
 
 - Se assumiamo che gli errori:
 	- **siano a media zero**:(ogni errore individuale ha aspettativa nulla) $$\mathbb{E}_x [\varepsilon_m(x)] = 0$$
-	- e non correlati:$$\mathbb{E}_x [\varepsilon_m(x)\varepsilon_n(x)] - \mathbb{E}_x [\varepsilon_m(x)] \mathbb{E}_x [\varepsilon_n(x)] = 0 \quad m \neq n$$
+	- e non correlati: (ovvero covarianza nulla) $$\mathbb{E}_x [\varepsilon_m(x)\varepsilon_n(x)] - \mathbb{E}_x [\varepsilon_m(x)] \mathbb{E}_x [\varepsilon_n(x)] = 0 \quad m \neq n$$
 - Allora abbiamo:(aggiungi sketch)$$E_{\text{com}} = \frac{1}{M} E_{\text{av}}$$ => mi rimane l'unico caso in cui m=n(il resto è zero) => in cui ho della varianza
-
+	![[Pasted image 20251203223047.png]]
+	
 	9
 ---
 **Mediare modelli riduce l'errore atteso**
 
 - Quindi se mediiamo $M$ modelli ==riduciamo l'errore atteso dei modelli singoli di un fattore ==$1/M$!$$E_{\text{com}} = \frac{1}{M} E_{\text{av}}$$ => questo quante volte voglio ma...
 - Ricorda le assunzioni, però: gli errori **sono quasi mai non correlati**. => serve che siano correlati fra di loro!
-- Tuttavia, ci sono garanzie che l'errore del committee ==non supererà mai l'errore atteso del modello== (cioè $E_{\text{com}} \leq E_{\text{av}}$). => buona cosa dei modelli committee! => dividere il dataset, fittare il dataset e fare la media riduce l'errore! => un buon es sarebbe dimostrare che il commitee di un modello di regressione lineare è ancora un modello di regressione lineare nello spazio originale. da M modelli ne possiamo comunque trarre un linear model
+- Tuttavia, ci sono garanzie che l'errore del committee ==non supererà mai l'errore atteso del modello== (cioè $E_{\text{com}} \leq E_{\text{av}}$). => buona cosa dei modelli committee! => dividere il dataset, fittare il dataset e fare la media di questi modelli riduce l'errore! => un buon es sarebbe dimostrare che il commitee di un modello di regressione lineare è ancora un modello di regressione lineare nello spazio originale. da M modelli ne possiamo comunque trarre un linear model
 
 	10
 ---
@@ -95,17 +99,17 @@ Dopo questa lezione:
 ---
 **SKIPPABLE Media pesata**
 
-- Il modello committee calcola una semplice media sui modelli base$$y_{\text{com}}(x) = \frac{1}{M} \sum_{m=1}^{M} y_m(x)$$
+- Il modello committee calcola una **semplice media** sui modelli base$$y_{\text{com}}(x) = \frac{1}{M} \sum_{m=1}^{M} y_m(x)$$
 - Questi modelli sono adattati tramite bagging: campioni multipli dal training set con reinserimento.
 - I modelli base sono addestrati indipendentemente sui dataset bootstrap (cioè i campioni dal bagging).
-- E se non trattassimo tutti i modelli come uguali nel committee?
+- E se non trattassimo tutti i modelli ==come uguali nel committee==?
 - E se li addestrassimo in sequenza in modo che "si aiutino a vicenda" in qualche modo?
 
 	11
 ---
 **SKIPPABLE Boosting**
 
-- Questo è precisamente ciò che fa il **boosting**: => non ho più indipendenza dei modelli!
+- Questo è precisamente ciò che fa il **boosting**: => non ho più **indipendenza** dei modelli!
 	
 	![[Pasted image 20251104230108.png]]
 
@@ -113,14 +117,14 @@ Dopo questa lezione:
 ---
 **SKIPPABLE AdaBoost**
 
-- L'algoritmo AdaBoost fa questo per problemi di classificazione binaria.
+- L'algoritmo *AdaBoost* fa questo per problemi di classificazione binaria.
 - Assumiamo di avere un dataset $D = \{(x_1, t_1), \ldots, (x_N, t_N)\}$ per $t_n \in \{-1, 1\}$.
 - L'idea di AdaBoost:
   - Associamo ad ogni campione un peso, che inizialmente è $\frac{1}{N}$.
-  - Assumiamo di avere un modo per addestrare un classificatore base con campioni pesati.
-  - Dopo aver addestrato $M$ classificatori base li combiniamo in un committee con coefficienti che danno pesi diversi ad ogni classificatore.
+  - Assumiamo di avere un modo per addestrare **un classificatore base** con campioni pesati.
+  - Dopo aver addestrato ==$M$ classificatori base== li combiniamo in un committee con coefficienti che danno pesi diversi ad ogni classificatore.
 
-- Nota: nel boosting, questi classificatori base sono solitamente chiamati weak learner.
+- Nota: nel boosting, questi classificatori base sono solitamente chiamati *weak learner*.
 
 	13
 ---
@@ -129,7 +133,7 @@ Dopo questa lezione:
 - **AdaBoost**:
 	1. Inizializza i coefficienti di pesatura dei dati $\{w_n\}$ impostando $w_n^{(1)} = 1/N$ per $n = 1, \ldots, N$.
 	2. Per $m = 1, \ldots, M$:
-	   (a) Adatta un classificatore $y_m(\mathbf{x})$ ai dati di training minimizzando la funzione di errore pesata:$$J_m = \sum_{n=1}^{N} w_n^{(m)} I(y_m(\mathbf{x}_n) \neq t_n)$$    dove $I(y_m(\mathbf{x}_n) \neq t_n)$ è la funzione indicatrice e vale 1 quando $y_m(\mathbf{x}_n) \neq t_n$ e 0 altrimenti.
+	   (a) Adatta un classificatore $y_m(\mathbf{x})$ ai dati di training minimizzando la ==funzione di errore **pesata**:==$$J_m = \sum_{n=1}^{N} w_n^{(m)} I(y_m(\mathbf{x}_n) \neq t_n)$$    dove $I(y_m(\mathbf{x}_n) \neq t_n)$ è la funzione indicatrice e vale 1 quando $y_m(\mathbf{x}_n) \neq t_n$ e 0 altrimenti.
 
 	 (b) Valuta le quantità:$$\varepsilon_m = \frac{\sum_{n=1}^{N} w_n^{(m)} I(y_m(\mathbf{x}_n) \neq t_n)}{\sum_{n=1}^{N} w_n^{(m)}}$$   e poi usale per valutare $\alpha_m = \ln \left\{ \frac{1 - \varepsilon_m}{\varepsilon_m} \right\}$   (14.17)
 
@@ -143,7 +147,7 @@ Dopo questa lezione:
 
 - Gli $\varepsilon_m$ rappresentano i tassi di errore (pesati) del classificatore $y_m$.
 - I coefficienti di pesatura $\alpha_m$ assegnano peso maggiore ai classificatori più accurati in (14.19).
-- E sono usati per dare peso maggiore ai campioni misclassificati in (14.18).
+- E sono usati per dare peso maggiore ai campioni **misclassificati** in (14.18).
 - AdaBoost funziona molto bene in pratica, specialmente con molti, potenzialmente molto weak learner.
 
 	15
@@ -162,14 +166,14 @@ Dopo questa lezione:
 
 	![[Pasted image 20251104230905.png]] => si usa l'albero per rappresentare le partizioni dello spazio di input
 
-- Quali sono i parametri del modello? Sono i valori di treshold da imparare => come sceglierli? 
-- La depth dell'albero ovvero quando fermarsi invece sono degli iperparametri da decidere
+- Quali sono i parametri del modello? Sono i valori di **treshold da imparare** => come sceglierli? 
+- La depth dell'albero ovvero quando fermarsi invece sono degli **iperparametri** da decidere
 	
 	17
 ---
 **Alberi Decisionali**
 
-- I modelli ad albero sono modelli semplici ma *ampiamente usati* che funzionano per partizionamento.
+- I modelli ad albero sono modelli semplici ma *ampiamente usati* **che funzionano per partizionamento.**
 - Gli **alberi allineati** agli assi partizionano lo spazio in cuboidi allineati(tipo iper-rettangoli) con gli assi.
 - Sono **modelli ensemble**: un singolo modello è responsabile per ogni partizione.
 - Per selezionare quale modello attraversiamo l'albero in un processo decisionale sequenziale.
@@ -183,9 +187,9 @@ Dopo questa lezione:
 - Consideriamo ancora un problema di **regressione** con dataset $D = \{ (x_1, t_1), \ldots, (x_N, t_N) \}$  
   dove ora i nostri $t_n$ sono target continui.
 
-- Vogliamo partizionare lo spazio $\mathbb{R}^D$ in modo che in ogni partizione la nostra stima del target lì **minimizzi l'errore quadratico**.
+- Vogliamo partizionare lo spazio $\mathbb{R}^D$ in modo che **in ogni partizione** la nostra stima del target lì **minimizzi l'errore quadratico**.
 
-- Questo è piuttosto facile: abbiamo solo bisogno della **media** dei target $t_n$ di tutti i punti $x_n$ che cadono in quella partizione.
+- Questo è piuttosto facile: abbiamo solo bisogno della **media** dei target $t_n$ di tutti i punti $x_n$ ==che cadono in quella partizione==.
 
 - Il vero problema è *come dovremmo determinare questo partizionamento*. => quale sarà la migliore la partizione??
 
@@ -198,13 +202,14 @@ Dopo questa lezione:
 - Invece, useremo una politica **ricorsiva** e **greedy**:
   1. Inizia da un singolo **nodo radice** corrispondente all'intero spazio.
   2. Itera su ognuna delle $D$ possibili variabili di split: (ordiniamo tutto il nostro dataset secondo le input variables => metti sketch)
-    - 2.1 Considera ogni possibile soglia per dividere i dati in due insiemi. => divido in modo tale da non riottenere gli insieme di partenza
+    - 2.1 Considera ogni possibile soglia per dividere i dati in due insiemi. => divido in modo tale da ==non riottenere gli insieme di partenza==
     - 2.2 Seleziona quella che **minimizza la somma degli errori** quadratici negli split. => per insiemi con un solo elemento l'errore è nullo  => ocho però rischio overfitting!
   3. Applica ricorsivamente questa procedura ai figli.
-
+	![[Pasted image 20251203224855.png]]
+	
 - ==Quando dovremmo fermare questa procedura==?
 - La solita strategia è sovrasegmentare lo spazio di input costruendo un albero profondo e ampio.
-- Perché questo potrebbe essere problematico?
+- Perché questo potrebbe essere problematico? => overfit!
 - E poi **potare** l'albero per bilanciare **complessità** e **minimizzazione dell'errore sui dati** di training. => come definire il pruning criteria?
 
 	20
@@ -213,17 +218,18 @@ Dopo questa lezione:
 
 - Assumiamo di avere già un partizionamento (un albero), con nodi foglia indicizzati da $\tau = 1, \ldots, T$.
 - Chiama la partizione corrispondente a ogni foglia $R_\tau$.
-- La **previsione ottimale** e l'**errore quadratico** in ogni nodo sono: $$y_\tau = \frac{1}{N_\tau} \sum_{x_n \in R_\tau} t_n$$ $$\quad Q_\tau(T) = \sum_{x_n \in R_\tau} (t_n - y_\tau)^2$$
+- La **previsione ottimale** e l'**errore quadratico** in ogni nodo sono: $$y_\tau = \frac{1}{N_\tau} \sum_{x_n \in R_\tau} t_n$$(media sulle varie previsioni della partizione)
+ $$\quad Q_\tau(T) = \sum_{x_n \in R_\tau} (t_n - y_\tau)^2$$
 - Quindi possiamo definire un **criterio di potatura** come: $$C(T) = \sum_{\tau=1}^{|T|} Q_\tau(T) + \lambda |T|$$
-	=> Più salgo in alto nella potatura e più aumento l'errore...
+	=> Più salgo in alto nella potatura e più aumento l'errore... ma meno salgo e più modello è complesso!
 	
 	21
 ---
 **Per problemi di classificazione**
 
-- Se abbiamo un problema di **classificazione**, dobbiamo solo cambiare l'errore.
-- Definisci $p_{\tau k}$ come la proporzione di campioni di classe $k$ al nodo $\tau$. => si usano le probabilità sulle classi => considero diversi pruning...
-- Per esempio l'**entropia incrociata negativa**: $$Q_\tau(T) = \sum_{k=1}^K p_{\tau k} \ln p_{\tau k}$$
+- Se abbiamo un problema di **classificazione**, dobbiamo ==solo cambiare l'errore.==
+- Definisci $p_{\tau k}$ come la **proporzione** di campioni di classe $k$ al nodo $\tau$. => si usano le probabilità sulle classi => considero diversi pruning...
+- Per esempio l'**entropia incrociata negativa**: (**cross entrop**y) $$Q_\tau(T) = \sum_{k=1}^K p_{\tau k} \ln p_{\tau k}$$
 - O l'indice di Gini: $$Q_\tau(T) = \sum_{k=1}^K p_{\tau k}(1 - p_{\tau k})$$
 	22
 ---
@@ -232,8 +238,8 @@ Dopo questa lezione:
 **Il potere del consenso (e della diversità!)**
 
 - I **modelli ensemble** sono un potente strumento per combinare modelli semplici in modelli migliori.
-- I committee riducono il tasso di errore medio – ma solo se le assunzioni sono valide.
-- Gli alberi sono modelli interpretabili che partizionano lo spazio di input in regioni omogenee.
+- I committee ==riducono il tasso di errore medio== – ma solo se le assunzioni sono valide.
+- Gli alberi sono modelli interpretabili che partizionano lo spazio di input in regioni **omogenee**.
 
 	23
 ---
