@@ -253,13 +253,13 @@ Dopo questa lezione:
 ---
 
 # 10 - Metodi Nonparametrici
----
+
 ## Introduzione
 ---
 **Motivazioni**
 
 - Abbiamo visto una varietà di metodi per classificazione e regressione.
-- Finora, tutti sono quelli che sono noti come metodi parametrici.
+- Finora, tutti sono quelli che sono noti come metodi **parametrici**.
 - Questi metodi si concentrano sull'apprendimento stimando i parametri ottimali del modello (in qualche modo).
 - Il modello risultante è tipicamente semplice (almeno finora):$$f(\mathbf{x}; \mathbf{w}, b) = \mathbf{w}^T x + b$$
 - Una caratteristica di queste tecniche è che la "conoscenza" appresa dai dati è **completamente incapsulata** nei parametri.
@@ -270,10 +270,10 @@ Dopo questa lezione:
 **Obiettivi della lezione**
 
 Dopo questa lezione:
-- Comprenderete come valutare le prestazioni di un classificatore.
+- Comprenderete ==come valutare le prestazioni di un classificatore.==
 - Comprenderete le basi degli stimatori di densità kernel e come usarli per modellare funzioni di densità di probabilità.
 - Comprenderete come l'approccio della stima di densità kernel può essere applicato a problemi di regressione (es. Nadaraya-Watson).
-- Comprenderete come funziona l'algoritmo Nearest-neighbor in teoria e in pratica.
+- Comprenderete come funziona l'algoritmo **Nearest-neighbor** in teoria e in pratica.
 
 	3
 ---
@@ -283,7 +283,7 @@ Dopo questa lezione:
 
 - Come misuriamo le prestazioni dei classificatori addestrati?
 - Se hai un problema di classificazione **bilanciato** (come la maggior parte che vedremo nei laboratori), usa l'accuratezza del classificatore:$$accuracy = \frac{\# \text{ campioni di test classificati correttamente}}{\# \text{ campioni di test}}$$
-- Perché questa potrebbe essere una metrica cattiva se il problema è **sbilanciato**? => che  succede ad esempio nel caso di face-detection => _sliding window_ => muovo la window sulla mia immagine => brute-force approach => un sacco di window, inoltre posso anche cambiare le dimensioni della mia finestra... Come valutare il mio classificatore ? se uso questa accuracy => questa rimmarrà principalmente a zero!! => ho pochi casi in cui vedo facce! rispetto ai casi in cui non le vedo...
+- Perché questa potrebbe essere una metrica cattiva se il problema è **sbilanciato**? => che  succede ad esempio nel caso di face-detection => _sliding window_ => muovo la window sulla mia immagine => brute-force approach => un sacco di window, inoltre posso anche cambiare le dimensioni della mia finestra... Come valutare il mio classificatore ? se uso questa accuracy => questa rimmarrà principalmente a zero!! => ho pochi casi in cui vedo facce! rispetto ai casi in cui non le vedo... => problema sbilanciato verso casi in cui non trovo immagine.
 
 	4
 ---
@@ -292,21 +292,23 @@ Dopo questa lezione:
 - Un buon strumento per avere una panoramica dei tipi di errori che un classificatore sta facendo è la **matrice di confusione**: 
 
 	![[Pasted image 20251105223309.png]] => ci permette di dare accuracy diverse alle classi... occhio però ai falsi positivi... anche se pochi moltiplicati per le diverse windows diventano molti!
+	=> A destra la matrice è normalizzata...
 	
 	5
 ---
 **Valutare i Classificatori: Problemi Sbilanciati**
 
-- Iniziamo sezionando le classificazioni: (metriche utili solo nel caso di classificazione binaria => si fa tutto rispetto ad una delle due classi) (metti sketch)
+- Iniziamo sezionando le classificazioni: (metriche utili solo nel caso di classificazione binaria => si fa tutto rispetto ad una delle due classi) 	
   - **Veri positivi** (TP): abbiamo predetto sì, e il campione appartiene alla classe.
   - **Veri negativi** (TN): abbiamo predetto no, e il campione non appartiene alla classe.
   - **Falsi positivi** (FP): abbiamo predetto sì, ma il campione non appartiene alla classe – anche noto come errore di Tipo I.
-  - **Falsi negativi** (FN): abbiamo predetto no, ma il campione appartiene alla classe – anche noto come errore di Tipo II.
+  - **Falsi negativi** (FN): abbiamo predetto no, ==ma il campione appartiene alla classe== – anche noto come errore di Tipo II.
 
-- Possiamo allora definire alcune metriche utili per problemi sbilanciati: $$\text{Precisione}(c) = \frac{\text{TP}}{\text{TP} + \text{FP}}$$ => per tutti i casi in cui classifico per la classe positiva => quanto sono preciso
-$$\text{Recall}(c) = \frac{\text{TP}}{\text{TP} + \text{FN}}$$=> di tutti i casi in cui classifico correttamente quanto fanno parte della classe positiva?
+- Possiamo allora definire alcune metriche utili per problemi sbilanciati: $$\text{Precisione}(c) = \frac{\text{TP}}{\text{TP} + \text{FP}}$$ => per tutti i casi in cui classifico **per la classe positiva** => quanto sono preciso
+$$\text{Recall}(c) = \frac{\text{TP}}{\text{TP} + \text{FN}}$$=> di tutti i casi in cui classifico correttamente quanto fanno parte della classe positiva? => ovvero fra tutti i casi che appartengono alla classe quanti ne classifico bene?
 $$\text{F1}(c) = 2\frac{\text{Precisione}(c) * \text{Recall}(c)}{\text{Precisione}(c) + \text{Recall}(c)}$$ => notare il parametro c...
 
+	
 	6
 ---
 **Valutare i Classificatori: Problemi Sbilanciati**
@@ -314,11 +316,16 @@ $$\text{F1}(c) = 2\frac{\text{Precisione}(c) * \text{Recall}(c)}{\text{Precision
 - Di solito comprendiamo precisione e recall usando le curve **Precision-Recall** (PR) e/o **Receiver-Operating Characteristic** (ROC):
 
 	![[Pasted image 20251105223507.png]] 
-	=> Parto da precision estremamente corretta => e aumentando il treshold diminuisco la precisione aumentando il recall => vorremmo avere una curva che rimane piatta fino a un certo punto in cui cade tutta insieme => classificatore ideale
+	=> Per la PR-curve => Parto da precision estremamente corretta => e aumentando il treshold diminuisco la precisione aumentando il recall => vorremmo avere una curva che rimane piatta fino a un certo punto in cui cade tutta insieme => classificatore ideale
 
-+Sketch => una volta ordinati i dati si considera diversi treshold e guardo se rispetto alle mio classificazioni effettivamente rispetto o meno le classi... recall che mi dice appunto quanti di tutti i classicati positivamente ne sono classificati correttamente
-=> di solito precision-recall curve definita su tutti i punti => ad ogni punto di recall posso ottenere la precision => posso scegliere il mio treshold cercando di ottimizzare il tradeoff fra precision e recall
-=> una buona metrica è quindi l'area sotto la curva (AUC) => dove la migliore è quella con precision sempre a 1 fino a recall a 1 => max l'area...
+- Caso di esempio:
+	![[Pasted image 20251204114020.png]]
+
++ Sketch => una volta ordinati i dati si considera diversi treshold e guardo se rispetto alle mio classificazioni effettivamente rispetto o meno le classi... precision che mi dice appunto quanti di tutti i classificati **positivamente** ne sono classificati **correttamente**
+	=> Recall invece quanti di una certa classe sono classificati correttamente?
+
++ Di solito precision-recall curve definita su tutti i punti => ad ogni punto di recall posso ottenere la precision => posso scegliere il mio treshold cercando di ottimizzare il tradeoff fra precision e recall
+	=> una buona metrica è quindi l'area sotto la curva (AUC) => dove la migliore è quella con precision sempre a 1 fino a recall a 1 => max l'area...
 
 +Altro esempio è la ROC curve dopo a seconda del numero di false positive ottengo i true positive...
 
@@ -327,9 +334,9 @@ $$\text{F1}(c) = 2\frac{\text{Precisione}(c) * \text{Recall}(c)}{\text{Precision
 ---
 **Valutare i Classificatori: Analisi**
 
-- La metrica di valutazione da usare è di solito chiara dato il tipo di problema (classificazione, regressione, retrieval) e la distribuzione dei dati di training (bilanciata, sbilanciata).
+- La metrica di valutazione da usare è di solito chiara dato il tipo di problema (classificazione, regressione, *retrieval*) e la **distribuzione dei dati** di training (bilanciata, sbilanciata).
 - Ottenere una stima affidabile di un classificatore può essere complicato in quanto chiaramente dipende dalla tua divisione train/test.
-- Questo diventa il problema centrale quando si esegue la selezione del modello tramite cross-validation.
+- Questo diventa il problema centrale quando si esegue la selezione del modello tramite **cross-validation**.
 - In sklearn: sklearn.metrics
 
 	8
@@ -339,10 +346,10 @@ $$\text{F1}(c) = 2\frac{\text{Precisione}(c) * \text{Recall}(c)}{\text{Precision
 ---
 **Il problema con i modelli parametrici**
 
-- I modelli probabilistici che abbiamo studiato finora sono basati su modelli parametrici.
+- I modelli probabilistici che abbiamo studiato finora sono basati su modelli **parametrici**.
 - Stimiamo **un piccolo numero di parametri** di distribuzione (es. media e covarianza di Gaussiane in bayes).
 - Una tale **assunzione a priori di una forma distributiva** è una limitazione di questi approcci. =>  nella realtà dati multimodali? => ovvero diverse medie => moda e media non coincidono
-- Specialmente quando queste assunzioni risultano inaccurate.
+- Specialmente quando queste ==assunzioni risultano inaccurate==.
 
 - Idea: possiamo fare a meno dell'assunzione parametrica, e lasciare semplicemente che i dati parlino da soli?
 
@@ -350,27 +357,31 @@ $$\text{F1}(c) = 2\frac{\text{Precisione}(c) * \text{Recall}(c)}{\text{Precision
 ---
 **Istogrammi: stimatori di densità costanti a tratti**
 
-- Un istogramma partiziona il dominio in **bin** di larghezza fissa.
+- Un istogramma partiziona il **dominio** in **bin** di larghezza fissa.
 - Contiamo poi il ==numero di osservazioni che cadono in ogni bin== discreto.
 - Possiamo trasformare questa rappresentazione in una **densità di probabilità** dividendo per il **numero totale di osservazioni** $N$ e la **larghezza** del bin $\Delta_i$: $$p_i = \frac{n_i}{N\Delta_i}$$
-- Questo produce una densità $p(x)$ che è costante sulla larghezza di ogni bin (di solito $\Delta_i = \Delta$). => integrandola su tutti i bin si riottene 1 (+sketch) => funzione piece-wise constant => discontinua
+- Questo produce una densità $p(x)$ che è costante sulla larghezza di ogni bin (di solito $\Delta_i = \Delta$). => integrandola su tutti i bin si riottene 1 (+sketch) $$\int p(\mathbf{x})dx = 1$$ => funzione piece-wise constant => discontinua
+	![[Pasted image 20251204120954.png]]
 
 	10
 ---
 **Istogrammi: stimatori di densità costanti a tratti**
 
-- Questo dà uno stimatore di densità con un singolo iperparametro: => l'unico iperparamentro è dunque la larghezza dei bins
+- Questo dà uno **stimatore di densità** con un singolo *iperparametro*: => l'unico iperparamentro è dunque la larghezza dei bins
 
-	![[Pasted image 20251105224554.png]] (in verde la true density => dove i dati sono campionati)
+	![[Pasted image 20251105224554.png]] 
+	=> in verde la **true density** => dove i dati sono campionati
+	=> La scelta migliore sembra essere la seconda... il primo e il secondo per $\Delta$ rispettivamente troppo piccoli o troppo grandi.
+		
 
 	11
 ---
 **Istogrammi: stimatori di densità costanti a tratti**
 
-- La selezione di $\Delta$ è **critica** – troppo piccolo e lo stimatore ha alta varianza. => troppo dipendente da questo!
+- La selezione di $\Delta$ è **critica** – troppo piccolo e lo stimatore ha alta **varianza**. => troppo dipendente da questo!
 - Troppo grande e la curva è troppo liscia. => histogram ha smoothing effect
-- Il modello è discontinuo ai bordi dei bin.
-- I dati non sono necessari al tempo di test (vantaggio => guardo i bins piuttosto che tutti i dati), ma gli istogrammi scalano molto male con la dimensione ($M^D$). => si ritorna a curse of dimensionality
+- Il modello è **discontinuo ai bordi** dei bin. => rischio di perdere particolari mode...
+- I dati non sono necessari al tempo di test (vantaggio => **guardo i bins piuttosto** che tutti i dati), ma gli istogrammi scalano molto male con la dimensione ($M^D$). => si ritorna a curse of dimensionality! 
 
 	![[Pasted image 20251105224554.png]]
 
@@ -380,34 +391,37 @@ $$\text{F1}(c) = 2\frac{\text{Precisione}(c) * \text{Recall}(c)}{\text{Precision
 
 - Nonostante le loro limitazioni, gli istogrammi ci dicono qualcosa di importante sulla **stima della densità**.
 - Per stimare la densità in un punto $x$ nel dominio, dovremmo ==guardare i punti dati che giacciono vicino== a $x$.
-- Questo uso della località assume che abbiamo una metrica di distanza significativa nel dominio (es. Euclidea). => $||\mathbf{x}  - \mathbf{y}||$ => che succede però se una dimensione ha una scala molto più grande rispetto all'altra? vince sempre quella con scala più grande! => la distanza sarà sempre più piccola in questo caso (anisotropic?) => importante scalare i dati
-- Diamo un'occhiata ad alcuni metodi nonparametrici comuni usati in Machine Learning.
+- Questo uso della località assume che abbiamo una **metrica di distanza** significativa nel dominio (es. Euclidea). => $||\mathbf{x}  - \mathbf{y}||$ => che succede però se una dimensione ha una scala molto più grande rispetto all'altra? vince sempre quella con scala più grande! => la distanza sarà sempre più piccola in questo caso (anisotropic?) => importante scalare i dati
+- Diamo un'occhiata ad alcuni metodi **nonparametrici** comuni usati in Machine Learning.
 
 	13
 ---
 
-## Stima della Densità: Kernel Density Estimators
+## Stima della Densità: Kernel Density Estimators 
+
+- Stimare la *Marginal Likelihood* di x => $p(x)$ dai dati!
 ---
 **Una digressione binomiale**
 
 - Per motivare come possiamo estendere la nostra idea dell'istogramma a uno stimatore puramente locale, dobbiamo considerare la distribuzione binomiale.
-- La **distribuzione binomiale** rappresenta la probabilità di vedere $m$ **successi** in una sequenza di $N$ **prove** di Bernoulli:$$\text{Bin}(m|N, \mu) = \binom{N}{m} \mu^m (1 - \mu)^{(N - m)}$$ => $\mu$ è la likelihood dei successi
+- La **distribuzione binomiale** rappresenta la probabilità di vedere $m$ **successi** in una sequenza di $N$ **prove** di Bernoulli:$$\text{Bin}(m|N, \mu) = \binom{N}{m} \mu^m (1 - \mu)^{(N - m)}$$ => $\mu$ è la **likelihood** dei successi => $m$ sono il numero di successi e $N$ le prove
 $$\mathbb{E}(m) = \sum_{m=0}^{N} m \text{Bin}(m|N, \mu) = N\mu$$
 
 	14
 ---
 Una digressione binomiale
 
-- La binomiale è unimodale e in qualche modo simile a una **Gaussiana**:
+- La binomiale è **unimodale** e in qualche modo simile a una **Gaussiana**:
 
-	![[Pasted image 20251105224901.png]]
+	![[Pasted image 20251204183256.png]]
 
 	15
 ---
 **Generalizzando**
 
 - Assumiamo di avere osservazioni estratte da una **densità sconosciuta** $p(x)$ in uno spazio Euclideo $D$-dimensionale.
-- Simile a un istogramma, consideriamo **una piccola regione** $\mathcal{R}$ attorno a $x$. (metti sketch)
+- Simile a un istogramma, consideriamo **una piccola regione** $\mathcal{R}$ attorno a $x$. 
+	![[Pasted image 20251204183412.png]]
 - La **massa di probabilità** (tipo likelihood) associata con $\mathcal{R}$ è$$P = \int_{\mathcal{R}} p(x) dx$$ => probabilità di *cadere* in quella regione
 - Se abbiamo $N$ osservazioni estratte da $p(x)$, ognuna ha probabilità $P$ di cadere in $\mathcal{R}$.
 - Quindi, il numero totale di punti $K$ che cadono in $\mathcal{R}$ sarà **distribuito binomialmente**: => per bernoulli (o sono dentro la regione o non ci sono in N test)$$\text{Bin}(K|N, P) = \binom{N}{K} P^K (1 - P)^{(N-K)}$$
@@ -416,7 +430,7 @@ Una digressione binomiale
 **Generalizzando**
 
 - Usando le formule per media e varianza della Binomiale possiamo analizzare la frazione di punti che cadono in $R$: (K out of N)$$\mathbb{E}(K/N) = P$$ $$\text{var}(K/N) = \frac{P(1-P)}{N}$$
-- Per $N$ grande questa distribuzione sarà **concentrata** attorno a $P$ e quindi:$$K \approx NP$$ => varianza che diventa sempre più stretta(sketch)... il numero dei punti diventa quindi N per il numero di punti che ci aspettiamo cadano nella regione! 
+- Per $N$ **grande** questa distribuzione sarà **concentrata** attorno a $P$ e quindi:$$K \approx NP$$ => varianza che diventa sempre più stretta(sketch)... il numero dei punti diventa quindi N per il ==numero di punti che ci aspettiamo cadano nella regione!== 
 
 	17
 ---
@@ -424,57 +438,68 @@ Una digressione binomiale
 
 - Per $N$ grande questa distribuzione sarà **concentrata** attorno a $P$ e quindi:$$K \approx NP$$
 - D'altra parte, possiamo assumere $R$ con volume $V$ sia sufficientemente piccolo (e quindi $p(x)$ è **costante**) e quindi: $$P \approx p(x)V$$ => la prob diventa costante!
-- Portandoci a: $$p(x) \approx \frac{K}{NV}$$ => numero di punti che cadono nella regione fratto numero di tentativi e il volume => tipo stesso caso degli istogrammi!
+- Portandoci a: $$p(x) \approx \frac{K}{NV}$$ => numero di punti che cadono nella regione fratto numero di tentativi e il volume => tipo stesso caso degli istogrammi! => al posto dei rettangoli ho dei volumi => cambia solo il $\Delta_i$ 
 
 	18
 ---
 **Generalizzando**
 
 - Nota che questa stima di $p(x)$ è basata su due assunzioni contraddittorie:
-  - Che $R$ sia sufficientemente piccolo e quindi $p(x)$ è costante in esso.
-  - Che $R$ sia sufficientemente grande in modo che il numero di punti che cadono in esso siano sufficienti a picco la binomiale. => per avere un estimate con un senso
+  - Che $R$ sia sufficientemente piccolo e quindi $p(x)$ è **costante** in esso.
+  - Che $R$ sia sufficientemente grande (anzi N grande) in modo che il numero di punti che cadono in esso siano sufficienti a "riempire" la binomiale. => per avere un estimate con un senso
 
 - Questo ci lascia con due scelte:
-  1. ==Fissare $K$== e lasciare che i dati determinino cosa $V$ dovrebbe essere (**Nearest Neighbors**).
+  1. ==Fissare $K$== e lasciare che i dati determinino ==cosa $V$ dovrebbe essere== (**Nearest Neighbors**).
   2. ==Fissare $V$== e lasciare che i dati determinino cosa $K$ dovrebbe essere (**Kernel Density Estimation**).
 
 	19
 ---
 **Kernel Density Estimation**
 
-- Prendiamo $R$ come un ipercubo unitario centrato all'origine.
+- Prendiamo $R$ come un ipercubo unitario centrato all'origine. 
 - Questo è convenientemente descritto dalla **funzione kernel**:$$k(u) =
 \begin{cases} 
 1 & \text{se } |u_i| \leq 1/2, \text{ per } i = 1, \ldots, D \\
 0 & \text{altrimenti}
 \end{cases}$$
-- Quindi, per qualsiasi punto $x$, $k((x - x_n)/h) = 1$ se il punto $x_n$ giace dentro un ipercubo con dimensione $h$ centrato su $x$. (metti sketch) => si può traslare e scalare il nostro ipercubo a piacimento per qualsiasi punto nello spazio => tipo standard gaussian distribution ma nel caso discreto.
-- Il numero totale di punti $K$ che giacciono in tale ipercubo attorno a $x$ è allora: $$K = \sum_{n=1}^{N} k \left( \frac{x - x_n}{h} \right)$$ => si sommano sul kernel!
+- Quindi, per qualsiasi punto $\mathbf{x}$, $$k((x - x_n)/h) = 1$$ se il punto $x_n$ giace dentro un ipercubo con dimensione $h$ centrato su $x$.
+	![[Pasted image 20251204184638.png]] 
+	=> si può traslare (con il centro x) e scalare (di h) il nostro ipercubo a piacimento per qualsiasi punto nello spazio => tipo standard *gaussian distribution* ma nel caso discreto.
+	
+- Il numero totale di punti $K$ che **giacciono** in tale ipercubo attorno a $x$ è allora: $$K = \sum_{n=1}^{N} k \left( \frac{x - x_n}{h} \right)$$ => si sommano sul kernel!
 
 	20
 ---
 **Kernel Density Estimation**
 
 - Tornando alla nostra equazione per $p(x)$, abbiamo: $$p(x) = \frac{K}{NV} = \frac{1}{N} \sum_{n=1}^{N} \frac{1}{h^D} k \left( \frac{x - x_n}{h} \right)$$ => purely local version di un istogramma 
-- Questo soffre ancora di ==discontinuità ai bordi dell'ipercubo== (sketch) => dovuto al modo in cui abbiamo definito il kernel, quindi un kernel più comune è il **Gaussiano**: $$p(x) = \frac{1}{N} \sum_{n=1}^{N} \frac{1}{(2\pi h^2)^{D/2}} \exp \left\{ - \frac{||x - x_n||^2}{2h^2} \right\}$$ (altro sketch) => gaussian centrato in x => misuro quanto i punti vicini contribuiscono alla mia densità => considero il contributo di tutti i punti! => parzen kernel density estimator! => buono perchè infinitamente derivabile!
+- Questo soffre ancora di ==discontinuità ai bordi dell'ipercubo==
+	![[Pasted image 20251204190657.png]] 
+	=> dovuto al modo in cui abbiamo definito il kernel,
+	
+ - Quindi un kernel più comune è il **Gaussiano**: $$p(x) = \frac{1}{N} \sum_{n=1}^{N} \frac{1}{(2\pi h^2)^{D/2}} \exp \left\{ - \frac{||x - x_n||^2}{2h^2} \right\}$$
+	 => gaussian centrato in x => misuro quanto i punti vicini contribuiscono alla mia densità => ==considero il contributo di tutti i punti==! => parzen kernel density estimator! => buono perchè infinitamente derivabile!
+	 
+	![[Pasted image 20251204190746.png]]
 
 	21
 ---
 **Kernel Density Estimation**
 
-- Questo è chiamato Kernel Density Estimator (o di Parzen).
-- L'iperparametro $h$ è chiamato bandwidth del kernel che controlla la quantità di smoothing che viene eseguita.
+- Questo è chiamato *Kernel Density Estimator* (o di Parzen).
+- L'iperparametro $h$ è chiamato **bandwidth** del kernel che controlla ==la quantità di smoothing che viene eseguita.==
 - Le funzioni kernel dovrebbero soddisfare:  $$k(u) \geq 0, \, \int uk(u)du = 0, \, \text{e} \, \int k(u)du = 1$$ (kernel simmetrico => media a zero, positivo e la somma deve fare 1)
- - Questi tipi di approcci sono spesso chiamati metodi locali perché per stimare $p(x)$ guardano i dati vicini a $x$.
+ - Questi tipi di approcci sono spesso chiamati metodi locali perché per stimare $p(x)$ guardano i ==dati vicini== a $x$.
 
 	22
 ---
 **Kernel Density Estimation**
 
 ![[Pasted image 20251105225455.png]] 
+
 => a seconda del bandwith scelto ottengo diversi casi => scegliere h molto stretto può capitare nell'avere tante piccole gaussiane in tutti i punti e niente intorno!
 
-+ Altro grosso problema... => devo fare la somma su tutti i punti del mio dataset!! => problema che scala male!
++ Altro grosso problema... => devo fare la somma ==su tutti i punti del mio dataset==!! => problema che scala male!
 
 	23
 ---
@@ -485,12 +510,13 @@ Una digressione binomiale
 
 - Possiamo applicare questo tipo di metodo locale a **problemi di regressione.**
 - Ricordiamo che un predittore ottimale per la regressione è: $$\mathbb{E}(t | \mathbf{x}) = \int t p(t | \mathbf{x}) dt = \int t \frac{p(\mathbf{x}, t)}{p(\mathbf{x})} dt$$
-- ==Ora usiamo le Kernel Density Estimates come approssimazioni==: (tolgo l'h a scalare ma c'è)$$\hat{p}(\mathbf{x}, t) = \frac{1}{N} \sum_{n=1}^{N} k_h (\mathbf{x} - \mathbf{x}_n) k_h (t - t_n)$$ => faccio la joint probability di due gaussiane anche con bandwith diverso (a seconda dello scale dei dati => target vs features) $$\hat{p}(\mathbf{x}) = \frac{1}{N} \sum_{n=1}^{N} k_h (\mathbf{x} - \mathbf{x}_n)$$
+- ==Ora usiamo le Kernel Density Estimates come approssimazioni==: (tolgo l'h a scalare ma c'è)$$\hat{p}(\mathbf{x}, t) = \frac{1}{N} \sum_{n=1}^{N} k_h (\mathbf{x} - \mathbf{x}_n) k_h (t - t_n)$$ => faccio la joint probability **di due gaussiane** anche con bandwith diverso (a seconda dello scale dei dati => target vs features) $$\hat{p}(\mathbf{x}) = \frac{1}{N} \sum_{n=1}^{N} k_h (\mathbf{x} - \mathbf{x}_n)$$
 	24
 ---
 **Nadaraya-Watson: regressione localmente pesata**
 
-- La nostra approssimazione dello stimatore ottimale è ora: $$\mathbb{E}(t \mid x) = \int t \frac{p(x, t)}{p(x)} dt$$$$= \int t \frac{1}{N} \sum_{n=1}^{N} \frac{k_h (x - x_n) k_h (t - t_n)}{p(x)} d t$$ma solo una parte dipende da t!$$= \frac{\sum_{n=1}^{N} k_h (x - x_n) \int t k_h (t - t_n) d t}{\sum_{n=1}^{N} k_h (x - x_n)}$$ riottengo l'expected value del kernel di $t_n$ $$= \frac{\sum_{n=1}^{N} k_h (x - x_n) t_n}{\sum_{n=1}^{N} k_h (x - x_n)}$$ => quanto contribuisce un punto $x_n$ => me lo dice appunto il kernel!  => metti sketch => kernel mi dice appunto il suo peso!
+- La nostra approssimazione dello stimatore ottimale è ora: $$\mathbb{E}(t \mid x) = \int t \frac{p(x, t)}{p(x)} dt$$$$= \int t \frac{1}{N} \sum_{n=1}^{N} \frac{k_h (x - x_n) k_h (t - t_n)}{p(x)} d t$$ma solo una parte dipende da t!$$= \frac{\sum_{n=1}^{N} k_h (x - x_n) \int t k_h (t - t_n) d t}{\sum_{n=1}^{N} k_h (x - x_n)}$$ riottengo l'expected value del kernel di $t_n$ $$= \frac{\sum_{n=1}^{N} k_h (x - x_n) t_n}{\sum_{n=1}^{N} k_h (x - x_n)}$$ => quanto contribuisce un punto $x_n$ => me lo dice appunto il kernel!  ![[Pasted image 20251205183116.png]]
+	=> kernel mi dice appunto il suo peso!
 
 	25
 ---
@@ -506,18 +532,18 @@ Una digressione binomiale
 **Il problema di $h$**
 
 - Un problema con la Kernel Density Estimation è che il bandwidth $h$ è **fissato per tutti i kernel**.
-- Se abbiamo parti dello spazio con molti campioni, questo può portare a oversmoothing e perdita di dettaglio se $h$ è troppo grande!
-- Se riduciamo $h$, in regioni a bassa densità avremo **stime rumorose**.
-- E se, invece di fissare $V$ (tramite il bandwidth) e derivare un'espressione per $K$, fissassimo $K$ e andassimo nella direzione opposta.
+- Se abbiamo parti dello spazio ==con molti campioni==, questo può portare a oversmoothing e perdita di dettaglio se $h$ è troppo grande!
+- Se riduciamo $h$, in regioni a bassa **densità** avremo **stime rumorose**.
+- E se, invece di fissare $V$ (tramite il bandwidth) e derivare un'espressione per $K$, fissassimo $K$ e andassimo nella direzione opposta. => scelgo il miglior bandwith per i miei dati!
 
 	27
 ---
 **K-Nearest Neighbors**
 
-- L'approccio K-Nearest Neighbors è algoritmico: (parto da un certo numero di punti e vedo performance...)
-  - Fissiamo $K$ e consideriamo una ipersfera attorno a un punto $x$ dove vogliamo stimare $p(x)$.
-  - Aumentiamo poi il raggio di questa ipersfera fino a quando esattamente $K$ punti dal training set sono dentro di essa.
-  - Calcoliamo poi $p(x) = \frac{K}{NV}$ per $V$ uguale al volume dell'**ipersfera** risultante.
+- L'approccio K-Nearest Neighbors è **algoritmico**: (parto da un certo numero di punti e vedo performance...)
+  - Fissiamo $K$ e consideriamo una *ipersfera* attorno a un punto $\mathbf{x}$ dove vogliamo stimare $p(\mathbf{x})$.
+  - Aumentiamo poi il raggio di questa ipersfera fino a quando ==esattamente $K$ punti dal training set sono dentro di essa.==
+  - Calcoliamo poi $p(\mathbf{x}) = \frac{K}{NV}$ per $V$ uguale al volume dell'**ipersfera** risultante.
 
 	28
 ---
@@ -531,10 +557,12 @@ Una digressione binomiale
 ---
 **K-Nearest Neighbors Classification**
 
-- L'approccio K-Nearest Neighbors (KNN) è un metodo molto conveniente per la classificazione, tuttavia.
-- Intuitivamente, facciamo una stima di densità KNN per ogni **densità condizionata** alla classe, e poi applichiamo la Regola di Bayes.
+- L'approccio K-Nearest Neighbors (KNN) è un metodo molto conveniente **per la classificazione**, tuttavia.
+- Intuitivamente, facciamo una stima di densità KNN per ogni **densità condizionata** alla classe, e poi ==applichiamo la Regola di Bayes==.
+
 - Supponiamo di avere $N_k$ esempi da ogni classe $k$ (quindi $\sum_{k} N_k = N$).
 - Per classificare un nuovo punto $x$ facciamo il trucco dell'ipersfera assumendo che il volume necessario attorno a $x$ per includere $K$ punti sia $V_x$.
+
 - Se in questa ipersfera abbiamo $K_k$ punti dalla classe $k$: $$p(x | C_k) = \frac{K_k}{N_k V_x}$$ conto i punti di una certa classe e divido per un fattore costante
 
 - La **densità marginale** e i prior di classe sono similmente stimati:$$p(x) = \frac{K}{N V_x} \quad p(C_k) = \frac{N_k}{N}$$ => ho tutti gli strumenti per ottenere una posterior!
@@ -543,9 +571,11 @@ Una digressione binomiale
 ---
 K-Nearest Neighbors Classification
 
-- Entra Bayes:$$p(C_k | x) = \frac{p(x | C_k) p(C_k)}{p(x)} = \frac{K_k}{K}$$
-	![[Pasted image 20251105230403.png]]
-	=> ogni classe prende un "voto" a seconda del kernel scelto => ottengo anche un classificatore non lineare! => è un classificatore bayes optimal nel limite di infiniti dati
+- Entra Bayes:$$p(C_k | x) = \frac{p(x | C_k) p(C_k)}{p(x)} = \frac{K_k}{K}$$ => ovvero numero di vicini alla classe K/numero totale dei vicini ()
+
+	![[Pasted image 20251105230403.png]] (esempio con K = 3)
+	=> ogni classe prende un "voto" a seconda del kernel scelto  => vedo che voto migliore ottengo a seconda delle classi per ogni input => e in base a quello classifico!
+	=> ottengo anche un classificatore non lineare! => è un classificatore bayes optimal nel limite di infiniti dati
 
 	31
 ---
@@ -555,15 +585,17 @@ K-Nearest Neighbors Classification
 **Metodi locali**
 
 - In questa lezione abbiamo visto diversi metodi nonparametrici e locali per:
-   - Stimare densità (Kernel Density Estimation).
-   - Regressione (Nadaraya-Watson)
-   - Classificazione (K-Nearest Neighbors).
+   - **Stimare densità** (Kernel Density Estimation).
+   - **Regressione** (Nadaraya-Watson)
+   - **Classificazione** (K-Nearest Neighbors).
 
 - Queste tecniche sono semplici e intuitive e spiegabili.
 
-- Hanno un piccolo (ma importante!) numero di iperparametri: il bandwidth del kernel $h$ (spesso più di uno), o il numero di vicini $K$.
+- Hanno un piccolo (ma importante!) numero di **iperparametri**: 
+	- il bandwidth del kernel $h$ (spesso più di uno), 
+	- o il numero di vicini $K$.
 
-- Questi metodi hanno belle proprietà di convergenza (es. K-Nearest Neighbors è quasi-ottimale per $K = 1$ quando $N \to \infty$).
+- Questi metodi hanno belle proprietà di convergenza (es. K-Nearest Neighbors è **quasi-ottimale** per $K = 1$ quando $N \to \infty$).
 - Questi metodi tuttavia hanno un enorme svantaggio pratico?
 
 - *L'ha visto qualcuno già?*
@@ -572,7 +604,7 @@ K-Nearest Neighbors Classification
 ---
 **Inefficienza spaziale**
 
-- Per fare previsioni, tutti questi metodi richiedono che tutti i dati di training siano disponibili al momento dell'inferenza.
+- Per fare previsioni, tutti questi metodi richiedono che ==tutti i dati di training siano disponibili al momento dell'inferenza.==
 - In pratica, tipicamente usiamo una struttura dati (es. un KD-tree o Ball-Tree) per recuperare efficientemente e approssimativamente i $K$ punti in $D$ più vicini a un punto $x$.
 
 	![[Pasted image 20251105230608.png]]
@@ -590,6 +622,7 @@ K-Nearest Neighbors Classification
 	2. Implementa il Nadaraya-Watson Kernel Regressor con un Kernel Gaussiano. Usalo per stimare un regressore per l'esempio nel laboratorio di Regressione Lineare. Come dovrebbe essere regolato il parametro di bandwidth $h$?
 
 	34
+---
 
 # 20 - Introduzioni al Deep Learing
 
