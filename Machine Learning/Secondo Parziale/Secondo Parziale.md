@@ -632,17 +632,20 @@ K-Nearest Neighbors Classification
 
 ## Introduzione
 ---
+![[Pasted image 20251206223944.png]]
+=> gli hidden layer preactivations non dipendono da tutti i parametri del modello! => se dunque vogliamo calcolare il gradiente $\nabla_{\theta} f(\mathbf{x}, \theta)$ potremmo suddividere questo secondo la chain rule su più parti => $$= \sigma' (f_{out}(\mathbf{z}, \theta)) \nabla_{\theta}f_{out}(\mathbf{z},\theta) = \sigma' (f_{out}(\mathbf{z}, \theta)) f'_{out}(\mathbf{z},\theta)\sigma' (f_{h}(\mathbf{x}, \theta))f'_h(\mathbf{x},\theta)$$ => Ho un prodotto fra derivate di funzioni lineari e funzioni di attivazione => a seconda del numero di layer avrò sempre più livelli della chain rule...
+
++Occhio però che se ho valori molto grandi (o molto piccoli) per la funzione di attivazione (caso della sigmoide) la loro derivata tende a zero => ho problemi di underflow/overflow in precisione! => *vanishing gradients* => bisogna stare attenti al magnitude dei valori per le funzioni di attivazione!
+![[Pasted image 20251206225412.png]]
+
+---
 **Obiettivi della lezione**
 
 Dopo questa lezione saprete:
 
-- Capire come le reti ReLU (con almeno uno strato nascosto) possano approssimare con precisione desiderata qualsiasi funzione continua su un dominio compatto.
-- Capire come la **backpropagation** possa essere usata per calcolare in modo automatico ed efficiente i gradienti delle reti neurali.
+- Capire come le reti ReLU (con almeno uno strato nascosto) possano approssimare con precisione desiderata **qualsiasi funzione continua** su un dominio compatto.
+- Capire come la **backpropagation** possa essere usata ==per calcolare in modo automatico ed efficiente i gradienti delle reti neurali.==
 - Capire alcune delle insidie dell'Algoritmo di Backpropagation e come vengono mitigate nella pratica.
-
-+Sketch => gli hidden layer preactivations non dipendono da tutti i parametri del modello! => se dunque vogliamo calcolare il gradiente $\nabla_{\theta} f(\mathbf{x}, \theta)$ potremmo suddividere questo secondo la chain rule su più parti => $$= \sigma' (f_{out}(\mathbf{z}, \theta)) \nabla_{\theta}f_{out}(\mathbf{z},\theta) = \sigma' (f_{out}(\mathbf{z}, \theta)) f'_{out}(\mathbf{z},\theta)\sigma' (f_{h}(\mathbf{x}, \theta))f'_h(\mathbf{x},\theta)$$ => Ho un prodotto fra derivate di funzioni lineari e funzioni di attivazione => a seconda del numero di layer avrò sempre più livelli della chain rule...
-
-+Occhio però che se ho valori molto grandi (o molto piccoli) per la funzione di attivazione (caso della sigmoide) la loro derivata tende a zero => ho problemi di underflow/overflow in precisione! => *vanishing gradients* => bisogna stare attenti al magnitude dei valori per le funzioni di attivazione!
 
 	2
 ---
@@ -654,11 +657,14 @@ Dopo questa lezione saprete:
 - Considera una funzione $f[x, \phi]$ che mappa un input scalare $x$ a un output scalare $y$.
 - Questa funzione ha dieci parametri $\phi = \{ \phi_0, \phi_1, \phi_2, \phi_3, \theta_{10}, \theta_{11}, \theta_{20}, \theta_{21}, \theta_{30}, \theta_{31} \}$ (ho dei pesi e i bias dei layer nascosti) => ho un solo hidden layer e 3 neuroni
 - La definizione di $f[x, \phi]$ è: $$y = f[x, \phi]$$$$= \phi_0 + \phi_1 \sigma [\theta_{10} + \theta_{11}x] + \phi_2 \sigma [\theta_{20} + \theta_{21}x] + \phi_3 \sigma [\theta_{30} + \theta_{31}x]$$
-- La funzione di attivazione $\sigma$ che considereremo sarà l'Unità Lineare Rettificata (ReLU): $$\sigma[z] = \text{ReLU}[z] = \max(0, z) = 
+- La funzione di attivazione $\sigma$ che considereremo sarà l'Unità Lineare Rettificata (**ReLU**): $$\sigma[z] = \text{ReLU}[z] = \max(0, z) = 
 \begin{cases} 
 0 & \text{se } z < 0 \\
 z & \text{altrimenti}
-\end{cases}$$+ Sketch relu => ha discontinuità in zero ma fino a che hai input positivi ottieni derivate lineari.
+\end{cases}$$ ![[Pasted image 20251206232339.png]]
+	=> ha discontinuità in zero ma fino a che hai input positivi ottieni derivate **lineari**.
+	
+	3
 ---
 **Una funzione di esempio**
 
@@ -679,54 +685,64 @@ def f(x, W1, b1, W2, b2):
     return W2.T @ relu((W1*x.T + b1)) + b2
 ```
 
+	4
 ---
 **Una funzione di esempio**
 
 - Visualizzando alcune istanze casuali:
-	![[Pasted image 20251118090954.png]] => piecewise linear functions
+	![[Pasted image 20251118090954.png]] 
+	=> piecewise linear functions
 
+	5
 ---
 **Una funzione di esempio**
 
 - Questa funzione rappresenta la famiglia parametrica di funzioni con al **massimo quattro segmenti lineari**. => regioni in cui la funzione è lineare
 - Cioè, la famiglia di funzioni lineari a tratti con fino a quattro regioni lineari. => applicando ReLU ne aggiungo quindi la non linearità (mantenendo magnitudine e direzione)
-- È utile scomporre il calcolo di $f[x, \phi]$ calcolando prima le quantità nascoste: 
+- È utile scomporre il calcolo di $f[x, \phi]$ calcolando prima le **quantità nascoste:** 
 	- $h_1 = \sigma [\theta_{10} + \theta_{11}x]$
 	- $h_2 = \sigma [\theta_{20} + \theta_{21}x]$
 	- $h_3 = \sigma [\theta_{30} + \theta_{31}x]$.
 
-- Poi le combiniamo con: $$y = \phi_0 + \phi_1 h_1 + \phi_2 h_2 + \phi_3 h_3$$
+- Poi le combiniamo con: $$y = \phi_0 + \phi_1 h_1 + \phi_2 h_2 + \phi_3 h_3 = \phi_0 + \sum_{d=1}^3\phi_dh_d$$
+	6
 ---
 **Una rete superficiale (shallow)**
 
-- Ogni regione lineare corrisponde a un pattern di attivazione nelle unità nascoste.
-- Quando un'unità viene "clippata" dall'attivazione ReLU, la definiamo inattiva.
+- Ogni regione lineare corrisponde a un ==pattern di attivazione nelle unità nascoste==.
+- Quando un'unità viene "clippata" (posta a zero => quando output neurone negativo) dall'attivazione ReLU, la definiamo **inattiva**.
 - La pendenza di ogni regione è determinata dalle pendenze originali $\theta_{*1}$ degli input attivi per questa regione e dai pesi $\phi_{*}$ applicati successivamente.
-- Ogni unità nascosta contribuisce con un "gomito" (joint) alla funzione, quindi con tre unità nascoste possono esserci quattro regioni lineari.
+- Ogni unità nascosta contribuisce con un "gomito" (joint) alla funzione, quindi **con tre unità nascoste possono esserci quattro regioni lineari.**
 
+	7
 ---
 **Il Teorema di Approssimazione Universale (versione shallow)**
 
 - Se generalizziamo questo a $D$ unità nascoste: $$h_d = \sigma[\theta_{d0} + \theta_{d1}x] \text{ per } d \in \{1, \ldots, D\}$$
-- E le combiniamo nello stesso modo: $$y = \phi_0 + \sum_{d=1}^{D}\phi_d h_d$$
-- Il numero di unità nascoste in una rete shallow è una misura della capacità della rete. => quante piecewise region functions posso creare! => sostanzialmente creo dei pezzettini che mi approssimano la funzione a seconda delle hidden units usate (+ sketch) => anche se come visto prima non funziona per tutti ma varia a seconda dei parametri di quanti neuroni mi rimangono attivi.
-- Con capacità sufficiente, una rete shallow può descrivere qualsiasi funzione continua 1D definita su un sottoinsieme compatto della retta reale con precisione arbitraria.
+- E le combiniamo nello stesso modo: $$y = \phi_0 + \sum_{d=1}^{D}\phi_d h_d$$ => caso di D unità nascoste
 
+- Il **numero di unità nascoste** in una rete shallow è una **misura della capacità della rete.** => quante piecewise region functions posso creare! => sostanzialmente creo dei pezzettini che mi approssimano la funzione a seconda delle **hidden units usate** ![[Pasted image 20251206233646.png]] 
+- Anche se come visto prima non funziona per tutti ma varia a seconda dei parametri di quanti neuroni mi rimangono attivi.
+- Con capacità sufficiente, ==una rete shallow può descrivere qualsiasi funzione continua== 1D definita su un sottoinsieme compatto della retta reale **con precisione arbitraria**.
+
+	8
 ---
 **Il Teorema di Approssimazione Universale (versione shallow)**
 
 - Cosa succede se aumentiamo il numero di unità nascoste a 1000?
-	![[Pasted image 20251118092143.png]]
+	![[Pasted image 20251118092143.png]]  
+	=> Aumento regioni lineari => diminuisco errori di approx! ma funzioni più complesse
 
 	9
 ---
 **L'Umile Rete Neurale**
 
 - Ovviamente stiamo descrivendo la stessa architettura che già conosciamo:
-	![[Pasted image 20251118092218.png]](magari oltre alla depth posso anche anche aumentare la width della mia hidden layer
+	![[Pasted image 20251118092218.png]]magari oltre alla depth (sinistra => destra) posso anche anche aumentare la **width (alto <=> basso) della mia hidden layer** => l'idea è comunque di aumentare capacità della rete => o come regioni lineari o come numero di neuroni 
+	=> torno comunque ad output lineari!
 
 - Di solito pensiamo in termini di figure più semplice sulla destra
-- Importante: Il teorema di approssimazione Universale dice che esiste una rete con un singolo hidden layer per qualche D unità nascoste che approssima qualsiasi funzione continua $f$ per ogni precisione desiderata
+- Importante: Il teorema di approssimazione Universale dice che esiste una rete **con un singolo hidden layer** per qualche D unità nascoste che ==approssima qualsiasi funzione continua $f$ per ogni precisione desiderata== => un singolo hidden layer - D unità nascoste (abbastanza unità) => approx qualsiasi funzione f (continua) con precisione arbitraria
 
 	10
 ---
@@ -736,26 +752,22 @@ def f(x, W1, b1, W2, b2):
 **Un'altra rete giocattolo**
 
 - Considera la seguente funzione: $$f[x, \phi] = \beta_3 + \omega_3 \cdot \cos \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot \sin \left[ \beta_0 + \omega_0 x \right] \right] \right]$$
-
 - Questa è una composizione delle funzioni $\cos[\bullet], \exp[\bullet], \sin[\bullet]$.
-- Con parametri $\phi = \{\beta_0, \omega_0, \beta_1, \omega_1, \beta_2, \omega_2, \beta_3, \omega_3\}$.
+- Con parametri $\phi = \{\beta_0, \omega_0, \beta_1, \omega_1, \beta_2, \omega_2, \beta_3, \omega_3\}$. (bias e pesi)
 - Supponiamo di avere una funzione di perdita ai minimi quadrati: $\ell_i = (f[x_i, \phi] - y_i)^2$. (single sample loss)
 - E che conosciamo i valori correnti di $\beta_0, \beta_1, \beta_2, \beta_3, \omega_0, \omega_1, \omega_2, \omega_3, x_i$, e $y_i$.
-- Potremmo ovviamente calcolare $\ell_i$, ma siamo invece interessati a calcolare come piccoli cambiamenti nei parametri $\phi$ cambino $\ell_i$.
+- Potremmo ovviamente calcolare $\ell_i$, ma siamo invece interessati a calcolare ==come piccoli cambiamenti nei parametri $\phi$ cambino $\ell_i$.==
 
 	11
 ---
 **Il calcolo manuale è una rottura**
 
 - Potremmo calcolare le espressioni per le derivate parziali a **mano**:
+	- $\frac{\partial \ell_i}{\partial \omega_0} = -2 \left( \beta_3 + \omega_3 \cdot \cos \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot \sin \left[ \beta_0 + \omega_0 \cdot x_i \right] \right] \right] - y_i \right)$
+	- $\omega_1 \omega_2 \omega_3 \cdot x_i \cdot \cos \left[ \beta_0 + \omega_0 \cdot x_i \right] \cdot \exp \left[ \beta_1 + \omega_1 \cdot \sin \left[ \beta_0 + \omega_0 \cdot x_i \right] \right]$
+	- $\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot \sin \left[ \beta_0 + \omega_0 \cdot x_i \right] \right] \right]$.
 
-$\frac{\partial \ell_i}{\partial \omega_0} = -2 \left( \beta_3 + \omega_3 \cdot \cos \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot \sin \left[ \beta_0 + \omega_0 \cdot x_i \right] \right] \right] - y_i \right)$
-
-$\omega_1 \omega_2 \omega_3 \cdot x_i \cdot \cos \left[ \beta_0 + \omega_0 \cdot x_i \right] \cdot \exp \left[ \beta_1 + \omega_1 \cdot \sin \left[ \beta_0 + \omega_0 \cdot x_i \right] \right]$
-
-$\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot \sin \left[ \beta_0 + \omega_0 \cdot x_i \right] \right] \right]$.
-
-- Ma questo è ==una rottura== e – cosa più importante – estremamente ridondante! (also error prone)
+- Ma questo è ==una rottura== e – cosa più importante – **estremamente ridondante!** (also error prone => soggetta ad errori)
 
 - Vediamo se possiamo derivare un algoritmo generico per calcolare le derivate di funzioni come questa...
 
@@ -763,25 +775,32 @@ $\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot
 ---
 **Il Grafo Computazionale di** $f[x, \phi]$
 
-- La chiave sta nel modo in cui scomponiamo questa composizione di funzioni:  
-  $f[x, \phi] = \beta_3 + \omega_3 \cdot \cos \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot \sin \left[ \beta_0 + \omega_0 x \right] \right] \right]$
+- La chiave sta nel modo in cui ==scomponiamo questa composizione di funzioni==:  $$f[x, \phi] = \beta_3 + \omega_3 \cdot \cos \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot \sin \left[ \beta_0 + \omega_0 x \right] \right] \right]$$
+	![[Pasted image 20251207000351.png]]
 
-+Metti sketch (potrei fare la stessa cosa con le matrici al posto dei scalare)
-+Faccio quindi anche il calcolo della loss => come la minimizzo? => come ne calcolo il gradiente? => faccio backpropragation => per calcolare la derivata parziale sfrutto la chain rule ma anche per calcolare la derivata parziali dell'output ne rifaccio la chain rule! => tornando indietro ad ogni layer => questo sarà dipendente dall'activation fino a quel punto! => il forward pass è quindi salvarsi tutte le funzioni di attivazioni => mentre il backward pass è come faccio il calcolo delle mie derivate parziali
+	+Faccio quindi anche il calcolo della loss => ![[Pasted image 20251207000606.png]]
+	
+- Come la minimizzo? => ne calcolo il gradiente!
 
+-  Come calcolo il gradiente? => faccio **backpropagation** 
+	=> per calcolare la derivata parziale sfrutto la chain rule ma anche per calcolare la derivata parziali dell'output ne rifaccio la chain rule! => tornando indietro ad ogni layer => questo sarà dipendente **dall'activation fino a quel punto!** 
+	![[Pasted image 20251207000856.png]]
+	=> il **forward pass** è quindi salvarsi tutte le **funzioni** di attivazioni 
+	=> mentre il backward pass è ==come faccio il calcolo delle mie derivate parziali==
+	
 	13
 ---
 **FORWARD: Scomporre il grafo del calcolo**
 
-- Per primo, scriviamo il calcolo di $\ell_i$ come una sequenza di passi intermedi:
+- Per primo, scriviamo il calcolo di $\ell_i$ come una **sequenza di passi intermedi:**
 	- $f[x_i, \phi] = \beta_3 + \omega_3 \cdot \cos \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot \sin \left[ \beta_0 + \omega_0 x_i \right] \right] \right]$
 	- $f_0 = \beta_0 + \omega_0 x_i$
-	- $h_1 = \sin [f_0]$
+	- $h_1 = \sin [f_0]$  => dopo activation
 	- $f_1 = \beta_1 + \omega_1 h_1$
-	- $h_2 = \exp [f_1]$
+	- $h_2 = \exp [f_1]$ => dopo activation
 	- $f_2 = \beta_2 + \omega_2 h_2$
-	- $h_3 = \cos [f_2]$
-	- $f_3 = \beta_3 + \omega_3 h_3 \, (\equiv f[x_i, \phi])$
+	- $h_3 = \cos [f_2]$ => dopo activation
+	- $f_3 = \beta_3 + \omega_3 h_3 \, (\equiv f[x_i, \phi])$ => qui riottengo funzione originale
 	- $l_i = (f_3 - y_i)^2$
 
 	14
@@ -796,8 +815,8 @@ $\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot
 
 - Questo primo passo all'indietro è: $$\frac{\partial \ell_i}{\partial h_3} = \frac{\partial f_3}{\partial h_3} \frac{\partial \ell_i}{\partial f_3}$$
 - Il lato sinistro chiede come $\ell_i$ cambia quando $h_3$ cambia.
-- Il lato destro dice che possiamo scomporre questo in:
-  1. Come $\ell_i$ cambia quando $f_3$ cambia; e
+- Il lato destro dice che possiamo **scomporre** questo in:
+  1. Come $\ell_i$ cambia quando $f_3$ cambia; (già calcolato) e
   2. Come $f_3$ cambia quando $h_3$ cambia.
 
 - Otteniamo una **catena di eventi**: $h_3$ cambia $f_3$, che cambia $\ell_i$, e le derivate rappresentano gli effetti di questa catena.
@@ -817,11 +836,11 @@ $\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot
 ---
 **BACKWARD: Ma... la loss? E la forward pass?!**
 
-- Dobbiamo ancora calcolare come la perdita $\ell_i$ cambia in termini di cambiamenti ai parametri $\beta_k$ e $\omega_k!$
+- Dobbiamo ancora calcolare come la perdita $\ell_i$ cambia ==in termini di cambiamenti ai parametri== $\beta_k$ e $\omega_k!$
 
-- Ancora una volta, applichiamo la regola della catena: $$\frac{\partial l_i}{\partial \beta_k} = \frac{\partial f_k}{\partial \beta_k} \frac{\partial \ell_i}{\partial f_k}$$$$\frac{\partial l_i}{\partial \omega_k} = \frac{\partial f_k}{\partial \omega_k} \frac{\partial \ell_i}{\partial f_k}$$
+- Ancora una volta, applichiamo **la regola della catena**: $$\frac{\partial l_i}{\partial \beta_k} = \frac{\partial f_k}{\partial \beta_k} \frac{\partial \ell_i}{\partial f_k}$$$$\frac{\partial l_i}{\partial \omega_k} = \frac{\partial f_k}{\partial \omega_k} \frac{\partial \ell_i}{\partial f_k}$$
 
-- E ancora: abbiamo già calcolato $\frac{\partial \ell_i}{\partial f_k}$!
+- E ancora: abbiamo già calcolato $\frac{\partial \ell_i}{\partial f_k}$! => li calcoliamo ad ogni passo!! (pre e dopo funzione di attivazione)
 - Per $k > 0$ abbiamo:$$\frac{\partial f_k}{\partial \beta_k} = 1 \text{ e } \frac{\partial f_k}{\partial w_k} = h_k$$
 	18
 ---
@@ -833,10 +852,10 @@ $\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot
 - Passo 2: Propaga all'indietro i gradienti delle attivazioni intermedie.
 	![[Pasted image 20251118095144.png]]
 
-- Passo 3: Calcola le derivate parziali finali.
+- Passo 3: Calcola le derivate parziali finali. (ovvero secondo bias e pesi)
 	![[Pasted image 20251118095200.png]]
 
-+metti sketch => derivata rispetto al bias... è 1!! => avrò sempre prodotti di qualcosa che abbiamo già e derivata parziale rispetto al parametro considerato! => che appunto nel caso lineare abbiamo bisogno di queste nel forward activation, mentre per i bias no siccome la loro derivata è 1
+ => derivata rispetto al bias... è 1!! (la funzione non dipende dal bias finale) => avrò sempre prodotti di qualcosa che abbiamo già e derivata parziale rispetto al parametro considerato! => che appunto nel caso lineare abbiamo bisogno di queste nel forward activation, mentre per i bias no siccome la loro derivata è 1
 
 	19
 ---
@@ -846,19 +865,27 @@ $\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot
 
 - Se l'algoritmo di backpropagation è così "semplice", perché non abbiamo usato le reti neurali dagli anni '70?
 - Ci sono una serie di problemi:
-  - **Unità saturanti**: molte funzioni di attivazione sono "piatte" nei loro valori estremi – questo risulta in gradienti quasi zero.
-  - **Gradienti che svaniscono (Vanishing gradients):** la backprop crea una lunga catena di gradienti moltiplicati – tutti tipicamente molto piccoli. => gradient starts collapsing!
+  - **Unità saturanti**: molte funzioni di attivazione sono "piatte" nei loro valori estremi (valori molto positivi o molto negativi) – questo risulta in gradienti quasi zero. 
+	  => ricordiamo infatti che la derivata della sigmoide è $$\sigma'(z) = \sigma(z)\cdot(1-\sigma(z))$$ => per valori molto negativi => $\sigma(z) \approx 0$ 
+	  => per valori molto positivi => $(1-\sigma(z)) \approx 0$
+  - **Gradienti che svaniscono (Vanishing gradients):** la backprop crea una lunga catena di gradienti **moltiplicati** – ==tutti tipicamente molto piccoli==. (<1) => gradient starts collapsing! => porto avanti gradienti che via via si azzerano!
 
-- Soluzione Parziale: usare funzioni di attivazione non saturanti:
+- Soluzione Parziale: usare funzioni di attivazione **non saturanti**:
 	![[Pasted image 20251118095932.png]]
 
 	20
 ---
 **Riflessioni: altri problemi con la backprop**
 
-- Un altro problema è l'overparameterization: i (molto spesso) numerosi parametri nelle reti neurali possono portare a un facile overfitting.
+- Un altro problema è l'**overparameterization**: i (molto spesso) numerosi parametri nelle reti neurali possono ==portare a un facile overfitting==.
 - Buon esercizio: contare il numero di pesi in un MLP (Multi-Layer Perceptron).
-- Soluzione parziale: usare la regolarizzazione per controllare la magnitudine dei pesi nella rete.
+	-  Come si contano i parametri di un MLP?? 
+		=> Per ogni **hidden layer** (+ layer finale) ho:
+		- $n_{input} \cdot n_{output} = w$ per i pesi
+		- $n_{output}=b$ per il bias 
+		=> Dunque $$\text{Numero parametri} = (n_{input} \cdot n_{output}) + n_{output}$$ per ogni layer dopo il primo! => numero che può esplodere!! => tipo MNIST sono 235.146 parametri!!
+
+- Soluzione parziale: **usare la regolarizzazione** per controllare la magnitudine dei pesi nella rete. => L2 regolarization o dropout
 
 	21
 ---
@@ -866,12 +893,12 @@ $\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot
 
 - Problema: cosa succede se $N$ (il numero di campioni di training) è molto grande?
 - Beh, finiamo per fare passi molto lenti – ogni iterazione della discesa del gradiente è una media sull'intero dataset.
-- Soluzione: approssimare il gradiente vero con il gradiente su un singolo esempio di training.
+- Soluzione: ==approssimare il gradiente vero con il gradiente su un singolo esempio di training.== =>  sol intermedia costruire mini batch
 
  - **Discesa Stocastica del Gradiente Online**
 	- Scegli un vettore iniziale di parametri $\theta$ e un learning rate $\eta$.
 	- Ripeti fino a quando non viene trovato un minimo approssimativo:
-	   1. Mescola casualmente i campioni di training in $D$.
+	   1. **Mescola casualmente i campioni di training** in $D$.
 	   2. Per ogni $(x,y)\in D$:
 		    $\theta := \theta - \eta \nabla_\theta \mathcal{L}(\{x,y\};\theta)$
 
@@ -879,9 +906,9 @@ $\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot
 ---
 **Riflessioni: Discesa Stocastica del Gradiente (continua)**
 
-- Un altro problema: valutare il gradiente su esempi singoli porta a passi molto rumorosi nello spazio dei parametri.
-- Un trucco per mitigare questo è usare il momentum: mantenere una media mobile dei gradienti che viene aggiornata lentamente.
-- Un'altra soluzione è usare i mini-batch: invece di un singolo campione, fare la media dei gradienti su un piccolo batch di campioni.
+- Un altro problema: valutare il gradiente ==su esempi singoli porta a passi molto rumorosi nello spazio dei parametri.== 
+- Un trucco per mitigare questo è usare il momentum: ==mantenere una media mobile dei gradienti== (passati) che viene aggiornata lentamente. => smorza oscillazioni e accellera convergenza.
+- Un'altra soluzione è usare i **mini-batch**: invece di un singolo campione, fare la media dei gradienti ==su un piccolo batch di campioni==.
 - È comune usare una combinazione di mini-batch e momentum per stabilizzare l'addestramento.
 
 	23
@@ -889,8 +916,8 @@ $\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot
 **Riflessioni: Terminologia**
 
 - Alcuni termini utili per l'ottimizzazione nel deep learning:
-  - 1 epoca (epoch): un passaggio completo sui dati.
-  - 1 iterazione: un singolo passo di gradiente.
+  - 1 epoca (epoch): un passaggio **completo sui dati.**
+  - 1 iterazione: **un singolo passo** di gradiente.
   - N: numero di campioni di training.
   - B: dimensione del batch (batch size).
 
@@ -912,7 +939,7 @@ $\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot
 
 - Questo lavoro diede il via a una nuova fase della ricerca sulle reti neurali: per la prima volta, era *pratico addestrare reti con strati nascosti*.
 
-- I progressi si bloccarono a causa (in retrospettiva) della mancanza di dati di addestramento, della potenza computazionale limitata e dell'uso di attivazioni sigmoide.
+- I progressi si bloccarono a causa (in retrospettiva) dell**a mancanza di dati di addestramento**, della **potenza computazionale limitata** e dell'uso di attivazioni sigmoide.
 
 - Applicazioni come NLP e Computer Vision non si basarono su modelli di reti neurali fino ai notevoli risultati di classificazione delle immagini di Krizhevsky et al. (2012).
 
@@ -933,16 +960,17 @@ $\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot
 - Nella prossima lezione esamineremo alcune diverse architetture per le Reti Neurali Profonde (Deep Neural Networks).
 - Nello specifico, vedremo come le Reti Neurali Convoluzionali (CNNs) possono essere usate per processare efficientemente i dati immagine.
 - E vedremo come le CNNs sono in realtà solo Multilayer Perceptrons travestiti.
-- Esamineremo anche più da vicino alcune delle insidiLa Strada Avantie nell'addestrare reti profonde, e il bagaglio di trucchi che usiamo per evitarle (o per uscirne).
+- Esamineremo anche più da vicino alcune delle insidie nell'addestrare reti profonde, e il bagaglio di trucchi che usiamo per evitarle (o per uscirne).
 
 	27
+---
 
 # 22 - CNN - Convolutional Neural Networks
 
 ## Una Critica della Ragion Pura
 ---
 
-[[22-CNNs.pdf]]
+![[22-CNNs.pdf]]
 
 - Sono principalmente immagini 
 
@@ -950,44 +978,51 @@ $\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot
 ---
 **Riconoscimento visivo: modelli impliciti**
 
-- Consideriamo una configurazione più o meno standard di apprendimento supervisionato per la classificazione visiva.
+- Consideriamo una configurazione più o meno standard di apprendimento **supervisionato** per la classificazione visiva.
 - Possiamo immaginare una semplice pipeline come quella qui sotto.
 - Ogni fase ha il suo spazio di progettazione e scelte critiche da compiere.
-- Questo appealed allo scienziato informatico in noi poiché stiamo effettivamente dividendo, modularizzando e (si spera) conquistando.
+- Questo appealed allo scienziato informatico in noi poiché stiamo effettivamente dividendo, **modularizzando** e (si spera) conquistando.
 
 	![[Pasted image 20251125143604.png]]
-	
+	=> Da immagini a features => estraggo appunto le features andando a vedere i bordi, o in altri modi
+	=> Costruisco quindi il modello tramite le features (Scale Invariant feature transform?) e a quel punto lo valuto!
+
++ Di base le immagino sono in RGB ma potremmo pensare anche ad altri formati che possono aiutare con l'object detection!
+- Come modello scegliamo uno che sia scalabile con i dati => la scelta di questo ed altri parametri rimangono comunque a carico dell'umano => sia nella scelta delle immagini, che sulle features da estrarre e quindi la scelta del modello...
+
 	14
 ---
 **Riconoscimento visivo: perché è difficile?**
 
-- È apparso un articolo nel 2000 che riassumeva lo stato dell'arte nel riconoscimento visivo [Smeulders et al., 2000].
-- Ha introdotto il divario sensoriale nella conversazione sul riconoscimento visivo:
+- È apparso un articolo nel 2000 che riassumeva lo stato dell'arte nel **riconoscimento visivo** [Smeulders et al., 2000].
+- Ha introdotto il ==divario sensoriale== (sensory gap) nella conversazione sul riconoscimento visivo:
 
 *Il divario sensoriale è il divario tra l'oggetto nel mondo e le informazioni in una descrizione (computazionale) derivata da una registrazione di quella scena.*
 
-- Pensateci un momento: lavoriamo sempre con una ricostruzione imperfetta del mondo reale.
+- Pensateci un momento: lavoriamo sempre con una ==ricostruzione imperfetta del mondo reale.==
 - Le immagini hanno una risoluzione finita, sono soggette a rumore, sono acquisite con un sensore che è un altro oggetto libero nel mondo.
-- Questo divario sensoriale deve essere superato per rendere il riconoscimento degli oggetti invariante rispetto agli artefatti incidentali della scena.
+- Questo divario sensoriale deve essere superato per rendere il riconoscimento degli oggetti ==invariante rispetto agli artefatti incidentali della scena.==
 
 	15
 ---
 **Il divario semantico**
 
-- L'altro concetto chiave è il divario semantico:
+- L'altro concetto chiave è il ==divario semantico== (semantic gap):
 
-*Il divario semantico è la mancanza di coincidenza tra le informazioni che si possono estrarre dai dati visivi e l'interpretazione che gli stessi dati hanno per un utente in una data situazione.*
+*Il divario semantico è la mancanza di coincidenza ==tra le informazioni che si possono estrarre dai dati visivi== e ==l'interpretazione che gli stessi dati== hanno per un utente in una data situazione.*
 
 ![[Pasted image 20251125143921.png]]
+=> Come posso fare un ponte fra le categorie o i concetti e le feature a basso livello?
 
 	16
 ---
 **Il divario semantico**
 
-![[22-CNNs.pdf]]
-
 - Immagine dell'illusione di Adelson: scacchiera con quadrati A e B che appaiono di grigio diverso ma sono identici
+	![[Pasted image 20251208163158.png]]
+
 - Oppure fragole rosse ma non ci sono pixel rossi nell'immagine
+	![[Pasted image 20251208163302.png]]
 
 	17-18-19
 ---
@@ -997,6 +1032,14 @@ $\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot
 	
 	![[Pasted image 20251125144404.png]]
 
+- Estraggo N patches => vengono codificati in 128-d features  (passaggio a encoding)
+- Ma che succede per immagini di **altre dimensioni**? => tutti i modelli classici hanno un fixed input size => cosa facciamo allora?  
+	  => si quantizza ad un vocabolario di *parole visuali* => **k-means clustering** per indentificare in uno spazio di 128-d => si costruiscono cluster => ==le features al centro di questi mi rappresentano l'intero gruppo!==
+		![[Pasted image 20251209103401.png]]
+- Ne costruisco un **istogramma** dai cluster delle features => conto quante features sono più vicine ai centri dei cluster => modello chiamato Bag of (visual) words => ripreso da data mining sui documenti => modo per quantizzare in un fixed length dimension => a seconda del numero di clusters
+- Butto via tutte le informazioni spaziali => info sulla posizione dei pixel => come le riprendo?  
+	=> divido l'immagine su 4 parti e ne costruisco gli istogrammi come detto precedentemente => operazione di pooling
+	
 	19
 ---
 **Contesto storico: Questo era un "gatto"**
@@ -1018,12 +1061,12 @@ $\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot
 
 - Poi restituiva i confini decisionali ottimali tra tutte le classi (e tutte le altre).
 - Il processo è importante:
-  1. Primo: estrarre una rappresentazione artigianale di punti fiduciali.
-  2. Poi: codificarli in una rappresentazione globale dell'immagine.
+  1. Primo: estrarre una rappresentazione artigianale di punti fiduciali. => faccio detection di alcuni punti "importanti"
+  2. Poi: codificarli in una rappresentazione **globale** dell'immagine.
   3. Poi: adattare una SVM (con o senza kernel).
 
 - Pro: l'apprendimento effettivo ha pochi iperparametri (di solito solo uno).
-- Contro: molti elementi artigianali con molti (praticamente infiniti) iperparametri.
+- Contro: molti elementi artigianali con molti (praticamente infiniti) iperparametri. => quanti clusters considerare => come dividere l'immagine? => oppure ancora usare SVM o altri mmodelli?
 - Contro: l'apprendimento è separato dalla rappresentazione.
 
 	22
@@ -1032,7 +1075,7 @@ $\cdot \sin \left[ \beta_2 + \omega_2 \cdot \exp \left[ \beta_1 + \omega_1 \cdot
 
 Alla fine della lezione dovreste:
 
-- Comprendere le motivazioni storiche del *problema generale della visione artificiale* e il ruolo centrale svolto dal divario semantico.
+- Comprendere le motivazioni storiche del *problema generale della visione artificiale* (computer vision) e il ruolo centrale svolto dal divario semantico.
 - Comprendere le differenze e le somiglianze tra le architetture dei modelli Perceptron Multistrato (MLP) e Rete Neurale Convoluzionale (CNN).
 - Comprendere alcuni dei recenti sviluppi storici e delle innovazioni tecnologiche che hanno reso possibile il *Rinascimento del Deep Learning*.
 - Comprendere le due famiglie fondamentali di architetture CNN e cosa le distingue l'una dall'altra.
@@ -1051,7 +1094,9 @@ Alla fine della lezione dovreste:
 
 - Perché non possiamo semplicemente usare questo modello per i problemi di riconoscimento delle immagini?
 - Un MLP dovrebbe essere in grado di apprendere rappresentazioni di caratteristiche che a loro volta sono buone rappresentazioni per la classificazione.
-- Perché questo è problematico?
+- Perché questo è problematico? 
+	=> lavorerei con immagini 256x256 spesso di 3 canali... ho un esplosione di parametri!! 
+	=> Inoltre vorrei qualcosa che ci dia la **stessa interpretazione** (quando necessario) anche se ho dei **pesi diversi**....
 - NOTA: Il trattamento e molte figure in questa sezione sono tratti dall'eccellente libro *Understanding Deep Learning*, di Simon Prince.
 - Raccomando caldamente questo libro.
 
@@ -1063,48 +1108,90 @@ Alla fine della lezione dovreste:
 - Una funzione $f[x]$ è equivariante alla trasformazione $t[x]$ se $f[t[x]] = t f[x]$.
 
 	![[Pasted image 20251125150129.png]]
-
+	=> Ricerchiamo un classificatore che sia invariante a qualsiasi tipo di trasformazione applicata all'immagine => anche se applico traslazioni alle immagini => cambia semantic segmentation ma deve valere invariance! => "equivariant to traslation" 
+	
 	25
 ---
 **Convoluzioni unidimensionali**
 
-- L'operatore di convoluzione calcola una somma pesata dei valori vicini: $$h_i = \sigma[\beta_i + w_1x_{i-1} + w_2x_i + w_3x_{i+1}]$$$$= \sigma[\beta + \sum_{j=1}^3 w_jx_{i+j-1}]$$
+- L'operatore di **convoluzione** (sliding window operations) calcola una **somma pesata** dei valori vicini: $$h_i = \sigma[\beta_i + w_1x_{i-1} + w_2x_i + w_3x_{i+1}] = \sigma[\beta + \sum_{j=1}^3 w_jx_{i+j-1}]$$
 	![[Pasted image 20251125150224.png]]
-	
+	=> nel caso *width-3* ho 3 pesi che mi fanno da *convolutional kernel* => dunque nella finestra considerata prendo pesi moltiplicati per gli input della finestra e ne sommo i risultati 
+	=> al passo successivo scendo di una posizione e considero una nuova finestra...
+	=> Nel caso nella finestra non ho 3 input viene fatta operazione di **padding** => aggiungo dei valori neutri in modo da poter fare l'operazione di convoluzione senza perdere pixel ai bordi (diversamente dal caso d dove ho perdita di pixel!)
 	26
 ---
+**Convoluzioni unidimensionali continuo**
 
-![[22-CNNs.pdf]]
+- La convoluzione è un operazione molto flessibile (al costo degli iperparametri):
 
+	![[Pasted image 20251209105245.png]]
+	=> A seconda dello **stride** preso si riducono le dimensioni => ad esempio per stride 2 => riduco di 1/2 i pixel 
+	=> La **dilation** invece serve per prendere i vicini più lontani
+	=> Notare che la convoluzione è un operazione equivariante => spostare i pixel mi cambia solo la loro posizione finale nel risultato ma non la somma!
 
-	26-30
+	27
+---
+**Convoluzioni unidimensionali multicanali**
+
+- Possiamo calcolare diverse convoluzioni e convolvere diversi input:
+
+	![[Pasted image 20251209110043.png]]
+	=> Notare che vengono fatte due convoluzioni in parallelo con gruppi di pesi diversi => 1 input image => 2 output feature maps!
+	=> Nel caso c) invece faccio in maniera opposta => ovvero faccio la convoluzione come se fosse un singolo input fatto da **2 canali**! => ottengo un 1 output image (or feature map)
+	=> notare infine viene fatta la ReLU come funzione di attivazione
+
+	28
+---
+**Convoluzione a due dimensioni**
+
+- Esattamente la stessa operazione è naturalmente estesa nel caso di due dimensioni: 
+	
+	![[Pasted image 20251209111051.png]]
+
+	29
+---
+**Convoluzione a due dimensioni mulitcanale**
+
+- E per immagini multicanale (oppure *feature maps*):
+
+	![[Pasted image 20251209111510.png]]
+	=> in questo caso ho un MLP con shared weights! => 3x3x3 weights + 1 bias
+	
+	30
 ---
 **Da MLP a CNN (che sono ancora in realtà MLP)**
 
-- Un layer convoluzionale è un layer fully-connected con i pesi condivisi tra le diverse posizioni dell'immagine.
+- Un **layer convoluzionale** è un layer fully-connected con i ==pesi condivisi tra le diverse posizioni dell'immagine.==
 - L'input di dimensione $w \times h \times c$ viene trasformato in un output di dimensione $w \times h \times c'$.
-- Gli output sono chiamati mappe di caratteristiche e sono derivati dalla convoluzione dell'immagine con $d'$ tensori 3D di dimensione $u \times v \times d$.
-- Quindi, il numero di parametri è "solo" $(u * v * c' * c) + c'$.
+- Gli output sono chiamati *mappe di caratteristiche* e sono derivati dalla convoluzione dell'immagine con $d'$ tensori 3D di dimensione $u \times v \times d$.
+- Quindi, il **numero di parametri** è "solo" $(u * v * c' * c) + c'$.
 
 	![[Pasted image 20251125150518.png]]
 
 	31
 ---
 **Una CNN è davvero un MLP (travestito)**
+
 - Ma quello non sembra affatto un MLP…
 
 	![[Pasted image 20251125150610.png]]
-
+	=> Eseguo inizialmente  un operazione di flatten => *im2col*  => dove si fa lo slide dell'immagine come convoluzione => ogni patch 2x2 diventa un vettore colonna => da 3 canali a una sola immagine 12x9
+	=> Eseguo un altra convoluzione con kernel 1x12 => il risultato è un vettore colonna 1x9 => al quale viene poi fatta l'operazione inversa di *col2im* per riottenere l'immagine
+	
 	32
 ---
 **L'ingrediente finale: Layer di Pooling**
 
-- L'apprendimento di rappresentazioni funziona creando un collo di bottiglia semantico.
-- Forziamo la rete ad estrarre rappresentazioni significative che catturino caratteristiche semanticas.
-- Nelle CNN lo facciamo tramite Sotto-campionamento, Max Pooling e Mean Pooling:
+- L'**apprendimento di rappresentazioni** funziona creando *un collo di bottiglia semantico*. => il bottleneck sta nel fatto che considerando l'MLP dobbiamo comunque tornare a pochi neuroni/parametri degli ultimi layer...
+- Forziamo la rete ad estrarre rappresentazioni significative che catturino caratteristiche semantiche. => prendiamo solo le poche features che sono importanti per la classificazione => evito anche esplosione del size di rappresentazione... si operazione di pooling!
+
+- Nelle CNN lo facciamo tramite **Sotto-campionamento**(a), **Max Pooling**(b) e **Mean Pooling**(c):
 
 	![[Pasted image 20251125150657.png]]
-
+	(a) => del subset prendo 1 di quel riquadro => *dialated convolution*
+	(b)/(c) => max/mean pooling => prendo rispettivamente max e media dei subset delle immagini => perdo però condizioni spaziali dei pixel!
+	
 - Ora esamineremo alcune architetture CNN reali che renderanno tutto più chiaro.
 
 	33
@@ -1116,9 +1203,8 @@ Alla fine della lezione dovreste:
 
 - Daremo ora un'occhiata alla submission della International Large Scale Visual Recognition Competition (ILSVRC) che ha cambiato tutto [Krizhevsky et al., 2012].
 - Questa architettura affronta sistematicamente la maggior parte dei problemi legati all'addestramento di grandi architetture di rete su grandi dataset.
-- È una Rete Neurale Convoluzionale (CNN) universalmente chiamata AlexNet.
-- È anche una Rete Profonda perché ha molti layer nascosti.
-
+- È una Rete Neurale Convoluzionale (CNN) universalmente chiamata *AlexNet*.
+- È anche una Rete Profonda perché ha **molti layer nascosti.**
 
 	34
 ---
@@ -1128,35 +1214,44 @@ Alla fine della lezione dovreste:
 - È anche utile esaminare come i dati fluiscono attraverso la rete.
 
 	![[Pasted image 20251125150842.png]]
-
+	=> Da immagini 224x224x3 => considero convoluzioni 11x11x3 => con stride 4 ottengo risoluzioni di 55x55
+	=> Vengono fatti split su 2 gpu per le compute capability di quel periodo => ho dunque 96 features
+	=> Nel secondo layer conv passo a 256 feature maps con risoluzioni di 27x27 => ottenute applicando l'operazione di max pooling
+	=> Nell'ultimo layer convoluzionale arrivo a 13x13x256 => con ognuno che rappresenta il contenuto dell'immagine => a seconda della posizione dei dell'immagine 
+	=> Per passare poi ai layer fully-connected => si fa un operazione di flatten => si ottiene così una rappresentazione vettoriale su cui costruire l'MLP finale => 1000 input da classificare
+	=> Riassumendo ho 5 layer conv e 3 fully connected layer di un MLP 
+	
 	35
 ---
 **AlexNet: Pooling delle Caratteristiche**
 
-- Come nel modello Bag-of-Words, possiamo fare il pooling delle caratteristiche locali.
+- Come nel modello Bag-of-Words, possiamo fare il **pooling** delle caratteristiche locali.
+
 - AlexNet utilizza regioni di pooling $3 \times 3$ con un passo (stride) di 2 pixel.
-  - Ciò significa che dopo alcuni layer convoluzionali la dimensione della mappa di caratteristiche è ridotta di un fattore 2.
-  - Usano il max pooling: in ogni mappa di caratteristiche, mantieni il valore massimo in ogni regione di pooling $3 \times 3$ sovrapposta (in ogni mappa di caratteristiche).
-  - Questo aiuta a contenere la dimensione delle mappe di caratteristiche propagate attraverso la rete.
-  - E aiuta anche a costruire rappresentazioni di livello superiore dell'immagine.
-  - Questo perché dimezzare la risoluzione dell'immagine equivale a raddoppiare la dimensione delle convoluzioni successive.
+  - Ciò significa che dopo alcuni layer convoluzionali la dimensione della mappa di caratteristiche è **ridotta di un fattore 2.**
+  - Usano il **max pooling**: in ogni mappa di caratteristiche, mantieni il valore massimo in ogni regione di pooling $3 \times 3$ sovrapposta (in ogni mappa di caratteristiche).
+  - ==Questo aiuta a contenere la dimensione delle mappe di caratteristiche propagate attraverso la rete.==
+  - E aiuta anche a costruire rappresentazioni di livello superiore dell'immagine. (higher level representation)
+  - Questo perché **dimezzare la risoluzione** dell'immagine equivale a **raddoppiare la dimensione** delle convoluzioni successive.
 
 	36
 ---
 **AlexNet: Saturazione delle Unità**
 
-- Un'altra innovazione in AlexNet è l'uso della funzione di attivazione Rectified Linear Unit (ReLU). $$\sigma(x) = \max(0, x)$$
+- Un'altra innovazione in AlexNet è l'uso della funzione di attivazione Rectified Linear Unit (ReLU). $$\sigma(\mathbf{x}) = \max(0, \mathbf{x})$$
 - Questa funzione di attivazione non satura come le sigmoidi.
-- Il risultato è un accelerazione di 6 volte nell'addestramento.
+- Il risultato è un accelerazione di ==6 volte nell'addestramento.==
 
 	![[Pasted image 20251125151433.png]]
+
+	37
 ---
 **AlexNet: Ridurre l'Overfitting**
 
-- Anche con la condivisione dei pesi convoluzionali, AlexNet ha ancora 60M di parametri.
-- Per ridurre l'overfitting, gli autori usano due trucchi extra (ormai standard):
-  - Data augmentation: vengono generate traslazioni e riflessioni casuali delle immagini di input, più variazioni casuali nelle direzioni principali dello spazio RGB.
-  - Dropout: un trucco avanzato della comunità delle Reti Neurali che rimuove casualmente metà degli input a layer selezionati durante il training.
+- Anche con la condivisione dei pesi convoluzionali, AlexNet ha ancora **60M di parametri.** => rischio di overfitting!
+- Per ridurre l'**overfitting**, gli autori usano due trucchi extra (ormai standard):
+  - **Data augmentation**: vengono generate traslazioni e riflessioni casuali delle immagini di input, più variazioni casuali nelle direzioni principali dello spazio RGB. => in sostanza aggiungo piccole perturbazioni
+  - **Dropout**: un trucco avanzato della comunità delle Reti Neurali che ==rimuove casualmente metà degli input a layer selezionati durante il training.==
 
 	38
 ---
@@ -1164,10 +1259,11 @@ Alla fine della lezione dovreste:
 
 - L'articolo su AlexNet è un'ottima risorsa perché spiega tutti i trucchi necessari per far apprendere una rete profonda:
   - Local response normalization: mantiene sotto controllo la variazione locale nelle mappe di caratteristiche (sezione 3.3).
-  - Momentum: limita l'effetto "skateboard" quando si seguono valli nella superficie di loss, equivalente alla regolarizzazione L1 (o L2) dei pesi (sezione 5).
-  - Mini-batch Stochastic Gradient Descent (SGD): con 1.2M campioni di training, non possiamo considerare l'intero dataset in un unico batch; invece, campioniamo casualmente mini-batch di 128 immagini (sezione 5).
-  - Multiple GPUs: AlexNet era troppo grande per stare in una singola GPU (nel 2012), quindi le mappe di caratteristiche sono divise su due GPU (sezione 3.2).
-  - Model averaging: i risultati state-of-the-art si ottengono addestrando multiple CNN e mediando gli output.
+  - **Momentum**: limita l'effetto "skateboard" quando si seguono valli nella superficie di loss, equivalente alla regolarizzazione L1 (o L2) dei pesi (sezione 5).
+  ![[Pasted image 20251209144223.png]]
+  - **Mini-batch Stochastic Gradient Descent (SGD)**: con 1.2M campioni di training, non possiamo considerare l'intero dataset in un unico batch; invece, **campioniamo casualmente mini-batch di 128 immagini** (sezione 5).
+  - **Multiple GPUs:** AlexNet era troppo grande per stare in una singola GPU (nel 2012), quindi le mappe di caratteristiche sono divise su due GPU (sezione 3.2).
+  - **Model averaging**: i risultati state-of-the-art si ottengono addestrando multiple CNN e mediando gli output. => ovvero sfrutto modelli *ensemble*
 
 	39
 ---
@@ -1182,29 +1278,31 @@ Alla fine della lezione dovreste:
 | 5 CNNs         | 38.1%       | 16.4%       | 16.4%        |
 | 1 CNN*         | 39.0%       | 16.6%       |              |
 | 7 CNNs*        | 36.7%       | 15.4%       | 15.3%        |
+=> gli errori ogni anno diminuiscono!
 
 - E nelle rappresentazioni che la rete apprende:
 
 	![[Pasted image 20251125151534.png]]
-
+	=> riesco a riconoscere cose come bordi - color "valleys" - textures - orientazioni - ridge(?) => tutte cose in quel momento fatte a mano
+	
 	40
 ---
 **AlexNet: Riflessioni**
 
 - AlexNet ha sconvolto il mondo del riconoscimento degli oggetti.
 - Molti elementi del modello non sono realmente nuovi.
-- Tuttavia, questo è stato il primo lavoro a dimostrare in modo convincente come sistemi di riconoscimento oggetti all'avanguardia possano essere addestrati end-to-end su problemi reali.
+- Tuttavia, questo è stato il primo lavoro a dimostrare in modo convincente come sistemi di riconoscimento oggetti all'avanguardia possano essere addestrati ==end-to-end su problemi reali.==
 - Ciò è stato reso possibile da una serie di sviluppi concomitanti:
-  - La disponibilità di enormi quantità di dati annotati (ImageNet, con 1.2M immagini di training).
-  - GPU moderne, che rendono le convoluzioni super veloci.
-  - Decenni di persistente sviluppo teorico (ReLU, backprop veloce, dropout, ecc.).
+  - La disponibilità di **enormi quantità** di dati annotati (ImageNet, con 1.2M immagini di training).
+  - **GPU moderne**, che rendono le convoluzioni super veloci.
+  - Decenni di persistente sviluppo teorico (**ReLU**, backprop veloce, dropout, ecc.). => notare che ReLU azzerando neuroni aiuta sull'overfit!
 
 	41
 ---
 **Riflessioni: Le CNN sono davvero grandi**
 
-- Una delle prime osservazioni che si possono fare sulle CNN è che hanno un ENORME numero di parametri.
-- Anche reti state-of-the-art di dimensioni modeste possono avere dell'ordine di 150 milioni di parametri addestrabili.
+- Una delle prime osservazioni che si possono fare sulle CNN è che hanno un **ENORME numero di parametri.**
+- Anche reti state-of-the-art di dimensioni modeste possono avere dell'ordine di **150 milioni di parametri addestrabili.** 
 - Adattare tali modelli richiede enormi quantità di dati di training etichettati.
 
 	![[Pasted image 20251125151847.png]]
@@ -1218,20 +1316,19 @@ Alla fine della lezione dovreste:
 
 - Ora che abbiamo AlexNet come punto di riferimento, possiamo guardare ad altre architetture CNN state-of-the-art.
 - La Famiglia di Reti VGG (VGG = Visual Geometry Group di Oxford) è un raffinamento dello stile AlexNet di CNN [Simonyan e Zisserman, 2014].
-- In questo lavoro gli autori hanno svolto un'esplorazione approfondita dello spazio dei parametri architetturali.
-- Hanno variato iperparametri (es. numero di layer, dimensione delle convoluzioni, ecc.).
+- In questo lavoro gli autori hanno svolto un'esplorazione approfondita dello spazio dei **parametri architetturali.**
+- Hanno variato **iperparametri** (es. numero di layer, dimensione delle convoluzioni, ecc.).
 - E hanno stabilito un nuovo baseline per il riconoscimento oggetti basato su CNN.
-
 
 	43
 ---
 **VGG: L'impostazione**
 
 - L'input alle reti è un tensore immagine fisso, $224 \times 224 \times 3$.
-- Il valore medio RGB viene prima sottratto da tutte le immagini di training per centrare i dati. => pixelwise mean and std
+- Il valore medio RGB viene prima sottratto da tutte le immagini di training per centrare i dati. => pixelwise mean and std normalization
 - Tutte le **convoluzioni** hanno dimensione $3 \times 3 \times d$ o $1 \times 1 \times d$ (d è un numero arbitrario di mappe di caratteristiche) con un passo (stride) di 1. 
 - L'idea è: se hai bisogno di convoluzioni più grandi, ==basta andare più in profondità.==
-- Il max pooling viene eseguito su finestre non sovrapposte $2 \times 2$ con un passo di 2 (riduzione di 2x nella dimensione).
+- Il max pooling viene eseguito su finestre non sovrapposte $2 \times 2$ con un stride di 2 (riduzione di 2x nella dimensione).
 - Tutti i layer nascosti utilizzano una funzione di attivazione ReLU, ma **non effettuano la local response normalization.**
 
 	44
@@ -1241,21 +1338,21 @@ Alla fine della lezione dovreste:
 - Sono state considerate le seguenti configurazioni:
 
 	![[Pasted image 20251125152053.png]]
-	=> l'ultima parte della rete è la stessa di AlexNet => FC-1000 è un classificatore
-	=> sono comunque reti ancora più profonde e con ancora più parametri...
+	=> Input e l'ultima parte della rete è la stessa di AlexNet => FC-1000 è un classificatore
+	=> sono comunque reti ==ancora più profonde e con ancora più parametri==...
 	
 	45
 ---
 **VGG: training**
 
-- La procedura di addestramento è simile ad AlexNet:
-  - L'addestramento viene effettuato ottimizzando l'obiettivo di regressione logistica multinomiale utilizzando la discesa del gradiente mini-batch.
-  - Il training è stato regolarizzato con decadimento del peso (weight decay) => ovvero reg L2 e **dropout** sui primi due layer fully-connected.
-  - Il learning rate è stato inizialmente impostato a $10^{-2}$ e diminuito di un fattore 10 quando l'accuratezza sul validation set smetteva di migliorare.
-  - L'apprendimento è stato fermato dopo 370K iterazioni (74 epoche).
+- La procedura di **addestramento** è simile ad AlexNet:
+  - L'addestramento viene effettuato ottimizzando l'obiettivo di **regressione logistica** multinomiale (classificazione con probabilità per diverse classi) utilizzando **la discesa del gradiente mini-batch**.
+  - Il training è stato **regolarizzato** con decadimento del peso (weight decay) => ovvero reg L2 e **dropout** sui primi due layer fully-connected.
+  - Il learning rate è stato inizialmente impostato a $10^{-2}$ e ==diminuito di un fattore 10== quando l'accuratezza sul validation set smetteva di migliorare.
+  - L'apprendimento è stato fermato dopo 370K iterazioni (74 epoche). => early stopping (?)
 
-- Inizializzazione:
-  - Le CNN sono estremamente sensibili all'inizializzazione dei pesi. => altrimenti il learning va molto più lentamente! => queste dipendono da numero di input-output e inizializzazione gaussiana
+- **Inizializzazione**:
+  - Le CNN sono **estremamente sensibili** all'inizializzazione dei pesi. => altrimenti il learning va molto più lentamente! => queste dipendono da numero di input-output e inizializzazione gaussiana
   - Per l'addestramento delle reti VGG, gli autori usano una combinazione di inizializzazione casuale e pre-training.
 
 
@@ -1263,23 +1360,24 @@ Alla fine della lezione dovreste:
 ---
 **VGG: Dimensione dell'immagine di training**
 
-- Nota che le immagini di training sono tutte scalate a $224 \times 224$ pixel prima di passarle attraverso la rete. => se le convoluzioni possono prendere qualsiasi input => non vale la stessa cosa per i layer fully connected => ai quali applichiamo flattened => tied to a single input size?
+- Nota che ==le immagini di training sono tutte scalate a $224 \times 224$ pixel prima di passarle attraverso la rete==. => se le convoluzioni possono prendere qualsiasi input => non vale la stessa cosa per i layer fully connected => ai quali applichiamo **flattened** => tied to a single input size?
 - Questo è lo stesso di AlexNet, e chiaramente può influenzare il contenuto dell'immagine introducendo artefatti (considera immagini ritratto). => questo perchè bisogna fare scaling
-- Nelle reti VGG, le immagini vengono scalate *isotropicamente* in modo che la dimensione più piccola abbia una dimensione fissa.  => prendo una piccola parte dell'immagine
-- Poi una sotto-immagine di dimensione $224 \times 224$ viene ritagliata casualmente dall'immagine scalata.
+- Nelle reti VGG, le immagini **vengono scalate** *isotropicamente* in modo che la dimensione più piccola abbia una dimensione fissa. => che vuol dire?
+- Poi una **sotto-immagine** di dimensione $224 \times 224$ viene ritagliata casualmente dall'immagine scalata.  => prendo solo una piccola parte dell'immagine
 - Gli autori hanno valutato il ridimensionamento casuale tra **256** e 384 pixel per la dimensione più piccola. => dimensione più piccola sia della dimensione desiderata
 
-
+	![[Pasted image 20251209151032.png]]
+	
 	47
 ---
 **VGG: Dimensione dell'immagine di test**
 
 - Al momento del test, vengono valutate cinque strategie per il ridimensionamento dell'immagine:
-  - Dense: la rete è completamente convolutionalizzata (lo spiegherò nella prossima slide), valutata densamente sull'immagine di input, e i risultati sono pooled globalmente.
-  - Single-scale: viene utilizzata una singola scala isotropica.
-  - Multi-scale: come al momento del training, le immagini vengono scalate a tre scale isotropiche discrete.
-  - **Multi-crop**: da un output fully-convolutional vengono prese multiple ritagli (crop) casuali per il average pooling.  => strategia comune è fare random crops => e fare average del risultato
-
+  - **Dense**: la rete è **completamente convolutionalizzata** (lo spiegherò nella prossima slide), valutata densamente sull'immagine di input, e i risultati sono pooled globalmente.
+  - **Single-scale**: viene utilizzata una singola scala isotropica.
+  - **Multi-scale**: come al momento del training, le immagini vengono scalate a tre scale isotropiche discrete.
+  - **Multi-crop**: da un output fully-convolutional vengono presi multipli ritagli (crop) casuali per l'average pooling.  => strategia comune è fare random crops => e fare average del risultato
+	![[Pasted image 20251209151252.png]]
 
 	48
 ---
@@ -1300,14 +1398,14 @@ Alla fine della lezione dovreste:
 - Anche considerando solo una singola scala di input, i risultati sono impressionanti.
 - Nota: **più profondo è meglio**, LRN non aiuta, il jittering di scala al test time sì.
 
-| Configurazione ConvNet (Tabella 1) | lato minore immagine train ($S$) | errore top-1 val. (%) | errore top-5 val. (%) |
-| ---------------------------------- | -------------------------------- | --------------------- | --------------------- |
-| A                                  | 256                              | 29.6                  | 10.4                  |
-| A-LRN                              | 256                              | 29.7                  | 10.5                  |
-| B                                  | 256                              | 28.7                  | 9.9                   |
-| C                                  | 384                              | 28.1                  | 9.3                   |
-| D                                  | [256;512]                        | 27.3                  | 8.8                   |
-| E                                  | [256;512]                        | 27.0                  | 8.8                   |
+| Configurazione ConvNet (Tabella 1) | lato minore immagine train ($S$)- test(Q) | errore top-1 val. (%) | errore top-5 val. (%) |
+| ---------------------------------- | ----------------------------------------- | --------------------- | --------------------- |
+| A                                  | 256                                       | 29.6                  | 10.4                  |
+| A-LRN                              | 256                                       | 29.7                  | 10.5                  |
+| B                                  | 256                                       | 28.7                  | 9.9                   |
+| C                                  | 384                                       | 28.1                  | 9.3                   |
+| D (16)                             | [256;512]                                 | 27.3                  | 8.8                   |
+| E (19)                             | [256;512]                                 | 27.0                  | 8.8                   |
 
 	50
 ---
@@ -1317,7 +1415,7 @@ Alla fine della lezione dovreste:
 
 	![[Pasted image 20251125152408.png]]
 
-- Così come la fusione di multiple strategie di cropping:
+- Così come la fusione di multiple strategie di *cropping*:
 
 	![[Pasted image 20251125152424.png]]
 
@@ -1327,7 +1425,7 @@ Alla fine della lezione dovreste:
 ---
 **VGG: Noi versus Loro**
 
-- Infine, la media di modelli (model averaging) su modelli multi-scala, multi-crop porta a performance state-of-the-art:
+- Infine, la media di modelli (model averaging) su modelli multi-scala, multi-crop porta a performance *state-of-the-art:*
 
 	![[Pasted image 20251125152504.png]]
 
@@ -1337,8 +1435,8 @@ Alla fine della lezione dovreste:
 
 - In questo articolo gli autori hanno migliorato significativamente rispetto alla generazione precedente andando più in profondità.
 - Ancora una volta, la maggior parte delle idee non sono nuove, ma l'esplorazione sistematica dello spazio di progettazione ha portato a miglioramenti significativi.
-- Nota che le reti sono più profonde, ma hanno un'impronta di memoria più piccola al momento del training grazie ad un bilanciamento attento della dimensione delle mappe di caratteristiche.
-- La valutazione densa (dense evaluation) della rete al momento del test può anche aumentare le performance, portando a reti fully convolutional che sono indipendenti dalla dimensione dell'immagine di input.
+- Nota che **le reti sono più profonde**, ma hanno un'impronta di memoria più piccola al momento del training grazie ad un bilanciamento attento della dimensione delle mappe di caratteristiche.
+- La valutazione densa (dense evaluation) della rete al momento del test può anche aumentare le performance, portando a reti fully convolutional che **sono indipendenti dalla dimensione dell'immagine di input.**
 - L'architettura è ancora una classica ConvNet.
 
 	53
@@ -1349,10 +1447,9 @@ Alla fine della lezione dovreste:
 **ResNets: Introduzione**
 
 - Da quanto visto finora, sembra che reti più profonde generalizzino meglio.
-- Quindi, possiamo semplicemente ==continuare ad impilare sempre più layer a==lla fine delle nostre CNN? => possiamo aumentare ancora le performance della rete?
+- Quindi, possiamo semplicemente ==continuare ad impilare sempre più layer== alla fine delle nostre CNN? => possiamo aumentare ancora le performance della rete?
 - A parte le complicazioni computazionali (la memoria della GPU è finita), sembra che "dovrebbe funzionare e basta".
 - Esamineremo ora la nostra ultima architettura di rete state-of-the-art (conosciuta come ResNet) che esamina questa questione in dettaglio [He et al., 2016].
-
 
 	54
 ---
@@ -1368,7 +1465,7 @@ Alla fine della lezione dovreste:
 ---
 **ResNets: Aspetta, l'errore di training non dovrebbe essere più basso?**
 
-- Usando una costruzione artificiale, vediamo che almeno l'errore di training non dovrebbe aumentare con la profondità.
+- Usando una costruzione artificiale, vediamo che almeno ==l'errore di training non dovrebbe aumentare con la profondità.==
 - Basta copiare i pesi pre-addestrati da una rete normale in una rete più profonda con nuovi pesi inizializzati casualmente.
 
 	![[Pasted image 20251127092336.png]]
@@ -1377,7 +1474,7 @@ Alla fine della lezione dovreste:
 ---
 **ResNets: Obiettivi e Residui**
 
-- Diciamo che la rete sta apprendendo verso una qualche rappresentazione di caratteristiche ottimale $H(x)$.
+- Diciamo che la rete sta apprendendo verso ==una qualche rappresentazione di caratteristiche ottimale== $H(x)$.
 - La natura composizionale e feed-forward della CNN non aiuta realmente.
 
 	![[Pasted image 20251127092420.png]]
@@ -1391,7 +1488,7 @@ Alla fine della lezione dovreste:
 - Diciamo che la rete sta apprendendo verso una qualche rappresentazione di caratteristiche ottimale $H(x)$.
 - La natura composizionale e feed-forward della CNN non aiuta realmente.
 - Invece, possiamo aiutare la rete non richiedendole di passare attraverso tante informazioni.
-- Passa $x$ in avanti e aggiungilo all'output del blocco residuo – ora abbiamo "solo" bisogno di apprendere $H(x) - x$, il residuo $F(x)$.
+- Passa $x$ in avanti e aggiungilo all'output del **blocco residuo** – ora abbiamo "solo" bisogno di apprendere $H(x) - x$, il residuo $F(x)$.
 
 	![[Pasted image 20251127092657.png]]
 
@@ -1409,7 +1506,7 @@ Alla fine della lezione dovreste:
 
 ![[Pasted image 20251127093025.png]]
 
-=> rete ancora più connessa! (scaling fra i blocchi per il residual connection) => non mi porto avanti tutti i residui ma li calcolo via via => altrimenti denseNets
+=> rete ancora più connessa! (scaling fra i blocchi per *il residual connection*) => non mi porto avanti tutti i residui ma li calcolo via via => altrimenti denseNets
 
 	58
 ---
@@ -1420,7 +1517,7 @@ Alla fine della lezione dovreste:
 	![[Pasted image 20251127093457.png]]
 
 - Notare non è presente MaxPooling => ma strided convolutions (cazzata?)
-- Infine non ho un fully connected MLP classifier => ma eseguo Average Pool =>  dove ogni vettore di pixel corrisponde al pixel di partenza => e di questi ne viene prese la media => avg pooling toglie quindi spatial dimension
+- Infine non ho un fully connected MLP classifier => ma eseguo *Average Pool* =>  dove ogni vettore di pixel corrisponde al pixel di partenza => e di questi ne viene prese la media => avg pooling toglie quindi spatial dimension
 
 	59
 ---
@@ -1449,7 +1546,7 @@ Alla fine della lezione dovreste:
 ---
 **CNN: Come si addestrano le CNN?**
 
-- Le CNN funzionano alla granCNN: I Trucchi del Mestierede, ma non è sempre rose e fiori farle funzionare.
+- Le CNN funzionano alla grande, ma non è sempre rose e fiori farle funzionare.
 - La comunità ha sviluppato una serie di trucchi, tecniche ed euristiche che si sono dimostrate utili.
 - Esaminiamone alcuni.
 
@@ -1459,8 +1556,8 @@ Alla fine della lezione dovreste:
 
 ![[Pasted image 20251127094546.png]]
 
-=> Okay dopo backprop faccio cambiamento ai pesi => ma fino a dove scendo di livelli nel fare i cambiamenti? 
-=> boh non so come si passa a normalizzare e std il minibatch durante fase di training => aggiungo ulteriori parametri... => finito il training calcolo e salvo tutte le medie e le std dei vari layer per?...
+=> Okay dopo backprop faccio cambiamento ai pesi => ma fino a dove scendo di livello nel fare i cambiamenti? 
+=> boh non so come si passa a normalizzare e std il minibatch durante fase di training => **aggiungo ulteriori parametri**... => finito il training calcolo e salvo tutte le medie e le std dei vari layer per? normalizzare?
 
 	63
 ---
@@ -1470,17 +1567,18 @@ Alla fine della lezione dovreste:
 
 - Con una potenza di calcolo illimitata, il modo migliore per "regolarizzare" un modello di dimensione fissa è fare la media delle previsioni di tutte le possibili impostazioni dei parametri, pesando ogni impostazione in base ==alla sua probabilità a posteriori== dati i dati di training. => tipo bayesian viewpoint – Srivastava et al. [2014]
 
-- Ci si rende conto che alcuni neuroni danno stesse info rispetto ad altri  (per metà del train questi non sono attivi) => posso pensare di eliminare metà delle attivazioni nel forward in modo randomico
-- => oppure calcolare tutte le attivazioni ma dividerle per 2...
+- Ci si rende conto che alcuni neuroni danno stesse info rispetto ad altri  (per metà del train questi non sono attivi) => posso pensare di ==eliminare metà delle attivazioni nel forward in modo randomico==
+	 => oppure calcolare tutte le attivazioni ma dividerle per 2...
 
-+ Model.eval() vs model.train() 
++ Model.eval() vs model.train()  
++ Riassumendo usare batch normalization e dropout come tricks
 
 	64
 ---
 **CNN: Cosa Sta Succedendo?**
 
-- Ricordate che prima ho menzionato che uno dei pregiudizi contro l'uso delle reti neurali era la mancanza di interpretabilità.
-- Non appena sono iniziati ad arrivare i risultati spettacolari delle CNN sul riconoscimento oggetti, i ricercatori hanno iniziato ad inventare nuovi modi per interpretare le viscere di queste enormi reti.
+- Ricordate che prima ho menzionato che uno dei pregiudizi contro l'uso delle reti neurali era la **mancanza di interpretabilità**.
+- Non appena sono iniziati ad arrivare i risultati spettacolari delle CNN sul riconoscimento oggetti, i ricercatori hanno iniziato ad inventare nuovi modi per interpretare le viscere di queste **enormi reti**.
 - Al giorno d'oggi ci sono molti strumenti e trucchi che puoi usare per capire cosa ha appreso la rete.
 
 	65
@@ -1488,17 +1586,17 @@ Alla fine della lezione dovreste:
 **CNN: Cosa Sta Succedendo**
 
 - Un lavoro pionieristico ha esaminato proprio questo problema e l'articolo contiene un sacco di analisi interessanti su come funzionano queste reti [Zeiler e Fergus, 2014].
-- Parlerò solo di come le visualizzazioni delle attivazioni delle mappe di caratteristiche dimostrano cosa sta succedendo.
+- Parlerò solo di come le visualizzazioni delle attivazioni delle mappe di caratteristiche (feature map activation) dimostrano cosa sta succedendo.
 
 	![[Pasted image 20251127095620.png]]
 
-	=> Dato il filtro => ottengo dei sample patches che rispondono a questi filtri... andando avanti con la rete ottengo immagini più  ragionevoli dal punto di vista semantico
+	=> Dato il filtro => ottengo dei sample patches che ==rispondono a questi filtri==... andando avanti con la rete ottengo immagini più  ragionevoli dal punto di vista semantico
 	
 	66
 ---
 **CNN: Cosa Sta Succedendo**
 
-- Man mano che andiamo più in profondità nella rete, le attivazioni delle caratteristiche corrispondono a semantiche di livello superiore.
+- ==Man mano che andiamo più in profondità nella rete, feature activations corrispondono a semantiche di livello superiore==.
 
 	![[Pasted image 20251127100227.png]]
 
@@ -1516,7 +1614,7 @@ Alla fine della lezione dovreste:
 ---
 **CNN: Cosa Sta Succedendo**
 
-- L'algoritmo Grad-CAM è un modo intuitivo per visualizzare, beh, cosa rende una mucca, una mucca [Selvaraju et al., 2017]:
+- L'algoritmo **Grad-CAM** è un modo intuitivo per visualizzare, beh, cosa rende una mucca, una mucca [Selvaraju et al., 2017]:
 
 ![[Pasted image 20251127100438.png]]
 => ho una rete già addestrata in partenza => chiedo alla rete di mostrarmi dove si trova un particolare oggetto nell'immagine e questa cerca particolari feature in questa.
@@ -1527,7 +1625,7 @@ Alla fine della lezione dovreste:
 
 - L'algoritmo Grad-CAM è un modo intuitivo per visualizzare, beh, cosa rende una mucca, una mucca [Selvaraju et al., 2017]:
 
-![[Pasted image 20251127100704.png]]
+	![[Pasted image 20251127100704.png]]
 
 	69
 ---
@@ -1538,11 +1636,11 @@ Alla fine della lezione dovreste:
 
 - Quanto valgono davvero 1.5M di annotazioni [Zhang et al., 2016]?
 
-- Se le etichette sono equamente probabili, un insieme casuale di etichette ImageNet contiene circa $1.5\text{M} \ast \log_2(1000) \approx 15\text{Mbit}$.
+- Se le etichette sono **equamente probabili,** un insieme casuale di etichette ImageNet contiene circa $1.5\text{M} \ast \log_2(1000) \approx 15\text{Mbit}$.
 
 	![[Pasted image 20251127110842.png]]
 
-	=> Semantic gap => un sacco di info da comprimere in pochi bit... => extremely  easy to over fit! => se usiamo un piccolo dataset facile overfit
+	=> Semantic gap => un sacco di info da comprimere in pochi bit... => extremely  easy to over fit! => se usiamo un piccolo dataset facile overfittare
 	
 	70
 ---
