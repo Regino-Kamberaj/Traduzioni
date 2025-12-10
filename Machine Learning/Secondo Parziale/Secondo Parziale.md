@@ -985,7 +985,7 @@ def f(x, W1, b1, W2, b2):
 
 	![[Pasted image 20251125143604.png]]
 	=> Da immagini a features => estraggo appunto le features andando a vedere i bordi, o in altri modi
-	=> Costruisco quindi il modello tramite le features (Scale Invariant feature transform?) e a quel punto lo valuto!
+	=> Costruisco quindi il modello tramite le features (Scale Invariant feature transform => estrae keypoints locali e descrittori di un immagine) e a quel punto lo valuto! => sift usato di più per matching di parti d'immagine...
 
 + Di base le immagino sono in RGB ma potremmo pensare anche ad altri formati che possono aiutare con l'object detection!
 - Come modello scegliamo uno che sia scalabile con i dati => la scelta di questo ed altri parametri rimangono comunque a carico dell'umano => sia nella scelta delle immagini, che sulle features da estrarre e quindi la scelta del modello...
@@ -997,10 +997,10 @@ def f(x, W1, b1, W2, b2):
 - È apparso un articolo nel 2000 che riassumeva lo stato dell'arte nel **riconoscimento visivo** [Smeulders et al., 2000].
 - Ha introdotto il ==divario sensoriale== (sensory gap) nella conversazione sul riconoscimento visivo:
 
-*Il divario sensoriale è il divario tra l'oggetto nel mondo e le informazioni in una descrizione (computazionale) derivata da una registrazione di quella scena.*
+*Il divario sensoriale è il divario tra l'**oggetto nel mondo** e le informazioni in una descrizione (computazionale) derivata da una **registrazione** di quella scena.*
 
 - Pensateci un momento: lavoriamo sempre con una ==ricostruzione imperfetta del mondo reale.==
-- Le immagini hanno una risoluzione finita, sono soggette a rumore, sono acquisite con un sensore che è un altro oggetto libero nel mondo.
+- Le immagini hanno una risoluzione finita, sono ==soggette a rumore==, sono acquisite con un sensore che è un altro oggetto libero nel mondo.
 - Questo divario sensoriale deve essere superato per rendere il riconoscimento degli oggetti ==invariante rispetto agli artefatti incidentali della scena.==
 
 	15
@@ -1012,7 +1012,7 @@ def f(x, W1, b1, W2, b2):
 *Il divario semantico è la mancanza di coincidenza ==tra le informazioni che si possono estrarre dai dati visivi== e ==l'interpretazione che gli stessi dati== hanno per un utente in una data situazione.*
 
 ![[Pasted image 20251125143921.png]]
-=> Come posso fare un ponte fra le categorie o i concetti e le feature a basso livello?
+=> Come posso fare un ponte fra le feature a basso livello e le categorie e i concetti? => tipo bordi - texture con concetti come "seduto", "sorridente" ecc...
 
 	16
 ---
@@ -1024,6 +1024,8 @@ def f(x, W1, b1, W2, b2):
 - Oppure fragole rosse ma non ci sono pixel rossi nell'immagine
 	![[Pasted image 20251208163302.png]]
 
+	=> Il punto è che anche gli umani fanno errori di interpretazione visiva => come rendere dunque queste interpretazione delle immagini robuste e interpretabili da umani?
+	
 	17-18-19
 ---
 **Contesto storico: Borsa delle Caratteristiche (Bag of Features)**
@@ -1032,11 +1034,11 @@ def f(x, W1, b1, W2, b2):
 	
 	![[Pasted image 20251125144404.png]]
 
-- Estraggo N patches => vengono codificati in 128-d features  (passaggio a encoding)
+- Estraggo N patches => vengono codificati in 128-d features  => si fa tipo con SIFT => passaggio a encoding => codifico in un vettore globale...
 - Ma che succede per immagini di **altre dimensioni**? => tutti i modelli classici hanno un fixed input size => cosa facciamo allora?  
-	  => si quantizza ad un vocabolario di *parole visuali* => **k-means clustering** per indentificare in uno spazio di 128-d => si costruiscono cluster => ==le features al centro di questi mi rappresentano l'intero gruppo!==
+	  => si quantizza ad un vocabolario di *parole visuali* => **k-means clustering** per indentificare in uno spazio di 128-d => si costruiscono cluster => ==le features al centro di questi mi rappresentano l'intero gruppo!== => e ogni nuovo descrittore di un immagine => trovo la parola visiva più simile (centroide più vicino)
 		![[Pasted image 20251209103401.png]]
-- Ne costruisco un **istogramma** dai cluster delle features => conto quante features sono più vicine ai centri dei cluster => modello chiamato Bag of (visual) words => ripreso da data mining sui documenti => modo per quantizzare in un fixed length dimension => a seconda del numero di clusters
+- Ne costruisco un **istogramma** dai cluster delle features => conto quante features sono più vicine ai centri dei cluster => modello chiamato Bag of (visual) words => ripreso da data mining sui documenti => modo per quantizzare in un **fixed length dimension** => a seconda del numero di clusters
 - Butto via tutte le informazioni spaziali => info sulla posizione dei pixel => come le riprendo?  
 	=> divido l'immagine su 4 parti e ne costruisco gli istogrammi come detto precedentemente => operazione di pooling
 	
@@ -1044,7 +1046,8 @@ def f(x, W1, b1, W2, b2):
 ---
 **Contesto storico: Questo era un "gatto"**
 
-![[Pasted image 20251125145819.png]]
+![[Pasted image 20251125145819.png]] 
+=> Sostanzialmente conto quante volte appare ogni parola visiva nell'immagine => questi saranno vicini ai centri => attorno alle parole visive => ottengo un vettore con valori le frequenze associate alle parole visive...
 
 	20
 ---
@@ -1054,6 +1057,7 @@ def f(x, W1, b1, W2, b2):
 - Poi le forniamo in input ad una SVM multi-classe.
 
 	![[Pasted image 20251125145850.png]]
+	=> In sostanza l'apprendimento è separato dalla rappresentazione => ovvero come classifico è separato da come trasformo la mia immagine in un vettore numerico => l'apprendimento è fatto solo sui pesi della SVM e non su come ottenere le rappresentazioni => le quali dipendono unicamente dai processi scelti manualmente => tipo algoritmo di feature extraction - numero di clusters... ottenute delle feature "scadenti" queste non saranno migliorate da svm => ma questa può fare solo il meglio con quello che ha!
 
 	21
 ---
@@ -1061,13 +1065,13 @@ def f(x, W1, b1, W2, b2):
 
 - Poi restituiva i confini decisionali ottimali tra tutte le classi (e tutte le altre).
 - Il processo è importante:
-  1. Primo: estrarre una rappresentazione artigianale di punti fiduciali. => faccio detection di alcuni punti "importanti"
-  2. Poi: codificarli in una rappresentazione **globale** dell'immagine.
+  1. Primo: estrarre una rappresentazione artigianale **di punti fiduciali**. => faccio detection di alcuni punti "importanti" (fa così anche SIFT)
+  2. Poi: codificarli in una rappresentazione **globale** dell'immagine. => come nel caso di Bag-of-words con i clusters delle features => costruisco vocabolario di *parole visive*
   3. Poi: adattare una SVM (con o senza kernel).
 
-- Pro: l'apprendimento effettivo ha pochi iperparametri (di solito solo uno).
-- Contro: molti elementi artigianali con molti (praticamente infiniti) iperparametri. => quanti clusters considerare => come dividere l'immagine? => oppure ancora usare SVM o altri mmodelli?
-- Contro: l'apprendimento è separato dalla rappresentazione.
+- Pro: l'apprendimento effettivo ha pochi **iperparametri** (di solito solo uno). => il C della SVM
+- Contro: molti elementi artigianali con molti (praticamente infiniti) **iperparametri**. => quanti clusters considerare => come dividere l'immagine? => oppure ancora usare SVM o altri modelli?
+- Contro: ==l'apprendimento è separato dalla rappresentazione.==
 
 	22
 ---
@@ -1096,7 +1100,8 @@ Alla fine della lezione dovreste:
 - Un MLP dovrebbe essere in grado di apprendere rappresentazioni di caratteristiche che a loro volta sono buone rappresentazioni per la classificazione.
 - Perché questo è problematico? 
 	=> lavorerei con immagini 256x256 spesso di 3 canali... ho un esplosione di parametri!! 
-	=> Inoltre vorrei qualcosa che ci dia la **stessa interpretazione** (quando necessario) anche se ho dei **pesi diversi**....
+	=> Inoltre vorrei qualcosa che ci dia la **stessa interpretazione** (quando necessario) anche se ho dei **pesi diversi** => invarianza per traslazioni!
+	
 - NOTA: Il trattamento e molte figure in questa sezione sono tratti dall'eccellente libro *Understanding Deep Learning*, di Simon Prince.
 - Raccomando caldamente questo libro.
 
@@ -1104,11 +1109,11 @@ Alla fine della lezione dovreste:
 ---
 **Su invarianza ed equivarianza**
 
-- Una funzione $f[x]$ è invariante alla trasformazione $t[x]$ se $f[t[x]] = f[x]$.
-- Una funzione $f[x]$ è equivariante alla trasformazione $t[x]$ se $f[t[x]] = t f[x]$.
+- Una funzione $f[x]$ è invariante alla trasformazione $t[x]$ se $f[t[x]] = f[x]$. => output non cambia
+- Una funzione $f[x]$ è equivariante alla trasformazione $t[x]$ se $f[t[x]] = t f[x]$. => output cambia come cambia l'input.
 
 	![[Pasted image 20251125150129.png]]
-	=> Ricerchiamo un classificatore che sia invariante a qualsiasi tipo di trasformazione applicata all'immagine => anche se applico traslazioni alle immagini => cambia semantic segmentation ma deve valere invariance! => "equivariant to traslation" 
+	=> Ricerchiamo un classificatore che sia invariante a qualsiasi tipo di trasformazione applicata all'immagine => anche se applico traslazioni alle immagini => cambia semantic segmentation ma deve valere invariance! => "equivariant to traslation" (cnn lo è grazie a conv!)
 	
 	25
 ---
@@ -1146,7 +1151,6 @@ Alla fine della lezione dovreste:
 **Convoluzione a due dimensioni**
 
 - Esattamente la stessa operazione è naturalmente estesa nel caso di due dimensioni: 
-	
 	![[Pasted image 20251209111051.png]]
 
 	29
@@ -1154,7 +1158,6 @@ Alla fine della lezione dovreste:
 **Convoluzione a due dimensioni mulitcanale**
 
 - E per immagini multicanale (oppure *feature maps*):
-
 	![[Pasted image 20251209111510.png]]
 	=> in questo caso ho un MLP con shared weights! => 3x3x3 weights + 1 bias
 	
@@ -1162,9 +1165,9 @@ Alla fine della lezione dovreste:
 ---
 **Da MLP a CNN (che sono ancora in realtà MLP)**
 
-- Un **layer convoluzionale** è un layer fully-connected con i ==pesi condivisi tra le diverse posizioni dell'immagine.==
+- Un **layer convoluzionale** è un layer fully-connected con i ==pesi condivisi tra le diverse posizioni dell'immagine.== => avere un bordo in alto nell'immagine è come avere lo stesso bordo in basso dell'immagine => il set di pesi per analizzare le zone dell'immagine rimane lo stesso! => invarianza a traslazioni!
 - L'input di dimensione $w \times h \times c$ viene trasformato in un output di dimensione $w \times h \times c'$.
-- Gli output sono chiamati *mappe di caratteristiche* e sono derivati dalla convoluzione dell'immagine con $d'$ tensori 3D di dimensione $u \times v \times d$.
+- Gli output sono chiamati *mappe di caratteristiche* (feature maps) e sono derivati dalla convoluzione dell'immagine con $d'$ tensori 3D di dimensione $u \times v \times d$.
 - Quindi, il **numero di parametri** è "solo" $(u * v * c' * c) + c'$.
 
 	![[Pasted image 20251125150518.png]]
@@ -1174,7 +1177,6 @@ Alla fine della lezione dovreste:
 **Una CNN è davvero un MLP (travestito)**
 
 - Ma quello non sembra affatto un MLP…
-
 	![[Pasted image 20251125150610.png]]
 	=> Eseguo inizialmente  un operazione di flatten => *im2col*  => dove si fa lo slide dell'immagine come convoluzione => ogni patch 2x2 diventa un vettore colonna => da 3 canali a una sola immagine 12x9
 	=> Eseguo un altra convoluzione con kernel 1x12 => il risultato è un vettore colonna 1x9 => al quale viene poi fatta l'operazione inversa di *col2im* per riottenere l'immagine
@@ -1184,7 +1186,7 @@ Alla fine della lezione dovreste:
 **L'ingrediente finale: Layer di Pooling**
 
 - L'**apprendimento di rappresentazioni** funziona creando *un collo di bottiglia semantico*. => il bottleneck sta nel fatto che considerando l'MLP dobbiamo comunque tornare a pochi neuroni/parametri degli ultimi layer...
-- Forziamo la rete ad estrarre rappresentazioni significative che catturino caratteristiche semantiche. => prendiamo solo le poche features che sono importanti per la classificazione => evito anche esplosione del size di rappresentazione... si operazione di pooling!
+- ==Forziamo la rete ad estrarre rappresentazioni significative che catturino caratteristiche semantiche.== => prendiamo solo le poche features che sono importanti per la classificazione => evito anche esplosione del size di rappresentazione... si fa operazione di pooling!
 
 - Nelle CNN lo facciamo tramite **Sotto-campionamento**(a), **Max Pooling**(b) e **Mean Pooling**(c):
 
@@ -1231,14 +1233,14 @@ Alla fine della lezione dovreste:
   - Ciò significa che dopo alcuni layer convoluzionali la dimensione della mappa di caratteristiche è **ridotta di un fattore 2.**
   - Usano il **max pooling**: in ogni mappa di caratteristiche, mantieni il valore massimo in ogni regione di pooling $3 \times 3$ sovrapposta (in ogni mappa di caratteristiche).
   - ==Questo aiuta a contenere la dimensione delle mappe di caratteristiche propagate attraverso la rete.==
-  - E aiuta anche a costruire rappresentazioni di livello superiore dell'immagine. (higher level representation)
+  - E aiuta anche a costruire rappresentazioni di **livello superiore** dell'immagine. (higher level representation)
   - Questo perché **dimezzare la risoluzione** dell'immagine equivale a **raddoppiare la dimensione** delle convoluzioni successive.
 
 	36
 ---
 **AlexNet: Saturazione delle Unità**
 
-- Un'altra innovazione in AlexNet è l'uso della funzione di attivazione Rectified Linear Unit (ReLU). $$\sigma(\mathbf{x}) = \max(0, \mathbf{x})$$
+- Un'altra innovazione in AlexNet è l'uso della funzione di attivazione **Rectified Linear Unit** (ReLU). $$\sigma(\mathbf{x}) = \max(0, \mathbf{x})$$
 - Questa funzione di attivazione non satura come le sigmoidi.
 - Il risultato è un accelerazione di ==6 volte nell'addestramento.==
 
@@ -1258,11 +1260,11 @@ Alla fine della lezione dovreste:
 **AlexNet: Altri Trucchi**
 
 - L'articolo su AlexNet è un'ottima risorsa perché spiega tutti i trucchi necessari per far apprendere una rete profonda:
-  - Local response normalization: mantiene sotto controllo la variazione locale nelle mappe di caratteristiche (sezione 3.3).
+  - Local response normalization(LRN): mantiene sotto controllo la variazione locale nelle mappe di caratteristiche (sezione 3.3). => si fa normalizzazione fra feature maps vicine
   - **Momentum**: limita l'effetto "skateboard" quando si seguono valli nella superficie di loss, equivalente alla regolarizzazione L1 (o L2) dei pesi (sezione 5).
   ![[Pasted image 20251209144223.png]]
   - **Mini-batch Stochastic Gradient Descent (SGD)**: con 1.2M campioni di training, non possiamo considerare l'intero dataset in un unico batch; invece, **campioniamo casualmente mini-batch di 128 immagini** (sezione 5).
-  - **Multiple GPUs:** AlexNet era troppo grande per stare in una singola GPU (nel 2012), quindi le mappe di caratteristiche sono divise su due GPU (sezione 3.2).
+  - **Multiple GPUs:** AlexNet era troppo grande per stare in una singola GPU (nel 2012), quindi le mappe di caratteristiche sono divise su **due GPU** (sezione 3.2).
   - **Model averaging**: i risultati state-of-the-art si ottengono addestrando multiple CNN e mediando gli output. => ovvero sfrutto modelli *ensemble*
 
 	39
@@ -1271,19 +1273,20 @@ Alla fine della lezione dovreste:
 
 - La prova è nel pudding:
 
-| Modello        | Top-1 (val) | Top-5 (val) | Top-5 (test) |
-| -------------- | ----------- | ----------- | ------------ |
-| SIFT + FVs [7] | —           | —           | 26.2%        |
-| 1 CNN          | 40.7%       | 18.2%       |              |
-| 5 CNNs         | 38.1%       | 16.4%       | 16.4%        |
-| 1 CNN*         | 39.0%       | 16.6%       |              |
-| 7 CNNs*        | 36.7%       | 15.4%       | 15.3%        |
+| Modello           | Top-1 (val) | Top-5 (val) | Top-5 (test) |
+| ----------------- | ----------- | ----------- | ------------ |
+| SIFT + FVs [7]    | —           | —           | 26.2%        |
+| 1 CNN             | 40.7%       | 18.2%       |              |
+| 5 CNNs            | 38.1%       | 16.4%       | 16.4%        |
+| 1 CNN* (ensemble) | 39.0%       | 16.6%       |              |
+| 7 CNNs*           | 36.7%       | 15.4%       | 15.3%        |
 => gli errori ogni anno diminuiscono!
 
 - E nelle rappresentazioni che la rete apprende:
 
 	![[Pasted image 20251125151534.png]]
-	=> riesco a riconoscere cose come bordi - color "valleys" - textures - orientazioni - ridge(?) => tutte cose in quel momento fatte a mano
+	=> riesco a riconoscere cose come bordi - color "valleys" - textures - orientazioni - ridge(?) => tutte cose in quel momento fatte a mano! => tutto questo fatto in modo autonomo dai filtri del primo layer => aggiustano pesi per imparare a rilevare bordi, colori, texture...
+	=> Più si va avanti nei layer e più si riconoscono parti di più alto livello!
 	
 	40
 ---
@@ -1317,19 +1320,19 @@ Alla fine della lezione dovreste:
 - Ora che abbiamo AlexNet come punto di riferimento, possiamo guardare ad altre architetture CNN state-of-the-art.
 - La Famiglia di Reti VGG (VGG = Visual Geometry Group di Oxford) è un raffinamento dello stile AlexNet di CNN [Simonyan e Zisserman, 2014].
 - In questo lavoro gli autori hanno svolto un'esplorazione approfondita dello spazio dei **parametri architetturali.**
-- Hanno variato **iperparametri** (es. numero di layer, dimensione delle convoluzioni, ecc.).
+- Hanno variato **iperparametri** (es. **numero di layer,** dimensione delle convoluzioni, ecc.).
 - E hanno stabilito un nuovo baseline per il riconoscimento oggetti basato su CNN.
 
 	43
 ---
 **VGG: L'impostazione**
 
-- L'input alle reti è un tensore immagine fisso, $224 \times 224 \times 3$.
-- Il valore medio RGB viene prima sottratto da tutte le immagini di training per centrare i dati. => pixelwise mean and std normalization
-- Tutte le **convoluzioni** hanno dimensione $3 \times 3 \times d$ o $1 \times 1 \times d$ (d è un numero arbitrario di mappe di caratteristiche) con un passo (stride) di 1. 
+- L'input alle reti è **un tensore immagine fisso**, $224 \times 224 \times 3$.
+- Il ==valore medio RGB viene prima sottratto== da tutte le immagini di training per centrare i dati. => **pixelwise mean and std normalization**
+- ==Tutte le **convoluzioni** hanno dimensione $3 \times 3 \times d$ o $1 \times 1 \times d$ (d è un numero arbitrario di mappe di caratteristiche) con un passo (stride) di 1.== 
 - L'idea è: se hai bisogno di convoluzioni più grandi, ==basta andare più in profondità.==
-- Il max pooling viene eseguito su finestre non sovrapposte $2 \times 2$ con un stride di 2 (riduzione di 2x nella dimensione).
-- Tutti i layer nascosti utilizzano una funzione di attivazione ReLU, ma **non effettuano la local response normalization.**
+- Il max pooling viene eseguito su finestre **non sovrapposte** $2 \times 2$ con un stride di 2 (riduzione di 2x nella dimensione). => dimezzo in modo esatto
+- **Tutti** i layer nascosti utilizzano una funzione di attivazione ReLU, ma **non effettuano la local response normalization.** (non migliorava le cose)
 
 	44
 ---
@@ -1362,9 +1365,9 @@ Alla fine della lezione dovreste:
 
 - Nota che ==le immagini di training sono tutte scalate a $224 \times 224$ pixel prima di passarle attraverso la rete==. => se le convoluzioni possono prendere qualsiasi input => non vale la stessa cosa per i layer fully connected => ai quali applichiamo **flattened** => tied to a single input size?
 - Questo è lo stesso di AlexNet, e chiaramente può influenzare il contenuto dell'immagine introducendo artefatti (considera immagini ritratto). => questo perchè bisogna fare scaling
-- Nelle reti VGG, le immagini **vengono scalate** *isotropicamente* in modo che la dimensione più piccola abbia una dimensione fissa. => che vuol dire?
-- Poi una **sotto-immagine** di dimensione $224 \times 224$ viene ritagliata casualmente dall'immagine scalata.  => prendo solo una piccola parte dell'immagine
-- Gli autori hanno valutato il ridimensionamento casuale tra **256** e 384 pixel per la dimensione più piccola. => dimensione più piccola sia della dimensione desiderata
+- Nelle reti VGG, le immagini **vengono scalate** *isotropicamente* in modo che la dimensione più piccola abbia una dimensione fissa. => ovvero scalate su tutte le direzioni => immagine ridimensionata mantenendo aspect-ratio => non si distorce l'immagine
+- Poi una **sotto-immagine** di dimensione $224 \times 224$ viene ritagliata casualmente dall'immagine scalata.  => prendo solo una piccola parte dell'immagine (ridimensionata sul lato più corto)
+- Gli autori hanno valutato il ridimensionamento casuale tra **256** e 384 pixel per la dimensione più piccola. => ho diversi crop da ogni immagine => data augmentation! => ma anche grazie al ridimensionamento casuale la rete diventa robusta a variazioni di scala molto maggiori! => dà più varianza..
 
 	![[Pasted image 20251209151032.png]]
 	
@@ -1372,11 +1375,11 @@ Alla fine della lezione dovreste:
 ---
 **VGG: Dimensione dell'immagine di test**
 
-- Al momento del test, vengono valutate cinque strategie per il ridimensionamento dell'immagine:
-  - **Dense**: la rete è **completamente convolutionalizzata** (lo spiegherò nella prossima slide), valutata densamente sull'immagine di input, e i risultati sono pooled globalmente.
-  - **Single-scale**: viene utilizzata una singola scala isotropica.
-  - **Multi-scale**: come al momento del training, le immagini vengono scalate a tre scale isotropiche discrete.
-  - **Multi-crop**: da un output fully-convolutional vengono presi multipli ritagli (crop) casuali per l'average pooling.  => strategia comune è fare random crops => e fare average del risultato
+- Al momento del test, vengono valutate cinque (qui so 4) strategie per il ridimensionamento dell'immagine:
+  - **Dense**: la rete è **completamente convolutionalizzata** (lo spiegherò nella prossima slide), valutata densamente sull'immagine di input, e i risultati sono pooled globalmente. => sostanzialemente si fanno conv 1x1 => dunque rete può accettare qualsiasi input => infine si fa media spaziale dei risultati predetti.
+  - **Single-scale**: viene utilizzata **una singola scala** isotropica.
+  - **Multi-scale**: come al momento del training, **le immagini vengono scalate a tre scale** isotropiche discrete. => faccio **media delle predizioni fra scale** => il crop viene preso sempre al centro dell'immagine.
+  - **Multi-crop**: da un output fully-convolutional vengono presi **multipli ritagli (crop) casuali** (tipo angoli - centro - flip) per l'average pooling.  => strategia comune è fare random crops => e fare average del risultato => è combinabile con più scale
 	![[Pasted image 20251209151252.png]]
 
 	48
@@ -1389,14 +1392,14 @@ Alla fine della lezione dovreste:
 ![[Pasted image 20251125152232.png]]
 => Mlp che prende in input immagini di 224/32 = 7 x 224x32 = 7
 
-- SI può pensare di considerare il primo layer di MLP come layer di convoluzione di dimensione 7x7x4096 (numero di output) => guardo a finestre di pixel di 7x7 e produco 4096 features per ogni patches => quello successivo come 1x1x4096 e infine 1x1x1000 => cosa fa convoluzione 1x1? considero tutti i pixel e faccio combinazione lineare di tutte le features! => a cui applico poi funzione di attivazione non lineare
+- SI può pensare di considerare il primo layer di MLP come layer di convoluzione di dimensione 7x7x4096 (numero di output) => guardo a finestre di pixel di 7x7 e produco **4096 features** per ogni patches (finestra) => quello successivo come 1x1x4096 e infine 1x1x1000 => cosa fa convoluzione 1x1? considero **tutti i pixel** e faccio combinazione lineare di **tutte le features**! => a cui applico poi funzione di attivazione non lineare
 
 	49
 ---
 **VGG: Risultati**
 
 - Anche considerando solo una singola scala di input, i risultati sono impressionanti.
-- Nota: **più profondo è meglio**, LRN non aiuta, il jittering di scala al test time sì.
+- Nota: **più profondo è meglio**, LRN non aiuta, il jittering di scala al test time sì. ??
 
 | Configurazione ConvNet (Tabella 1) | lato minore immagine train ($S$)- test(Q) | errore top-1 val. (%) | errore top-5 val. (%) |
 | ---------------------------------- | ----------------------------------------- | --------------------- | --------------------- |
@@ -1426,7 +1429,6 @@ Alla fine della lezione dovreste:
 **VGG: Noi versus Loro**
 
 - Infine, la media di modelli (model averaging) su modelli multi-scala, multi-crop porta a performance *state-of-the-art:*
-
 	![[Pasted image 20251125152504.png]]
 
 	52
@@ -1434,10 +1436,10 @@ Alla fine della lezione dovreste:
 **VGG: Analisi**
 
 - In questo articolo gli autori hanno migliorato significativamente rispetto alla generazione precedente andando più in profondità.
-- Ancora una volta, la maggior parte delle idee non sono nuove, ma l'esplorazione sistematica dello spazio di progettazione ha portato a miglioramenti significativi.
+- Ancora una volta, la maggior parte delle idee non sono nuove, ma l'esplorazione sistematica dello spazio di progettazione ha portato a **miglioramenti significativi**.
 - Nota che **le reti sono più profonde**, ma hanno un'impronta di memoria più piccola al momento del training grazie ad un bilanciamento attento della dimensione delle mappe di caratteristiche.
 - La valutazione densa (dense evaluation) della rete al momento del test può anche aumentare le performance, portando a reti fully convolutional che **sono indipendenti dalla dimensione dell'immagine di input.**
-- L'architettura è ancora una classica ConvNet.
+- L'architettura è ancora una classica ConvNet. => solo più profonda!
 
 	53
 ---
@@ -1459,7 +1461,7 @@ Alla fine della lezione dovreste:
 
 ![[Pasted image 20251127092244.png]]
 
-=> notare che in realtà non stiamo overfittando => ma allora che succede?
+=> notare che in realtà non stiamo overfittando => ho un errore più alto con più layer sempre nel caso di training set! => ma allora che succede?
 
 	55
 ---
@@ -1469,7 +1471,8 @@ Alla fine della lezione dovreste:
 - Basta copiare i pesi pre-addestrati da una rete normale in una rete più profonda con nuovi pesi inizializzati casualmente.
 
 	![[Pasted image 20251127092336.png]]
-
+	=> Sostanzialmente presa una rete qualsiasi => se aggiungo dei layer *identity* (che non fanno nulla) in teoria la rete che ottengo dovrebbe avere stesso o minore errore di training... ma nella pratica non è così... questo perchè più aumento i layer e più diventa difficile ottimizzare tutti i pesi insieme! => sgd non riesce a ottimizzare (anche per vanishing gradients)
+	
 	56
 ---
 **ResNets: Obiettivi e Residui**
@@ -1479,22 +1482,16 @@ Alla fine della lezione dovreste:
 
 	![[Pasted image 20251127092420.png]]
 
-=> Più calcolo i gradienti e più è probabile che alcuni di questi si azzerano!
+	=> Più calcolo i gradienti e più è probabile che alcuni di questi si azzerano!
 
-	57
----
-**ResNets: Obiettivi e Residui**
-
-- Diciamo che la rete sta apprendendo verso una qualche rappresentazione di caratteristiche ottimale $H(x)$.
-- La natura composizionale e feed-forward della CNN non aiuta realmente.
-- Invece, possiamo aiutare la rete non richiedendole di passare attraverso tante informazioni.
-- Passa $x$ in avanti e aggiungilo all'output del **blocco residuo** – ora abbiamo "solo" bisogno di apprendere $H(x) - x$, il residuo $F(x)$.
+- Invece, possiamo aiutare la rete non richiedendole di passare attraverso **tante informazioni**.
+- Passa $x$ in avanti e aggiungilo all'output del **blocco residuo** – ora abbiamo "solo" bisogno di apprendere $H(x) - x$, ==il residuo== $F(x)$. => a ciò che mi manca aggiungo l'input originale...
 
 	![[Pasted image 20251127092657.png]]
 
-- L'idea è di aggiungere una skip connection => in modo tale che l'ultimo blocco non calcola l'intero target => ma solo la differenza (residual) fra target e funzione calcolata
+- L'idea è di aggiungere una **skip connection** => in modo tale che l'ultimo blocco **non calcola l'intero target** => ma solo la differenza (residual) fra target e funzione calcolata => invece di imparare quindi $H(x)$ da zero basta imparare la differenza da x => dunque più facile da ottimizzare! => la rete può imparare anche l'identity se i layer del blocco sono nulli! => posso aggiungere layer a piacere!
 
-- Facendo questo ho un ulteriore calcolo da fare per il gradiente => aggiungo info
+- Facendo questo ho un ulteriore calcolo da fare per il gradiente => aggiungo info => ma ho anche più garanzia che il gradiente non svanisca mai completamente!
 
 	57
 ---
@@ -1513,7 +1510,6 @@ Alla fine della lezione dovreste:
 **ResNets: Modularità Parametrica**
 
 - E questo è un modo comune di rappresentare parametricamente le varie configurazioni ResNet:
-
 	![[Pasted image 20251127093457.png]]
 
 - Notare non è presente MaxPooling => ma strided convolutions (cazzata?)
