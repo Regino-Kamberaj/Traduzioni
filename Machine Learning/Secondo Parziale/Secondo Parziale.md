@@ -4,10 +4,12 @@
 **Il potere del consenso**
 
 - Tutti i modelli di regressione e classificazione che abbiamo considerato finora sono singoli – adattiamo **un modello** e prevediamo usando un modello.
+
 - Spesso possiamo migliorare i modelli singoli **combinandone multipli**.
-- Potremmo addestrare $M$ **modelli**, e poi prendere la media delle loro previsioni.
-- Oppure, potremmo addestrare **modelli in sequenza** e incoraggiare i modelli successivi a compensare gli errori commessi dai precedenti. => boosting
-- Oppure, potremmo addestrare modelli multipli e poi selezionare il migliore per fare previsioni per un dato $x$.
+	- Potremmo addestrare $M$ **modelli**, e poi ==prendere la media delle loro previsioni.==
+	- Oppure, potremmo addestrare **modelli in sequenza** e incoraggiare i modelli successivi ==a compensare gli errori commessi dai precedenti==. => boosting
+	- Oppure, potremmo addestrare modelli multipli e poi ==selezionare il migliore== per fare previsioni per un dato $x$.
+
 - Tali modelli sono solitamente chiamati **modelli ensemble** poiché fanno previsioni basate su un insieme di modelli addestrati invece che su uno solo.
 
 	2
@@ -17,9 +19,11 @@
 Dopo questa lezione:
 
 - Comprenderete come il **bagging** (o bootstrap aggregation) possa essere usato per generare dataset multipli da uno singolo.
-- Comprenderete come i *committee* sono formati addestrando modelli multipli su dataset bootstrap.
-- Comprenderete come e perché i committee riducono l'errore del modello attraverso la media.
-- Comprenderete come il boosting funziona per addestrare una sequenza di weak learner e come questi learner sono combinati in un committee più forte tramite pesatura.
+- Comprenderete come i *committee* sono formati addestrando modelli **multipli** su *dataset bootstrap*.
+- Comprenderete come e perché i committee riducono l'errore del modello attraverso la media
+
+- Comprenderete come il boosting funziona per addestrare una sequenza di **weak learner** e come questi learner sono combinati in un committee più forte tramite pesi.
+
 - Comprenderete come i **modelli ad albero** partizionano lo spazio in regioni cuboidi e come apprendere la loro struttura e parametri.
 
 	3
@@ -28,7 +32,7 @@ Dopo questa lezione:
 ---
 **Il potere del consenso**
 
-- Abbiamo visto tempo fa in una delle nostre prime lezioni come il campionamento di modelli multipli e la **media** aiuti ==a ridurre la varianza:== => anche bayes faceva così => considera tutti i possibili i modelli e poi ne faceva la media => intrattabile però 
+- Abbiamo visto tempo fa in una delle nostre prime lezioni come il campionamento di modelli multipli e la **media** aiuti ==a ridurre la varianza:== => anche bayes faceva così => considera **tutti** i possibili i modelli e poi ne faceva la media => intrattabile però 
 - Possiamo sfruttare questo senza un modello **completamente** Bayesiano?
 
 	![[Pasted image 20250930120423.png]]
@@ -40,7 +44,8 @@ Dopo questa lezione:
 - Consideriamo un problema di regressione in cui stiamo prevedendo un singolo target continuo.
 - L'approccio di riduzione della varianza funzionava addestrando un modello a **basso bias** su ==dataset multipli== e mediando gli output.
 - In pratica abbiamo solo un dataset, tuttavia.
-- Il *metodo bootstrap* funziona campionando (uniformemente) $M$ dataset di dimensione $N' < N$ da $D$ con **reinserimento**. => tipo abbiamo diverse copie di uno stesso dato e alcuni dataset hanno dati che altri non hanno
+
+- Il *metodo bootstrap* funziona **campionando** (uniformemente) $M$ dataset di dimensione $N' < N$ da $D$ con **reinserimento**. => tipo abbiamo diverse copie di uno stesso dato e alcuni dataset hanno dati che altri non hanno
 - Ognuno di questi dataset bootstrap riflette la distribuzione sottostante di $D$ ma è **incompleto**.
 
 - Ad es: $$D = (0,1,2,3)$$ con $N'=3$ posso avere: $D_1 =(0,0,2)$, $D_2 = (1,2,3)$, $D_3 = (0,1,1)$
@@ -49,27 +54,29 @@ Dopo questa lezione:
 ---
 **Bootstrap aggregation (o bagging)**
 
-- Possiamo quindi adattare un modello $y_m(x)$ a ogni **dataset bootstrap** (usando qualsiasi metodo).
+- Possiamo quindi fittare un modello $y_m(x)$ a ogni **dataset bootstrap** (usando qualsiasi metodo).
 - E poi formare il modello *committee* **mediando** gli $M$ **modelli base**:$$y_{\text{com}}(\mathbf{x}) = \frac{1}{M} \sum_{m=1}^{M} y_m(\mathbf{x})$$ => ==si fa la media di tutte le predizioni==
 
 - Perchè può essere una buona idea?
 - Indichiamo con $h(\mathbf{x})$ la **vera** funzione di regressione che genera $\mathcal{D}$.
 - L'output di ogni modello può essere scritto come questa funzione vera **più un errore**:$$y_m(\mathbf{x}) = h(\mathbf{x}) + \epsilon_m(\mathbf{x})$$ => tipo misuro la differenza rispetto al modello reale
-- Nota che non abbiamo ancora fatto nulla – eccetto identificare l'errore in ognuno dei nostri modelli.
+
+- Nota che non abbiamo ancora fatto nulla – eccetto identificare l'errore in ognuno dei nostri modelli (su un dataset più piccolo).
 
 	6
 ---
 **Quantificare l'errore**
 
-- L'errore quadratico **atteso** di ogni modello è allora:$$\mathbb{E}_x \left[ \{ h(x) - y_m(x) \}^2 \right] = \mathbb{E}_x \left[ \varepsilon_m(x)^2 \right]$$
-- E l'**errore medio** dei **modelli** individuali è: (su tutti gli errori)$$E_{\text{av}} = \frac{1}{M} \sum_{m=1}^{M} \mathbb{E}_x \left[ \varepsilon_m(x)^2 \right]$$
+- L'**errore quadratico** **atteso** di ogni modello è allora:$$\mathbb{E}_x \left[ \{ h(x) - y_m(x) \}^2 \right] = \mathbb{E}_x \left[ \varepsilon_m(x)^2 \right]$$
+- E l'**errore medio** dei **modelli** individuali è: (su tutti gli errori)$$E_{\text{av}} = \frac{1}{M} \sum_{m=1}^{M} \mathbb{E}_x \left[ \varepsilon_m(x)^2 \right]$$ => media di tutti gli errori quadratici attesi
+
 - Ancora, non abbiamo detto nulla di sconvolgente: l'==errore quadratico medio commesso dai modelli è la media di tutti gli errori quadratici commessi dai modelli==.
 
 	7
 ---
 **L'errore del committee**
 
-- Possiamo calcolare l'errore atteso del committee similmente: (porto dentro la sommatoria) $$E_{\text{com}} = \mathbb{E}_x \left[ \left\{ \frac{1}{M} \sum_{m=1}^M h(x) - y_m(x) \right\}^2 \right]$$ => sostanzialmente porto dentro h(x)$$= \mathbb{E}_x \left[ \left\{ \frac{1}{M} \sum_{m=1}^M \varepsilon_m(x) \right\}^2 \right]$$ => si risemplifica e ottengo l'errore solo che in questo il quadrato sta fuori => $(\varepsilon_1 +\varepsilon_2 +---)^2$
+- Possiamo calcolare l'**errore atteso del committee** similmente: (porto dentro la sommatoria) $$E_{\text{com}} = \mathbb{E}_x \left[ \left\{ \frac{1}{M} \sum_{m=1}^M h(x) - y_m(x) \right\}^2 \right]$$ => sostanzialmente porto dentro h(x)$$= \mathbb{E}_x \left[ \left\{ \frac{1}{M} \sum_{m=1}^M \varepsilon_m(x) \right\}^2 \right]$$ => si risemplifica e ottengo l'errore solo che in questo il quadrato sta fuori => $(\varepsilon_1 +\varepsilon_2 +---)^2$
 
 - OK, ma elevare al quadrato quella $\sum$ sarà un gran casino...
 
@@ -81,17 +88,20 @@ Dopo questa lezione:
 
 - Se assumiamo che gli errori:
 	- **siano a media zero**:(ogni errore individuale ha aspettativa nulla) $$\mathbb{E}_x [\varepsilon_m(x)] = 0$$
-	- e non correlati: (ovvero covarianza nulla) $$\mathbb{E}_x [\varepsilon_m(x)\varepsilon_n(x)] - \mathbb{E}_x [\varepsilon_m(x)] \mathbb{E}_x [\varepsilon_n(x)] = 0 \quad m \neq n$$
-- Allora abbiamo:(aggiungi sketch)$$E_{\text{com}} = \frac{1}{M} E_{\text{av}}$$ => mi rimane l'unico caso in cui m=n(il resto è zero) => in cui ho della varianza
-	![[Pasted image 20251203223047.png]]
+	- e **non correlat**i: (ovvero covarianza nulla) $$\mathbb{E}_x [\varepsilon_m(x)\varepsilon_n(x)] - \mathbb{E}_x [\varepsilon_m(x)] \mathbb{E}_x [\varepsilon_n(x)] = 0 \quad m \neq n$$
+- Allora abbiamo:$$E_{\text{com}} = \frac{1}{M} E_{\text{av}}$$
+	![[Pasted image 20251213164512.png]]
+	 => mi rimane l'unico caso in cui m=n(il resto è zero) => in cui ho della varianza => il resto dei casi abbiamo assunto non correlati!
 	
 	9
 ---
 **Mediare modelli riduce l'errore atteso**
 
 - Quindi se mediiamo $M$ modelli ==riduciamo l'errore atteso dei modelli singoli di un fattore ==$1/M$!$$E_{\text{com}} = \frac{1}{M} E_{\text{av}}$$ => questo quante volte voglio ma...
-- Ricorda le assunzioni, però: gli errori **sono quasi mai non correlati**. => serve che siano correlati fra di loro!
-- Tuttavia, ci sono garanzie che l'errore del committee ==non supererà mai l'errore atteso del modello== (cioè $E_{\text{com}} \leq E_{\text{av}}$). => buona cosa dei modelli committee! => dividere il dataset, fittare il dataset e fare la media di questi modelli riduce l'errore! => un buon es sarebbe dimostrare che il commitee di un modello di regressione lineare è ancora un modello di regressione lineare nello spazio originale. da M modelli ne possiamo comunque trarre un linear model
+- Ricorda le assunzioni, però: gli errori **sono quasi mai non correlati**. => serve che non siano correlati fra di loro!
+
+- Tuttavia, ci sono garanzie che l'errore del committee ==non supererà mai l'errore atteso del modello== (cioè $E_{\text{com}} \leq E_{\text{av}}$). => buona cosa dei modelli committee! => dividere il dataset, fittare il dataset e fare la media di questi modelli riduce l'errore! (di un fattore 1/M)
+	=> un buon es sarebbe dimostrare che il commitee di un modello di regressione lineare è ancora un modello di regressione lineare nello spazio originale. da M modelli ne possiamo comunque trarre un linear model
 
 	10
 ---
@@ -100,16 +110,16 @@ Dopo questa lezione:
 **SKIPPABLE Media pesata**
 
 - Il modello committee calcola una **semplice media** sui modelli base$$y_{\text{com}}(x) = \frac{1}{M} \sum_{m=1}^{M} y_m(x)$$
-- Questi modelli sono adattati tramite bagging: campioni multipli dal training set con reinserimento.
+- Questi modelli sono adattati tramite **bagging**: ==campioni multipli dal training set con reinserimento.==
 - I modelli base sono addestrati indipendentemente sui dataset bootstrap (cioè i campioni dal bagging).
-- E se non trattassimo tutti i modelli ==come uguali nel committee==?
-- E se li addestrassimo in sequenza in modo che "si aiutino a vicenda" in qualche modo?
+- E se non trattassimo tutti i modelli come **uguali** nel committee?
+- E se li addestrassimo in **sequenza** in modo che "si aiutino a vicenda" in qualche modo?
 
 	11
 ---
 **SKIPPABLE Boosting**
 
-- Questo è precisamente ciò che fa il **boosting**: => non ho più **indipendenza** dei modelli!
+- Questo è precisamente ciò che fa il **boosting**: => non ho più **indipendenza** dei modelli! => da parallelo passo a sequenziale
 	
 	![[Pasted image 20251104230108.png]]
 
@@ -122,7 +132,7 @@ Dopo questa lezione:
 - L'idea di AdaBoost:
   - Associamo ad ogni campione un peso, che inizialmente è $\frac{1}{N}$.
   - Assumiamo di avere un modo per addestrare **un classificatore base** con campioni pesati.
-  - Dopo aver addestrato ==$M$ classificatori base== li combiniamo in un committee con coefficienti che danno pesi diversi ad ogni classificatore.
+  - Dopo aver addestrato ==$M$ classificatori base== li combiniamo in un committee con coefficienti che danno **pesi diversi** ad ogni classificatore.
 
 - Nota: nel boosting, questi classificatori base sono solitamente chiamati *weak learner*.
 
@@ -131,7 +141,7 @@ Dopo questa lezione:
 **SKIPPABLE AdaBoost**
 
 - **AdaBoost**:
-	1. Inizializza i coefficienti di pesatura dei dati $\{w_n\}$ impostando $w_n^{(1)} = 1/N$ per $n = 1, \ldots, N$.
+	1. Inizializza i coefficienti di pesatura dei dati $\{w_n\}$ impostando $w_n^{(1)} = 1/N$ per $n = 1, \ldots, N$
 	2. Per $m = 1, \ldots, M$:
 	   (a) Adatta un classificatore $y_m(\mathbf{x})$ ai dati di training minimizzando la ==funzione di errore **pesata**:==$$J_m = \sum_{n=1}^{N} w_n^{(m)} I(y_m(\mathbf{x}_n) \neq t_n)$$    dove $I(y_m(\mathbf{x}_n) \neq t_n)$ è la funzione indicatrice e vale 1 quando $y_m(\mathbf{x}_n) \neq t_n$ e 0 altrimenti.
 
@@ -146,9 +156,9 @@ Dopo questa lezione:
 **SKIPPABLE AdaBoost**
 
 - Gli $\varepsilon_m$ rappresentano i tassi di errore (pesati) del classificatore $y_m$.
-- I coefficienti di pesatura $\alpha_m$ assegnano peso maggiore ai classificatori più accurati in (14.19).
+- I coefficienti di pesatura $\alpha_m$ assegnano ==peso maggiore ai classificatori più accurati== in (14.19).
 - E sono usati per dare peso maggiore ai campioni **misclassificati** in (14.18).
-- AdaBoost funziona molto bene in pratica, specialmente con molti, potenzialmente molto weak learner.
+- AdaBoost funziona molto bene in pratica, specialmente con molti, potenzialmente molto weak learner (i classificatori base).
 
 	15
 ---
@@ -162,12 +172,12 @@ Dopo questa lezione:
 ---
 **Partizionamento ricorsivo dello spazio**
 
-- Possiamo pensare alla **classificazione** (anche regressione) come fare previsioni **costanti** ==su partizioni dello spazio di input==: => si usa treshold values sulle previsioni => le regioni trovate hanno valori costanti in output
+- Possiamo pensare alla **classificazione** (anche regressione) come fare previsioni **costanti** ==su partizioni dello spazio di input==: => si usa **treshold values** sulle previsioni => le regioni trovate hanno **valori costanti** in output
 
 	![[Pasted image 20251104230905.png]] => si usa l'albero per rappresentare le partizioni dello spazio di input
 
 - Quali sono i parametri del modello? Sono i valori di **treshold da imparare** => come sceglierli? 
-- La depth dell'albero ovvero quando fermarsi invece sono degli **iperparametri** da decidere
+- La **depth** dell'albero ovvero quando fermarsi invece sono degli **iperparametri** da decidere
 	
 	17
 ---
@@ -175,7 +185,7 @@ Dopo questa lezione:
 
 - I modelli ad albero sono modelli semplici ma *ampiamente usati* **che funzionano per partizionamento.**
 - Gli **alberi allineati** agli assi partizionano lo spazio in cuboidi allineati(tipo iper-rettangoli) con gli assi.
-- Sono **modelli ensemble**: un singolo modello è responsabile per ogni partizione.
+- Sono **modelli ensemble**: ==un singolo modello è responsabile per ogni partizione.==
 - Per selezionare quale modello attraversiamo l'albero in un processo decisionale sequenziale.
 - I modelli ad albero sono spesso considerati **interpretabili dagli umani**.
 - Il modello che consideriamo è il *Classification and Regression Tree* (CART).
@@ -201,36 +211,40 @@ Dopo questa lezione:
 
 - Invece, useremo una politica **ricorsiva** e **greedy**:
   1. Inizia da un singolo **nodo radice** corrispondente all'intero spazio.
-  2. Itera su ognuna delle $D$ possibili variabili di split: (ordiniamo tutto il nostro dataset secondo le input variables => metti sketch)
+  2. Itera su ognuna delle $D$ possibili variabili di split: (ordiniamo tutto il nostro dataset secondo le input variables)
     - 2.1 Considera ogni possibile soglia per dividere i dati in due insiemi. => divido in modo tale da ==non riottenere gli insieme di partenza==
-    - 2.2 Seleziona quella che **minimizza la somma degli errori** quadratici negli split. => per insiemi con un solo elemento l'errore è nullo  => ocho però rischio overfitting!
+    - 2.2 Seleziona quella che **minimizza la somma degli errori quadratici** negli split. => per insiemi con un solo elemento l'errore è nullo  => ocho però rischio overfitting!
   3. Applica ricorsivamente questa procedura ai figli.
-	![[Pasted image 20251203224855.png]]
+
+	![[Pasted image 20251213171437.png]]
 	
 - ==Quando dovremmo fermare questa procedura==?
-- La solita strategia è sovrasegmentare lo spazio di input costruendo un albero profondo e ampio.
+- La solita strategia è sovrasegmentare lo spazio di input costruendo **un albero profondo e ampio.**
 - Perché questo potrebbe essere problematico? => overfit!
-- E poi **potare** l'albero per bilanciare **complessità** e **minimizzazione dell'errore sui dati** di training. => come definire il pruning criteria?
+- E poi **potare** l'albero per bilanciare **complessità** e **minimizzazione dell'errore sui dati** di training. => come definire il **pruning** criteria?
 
 	20
 ---
 **Apprendimento greedy**
 
 - Assumiamo di avere già un partizionamento (un albero), con nodi foglia indicizzati da $\tau = 1, \ldots, T$.
-- Chiama la partizione corrispondente a ogni foglia $R_\tau$.
-- La **previsione ottimale** e l'**errore quadratico** in ogni nodo sono: $$y_\tau = \frac{1}{N_\tau} \sum_{x_n \in R_\tau} t_n$$(media sulle varie previsioni della partizione)
+- Chiama la **partizione** corrispondente a ogni foglia $R_\tau$.
+- La **previsione ottimale** e l'**errore quadratico** in ogni nodo sono: $$y_\tau = \frac{1}{N_\tau} \sum_{x_n \in R_\tau} t_n$$=> media dei target dei punti in quella regione => ($N_{\tau}$ numero di punti nella partizione)
  $$\quad Q_\tau(T) = \sum_{x_n \in R_\tau} (t_n - y_\tau)^2$$
 - Quindi possiamo definire un **criterio di potatura** come: $$C(T) = \sum_{\tau=1}^{|T|} Q_\tau(T) + \lambda |T|$$
-	=> Più salgo in alto nella potatura e più aumento l'errore... ma meno salgo e più modello è complesso!
+	=> Più salgo in alto nella potatura e più **aumento l'errore** (sulla loss)... ma meno salgo e **più modello è complesso!**
 	
 	21
 ---
 **Per problemi di classificazione**
 
-- Se abbiamo un problema di **classificazione**, dobbiamo ==solo cambiare l'errore.==
+- Se abbiamo un problema di **classificazione**, dobbiamo ==solo cambiare l'errore.== => passo a probabilità di appartenere a determinate classi (magari logaritmiche)
 - Definisci $p_{\tau k}$ come la **proporzione** di campioni di classe $k$ al nodo $\tau$. => si usano le probabilità sulle classi => considero diversi pruning...
-- Per esempio l'**entropia incrociata negativa**: (**cross entrop**y) $$Q_\tau(T) = \sum_{k=1}^K p_{\tau k} \ln p_{\tau k}$$
-- O l'indice di Gini: $$Q_\tau(T) = \sum_{k=1}^K p_{\tau k}(1 - p_{\tau k})$$
+-
+- Per esempio **negative cross entropy**: $$Q_\tau(T) = \sum_{k=1}^K p_{\tau k} \ln p_{\tau k}$$ => guardo il numero di classi K
+
+- O l'**indice di Gini**: $$Q_\tau(T) = \sum_{k=1}^K p_{\tau k}(1 - p_{\tau k})$$ => indici di errore di classificazione...
+
 	22
 ---
 ## Considerazioni Conclusive
@@ -239,7 +253,7 @@ Dopo questa lezione:
 
 - I **modelli ensemble** sono un potente strumento per combinare modelli semplici in modelli migliori.
 - I committee ==riducono il tasso di errore medio== – ma solo se le assunzioni sono valide.
-- Gli alberi sono modelli interpretabili che partizionano lo spazio di input in regioni **omogenee**.
+- Gli alberi sono modelli **interpretabili** che partizionano lo spazio di input in regioni **omogenee**.
 
 	23
 ---
@@ -260,10 +274,10 @@ Dopo questa lezione:
 
 - Abbiamo visto una varietà di metodi per classificazione e regressione.
 - Finora, tutti sono quelli che sono noti come metodi **parametrici**.
-- Questi metodi si concentrano sull'apprendimento stimando i parametri ottimali del modello (in qualche modo).
+- Questi metodi si concentrano sull'apprendimento stimando **i parametri ottimali** del modello (in qualche modo).
 - Il modello risultante è tipicamente semplice (almeno finora):$$f(\mathbf{x}; \mathbf{w}, b) = \mathbf{w}^T x + b$$
 - Una caratteristica di queste tecniche è che la "conoscenza" appresa dai dati è **completamente incapsulata** nei parametri.
-- Questo è a volte chiamato collo di bottiglia e può aiutare la generalizzazione.
+- Questo è a volte chiamato collo di bottiglia e può aiutare la **generalizzazione**.
 
 	2
 ---
@@ -271,8 +285,9 @@ Dopo questa lezione:
 
 Dopo questa lezione:
 - Comprenderete ==come valutare le prestazioni di un classificatore.==
+
 - Comprenderete le basi degli stimatori di densità kernel e come usarli per modellare funzioni di densità di probabilità.
-- Comprenderete come l'approccio della stima di densità kernel può essere applicato a problemi di regressione (es. Nadaraya-Watson).
+- Comprenderete come l'approccio della stima di densità kernel può essere applicato a problemi di **regressione** (es. Nadaraya-Watson).
 - Comprenderete come funziona l'algoritmo **Nearest-neighbor** in teoria e in pratica.
 
 	3
@@ -283,7 +298,9 @@ Dopo questa lezione:
 
 - Come misuriamo le prestazioni dei classificatori addestrati?
 - Se hai un problema di classificazione **bilanciato** (come la maggior parte che vedremo nei laboratori), usa l'accuratezza del classificatore:$$accuracy = \frac{\# \text{ campioni di test classificati correttamente}}{\# \text{ campioni di test}}$$
-- Perché questa potrebbe essere una metrica cattiva se il problema è **sbilanciato**? => che  succede ad esempio nel caso di face-detection => _sliding window_ => muovo la window sulla mia immagine => brute-force approach => un sacco di window, inoltre posso anche cambiare le dimensioni della mia finestra... Come valutare il mio classificatore ? se uso questa accuracy => questa rimmarrà principalmente a zero!! => ho pochi casi in cui vedo facce! rispetto ai casi in cui non le vedo... => problema sbilanciato verso casi in cui non trovo immagine.
+- Perché questa potrebbe essere una metrica cattiva se il problema è **sbilanciato**?
+	=> che  succede ad esempio nel caso di **face-detection** => _sliding window_ => muovo la window sulla mia immagine => brute-force approach => un sacco di window, inoltre posso anche cambiare le dimensioni della mia finestra...
+	=> Come valutare il mio classificatore ? se uso questa accuracy => questa rimmarrà principalmente a zero!! => **ho pochi casi in cui vedo facce**! (casi di classificazione corretta) rispetto ai casi in cui non le vedo... => problema sbilanciato verso casi in cui non trovo immagine.
 
 	4
 ---
@@ -300,14 +317,13 @@ Dopo questa lezione:
 
 - Iniziamo sezionando le classificazioni: (metriche utili solo nel caso di classificazione binaria => si fa tutto rispetto ad una delle due classi) 	
   - **Veri positivi** (TP): abbiamo predetto sì, e il campione appartiene alla classe.
-  - **Veri negativi** (TN): abbiamo predetto no, e il campione non appartiene alla classe.
   - **Falsi positivi** (FP): abbiamo predetto sì, ma il campione non appartiene alla classe – anche noto come errore di Tipo I.
+  - **Veri negativi** (TN): abbiamo predetto no, e il campione **non appartiene** alla classe.
   - **Falsi negativi** (FN): abbiamo predetto no, ==ma il campione appartiene alla classe== – anche noto come errore di Tipo II.
 
-- Possiamo allora definire alcune metriche utili per problemi sbilanciati: $$\text{Precisione}(c) = \frac{\text{TP}}{\text{TP} + \text{FP}}$$ => per tutti i casi in cui classifico **per la classe positiva** => quanto sono preciso
-$$\text{Recall}(c) = \frac{\text{TP}}{\text{TP} + \text{FN}}$$=> di tutti i casi in cui classifico correttamente quanto fanno parte della classe positiva? => ovvero fra tutti i casi che appartengono alla classe quanti ne classifico bene?
-$$\text{F1}(c) = 2\frac{\text{Precisione}(c) * \text{Recall}(c)}{\text{Precisione}(c) + \text{Recall}(c)}$$ => notare il parametro c...
-
+- Possiamo allora definire alcune metriche utili per problemi sbilanciati: $$\text{Precisione}(c) = \frac{\text{TP}}{\text{TP} + \text{FP}}$$ => per tutti i casi in cui classifico **per la classe positiva** => guardo quanto sono preciso => quanti di quelli positivi lo sono veramente
+$$\text{Recall}(c) = \frac{\text{TP}}{\text{TP} + \text{FN}}$$ => ovvero fra tutti i casi che appartengono ad una certa classe... quanti ne classifico correttamente?
+ $$\text{F1}(c) = 2\frac{\text{Precisione}(c) * \text{Recall}(c)}{\text{Precisione}(c) + \text{Recall}(c)}$$ => notare il parametro c... Media fra precision e recall
 	
 	6
 ---
@@ -320,22 +336,27 @@ $$\text{F1}(c) = 2\frac{\text{Precisione}(c) * \text{Recall}(c)}{\text{Precision
 
 - Caso di esempio:
 	![[Pasted image 20251204114020.png]]
+	=> più si va avanti con la soglia e più ricopro tutti i casi per il recall!
 
 + Sketch => una volta ordinati i dati si considera diversi treshold e guardo se rispetto alle mio classificazioni effettivamente rispetto o meno le classi... precision che mi dice appunto quanti di tutti i classificati **positivamente** ne sono classificati **correttamente**
-	=> Recall invece quanti di una certa classe sono classificati correttamente?
 
 + Di solito precision-recall curve definita su tutti i punti => ad ogni punto di recall posso ottenere la precision => posso scegliere il mio treshold cercando di ottimizzare il tradeoff fra precision e recall
 	=> una buona metrica è quindi l'area sotto la curva (AUC) => dove la migliore è quella con precision sempre a 1 fino a recall a 1 => max l'area...
 
-+Altro esempio è la ROC curve dopo a seconda del numero di false positive ottengo i true positive...
-
++Altro esempio è la ROC curve dove a seconda del numero di false positive ottengo i true positive... (riguardare)
 
 	7
 ---
 **Valutare i Classificatori: Analisi**
 
-- La metrica di valutazione da usare è di solito chiara dato il tipo di problema (classificazione, regressione, *retrieval*) e la **distribuzione dei dati** di training (bilanciata, sbilanciata).
-- Ottenere una stima affidabile di un classificatore può essere complicato in quanto chiaramente dipende dalla tua divisione train/test.
+- La **metrica di valutazione** da usare è di solito chiara dato:
+	-  il tipo di problema:
+		- classificazione
+		- regressione
+		- *retrieval*
+	- e la **distribuzione dei dati** di training => **bilanciata**, sbilanciata.
+
+- Ottenere una stima affidabile di un classificatore può essere complicato in quanto chiaramente ==dipende dalla tua divisione train/test==.
 - Questo diventa il problema centrale quando si esegue la selezione del modello tramite **cross-validation**.
 - In sklearn: sklearn.metrics
 
@@ -348,10 +369,11 @@ $$\text{F1}(c) = 2\frac{\text{Precisione}(c) * \text{Recall}(c)}{\text{Precision
 
 - I modelli probabilistici che abbiamo studiato finora sono basati su modelli **parametrici**.
 - Stimiamo **un piccolo numero di parametri** di distribuzione (es. media e covarianza di Gaussiane in bayes).
-- Una tale **assunzione a priori di una forma distributiva** è una limitazione di questi approcci. =>  nella realtà dati multimodali? => ovvero diverse medie => moda e media non coincidono
+- Una tale **assunzione a priori di una forma distributiva** è una limitazione di questi approcci. 
+	=>  nella realtà dati multimodali? => ovvero diverse medie => moda e media non coincidono
 - Specialmente quando queste ==assunzioni risultano inaccurate==.
 
-- Idea: possiamo fare a meno dell'assunzione parametrica, e lasciare semplicemente che i dati parlino da soli?
+- Idea: possiamo fare a meno dell'**assunzione parametrica**, e lasciare semplicemente che i dati parlino da soli?
 
 	9
 ---
@@ -359,29 +381,31 @@ $$\text{F1}(c) = 2\frac{\text{Precisione}(c) * \text{Recall}(c)}{\text{Precision
 
 - Un istogramma partiziona il **dominio** in **bin** di larghezza fissa.
 - Contiamo poi il ==numero di osservazioni che cadono in ogni bin== discreto.
+
 - Possiamo trasformare questa rappresentazione in una **densità di probabilità** dividendo per il **numero totale di osservazioni** $N$ e la **larghezza** del bin $\Delta_i$: $$p_i = \frac{n_i}{N\Delta_i}$$
-- Questo produce una densità $p(x)$ che è costante sulla larghezza di ogni bin (di solito $\Delta_i = \Delta$). => integrandola su tutti i bin si riottene 1 (+sketch) $$\int p(\mathbf{x})dx = 1$$ => funzione piece-wise constant => discontinua
+- Questo produce una densità $p(x)$ che è costante sulla larghezza di ogni bin (di solito $\Delta_i = \Delta$). => integrandola su tutti i bin si riottene 1 $$\int p(\mathbf{x})dx = 1$$ => funzione *piece-wise constant* => discontinua => o continua a tratti
 	![[Pasted image 20251204120954.png]]
 
 	10
 ---
 **Istogrammi: stimatori di densità costanti a tratti**
 
-- Questo dà uno **stimatore di densità** con un singolo *iperparametro*: => l'unico iperparamentro è dunque la larghezza dei bins
+- Questo dà uno **stimatore di densità** con un singolo *iperparametro*: => l'unico iperparamentro è dunque **la larghezza dei bins**
 
 	![[Pasted image 20251105224554.png]] 
 	=> in verde la **true density** => dove i dati sono campionati
 	=> La scelta migliore sembra essere la seconda... il primo e il secondo per $\Delta$ rispettivamente troppo piccoli o troppo grandi.
 		
-
 	11
 ---
 **Istogrammi: stimatori di densità costanti a tratti**
 
-- La selezione di $\Delta$ è **critica** – troppo piccolo e lo stimatore ha alta **varianza**. => troppo dipendente da questo!
-- Troppo grande e la curva è troppo liscia. => histogram ha smoothing effect
+- La selezione di $\Delta$ è **critica** – troppo **piccolo** e lo stimatore ha alta **varianza**. => troppo dipendente da questo!
+- Troppo **grande** e la curva è troppo liscia. => histogram ha smoothing effect
+
 - Il modello è **discontinuo ai bordi** dei bin. => rischio di perdere particolari mode...
-- I dati non sono necessari al tempo di test (vantaggio => **guardo i bins piuttosto** che tutti i dati), ma gli istogrammi scalano molto male con la dimensione ($M^D$). => si ritorna a curse of dimensionality! 
+
+- I dati non sono necessari al tempo di test (vantaggio => **guardo i bins piuttosto** che tutti i dati), ma gli istogrammi scalano molto male con la dimensione ($M^D$). => si ritorna a curse of dimensionality! => di quanti bins ho bisogno per coprire tutti i dati?
 
 	![[Pasted image 20251105224554.png]]
 
@@ -390,8 +414,11 @@ $$\text{F1}(c) = 2\frac{\text{Precisione}(c) * \text{Recall}(c)}{\text{Precision
 **Istogrammi: stimatori di densità costanti a tratti**
 
 - Nonostante le loro limitazioni, gli istogrammi ci dicono qualcosa di importante sulla **stima della densità**.
-- Per stimare la densità in un punto $x$ nel dominio, dovremmo ==guardare i punti dati che giacciono vicino== a $x$.
-- Questo uso della località assume che abbiamo una **metrica di distanza** significativa nel dominio (es. Euclidea). => $||\mathbf{x}  - \mathbf{y}||$ => che succede però se una dimensione ha una scala molto più grande rispetto all'altra? vince sempre quella con scala più grande! => la distanza sarà sempre più piccola in questo caso (anisotropic?) => importante scalare i dati
+	=>Per stimare la densità in un punto $x$ nel dominio, dovremmo ==guardare i punti dati che giacciono vicino== a $x$. => entro quale distanza considero i punti dentro ad un bin?
+	
+- Questo uso della località assume che abbiamo una **metrica di distanza** significativa nel dominio (es. Euclidea). => $||\mathbf{x}  - \mathbf{y}||$ 
+	=> che succede però se una dimensione ha una **scala** molto più grande rispetto all'altra? vince sempre quella con scala più grande! => la distanza sarà sempre più piccola in questo caso (anisotropic?) => **importante scalare i dati**
+	
 - Diamo un'occhiata ad alcuni metodi **nonparametrici** comuni usati in Machine Learning.
 
 	13
@@ -406,10 +433,9 @@ $$\text{F1}(c) = 2\frac{\text{Precisione}(c) * \text{Recall}(c)}{\text{Precision
 - Per motivare come possiamo estendere la nostra idea dell'istogramma a uno stimatore puramente locale, dobbiamo considerare la distribuzione binomiale.
 - La **distribuzione binomiale** rappresenta la probabilità di vedere $m$ **successi** in una sequenza di $N$ **prove** di Bernoulli:$$\text{Bin}(m|N, \mu) = \binom{N}{m} \mu^m (1 - \mu)^{(N - m)}$$ => $\mu$ è la **likelihood** dei successi => $m$ sono il numero di successi e $N$ le prove
 $$\mathbb{E}(m) = \sum_{m=0}^{N} m \text{Bin}(m|N, \mu) = N\mu$$
-
 	14
 ---
-Una digressione binomiale
+**Una digressione binomiale**
 
 - La binomiale è **unimodale** e in qualche modo simile a una **Gaussiana**:
 
@@ -423,14 +449,17 @@ Una digressione binomiale
 - Simile a un istogramma, consideriamo **una piccola regione** $\mathcal{R}$ attorno a $x$. 
 	![[Pasted image 20251204183412.png]]
 - La **massa di probabilità** (tipo likelihood) associata con $\mathcal{R}$ è$$P = \int_{\mathcal{R}} p(x) dx$$ => probabilità di *cadere* in quella regione
+
 - Se abbiamo $N$ osservazioni estratte da $p(x)$, ognuna ha probabilità $P$ di cadere in $\mathcal{R}$.
-- Quindi, il numero totale di punti $K$ che cadono in $\mathcal{R}$ sarà **distribuito binomialmente**: => per bernoulli (o sono dentro la regione o non ci sono in N test)$$\text{Bin}(K|N, P) = \binom{N}{K} P^K (1 - P)^{(N-K)}$$
+- Quindi, il numero totale di punti $K$ che cadono in $\mathcal{R}$ sarà **distribuito binomialmente**: => per bernoulli 
+	=> o sono dentro la regione o non ci sono su N test => se è nella regione (K casi) ci sono con probabilità (di successo) $P$ $$\text{Bin}(K|N, P) = \binom{N}{K} P^K (1 - P)^{(N-K)}$$
 	16
 ---
 **Generalizzando**
 
-- Usando le formule per media e varianza della Binomiale possiamo analizzare la frazione di punti che cadono in $R$: (K out of N)$$\mathbb{E}(K/N) = P$$ $$\text{var}(K/N) = \frac{P(1-P)}{N}$$
-- Per $N$ **grande** questa distribuzione sarà **concentrata** attorno a $P$ e quindi:$$K \approx NP$$ => varianza che diventa sempre più stretta(sketch)... il numero dei punti diventa quindi N per il ==numero di punti che ci aspettiamo cadano nella regione!== 
+- Usando le formule per **media** e **varianza** della Binomiale possiamo analizzare la frazione di punti che cadono in $R$: (K out of N)$$\mathbb{E}(K/N) = P$$ $$\text{var}(K/N) = \frac{P(1-P)}{N}$$
+- Per $N$ **grande** questa distribuzione sarà **concentrata** attorno a $P$ e quindi:$$K \approx NP$$ => varianza che diventa sempre più stretta![[Pasted image 20251213183407.png]]
+  => il numero dei punti (che cadono) diventa quindi N per il ==numero di punti che ci aspettiamo cadano nella regione!== 
 
 	17
 ---
@@ -438,7 +467,8 @@ Una digressione binomiale
 
 - Per $N$ grande questa distribuzione sarà **concentrata** attorno a $P$ e quindi:$$K \approx NP$$
 - D'altra parte, possiamo assumere $R$ con volume $V$ sia sufficientemente piccolo (e quindi $p(x)$ è **costante**) e quindi: $$P \approx p(x)V$$ => la prob diventa costante!
-- Portandoci a: $$p(x) \approx \frac{K}{NV}$$ => numero di punti che cadono nella regione fratto numero di tentativi e il volume => tipo stesso caso degli istogrammi! => al posto dei rettangoli ho dei volumi => cambia solo il $\Delta_i$ 
+
+- Portandoci a: $$p(x) \approx \frac{K}{NV}$$ => numero di **punti che cadono** nella regione fratto **numero di tentativi** e il **volume** => tipo stesso caso degli istogrammi! => al posto dei rettangoli ho dei volumi => cambia solo il $\Delta_i$ 
 
 	18
 ---
@@ -462,17 +492,18 @@ Una digressione binomiale
 1 & \text{se } |u_i| \leq 1/2, \text{ per } i = 1, \ldots, D \\
 0 & \text{altrimenti}
 \end{cases}$$
-- Quindi, per qualsiasi punto $\mathbf{x}$, $$k((x - x_n)/h) = 1$$ se il punto $x_n$ giace dentro un ipercubo con dimensione $h$ centrato su $x$.
+- Quindi, per qualsiasi punto $\mathbf{x}$, $$k((x - x_n)/h) = 1$$ se il punto $x_n$ giace dentro un ipercubo con **dimensione** $h$ **centrato** su $x$.
 	![[Pasted image 20251204184638.png]] 
 	=> si può traslare (con il centro x) e scalare (di h) il nostro ipercubo a piacimento per qualsiasi punto nello spazio => tipo standard *gaussian distribution* ma nel caso discreto.
 	
-- Il numero totale di punti $K$ che **giacciono** in tale ipercubo attorno a $x$ è allora: $$K = \sum_{n=1}^{N} k \left( \frac{x - x_n}{h} \right)$$ => si sommano sul kernel!
+- Il numero totale di punti $K$ che **giacciono** in tale ipercubo attorno a $x$ è allora: $$K = \sum_{n=1}^{N} k \left( \frac{x - x_n}{h} \right)$$ => si sommano sul kernel! => rimanendo a distanza $h$ e centrato in $x_n$
 
 	20
 ---
 **Kernel Density Estimation**
 
 - Tornando alla nostra equazione per $p(x)$, abbiamo: $$p(x) = \frac{K}{NV} = \frac{1}{N} \sum_{n=1}^{N} \frac{1}{h^D} k \left( \frac{x - x_n}{h} \right)$$ => purely local version di un istogramma 
+
 - Questo soffre ancora di ==discontinuità ai bordi dell'ipercubo==
 	![[Pasted image 20251204190657.png]] 
 	=> dovuto al modo in cui abbiamo definito il kernel,
@@ -486,10 +517,12 @@ Una digressione binomiale
 ---
 **Kernel Density Estimation**
 
-- Questo è chiamato *Kernel Density Estimator* (o di Parzen).
+- Questo è chiamato *Kernel Density Estimator* (o di Parzen). => dunque kernel gaussiano
 - L'iperparametro $h$ è chiamato **bandwidth** del kernel che controlla ==la quantità di smoothing che viene eseguita.==
+
 - Le funzioni kernel dovrebbero soddisfare:  $$k(u) \geq 0, \, \int uk(u)du = 0, \, \text{e} \, \int k(u)du = 1$$ (kernel simmetrico => media a zero, positivo e la somma deve fare 1)
- - Questi tipi di approcci sono spesso chiamati metodi locali perché per stimare $p(x)$ guardano i ==dati vicini== a $x$.
+
+ - Questi tipi di approcci sono spesso chiamati **metodi locali** perché per stimare $p(x)$ guardano i ==dati vicini== a $x$.
 
 	22
 ---
@@ -497,7 +530,7 @@ Una digressione binomiale
 
 ![[Pasted image 20251105225455.png]] 
 
-=> a seconda del bandwith scelto ottengo diversi casi => scegliere h molto stretto può capitare nell'avere tante piccole gaussiane in tutti i punti e niente intorno!
+=> a seconda del bandwith scelto ottengo diversi casi => scegliere h molto stretto può capitare nell'avere tante piccole gaussiane in tutti i punti e niente intorno! => stimatore prende pochi punti! => curva più spigolosa...
 
 + Altro grosso problema... => devo fare la somma ==su tutti i punti del mio dataset==!! => problema che scala male!
 
@@ -509,14 +542,14 @@ Una digressione binomiale
 **Località in x e y**
 
 - Possiamo applicare questo tipo di metodo locale a **problemi di regressione.**
-- Ricordiamo che un predittore ottimale per la regressione è: $$\mathbb{E}(t | \mathbf{x}) = \int t p(t | \mathbf{x}) dt = \int t \frac{p(\mathbf{x}, t)}{p(\mathbf{x})} dt$$
+- Ricordiamo che un predittore **ottimale** per la regressione è: $$\mathbb{E}(t | \mathbf{x}) = \int t p(t | \mathbf{x}) dt = \int t \frac{p(\mathbf{x}, t)}{p(\mathbf{x})} dt$$
 - ==Ora usiamo le Kernel Density Estimates come approssimazioni==: (tolgo l'h a scalare ma c'è)$$\hat{p}(\mathbf{x}, t) = \frac{1}{N} \sum_{n=1}^{N} k_h (\mathbf{x} - \mathbf{x}_n) k_h (t - t_n)$$ => faccio la joint probability **di due gaussiane** anche con bandwith diverso (a seconda dello scale dei dati => target vs features) $$\hat{p}(\mathbf{x}) = \frac{1}{N} \sum_{n=1}^{N} k_h (\mathbf{x} - \mathbf{x}_n)$$
 	24
 ---
 **Nadaraya-Watson: regressione localmente pesata**
 
-- La nostra approssimazione dello stimatore ottimale è ora: $$\mathbb{E}(t \mid x) = \int t \frac{p(x, t)}{p(x)} dt$$$$= \int t \frac{1}{N} \sum_{n=1}^{N} \frac{k_h (x - x_n) k_h (t - t_n)}{p(x)} d t$$ma solo una parte dipende da t!$$= \frac{\sum_{n=1}^{N} k_h (x - x_n) \int t k_h (t - t_n) d t}{\sum_{n=1}^{N} k_h (x - x_n)}$$ riottengo l'expected value del kernel di $t_n$ $$= \frac{\sum_{n=1}^{N} k_h (x - x_n) t_n}{\sum_{n=1}^{N} k_h (x - x_n)}$$ => quanto contribuisce un punto $x_n$ => me lo dice appunto il kernel!  ![[Pasted image 20251205183116.png]]
-	=> kernel mi dice appunto il suo peso!
+- La nostra approssimazione dello stimatore ottimale è ora: $$\mathbb{E}(t \mid x) = \int t \frac{p(x, t)}{p(x)} dt$$$$= \int t \frac{1}{N} \sum_{n=1}^{N} \frac{k_h (x - x_n) k_h (t - t_n)}{p(x)} d t$$ma solo una parte dipende da t!$$= \frac{\sum_{n=1}^{N} k_h (x - x_n) \int t k_h (t - t_n) d t}{\sum_{n=1}^{N} k_h (x - x_n)}$$ riottengo l'expected value del kernel di $t_n$ $$= \frac{\sum_{n=1}^{N} k_h (x - x_n) t_n}{\sum_{n=1}^{N} k_h (x - x_n)}$$ => guardo quanto contribuisce un punto $x_n$ => me lo dice appunto il kernel!  ![[Pasted image 20251205183116.png]]
+	=> ho una media pesata dei $t_n$ dove i pesi sono dati dalla vicinanza di $x_n$ al campione x considerato => per tutti i punti *interpola pesando i vicini*
 
 	25
 ---
@@ -532,9 +565,10 @@ Una digressione binomiale
 **Il problema di $h$**
 
 - Un problema con la Kernel Density Estimation è che il bandwidth $h$ è **fissato per tutti i kernel**.
-- Se abbiamo parti dello spazio ==con molti campioni==, questo può portare a oversmoothing e perdita di dettaglio se $h$ è troppo grande!
+- Se abbiamo parti dello spazio ==con molti campioni==, questo può portare a oversmoothing e **perdita di dettaglio** se $h$ è troppo grande!
 - Se riduciamo $h$, in regioni a bassa **densità** avremo **stime rumorose**.
-- E se, invece di fissare $V$ (tramite il bandwidth) e derivare un'espressione per $K$, fissassimo $K$ e andassimo nella direzione opposta. => scelgo il miglior bandwith per i miei dati!
+
+- E se, invece di fissare $V$ (tramite il bandwidth) e derivare un'espressione per $K$, fissassimo $K$ e andassimo nella direzione opposta. => scelgo il miglior bandwith per i miei dati! => non lo tengo fisso!
 
 	27
 ---
@@ -543,7 +577,7 @@ Una digressione binomiale
 - L'approccio K-Nearest Neighbors è **algoritmico**: (parto da un certo numero di punti e vedo performance...)
   - Fissiamo $K$ e consideriamo una *ipersfera* attorno a un punto $\mathbf{x}$ dove vogliamo stimare $p(\mathbf{x})$.
   - Aumentiamo poi il raggio di questa ipersfera fino a quando ==esattamente $K$ punti dal training set sono dentro di essa.==
-  - Calcoliamo poi $p(\mathbf{x}) = \frac{K}{NV}$ per $V$ uguale al volume dell'**ipersfera** risultante.
+  - Calcoliamo poi $p(\mathbf{x}) = \frac{K}{NV}$ per $V$ uguale al volume dell'**ipersfera** **risultante**.
 
 	28
 ---
@@ -560,10 +594,10 @@ Una digressione binomiale
 - L'approccio K-Nearest Neighbors (KNN) è un metodo molto conveniente **per la classificazione**, tuttavia.
 - Intuitivamente, facciamo una stima di densità KNN per ogni **densità condizionata** alla classe, e poi ==applichiamo la Regola di Bayes==.
 
-- Supponiamo di avere $N_k$ esempi da ogni classe $k$ (quindi $\sum_{k} N_k = N$).
+- Supponiamo di avere $N_k$ **esempi da ogni classe** $k$ (quindi $\sum_{k} N_k = N$).
 - Per classificare un nuovo punto $x$ facciamo il trucco dell'ipersfera assumendo che il volume necessario attorno a $x$ per includere $K$ punti sia $V_x$.
 
-- Se in questa ipersfera abbiamo $K_k$ punti dalla classe $k$: $$p(x | C_k) = \frac{K_k}{N_k V_x}$$ conto i punti di una certa classe e divido per un fattore costante
+- Se in questa ipersfera abbiamo $K_k$ punti dalla classe $k$: $$p(x | C_k) = \frac{K_k}{N_k V_x}$$ conto i punti di una certa classe e divido per un **fattore costante**
 
 - La **densità marginale** e i prior di classe sono similmente stimati:$$p(x) = \frac{K}{N V_x} \quad p(C_k) = \frac{N_k}{N}$$ => ho tutti gli strumenti per ottenere una posterior!
 
@@ -573,9 +607,10 @@ K-Nearest Neighbors Classification
 
 - Entra Bayes:$$p(C_k | x) = \frac{p(x | C_k) p(C_k)}{p(x)} = \frac{K_k}{K}$$ => ovvero numero di vicini alla classe K/numero totale dei vicini ()
 
-	![[Pasted image 20251105230403.png]] (esempio con K = 3)
-	=> ogni classe prende un "voto" a seconda del kernel scelto  => vedo che voto migliore ottengo a seconda delle classi per ogni input => e in base a quello classifico!
-	=> ottengo anche un classificatore non lineare! => è un classificatore bayes optimal nel limite di infiniti dati
+	![[Pasted image 20251105230403.png]] 
+	(esempio con K = 3)
+	=> ogni classe prende un "voto" a seconda del kernel scelto  => ==vedo che voto migliore ottengo a seconda delle classi per ogni input== => e in base a quello classifico!
+	=> ottengo anche un classificatore **non lineare**! => è un classificatore bayes optimal nel limite di infiniti dati
 
 	31
 ---
@@ -598,7 +633,7 @@ K-Nearest Neighbors Classification
 - Questi metodi hanno belle proprietà di convergenza (es. K-Nearest Neighbors è **quasi-ottimale** per $K = 1$ quando $N \to \infty$).
 - Questi metodi tuttavia hanno un enorme svantaggio pratico?
 
-- *L'ha visto qualcuno già?*
+- *L'ha visto qualcuno già?* => si devono considerare tutti gli esempi!!
 
 	32
 ---
@@ -721,9 +756,10 @@ def f(x, W1, b1, W2, b2):
 - Se generalizziamo questo a $D$ unità nascoste: $$h_d = \sigma[\theta_{d0} + \theta_{d1}x] \text{ per } d \in \{1, \ldots, D\}$$
 - E le combiniamo nello stesso modo: $$y = \phi_0 + \sum_{d=1}^{D}\phi_d h_d$$ => caso di D unità nascoste
 
-- Il **numero di unità nascoste** in una rete shallow è una **misura della capacità della rete.** => quante piecewise region functions posso creare! => sostanzialmente creo dei pezzettini che mi approssimano la funzione a seconda delle **hidden units usate** ![[Pasted image 20251206233646.png]] 
+- Il **numero di unità nascoste** in una rete shallow è una **misura della capacità della rete.** => quante piecewise region functions posso creare! => sostanzialmente creo dei pezzettini che mi approssimano la funzione a seconda delle **hidden units usate** 
+	![[Pasted image 20251206233646.png]] 
 - Anche se come visto prima non funziona per tutti ma varia a seconda dei parametri di quanti neuroni mi rimangono attivi.
-- Con capacità sufficiente, ==una rete shallow può descrivere qualsiasi funzione continua== 1D definita su un sottoinsieme compatto della retta reale **con precisione arbitraria**.
+- Con capacità sufficiente, ==una rete shallow (ovvero una rete con un solo hidden layer) può descrivere qualsiasi funzione continua== 1D definita su un sottoinsieme compatto della retta reale **con precisione arbitraria**.
 
 	8
 ---
@@ -742,6 +778,7 @@ def f(x, W1, b1, W2, b2):
 	=> torno comunque ad output lineari!
 
 - Di solito pensiamo in termini di figure più semplice sulla destra
+
 - Importante: Il teorema di approssimazione Universale dice che esiste una rete **con un singolo hidden layer** per qualche D unità nascoste che ==approssima qualsiasi funzione continua $f$ per ogni precisione desiderata== => un singolo hidden layer - D unità nascoste (abbastanza unità) => approx qualsiasi funzione f (continua) con precisione arbitraria
 
 	10
@@ -810,6 +847,8 @@ def f(x, W1, b1, W2, b2):
 - Successivamente, calcoliamo le derivate di $\ell_i$ rispetto alle quantità intermedie **in ordine inverso**:  $$\frac{\partial \ell_i}{\partial f_3}, \quad \frac{\partial \ell_i}{\partial h_3}, \quad \frac{\partial \ell_i}{\partial f_2}, \quad \frac{\partial \ell_i}{\partial h_2}, \quad \frac{\partial \ell_i}{\partial f_1}, \quad \frac{\partial \ell_i}{\partial h_1}, \quad \text{e} \quad \frac{\partial \ell_i}{\partial f_0}$$
 - La prima di queste è semplice:$$\frac{\partial \ell_i}{\partial f_3} = 2(f_3 - y)$$
 - Lavorando all'indietro, la seconda può essere calcolata usando la regola della catena: $$\frac{\partial \ell_i}{\partial h_3} = \frac{\partial f_3}{\partial h_3} \frac{\partial \ell_i}{\partial f_3}$$ => ma la prima di queste l'ho già calcolata! (parte a destra)
+
+	15
 ---
 **BACKWARD: Intuizione**
 
@@ -822,6 +861,7 @@ def f(x, W1, b1, W2, b2):
 - Otteniamo una **catena di eventi**: $h_3$ cambia $f_3$, che cambia $\ell_i$, e le derivate rappresentano gli effetti di questa catena.
 - Nota che abbiamo già calcolato $f_3$ e la prima di queste derivate $2(f_3 - y)$.
 
+	16
 ---
 **BACKWARD: Continuiamo semplicemente**
 
@@ -852,7 +892,7 @@ def f(x, W1, b1, W2, b2):
 - Passo 2: Propaga all'indietro i gradienti delle attivazioni intermedie.
 	![[Pasted image 20251118095144.png]]
 
-- Passo 3: Calcola le derivate parziali finali. (ovvero secondo bias e pesi)
+- Passo 3: Calcola le derivate parziali finali. (ovvero secondo **bias e pesi**)
 	![[Pasted image 20251118095200.png]]
 
  => derivata rispetto al bias... è 1!! (la funzione non dipende dal bias finale) => avrò sempre prodotti di qualcosa che abbiamo già e derivata parziale rispetto al parametro considerato! => che appunto nel caso lineare abbiamo bisogno di queste nel forward activation, mentre per i bias no siccome la loro derivata è 1
@@ -907,7 +947,7 @@ def f(x, W1, b1, W2, b2):
 **Riflessioni: Discesa Stocastica del Gradiente (continua)**
 
 - Un altro problema: valutare il gradiente ==su esempi singoli porta a passi molto rumorosi nello spazio dei parametri.== 
-- Un trucco per mitigare questo è usare il momentum: ==mantenere una media mobile dei gradienti== (passati) che viene aggiornata lentamente. => smorza oscillazioni e accellera convergenza.
+- Un trucco per mitigare questo è usare il **momentum**: ==mantenere una media mobile dei gradienti== (passati) che viene aggiornata lentamente. => smorza oscillazioni e accellera convergenza.
 - Un'altra soluzione è usare i **mini-batch**: invece di un singolo campione, fare la media dei gradienti ==su un piccolo batch di campioni==.
 - È comune usare una combinazione di mini-batch e momentum per stabilizzare l'addestramento.
 
@@ -939,7 +979,7 @@ def f(x, W1, b1, W2, b2):
 
 - Questo lavoro diede il via a una nuova fase della ricerca sulle reti neurali: per la prima volta, era *pratico addestrare reti con strati nascosti*.
 
-- I progressi si bloccarono a causa (in retrospettiva) dell**a mancanza di dati di addestramento**, della **potenza computazionale limitata** e dell'uso di attivazioni sigmoide.
+- I progressi si bloccarono a causa (in retrospettiva) dell**a mancanza di dati di addestramento**, della **potenza computazionale limitata** e dell'uso di attivazioni **sigmoide**.
 
 - Applicazioni come NLP e Computer Vision non si basarono su modelli di reti neurali fino ai notevoli risultati di classificazione delle immagini di Krizhevsky et al. (2012).
 
@@ -951,7 +991,7 @@ def f(x, W1, b1, W2, b2):
 - Le difficoltà nell'addestrare le reti (anche quelle con un solo strato nascosto) ne impedirono l'uso e lo sviluppo diffusi.
 - Esse rappresentano, tuttavia, una famiglia estremamente potente di funzioni che possiamo usare per modellare mappature complesse e non lineari dall'input all'output.
 - Addestrarle richiede ancora una delicata combinazione di arte, background matematico e molta pazienza.
-- La scoperta dell'algoritmo di backpropagation fu una pietra miliare importante, e per usare (e debugare) efficacemente i loop di addestramento, è essenziale sapere come funziona.
+- La scoperta dell'algoritmo di **backpropagation** fu una pietra miliare importante, e per usare (e debuggare) efficacemente i loop di addestramento, è essenziale sapere come funziona.
 
 	26
 ---
@@ -960,7 +1000,7 @@ def f(x, W1, b1, W2, b2):
 - Nella prossima lezione esamineremo alcune diverse architetture per le Reti Neurali Profonde (Deep Neural Networks).
 - Nello specifico, vedremo come le Reti Neurali Convoluzionali (CNNs) possono essere usate per processare efficientemente i dati immagine.
 - E vedremo come le CNNs sono in realtà solo Multilayer Perceptrons travestiti.
-- Esamineremo anche più da vicino alcune delle insidie nell'addestrare reti profonde, e il bagaglio di trucchi che usiamo per evitarle (o per uscirne).
+- Esamineremo anche più da vicino alcune delle insidie nell'addestrare reti profonde, e il **bagaglio di trucchi** che usiamo per evitarle (o per uscirne).
 
 	27
 ---
@@ -987,7 +1027,7 @@ def f(x, W1, b1, W2, b2):
 	=> Da immagini a features => estraggo appunto le features andando a vedere i bordi, o in altri modi
 	=> Costruisco quindi il modello tramite le features (Scale Invariant feature transform => estrae keypoints locali e descrittori di un immagine) e a quel punto lo valuto! => sift usato di più per matching di parti d'immagine...
 
-+ Di base le immagino sono in RGB ma potremmo pensare anche ad altri formati che possono aiutare con l'object detection!
++ Di base le immagini sono in RGB ma potremmo pensare anche ad altri formati che possono aiutare con l'**object detection**!
 - Come modello scegliamo uno che sia scalabile con i dati => la scelta di questo ed altri parametri rimangono comunque a carico dell'umano => sia nella scelta delle immagini, che sulle features da estrarre e quindi la scelta del modello...
 
 	14
@@ -1024,7 +1064,7 @@ def f(x, W1, b1, W2, b2):
 - Oppure fragole rosse ma non ci sono pixel rossi nell'immagine
 	![[Pasted image 20251208163302.png]]
 
-	=> Il punto è che anche gli umani fanno errori di interpretazione visiva => come rendere dunque queste interpretazione delle immagini robuste e interpretabili da umani?
+	=> Il punto è che anche gli umani fanno errori di interpretazione visiva (sensory gap) => come rendere dunque queste interpretazione delle immagini robuste e interpretabili da umani?
 	
 	17-18-19
 ---
@@ -1047,7 +1087,7 @@ def f(x, W1, b1, W2, b2):
 **Contesto storico: Questo era un "gatto"**
 
 ![[Pasted image 20251125145819.png]] 
-=> Sostanzialmente conto quante volte appare ogni parola visiva nell'immagine => questi saranno vicini ai centri => attorno alle parole visive => ottengo un vettore con valori le frequenze associate alle parole visive...
+=> Sostanzialmente conto quante volte appare ogni parola visiva nell'immagine => questi saranno vicini ai centri => attorno alle parole visive => ottengo un vettore con valori le **frequenze associate** alle parole visive...
 
 	20
 ---
@@ -1057,7 +1097,7 @@ def f(x, W1, b1, W2, b2):
 - Poi le forniamo in input ad una SVM multi-classe.
 
 	![[Pasted image 20251125145850.png]]
-	=> In sostanza l'apprendimento è separato dalla rappresentazione => ovvero come classifico è separato da come trasformo la mia immagine in un vettore numerico => l'apprendimento è fatto solo sui pesi della SVM e non su come ottenere le rappresentazioni => le quali dipendono unicamente dai processi scelti manualmente => tipo algoritmo di feature extraction - numero di clusters... ottenute delle feature "scadenti" queste non saranno migliorate da svm => ma questa può fare solo il meglio con quello che ha!
+	=> In sostanza l'**apprendimento** è separato dalla **rappresentazione** => ovvero come classifico è separato da come trasformo la mia immagine in un vettore numerico => l'apprendimento è fatto solo sui pesi della SVM e non su come ottenere le rappresentazioni => le quali dipendono ==unicamente dai processi scelti manualmente== => tipo algoritmo di feature extraction - numero di clusters... ottenute delle feature "scadenti" queste non saranno migliorate da svm => ma questa può fare solo il meglio con quello che ha!
 
 	21
 ---
@@ -1093,14 +1133,14 @@ Alla fine della lezione dovreste:
 **L'attrattiva dell'apprendimento end-to-end**
 
 - Gli MLP hanno una serie di caratteristiche estremamente attraenti:
-  - È un modello end-to-end: possiamo addestrare tutto nel modello utilizzando un unico algoritmo di ottimizzazione.
+  - È un modello end-to-end: possiamo addestrare **tutto nel modello** utilizzando un unico algoritmo di ottimizzazione.
   - Gli MLP apprendono rappresentazioni dell'input e del classificatore.
 
-- Perché non possiamo semplicemente usare questo modello per i problemi di riconoscimento delle immagini?
+- Perché non possiamo semplicemente usare questo modello per i problemi di **riconoscimento** delle immagini?
 - Un MLP dovrebbe essere in grado di apprendere rappresentazioni di caratteristiche che a loro volta sono buone rappresentazioni per la classificazione.
 - Perché questo è problematico? 
-	=> lavorerei con immagini 256x256 spesso di 3 canali... ho un esplosione di parametri!! 
-	=> Inoltre vorrei qualcosa che ci dia la **stessa interpretazione** (quando necessario) anche se ho dei **pesi diversi** => invarianza per traslazioni!
+	=> lavorerei con immagini 256x256 spesso di 3 canali... ho un ==esplosione di parametri==!! 
+	=> Inoltre vorrei qualcosa che ci dia la **stessa interpretazione** (quando necessario) anche se ho dei **pesi diversi** => ==invarianza per traslazioni==!
 	
 - NOTA: Il trattamento e molte figure in questa sezione sono tratti dall'eccellente libro *Understanding Deep Learning*, di Simon Prince.
 - Raccomando caldamente questo libro.
@@ -1109,8 +1149,8 @@ Alla fine della lezione dovreste:
 ---
 **Su invarianza ed equivarianza**
 
-- Una funzione $f[x]$ è invariante alla trasformazione $t[x]$ se $f[t[x]] = f[x]$. => output non cambia
-- Una funzione $f[x]$ è equivariante alla trasformazione $t[x]$ se $f[t[x]] = t f[x]$. => output cambia come cambia l'input.
+- Una funzione $f[x]$ è **invariante** alla trasformazione $t[x]$ se $f[t[x]] = f[x]$. => output non cambia
+- Una funzione $f[x]$ è **equivariante** alla trasformazione $t[x]$ se $f[t[x]] = t f[x]$. => output cambia come cambia l'input.
 
 	![[Pasted image 20251125150129.png]]
 	=> Ricerchiamo un classificatore che sia invariante a qualsiasi tipo di trasformazione applicata all'immagine => anche se applico traslazioni alle immagini => cambia semantic segmentation ma deve valere invariance! => "equivariant to traslation" (cnn lo è grazie a conv!)
@@ -1142,7 +1182,7 @@ Alla fine della lezione dovreste:
 - Possiamo calcolare diverse convoluzioni e convolvere diversi input:
 
 	![[Pasted image 20251209110043.png]]
-	=> Notare che vengono fatte due convoluzioni in parallelo con gruppi di pesi diversi => 1 input image => 2 output feature maps!
+	=> Notare che vengono fatte due convoluzioni in **parallelo** con gruppi di pesi diversi => 1 input image => 2 output feature maps! (caso a e b)
 	=> Nel caso c) invece faccio in maniera opposta => ovvero faccio la convoluzione come se fosse un singolo input fatto da **2 canali**! => ottengo un 1 output image (or feature map)
 	=> notare infine viene fatta la ReLU come funzione di attivazione
 
@@ -1151,6 +1191,7 @@ Alla fine della lezione dovreste:
 **Convoluzione a due dimensioni**
 
 - Esattamente la stessa operazione è naturalmente estesa nel caso di due dimensioni: 
+
 	![[Pasted image 20251209111051.png]]
 
 	29
@@ -1177,6 +1218,7 @@ Alla fine della lezione dovreste:
 **Una CNN è davvero un MLP (travestito)**
 
 - Ma quello non sembra affatto un MLP…
+
 	![[Pasted image 20251125150610.png]]
 	=> Eseguo inizialmente  un operazione di flatten => *im2col*  => dove si fa lo slide dell'immagine come convoluzione => ogni patch 2x2 diventa un vettore colonna => da 3 canali a una sola immagine 12x9
 	=> Eseguo un altra convoluzione con kernel 1x12 => il risultato è un vettore colonna 1x9 => al quale viene poi fatta l'operazione inversa di *col2im* per riottenere l'immagine
@@ -1186,13 +1228,13 @@ Alla fine della lezione dovreste:
 **L'ingrediente finale: Layer di Pooling**
 
 - L'**apprendimento di rappresentazioni** funziona creando *un collo di bottiglia semantico*. => il bottleneck sta nel fatto che considerando l'MLP dobbiamo comunque tornare a pochi neuroni/parametri degli ultimi layer...
-- ==Forziamo la rete ad estrarre rappresentazioni significative che catturino caratteristiche semantiche.== => prendiamo solo le poche features che sono importanti per la classificazione => evito anche esplosione del size di rappresentazione... si fa operazione di pooling!
+- ==Forziamo la rete ad estrarre rappresentazioni significative che catturino caratteristiche semantiche.== => prendiamo solo le poche features che sono importanti per la classificazione => evito anche esplosione del size di rappresentazione... si fa operazione di **pooling**!
 
 - Nelle CNN lo facciamo tramite **Sotto-campionamento**(a), **Max Pooling**(b) e **Mean Pooling**(c):
 
 	![[Pasted image 20251125150657.png]]
 	(a) => del subset prendo 1 di quel riquadro => *dialated convolution*
-	(b)/(c) => max/mean pooling => prendo rispettivamente max e media dei subset delle immagini => perdo però condizioni spaziali dei pixel!
+	(b)/(c) => max/mean pooling => prendo rispettivamente max e media dei subset delle immagini => ==perdo però condizioni spaziali dei pixel!==
 	
 - Ora esamineremo alcune architetture CNN reali che renderanno tutto più chiaro.
 
@@ -1309,7 +1351,8 @@ Alla fine della lezione dovreste:
 - Adattare tali modelli richiede enormi quantità di dati di training etichettati.
 
 	![[Pasted image 20251125151847.png]]
-
+	=> L'addestramento end-to-end in sostanza funziona principalmente grazie al fatto che abbiamo un sacco di dati di training etichettati => e dunque funziona su larga scala!
+	
 	42
 ---
 
@@ -1459,9 +1502,9 @@ Alla fine della lezione dovreste:
 
 - Pensiero pre-ResNet: *Le reti più profonde dovrebbero sempre performare meglio – almeno sui dati di training.*
 
-![[Pasted image 20251127092244.png]]
+	![[Pasted image 20251127092244.png]]
 
-=> notare che in realtà non stiamo overfittando => ho un errore più alto con più layer sempre nel caso di training set! => ma allora che succede?
+	=> notare che in realtà non stiamo overfittando => ho un errore più alto con più layer sempre nel caso di training set! => ma allora che succede?
 
 	55
 ---
@@ -1567,7 +1610,7 @@ Alla fine della lezione dovreste:
 	 => oppure calcolare tutte le attivazioni ma dividerle per 2...
 
 + Model.eval() vs model.train()  
-+ Riassumendo usare batch normalization e dropout come tricks
++ ==Riassumendo usare batch normalization e dropout come tricks==
 
 	64
 ---
