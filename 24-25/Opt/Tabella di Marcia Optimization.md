@@ -1,3 +1,5 @@
+# Tabella
+
 - ## ==24-25 September==
 
 	~~**Lecture 01 (2hrs):**~~
@@ -127,4 +129,176 @@
     **Lecture 24 (2hrs):** 
     
     SGD in DL scenario: addition of acceleration terms [LN 8.1.1], adaptive learning rate [LN 8.1.2]. Automatic differentiation and backpropagation [LN 8.2].
-    
+
+# ✅ CHECKLIST DI STUDIO - OTTIMIZZAZIONE (Primo Registro)
+## Piano intensivo per 2 settimane (24 lezioni → 14 giorni)
+
+**Istruzioni:** Segui l'ordine delle lezioni. Spunta ogni argomento man mano che lo studi e lo padroneggi. Ogni blocco corrisponde a circa 1 giorno di studio intensivo.
+
+---
+
+## 📚 **SETTIMANA 1: FONDAMENTI TEORICI & OTTIMALITÀ**
+
+### **Giorno 1: Introduzione & Esistenza dei Minimi (Lec 01-02)**
+**Riferimenti:** [GS 1.1, 1.4, 1.5, A.3], [LN 6.1]
+- [x] Definire un problema di ottimizzazione (funzione obiettivo, variabili, insieme ammissibile)
+- [x] Classificare problemi (lineari, convessi, non lineari, vincolati/non vincolati)
+- [x] Conoscere l'esempio di **Portfolio Selection** e di **Empirical Risk Minimization**
+- [x] Definizione di **minimizzatore globale**
+- [x] **Teorema di Weierstrass:** enunciato, ipotesi (continuità + compattezza), idea della dimostrazione
+- [x] Sapere cosa sono gli insiemi **compatti** in ℝⁿ (chiusi e limitati)
+- [x] Concetto di **insiemi di livello compatti** come condizione sufficiente per l'esistenza del minimo
+
+### **Giorno 2: Strumenti per l'Esistenza & Convessità Base (Lec 03)**
+**Riferimenti:** [GS 1.4, C.1-C.3]
+- [x] Definizione di **coercività** di una funzione
+- [ ] Dimostrare/sapere perché le **norme** e le **forme quadratiche definite positive** sono coercive
+- [x] **Implicazione chiave:** funzione continua + coerciva → insieme di livello compatto → minimo esiste (via Weierstrass)
+- [ ] Definizione di **minimizzatore locale**
+- [ ] Definizioni di base: **insieme convesso**, **funzione convessa**
+- [ ] Proprietà fondamentali delle funzioni convesse
+
+### **Giorno 3: Convessità & Ottimalità - Primi Strumenti (Lec 04)**
+**Riferimenti:** [GS 1.2, App. B], [LN X.XX]
+- [ ] **Teorema fondamentale:** Per funzioni convesse, ogni minimo locale è globale
+- [ ] Convessità **stretta** → unicità del minimo
+- [ ] Concetto di **convessità forte** (strong convexity) [dalle note]
+- [ ] Panoramica sulle **condizioni di ottimalità** (cosa studieremo)
+- [ ] Richiami su **funzioni differenziabili** (gradiente, derivate parziali, matrice jacobiana)
+
+### **Giorno 4: Condizioni di Ottimalità del Primo Ordine (Lec 05)**
+**Riferimenti:** [GS App. C.5, 2.1-2.3]
+- [ ] Proprietà delle **funzioni convesse e differenziabili** (derivata prima e convessità)
+- [ ] Concetto di **direzione di discesa**
+- [ ] **Condizione di discesa del primo ordine** (se ∇f(x)ᵀd < 0, allora d è direzione di discesa)
+- [ ] **Condizione necessaria del primo ordine (FONC)** per ottimo locale: ∇f(x*) = 0
+- [ ] **Per funzioni convesse:** FONC diventa anche **condizione sufficiente** per ottimo globale
+
+### **Giorno 5: Condizioni di Ottimalità del Secondo Ordine (Lec 06)**
+**Riferimenti:** [GS 2.2, 2.3]
+- [ ] **Condizione di discesa per funzioni convesse** (dimostrazione)
+- [ ] **Condizione necessaria e sufficiente per ottimo** nel caso convesso
+- [ ] Concetto di **direzione di curvatura negativa**
+- [ ] **Condizione di discesa del secondo ordine**
+- [ ] **Condizione necessaria del secondo ordine (SONC):** ∇f(x*)=0 e Hessiana H(x*) è semidefinita positiva
+- [ ] **Condizione sufficiente del secondo ordine (SOSC):** ∇f(x*)=0 e H(x*) è definita positiva → x* è minimo locale stretto
+- [ ] Caso particolare: **funzioni quadratiche** (applicazione delle condizioni)
+
+### **Giorno 6: Modelli & Introduzione agli Algoritmi (Lec 07)**
+**Riferimenti:** [LN 6.2, 4.1], [GS 3.1]
+- [ ] **Regressione Lineare Regolarizzata (L2):** problema, perché la convessità forte garantisce esistenza e unicità della soluzione
+- [ ] Schema generale di un **algoritmo iterativo** per ottimizzazione non vincolata
+- [ ] Concetto di **successione di punti** generata da un algoritmo
+- [ ] Panoramica sui tipi di algoritmi: **line search**, **trust region**, **direct search**
+- [ ] **Condizione sufficiente per l'esistenza di punti di accumulazione** per una successione
+- [ ] Convergenza di una sottosuccessione verso un **punto stazionario** (∇f(x)=0)
+
+### **Giorno 7: Convergenza degli Algoritmi & Line Search (Lec 08-09)**
+**Riferimenti:** [LN 4.1.2, 4.1.3, 4.2, 4.2.1]
+- [ ] Controesempi alla convergenza (cosa succede se non si scelgono bene direzione e passo?)
+- [ ] Concetti di **convergenza globale vs. locale**, **velocità di convergenza**, **limiti di complessità**
+- [ ] Schema generale dei metodi di **line search**: `x_{k+1} = x_k + α_k d_k`
+- [ ] Due scelte cruciali: **direzione d_k** e **passo α_k**
+- [ ] **Ricerca di linea esatta vs. inesatta**
+- [ ] **Condizione di sufficiente decrescita (Armijo):** `f(x_k + αd_k) ≤ f(x_k) + γα∇f(x_k)ᵀd_k`
+- [ ] Proprietà di **terminazione finita** della line search di Armijo (con backtracking)
+
+---
+
+## ⚙️ **SETTIMANA 2: ALGORITMI & APPLICAZIONI AVANZATE**
+
+### **Giorno 8: Convergenza Globale dei Metodi di Line Search (Lec 10-11 Parte 1)**
+**Riferimenti:** [LN 4.2.2, 4.2.3]
+- [ ] Definizione di **direzioni legate al gradiente (gradient-related)**
+- [ ] Condizione degli **autovalori limitati** per le direzioni
+- [ ] **Teorema di convergenza globale** per metodi di line search con direzioni legate al gradiente e passo di Armijo
+- [ ] Concetto di **L-smoothness** (gradiente Lipschitziano) e **Descent Lemma**
+- [ ] Per funzioni L-smooth, esiste un **intervallo di passi accettabili** per Armijo
+- [ ] Limitazione superiore al numero di backtrack / limitazione inferiore al passo α
+
+### **Giorno 9: Complessità & Gradient Descent (Lec 11 Parte 2 - 12 Parte 1)**
+**Riferimenti:** [LN 4.2.3, 4.3], [GS 6.1-6.2]
+- [ ] **Complessità** (numero di iterazioni) del framework generale sotto ipotesi di L-smoothness
+- [ ] Limite ottimale per metodi del primo ordine (cenni)
+- [ ] **Algoritmo del Gradient Descent (GD)**: `x_{k+1} = x_k - α∇f(x_k)`
+- [ ] Proprietà di convergenza del GD
+- [ ] GD con **passo costante**: condizioni su α per la convergenza (α < 2/L)
+- [ ] Complessità del GD per funzioni **convesse** e L-smooth
+- [ ] Velocità di convergenza per funzioni **fortemente convesse**
+
+### **Giorno 10: Algoritmi Avanzati del 1° Ordine (Lec 12 Parte 2 - 14 Parte 1)**
+**Riferimenti:** [LN 4.3, 4.4, 4.4.1-4.4.3]
+- [ ] Impatto della **regolarizzazione L2** nei problemi di ML (rende il problema fortemente convesso)
+- [ ] Idea degli **algoritmi con momento (momentum)**
+- [ ] **Metodo della Palla Pesante (Heavy-ball)**
+- [ ] **Metodo del Gradiente Accelerato (es. Nesterov)**
+- [ ] Metodi a **direzioni coniugate non lineari**, strategie di **restart**
+- [ ] **Condizioni di Wolfe** per la line search (condizioni più forti di Armijo)
+- [ ] **Metodo del Gradiente Coniugato per problemi quadratici**: idea e proprietà di terminazione finita
+
+### **Giorno 11: Metodi del Secondo Ordine & Quasi-Newton (Lec 14 Parte 2 - 16 Parte 1)**
+**Riferimenti:** [LN 4.5, 4.6]
+- [ ] **Metodo di Newton**: direzione `d_k = -[H(x_k)]⁻¹∇f(x_k)` (minimizza l'approssimazione quadratica)
+- [ ] **Mancanza di convergenza globale**: controesempio
+- [ ] **Convergenza locale quadratica** (con dimostrazione delle ipotesi)
+- [ ] Strategie di **globalizzazione** di Newton (es. Newton + Armijo)
+- [ ] Approssimazione dell'Hessiana: **equazione di Quasi-Newton** `B_{k+1} s_k = y_k`
+- [ ] Regole di aggiornamento **diretta (B)** e **inversa (H)**
+- [ ] Aggiornamenti di **rango 1 e rango 2** (es. DFP, SR1)
+
+### **Giorno 12: Quasi-Newton & Ottimizzazione Vincolata Base (Lec 16 Parte 2 - 17)**
+**Riferimenti:** [LN 4.6.1-4.6.2], [GS 17.2.1-17.2.3]
+- [ ] **Metodo BFGS** (formula di aggiornamento inversa, proprietà di simmetria e definita positività)
+- [ ] **L-BFGS** per problemi su larga scala (memoria limitata)
+- [ ] Transizione a problemi **vincolati**: insieme ammissibile, direzioni ammissibili
+- [ ] **Condizione necessaria di ottimalità** per problemi vincolati generali (basata su direzioni ammissibili)
+- [ ] Caso di **vincoli convessi**: caratterizzazione delle direzioni ammissibili
+- [ ] Caso di **vincoli lineari** e di **vincoli di scatola (box)**: condizioni di ottimalità specifiche
+
+### **Giorno 13: Metodi per Vincoli Connessi & KKT (Lec 18-19)**
+**Riferimenti:** [GS 17.2.4, 17.3-17.5, D.1-D.2]
+- [ ] **Proiezione su un insieme convesso**: definizione, proprietà di non espansività
+- [ ] **Condizione di stazionarietà basata sulla proiezione**: `x* è minimo su C ⇔ x* = Proj_C(x* - ∇f(x*))`
+- [ ] Proiezioni su **scatola** e **palla** (formule esplicite)
+- [ ] Line search di Armijo **vincolata**
+- [ ] **Metodo del Gradiente Proiettato**: schema e proprietà di convergenza
+- [ ] **Metodo di Frank-Wolfe (Conditional Gradient)**: schema e proprietà
+- [ ] Problemi con **vincoli analitici** (uguaglianze/disuguaglianze)
+- [ ] **Condizioni di Fritz-John**
+- [ ] **Condizioni di Karush-Kuhn-Tucker (KKT)**: Lagrangiana, moltiplicatori, condizioni di stazionarietà, complementarità
+- [ ] **Qualificazioni dei vincoli (CQ)**: LCQ, LICQ (con dim.), SCQ
+
+### **Giorno 14: Applicazioni Finali - SVM & Algoritmi Stocastici (Lec 20-24)**
+**Riferimenti:** [GS D.5], [LN 7, 7.1-7.2, 4.7-4.8, 8, 8.1-8.2]
+- [ ] Caso particolare: **vincoli di simplesso**, condizione di ottimalità
+- [ ] **Problemi di classificazione binaria**
+- [ ] **Support Vector Machines (SVM)**: formulazione primale (minimizzazione hinge loss + L2), interpretazione geometrica (massimo margine)
+- [ ] **Duale di Wolfe**: proprietà generali
+- [ ] **Derivazione del duale SVM**, interpretazione geometrica della soluzione, **Kernel SVM** (idea)
+- [ ] **Tecniche a Decomposizione** per problemi di grandi dimensioni
+- [ ] **Risolvere il duale SVM per decomposizione**: algoritmo **SMO (Sequential Minimal Optimization)**
+- [ ] Aggiornamento a 2 variabili, direzioni ammissibili e di discesa, schema SMO, aggiornamento dei gradienti
+- [ ] Condizioni di ottimalità per il duale SVM, **Most Violating Pair**, convergenza di SMO
+- [ ] **Problemi finite-sum**, **Stochastic Gradient Descent (SGD)**, **Minibatch SGD**
+- [ ] Proprietà di convergenza e complessità di SGD (confronto con GD)
+- [ ] Panoramica sul **training di Deep Network**: caratteristiche del problema e motivazioni per Minibatch SGD
+- [ ] SGD nello scenario DL: termini di **accelerazione (momentum)** e **learning rate adattivo**
+- [ ] **Differenziazione Automatica e Backpropagation** (principio di funzionamento)
+
+---
+
+## 🎯 **GIORNO DELLA VERIFICA FINALE**
+- [ ] **Ripasso Mappe Mentali**: Collegare esistenza (Weierstrass/Coercività) → convessità → condizioni ottimalità (KKT) → algoritmi (GD/Newton/Proiettato) → applicazioni (SVM/SGD)
+- [ ] **Ripasso Dimostrazioni Chiave**: Weierstrass, condizioni I/II ordine, convergenza globale line-search
+- [ ] **Esercizi Svolti**: Rifare esercizi su classificazione punti stazionari, condizioni KKT, passi di algoritmi
+- [ ] **Simulazione Esame**: Svolgere una traccia completa a tempo
+
+**STATO PREPARAZIONE:**
+- [ ] **Fondamenti Teorici (Giorni 1-6)** Completati: ___/6
+- [ ] **Algoritmi & Applicazioni (Giorni 7-14)** Completati: ___/8
+- [ ] **Revisione Finale** Completata: [ ]
+
+**Note e Punti Deboli da Ripassare:**
+1.
+2.
+3.

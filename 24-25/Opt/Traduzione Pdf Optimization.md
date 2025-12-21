@@ -7,7 +7,6 @@ Dipartimento di Ingegneria dell’Informazione
 **Matteo Lapucci**
 
 ---
-
 #### Contenuti:
 
 1. **Preliminari**
@@ -89,11 +88,6 @@ Analogamente, $A$ è *definita positiva* se e solo se:
 - $\lambda_{\text{min}}(A) |x|_2^2 \leq x^T A x \leq \lambda_{\text{max}}(A) |x|_2^2$;
 - $\lambda_{\text{min}}(A) |x| \leq |A x| \leq \lambda_{\text{max}}(A) |x|$.
 
-### Coercività della funzione
-
-**Definizione 1.2:** Una funzione continua $f : \mathbb{R}^n \to \mathbb{R}$ si dice coerciva se $\lim_{k \to \infty} f(x_k) = +\infty$ per ogni sequenza $\{x_k\} \subseteq \mathbb{R}^n$ tale che $\lim_{k \to \infty} \|x_k\| = +\infty$.
-
-**Proposizione 1.3:** Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione continua. Allora, $f$ è coerciva se e solo se tutti i suoi insiemi di livello sono compatti.
 
 ### Riepilogo derivate 
 
@@ -205,9 +199,9 @@ dove:
 
 - $x$ è un vettore di variabili in uno spazio $n$-dimensionale; le variabili rappresentano le quantità che possiamo controllare nel compito reale e di cui dobbiamo decidere i valori da assegnare;
     
-- $S$ è un sottoinsieme dello spazio delle variabili e viene chiamato insieme ammissibile, definito dai vincoli. Questo insieme identifica le scelte di valori per le variabili che sono considerate ammissibili da utilizzare nella pratica. Una scelta di valori delle variabili al di fuori dell’insieme ammissibile è quindi proibita;
+- $S$ è un sottoinsieme dello spazio delle variabili e viene chiamato *insieme ammissibile*, definito dai **vincoli**. Questo insieme identifica le scelte di valori per le variabili che sono considerate ammissibili da utilizzare nella pratica. ==Una scelta di valori delle variabili al di fuori dell’insieme ammissibile è quindi proibita;==
     
-- $f$ è una funzione obiettivo che, data una soluzione, ne misura numericamente la qualità. Senza perdere di generalità, assumiamo che lavori più piccoli di $f$ sono associati a migliori soluzioni, vogliamo quindi _minimizzare_ la funzione. Questo non è restrittivo: se vogliamo massimizzare $f(x)$ potremmo ugualmente minimizzare $g(x) = -f(x)$
+- $f$ è una *funzione obiettivo* che, data una soluzione, ne misura numericamente la qualità. Senza perdere di generalità, assumiamo che lavori più piccoli di $f$ sono associati a migliori soluzioni, vogliamo quindi _minimizzare_ la funzione. Questo non è restrittivo: se vogliamo massimizzare $f(x)$ potremmo ugualmente minimizzare $g(x) = -f(x)$
     
 **Esempio 2.1 (Problema di Selezione di Portafoglio Ottimale):**  
 Uno dei problemi di ottimizzazione più famosi è quello di selezionare in modo ottimale come allocare risorse finanziarie. Indicativamente, supponiamo che esistano $n$ asset di mercato nei quali possiamo investire un'unità di capitale. Ogni asset $i$ è associato a un rendimento atteso $\mu_i$, ossia il guadagno previsto per unità di investimento. Inoltre, per ogni coppia di asset $i$ e $j$, esiste un coefficiente di covarianza $\sigma_{ij}$, che è alto se i rendimenti dei due asset sono positivamente correlati, negativo se sono negativamente correlati, e nullo se i rendimenti sono indipendenti. La quantità $\sigma_{ii}$ indica la varianza del rendimento dell’asset $i$.
@@ -216,39 +210,322 @@ Il problema di selezione degli investimenti può essere modellato come un proble
 
 1. Definiamo un vettore di variabili $x \in \mathbb{R}^n$; il valore di ogni variabile $x_i$ rappresenta la quantità di capitale investita nell’asset $i$.
 2. L’insieme ammissibile è definito dai seguenti vincoli:
-    - Gli investimenti devono essere non negativi (non possiamo vendere quote di asset):  
-	        $x_i \geq 0 \quad \forall i$ 
-    - Il capitale totale investito deve essere pari a 1, ossia la somma delle quantità investite in tutti gli asset deve risultare 1:  
-        $\sum_{i=1}^n x_i = 1 \quad (e^T x = 1)$
-3. La funzione obiettivo più comune è quella di bilanciare il rendimento totale atteso dell’investimento e il rischio associato. Il rendimento atteso totale è dato dalla somma dei rendimenti attesi degli asset moltiplicati per il capitale investito in ciascun asset:  
-    $\sum_{i=1}^n \mu_i x_i \quad (\mu^T x)$  
-    
-    Il rischio è definito come segue:  
-    $\sum_{i=1}^n \sum_{j=1}^n \sigma_{ij} x_i x_j \quad (x^T \Sigma x, \sum_{ij}=)$ 
-    dove $\Sigma_{ij}$ (matrice delle covarianze) con:  $\sum_{ij} = \begin{cases} \frac{1}{2}\sigma_{ij}, & \text{se } i \neq j \\\\ \sigma_{ii}, & \text{se } i = j \end{cases}$​
+    - Gli investimenti devono essere non negativi (non possiamo vendere quote di asset):  $$x_i \geq 0 \quad \forall i$$
+    - Il capitale totale investito deve essere pari a 1, ossia la somma delle quantità investite in tutti gli asset deve risultare 1:  $$\sum_{i=1}^n x_i = 1 \quad (e^T x = 1)$$
+3. La funzione obiettivo più comune è quella di bilanciare il rendimento totale atteso dell’investimento e il rischio associato. Il rendimento atteso totale è dato dalla somma dei rendimenti attesi degli asset moltiplicati per il capitale investito in ciascun asset: $$\sum_{i=1}^n \mu_i x_i \quad (\mu^T x)$$  
+    Il rischio è definito come segue:  $$\sum_{i=1}^n \sum_{j=1}^n \sigma_{ij} x_i x_j \quad (x^T \Sigma x, \sum_{ij})$$
+    dove $\Sigma_{ij}$ (matrice delle *covarianze*) con:  $\sum_{ij} = \begin{cases} \frac{1}{2}\sigma_{ij}, & \text{se } i \neq j \\\\ \sigma_{ii}, & \text{se } i = j \end{cases}$​
+
 **Razionale della definizione del rischio:** Interpretiamo il rischio come l’investimento in un asset con alta varianza, dato che ci sono alte probabilità di ottenere un ritorno molto inferiore rispetto a quello atteso. Se $\sigma_{ii}$ è elevato e $x_i^2$ è grande, stiamo assumendo un rischio significativo. Inoltre, se due asset sono positivamente correlati ($\sigma_{ij} > 0$), investire in entrambi comporta un rischio, dato che c’è una grande probabilità che l’asset $i$ performi peggio del previsto se anche l’asset $j$ lo fa. Al contrario, si vuole promuovere l’investimento in asset negativamente correlati, poiché una perdita di un asset potrebbe essere compensata dall’aumento dell’altro.
 
-**Scopo:** Minimizzare il rischio e massimizzare il rendimento. Nel contesto di un problema di minimizzazione, possiamo definire una funzione obiettivo che è una combinazione pesata del rischio e del negativo del rendimento atteso:
-
-	$- \mu^T x + \lambda x^T \Sigma x$
-
+**Scopo:** Minimizzare il rischio e massimizzare il rendimento. Nel contesto di un problema di minimizzazione, possiamo definire una funzione obiettivo che è una combinazione pesata del rischio e del negativo del rendimento atteso:	$$- \mu^T x + \lambda x^T \Sigma x$$
 dove $\lambda$ è un parametro che bilancia il compromesso tra rischio e rendimento.
 
 **Problema finale (in forma vettoriale):**
-
 	$\min_{x \in \mathbb{R}^n} -\mu^T x + \lambda x^T \Sigma x \quad$
 	$\text{s.t. } e^T x = 1$
 	$x \geq 0$
+	
+---
 
 In queste note saremmo interessati negli aspetti della programmazione matematica della ricerca operativa. Ci focalizzeremo sulla caratterizzazione dei problemi, e sulle procedure algoritmiche per determinare le soluzioni a tali problemi.
 
 ![[Pasted image 20250108174217.png]]
 
-Qui ci occuperemo di problemi non lineari e continui di ottimizzazione, sia con che senza vincoli, avendo accesso alle informazioni delle derivate.
+Qui ci occuperemo di problemi non lineari e continui di ottimizzazione, sia **con che senza vincoli**, avendo accesso alle informazioni delle derivate.
 
+- Esempio di approx di funzioni (*Empirical risk Minimization*):
+	- Esempio in cui vedo uso delle *loss*:
+		- *squared error*: $$e(y^i,\hat{y}^i) = (y^i-\hat{y}^i)^2 $$ (norma $\mathcal{l}_2$)
+		- *absolute error*: $$e(y^i,\hat{y}^i) = |y^i-\hat{y}^i| $$ (norma $\mathcal{l}_1$)
+	- Riassumendo il problema è della forma: $$\text{min}_{\mu \in \mathbb{R}^n}||E(\mu)||$$ dove $||.||$ dipende dalla scelta della loss... 
+	=> Notare è un problema di ottimizzazione non vincolato!
+ 
 ## 3. Problemi di ottimizzazione: caratterizzazione delle soluzioni
 
-TBD (Per ora vedi Pdf notes_palchetti_2023)
+In queste note, saremo interessati a trattare in modo appropriato problemi di ottimizzazione della forma: $$\min_{x\in S}\ f(x), \tag{3.1}$$
+dove $f:\mathbb{R}^{n}\to\mathbb{R}$ è una funzione che, per il momento, assumiamo solo essere **continua**, e $S\subseteq\mathbb{R}^{n}$ è l'insieme ammissibile.
+
+Studiando questi problemi, la prima domanda che dobbiamo porci è: "cosa significa risolvere il problema (3.1)"? La risposta a questa domanda può essere trovata nella seguente definizione.
+
+**Definizione 3.0.1.**
+	Un **punto ammissibile** $x^{\star}\in S$ è un *punto di ottimo globale* (o minimizzatore globale) se $f(x^{\star})\leq f(x)$ per tutti gli $x\in S$.
+	Il valore $f^{\star}=f(x^{\star})$ è detto *valore ottimo globale* (o minimo globale).
+
+Fondamentalmente, un minimizzatore globale è una **soluzione ammissibile** in cui la funzione obiettivo è inferiore o uguale al valore raggiunto in qualsiasi **altra soluzione ammissibile**. In altre parole, nessuna soluzione migliore di $x^{\star}$ può essere trovata in $S$. 
+
+Trovare un ottimizzatore globale è, chiaramente, l'obiettivo finale nell'ottimizzazione. Risolvere il problema di ottimizzazione significa trovare tale punto. Sebbene possa sembrare banale a prima vista, la discussione sulle soluzioni ottimali richiede in realtà un trattamento attento. Esploreremo questo problema in dettaglio nelle prossime sezioni.
+
+### 3.1 Esistenza delle soluzioni ottimali
+
+Il concetto di soluzioni ottimali globali è abbastanza intuitivo; tuttavia, la sua semplicità può essere fuorviante, fino a trascurare una domanda cruciale: è garantito che esista un minimizzatore globale e, di conseguenza, che il problema (3.1) sia alla fine **ben definito**? 
+In realtà ci sono varie situazioni in cui non è così (vedi anche Figura 3.1):
+	
+![[Pasted image 20251221180145.png]]
+
+* In primo luogo, l'intero problema potrebbe essere *inammissibile*: non esiste alcuna soluzione ammissibile - $S=\emptyset$ - e quindi non può esserci alcun minimizzatore globale.
+* L'altro caso estremo si verifica quando il problema è *illimitato*, cioè $f^{\star}=-\infty$.
+* Situazioni più sottili sono rappresentate da problemi in cui la funzione obiettivo è **limitata inferiormente** da un valore che è raggiungibile asintoticamente, ma nessuna soluzione finita lo raggiunge; pensa a $f(x)=e^{-x}$ su $\mathbb{R}$: l'obiettivo è limitato inferiormente da $0$, ma ogni soluzione $x$ può essere migliorata semplicemente aumentando leggermente il valore della variabile.
+
+---
+
+Il primo argomento che ci interessa affrontare è quindi lo studio delle **condizioni di esistenza** di soluzioni ottimali nei problemi di ottimizzazione, in modo da poter discriminare tra istanze ben poste e mal poste di (3.1). Un primo risultato deriva da un classico teorema dell'analisi matematica.
+
+**Proposizione 3.1.1 (Teorema di Weierstrass).** 
+	Sia $f:S\subseteq\mathbb{R}^{n}\to\mathbb{R}$ una **funzione continua** su un **insieme [[compatto]]** $S$. Allora, $f$ ammette un **minimizzatore globale** su $S$.
+
+Memo: (Definizione insieme **compatto**):
+	
+
+*Dimostrazione.*
+	Sia $Y=f(S)=\{y\in\mathbb{R}\mid\exists\,x\in S:f(x)=y\}$ l'**immagine** attraverso $f$ dell'insieme $S$.
+	Sia poi $L=\inf Y$ (che certamente esiste per l'assioma di continuità). Allora, esiste una successione $\{y^{k}\}\subseteq Y$ tale che $\lim\limits_{k\to\infty}y^{k}=L$. 
+	Ora, definiamo una successione $\{x^{k}\}\subseteq S$ tale che $f(x^{k})=y^{k}$ per tutti i $k$. Per la **compattezza** di $S$, esiste una *sottosuccessione* $K\subseteq\{1,2,\ldots\}$ tale che $\lim\limits_{\begin{subarray}{c}k\in K\\ k\to\infty\end{subarray}}x^{k}=\bar{x}\in S$.
+Per la **continuità** di $f$, abbiamo anche che $$
+\lim\limits_{\begin{subarray}{c}k\in K\\ k\to\infty\end{subarray}}f(x^{k})=f\left(\lim\limits_{\begin{subarray}{c}k\in K\\ k\to\infty\end{subarray}}x^{k}\right)=f\left(\bar{x}\right).$$
+Allo stesso tempo, per la definizione di $\{x^{k}\}$, abbiamo $$\lim\limits_{\begin{subarray}{c}k\in K\\ k\to\infty\end{subarray}}f(x^{k})=\lim\limits_{\begin{subarray}{c}k\in K\\ k\to\infty\end{subarray}}y^{k}=L$$
+dove l'ultima uguaglianza deriva dal fatto che, quando l'intera successione converge a un certo valore, ==ogni sottosuccessione converge a quello stesso valore==.
+Mettendo insieme le ultime due equazioni, otteniamo che $f(\bar{x})=L$: $\bar{x}\in S$ raggiunge **il valore di minimo** di $f$ su $S$, cioè è un minimizzatore globale della funzione su $S$.
+
+---
+
+Tra le ipotesi del teorema di Weierstrass, la continuità della funzione obiettivo è certamente ragionevole: trattare funzioni discontinue da ottimizzare sarebbe una sfida estrema.
+La **compattezza** dell'insieme ammissibile, d'altra parte, è tipica di vari problemi, quindi il risultato di cui sopra può spesso essere sfruttato per affermare che il problema di ottimizzazione è ben definito. Tuttavia, quello non è uno scenario onnipresente. Un caso importante in cui non possiamo fare affidamento direttamente sul teorema di Weierstrass a causa della non compattezza dell'insieme ammissibile è rappresentato dai problemi di ottimizzazione **non vincolati**.
+
+Fortunatamente, il teorema di Weierstrass può essere utile in una gamma più ampia di situazioni di quanto suggerirebbe la sua formulazione. Ad esempio, possiamo iniziare dando il seguente utile risultato.
+
+**Proposizione 3.1.2.**
+	Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una **funzione continua**. Se $f$ ha un **insieme di livello** $\mathcal{L}_{\alpha}(f)=\{x\in\mathbb{R}^{n}\mid f(x)\leq\alpha\}$ che è **compatto**, allora $f$ ammette **minimo globale** su $\mathbb{R}^{n}$. => passo da minimo sull'insieme ammissibile S a l'intero insieme.
+
+*Dimostrazione.* 
+Sia $\mathcal{L}_{\alpha}(f)$ un insieme di livello compatto di $f$ e consideriamo il problema $$\min\limits_{x}f(x) \, \text{s.t. }x\in\mathcal{L}_{\alpha}(f).$$
+Poiché $f$ è continua e l'insieme ammissibile è compatto, sappiamo per il teorema di Weierstrass che il problema ammette un minimizzatore globale $\bar{x}\in\mathcal{L}_{\alpha}(f)$.
+
+Ora, sia $z$ un punto qualsiasi in $\mathbb{R}^{n}$; ci sono due casi:
+	a. $z\in\mathcal{L}_{\alpha}(f)$: poiché $\bar{x}$ è un **minimizzatore** globale di $f$ sull'insieme $\mathcal{L}_{\alpha}(f)$, abbiamo $f(\bar{x})\leq f(z)$;
+	b. $z\notin\mathcal{L}_{\alpha}(f)$: allora, per la definizione di insieme di livello, $f(z)>\alpha\geq f(\bar{x})$, dove l'ultima disuguaglianza deriva da $\bar{x}\in\mathcal{L}_{\alpha}(f)$.
+	
+In entrambi i casi abbiamo quindi $f(\bar{x})\leq f(z)$; poiché $z$ è un punto arbitrario in $\mathbb{R}^{n}$, otteniamo che $\bar{x}$ è un minimizzatore globale di $f$ su $\mathbb{R}^{n}$.
+
+---
+
+A prima vista, il risultato di cui sopra potrebbe sembrare un po' astratto, poiché non è chiaro come stabilire praticamente se una funzione ha o meno un insieme di livello compatto. Tuttavia, richiamando la proposizione 1.3.1, otteniamo immediatamente la seguente condizione sufficiente di esistenza di soluzioni.
+
+**Proposizione 3.1.3.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continua. Se $f$ è [[coerciva]], allora $f$ ammette un punto di minimo su $\mathbb{R}^{n}$.
+=> coerciva ha insiemi di livello compatti => insieme di livello compatto $f$ ammette punto di minimo su $\mathbb{R}^n$ => il problema ammette soluzione e dunque è ben definito.
+
+Per avere un'intuizione della condizione sufficiente della Proposizione 3.1.3, vedere la Figura 3.2.
+
+![[Pasted image 20251221202707.png]]
+
+La coercività è nella maggior parte dei casi una proprietà facile da verificare, ed è soddisfatta dalla funzione obiettivo di molti interessanti problemi di ottimizzazione. Riportiamo qui sotto un paio di casi notevoli.
+
+**Esempio 3.1.1.** Sia $f$ una qualsiasi funzione continua limitata inferiormente da un valore finito $L$. Allora, se $\tau>0$, la funzione $f(x)+\tau\|x\|$ ammette sempre un **minimizzatore globale** su $\mathbb{R}^{n}$. 
+
+Infatti, è facile mostrare che, per qualsiasi successione $\{x^{k}\}$ tale che $\|x^{k}\|\to\infty$, abbiamo $$
+\lim_{k\to\infty}f(x^{k})+\tau\|x^{k}\|\geq\lim_{k\to\infty}L+\tau_{k}\|x^{k}\|=+\infty$$il che significa che $f(x)+\tau\|x\|$ è coercitiva.
+
+**Esempio 3.1.2.** Un'importante classe di problemi di ottimizzazione a cui faremo spesso riferimento è quella dei *problemi quadratici*, cioè problemi della forma $$
+\min_{x\in\mathbb{R}^{n}}\ f(x)=\frac{1}{2}x^{T}Qx+c^{T}x$$
+dove $Q\in\mathcal{S}_{n}$ (ovvero appartiene al set di matrici quadratiche e simmetriche di dimensioni nxn) e $c\in\mathbb{R}^{n}$. Un'istanza di questa classe di problemi ammette una soluzione ottimale se $Q\succ 0$. (è definita positiva). In effetti, $f$ è coercitiva se $Q$ è definita positiva.
+
+Infatti, sia $Q\succ 0$ e sia $\{x^{k}\}$ una successione arbitraria tale che $\|x^{k}\|\to\infty$. Richiamando la Proposizione 1.2.3 e la disuguaglianza di Cauchy-Schwarz, per tutti i $k$, abbiamo$$f(x^{k})=(x^{k})^{T}Qx^{k}+c^{T}x^{k}\geq\lambda_{\min}(Q)\|x^{k}\|^{2}-\|c\|\|x^{k}\|=\|x^{k}\|(\lambda_{\min}(Q)\|x^{k}\|-\|c\|).
+$$
+Prendendo i limiti per $k\to\infty$, otteniamo immediatamente che $f(x^{k})\to\infty$; essendo $\{x^{k}\}$ arbitraria, questo prova che $f$ è **coercitiva**.
+
+In realtà, una funzione quadratica è coercitiva solo se $Q\succ 0$. Assumiamo per contraddizione che $f$ sia coercitiva ma $Q\not\succ 0$. Per quest'ultima ipotesi, esiste $y\in\mathbb{R}^{n}$, $y\neq 0$, tale che $y^{T}Qy\leq 0$. Assumiamo, senza perdita di generalità, che $c^{T}y\leq 0$, e sia $\{x^{k}\}$ una successione definita come $x^{k}=ky$. Chiaramente, $\|x^{k}\|\to\infty$. Abbiamo anche $$f(x^{k})=k^{2}y^{T}Qy+kc^{T}y\leq 0$$
+Prendendo i limiti per $k\to\infty$ deve essere $\lim_{k\to\infty}f(x^{k})\leq 0$, il che è assurdo poiché $f$ è coercitiva.
+
+### **3.2 Condizioni di ottimalità**
+
+Nella sezione precedente, abbiamo discusso ampiamente dell'esistenza di soluzioni ottimali e della buona posizione dei problemi di ottimizzazione. Questa discussione fondamentale ma preliminare, tuttavia, non si avvicina al nostro vero interesse: vogliamo trovare soluzioni ottimali e, a tal fine, dobbiamo caratterizzarle precisamente.
+
+Ora, la prima deludente verità di cui dobbiamo essere consapevoli è che risolvere, in termini stretti, problemi di ottimizzazione è difficile. In generale, trovare un minimizzatore globale è difficile. Certificare che una soluzione è un minimizzatore globale è praticamente impossibile, a meno che il problema non abbia caratteristiche piacevoli da sfruttare. Anche nel caso abbastanza favorevole di una funzione $L$-liscia su un insieme ammissibile compatto, ottenere un minimizzatore globale certificato è noto essere un compito $\mathcal{NP}$-difficile.
+
+Nei problemi non vincolati, non abbiamo speranza. La ragione di ciò risiede nella stessa definizione di ottimalità globale: anche se raggiungessimo una soluzione molto buona, dovremmo essere sicuri che da nessuna parte, in uno spazio infinito, la funzione scenda al di sotto di quel valore, per poter affermare con certezza che il problema è stato risolto (Figura 3.3).
+
+Un argomento simile può essere fatto per problemi con un insieme ammissibile limitato ma in cui la funzione obiettivo può variare a un ritmo arbitrariamente veloce. Un ramo importante della programmazione matematica, chiamato *ottimizzazione globale*, si concentra sull'elaborazione di strategie per recuperare efficacemente soluzioni ottimali globali in scenari generali. Gli algoritmi di ottimizzazione globale, che non verranno trattati qui in dettaglio, combinano strategie euristiche, lo sfruttamento di informazioni utili dal problema particolare e subroutine algoritmiche mirate a migliorare la soluzione localmente. Questi ultimi metodi, chiamati *algoritmi di ottimizzazione locale* saranno al centro di questo corso, e sono progettati per raggiungere soluzioni che soddisfino un concetto "rilassato" di ottimalità.
+
+**Definizione 3.2.1.** Un punto ammissibile $\bar{x}\in S$ è un *punto di ottimo locale* (o minimizzatore locale) se esiste $\epsilon>0$ tale che $f(\bar{x})\leq f(x)$ per tutti gli $x\in S\cap B(\bar{x},\epsilon)$.
+
+In altre parole, un minimizzatore locale soddisfa la stessa condizione dell'ottimalità globale, ma ristretta a un intorno (ammissibile) di punti. L'ottimalità locale può essere vista come una *condizione necessaria di ottimalità globale*, poiché ovviamente qualsiasi minimizzatore globale è anche un minimizzatore locale. Ci rendiamo immediatamente conto che il concetto di ottimalità locale è molto più gestibile di quello globale, poiché non siamo tenuti ad avere conoscenza su punti arbitrariamente distanti.
+
+Nella presentazione degli algoritmi di ottimizzazione svolta nei capitoli successivi, stabiliremo come nostro obiettivo l'ottenimento di un punto di ottimo locale, e ne saremo soddisfatti. Poi, come accennato in precedenza, tali algoritmi locali potrebbero in linea di principio essere impiegati all'interno di framework di ottimizzazione globale; come semplice esempio, pensa di eseguire un metodo locale in modalità multi-start: raggiungeremmo diversi minimizzatori locali e potremmo infine scegliere il migliore tra di essi.
+
+Un altro aspetto abbastanza ovvio è che non tutti gli ottimizzatori locali saranno uguali; con riferimento alla Figura 3.3, finire nel minimizzatore locale nell'angolo in alto a destra dell'immagine non è la stessa cosa che arrivare ai minimizzatori in basso a sinistra. Il primo punto è infatti molto peggiore di molte soluzioni "non localmente ottimali", mentre le seconde sono tutte molto vicine in valore obiettivo al presunto minimizzatore globale.
+
+La discussione finora è generale e vale nella maggior parte dei casi. C'è, tuttavia, uno scenario fortunato e cruciale in cui le cose sono in realtà molto migliori. Formalizziamo questo caso con la seguente proposizione.
+
+**Proposizione 3.2.1.** Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso e $f:S\to\mathbb{R}$ una funzione convessa. Allora, tutti i minimizzatori locali di $f$ su $S$ sono anche minimizzatori globali.
+
+*Dimostrazione.* Sia $\bar{x}$ un minimizzatore locale, cioè esiste $\epsilon>0$ tale che $f(\bar{x})\leq f(x)$ per tutti gli $x\in B(\bar{x},\epsilon)\cap S$. Sia $y\in S$ una soluzione ammissibile arbitraria. Per la convessità di $f$, sappiamo che
+
+\[
+f((1-\lambda)\bar{x}+\lambda y)\leq(1-\lambda)f(\bar{x})+\lambda f(y)
+\]
+
+per tutti i $\lambda\in[0,1]$. Sia $z=(1-\lambda)\bar{x}+\lambda y$. Per la convessità di $S$, $z\in S$ per tutti i $\lambda\in[0,1]$. Inoltre, per $\lambda\to 0$ abbiamo $z\to\bar{x}$; quindi, per $\lambda>0$ sufficientemente piccolo, $z\in B(\bar{x},\epsilon)$. Quindi, $z\in S\cap B(\bar{x},\epsilon)$ e poi
+
+\[
+f(z)\geq f(\bar{x}).
+\]
+
+Combinando le due disuguaglianze, abbiamo
+
+\[
+f(\bar{x})\leq f(z)\leq(1-\lambda)f(\bar{x})+\lambda f(y),
+\]
+
+da cui otteniamo $\lambda f(\bar{x})\leq\lambda f(y)$ e infine $f(\bar{x})\leq f(y)$. Poiché $y$ è un punto ammissibile arbitrario, otteniamo la tesi. $\square$
+
+La Proposizione 3.2.1 ci fornisce un risultato tremendamente forte e utile: sotto ipotesi di convessità, minimizzatori locali e globali coincidono. In un problema convesso, se siamo in grado di raggiungere una soluzione localmente ottimale abbiamo finito: siamo garantiti di aver raggiunto una soluzione globalmente ottimale. Siamo quindi particolarmente felici quando qualche compito del mondo reale può essere modellato come un problema di ottimizzazione convesso, poiché sappiamo che possiamo davvero ottenere la soluzione migliore possibile. Nei capitoli successivi vedremo altri motivi che rendono la convessità una proprietà molto desiderabile.
+
+Un'ulteriore bella proprietà può essere affermata sotto ipotesi leggermente più forti.
+
+**Proposizione 3.2.2.** Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso e $f:S\to\mathbb{R}$ una funzione strettamente convessa. Allora, il minimizzatore globale di $f$ su $S$, se esiste, è unico.
+
+*Dimostrazione.* Supponiamo per contraddizione che $f$ abbia due minimizzatori globali distinti $x,y\in S$. In altre parole $f(x)=f(y)=f^{*}$ e $x\neq y$. Per la stretta convessità di $f$, possiamo scrivere
+
+\[
+f((1-\lambda)x+\lambda y)<(1-\lambda)f(x)+\lambda f(y)
+\]
+
+per tutti i $\lambda\in(0,1)$. Per la convessità di $S$, il punto $z=(1-\lambda)x+\lambda y$ appartiene a $S$. Abbiamo quindi
+
+\[
+f(z)<(1-\lambda)f(x)+\lambda f(y)=(1-\lambda+\lambda)f^{*}=f^{*},
+\]
+
+il che è assurdo, poiché il valore di $f$ nel punto ammissibile $z$ non può essere strettamente inferiore all'ottimo globale $f^{*}$. $\square$
+
+Richiamando le Proposizioni 1.3.7 e 3.1.3, otteniamo immediatamente un ultimo risultato per funzioni fortemente convesse.
+
+**Proposizione 3.2.3.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione fortemente convessa. Allora, $f$ ammette un unico minimizzatore globale su $\mathbb{R}^{n}$.
+
+A questo punto, dobbiamo evidenziare un problema pratico associato all'ottimalità locale: ancora non sappiamo come controllare concretamente se una soluzione è un ottimizzatore locale o meno. La definizione non ci aiuta, non è chiaro quale sarebbe il raggio $\epsilon$ dell'intorno e, soprattutto, non c'è modo di controllare il valore obiettivo in ciascuno degli infiniti punti dell'intorno. Abbiamo quindi bisogno di arrivare a qualche condizione di ottimalità che sia verificabile per mezzo di operazioni numeriche. Questo sarà il nostro obiettivo per le prossime sezioni.
+
+### **3.2.1 Il caso non vincolato**
+
+In questa sezione, affrontiamo specificamente il caso $S=\mathbb{R}^{n}$, cioè analizziamo problemi non vincolati. Per sviluppare ulteriormente la nostra discussione, dobbiamo introdurre un concetto che costituirà un ingranaggio chiave sia nell'analisi delle soluzioni che nella progettazione di algoritmi nell'ottimizzazione non lineare.
+
+**Definizione 3.2.2.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ e $x\in\mathbb{R}^{n}$. Diciamo che una direzione $d\in\mathbb{R}^{n}$ è una *direzione di discesa* per $f$ nel punto $x$ se esiste $\bar{t}>0$ tale che $f(x+td)<f(x)$ per tutti i $t\in(0,\bar{t})$.
+
+In parole povere, se ci muoviamo da $x$ con un passo sufficientemente piccolo lungo $d$, siamo garantiti di far diminuire la funzione obiettivo. Ci aspettiamo naturalmente che tale operazione non sia possibile in un minimizzatore locale $\bar{x}$: in quel caso abbiamo infatti $f(\bar{x})\leq f(x)$ per tutti gli $x$ in un intorno, e quindi per qualsiasi punto ottenuto come $\bar{x}+td$ per qualsiasi direzione e per $t$ sufficientemente piccolo.
+
+Possiamo quindi enunciare la seguente condizione di ottimalità.
+
+**Proposizione 3.2.4.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ e sia $\bar{x}$ un minimizzatore locale di $f$; allora, non esiste alcuna direzione di discesa per $f$ in $\bar{x}$.
+
+Alla prima impressione, la condizione di cui sopra è spesso immaginata essere una condizione necessaria e sufficiente per l'ottimalità locale. In realtà, è *solo necessaria*. Il seguente esempio aiuta a persuadere che non è sufficiente.
+
+**Esempio 3.2.1.** Facendo riferimento anche alla Figura 3.5, considera la funzione
+
+\[
+f(x)=\begin{cases}x\sin(\frac{1}{x})&\text{se }x\neq 0,\\
+0&\text{se }x=0,\end{cases}
+\]
+
+che è continua ovunque ($\lim_{x\to 0}f(x)=0=f(0)$). Il punto $\bar{x}=0$ non è un minimizzatore locale. Infatti, per qualsiasi $\epsilon>0$, è possibile trovare un valore $a_{\epsilon}\in(0,\epsilon)$ tale che $f(a_{\epsilon})=a_{\epsilon}\sin(\frac{1}{a_{\epsilon}})<0$. D'altra parte, possiamo fare un ragionamento simile per vedere che non c'è direzione di discesa: lungo entrambe le direzioni $d=1$ e $d=-1$, per qualsiasi $\bar{t}>0$ possiamo sempre trovare un valore di $t\in(0,\bar{t})$ tale che $f(\bar{x}+td)=t\sin(\frac{1}{t})>0=f(\bar{x})$.
+
+Mentre la Proposizione 3.2.4 ci fornisce una bella condizione necessaria per l'ottimalità locale (e quindi anche per quella globale), non abbiamo ancora uno strumento per verificarla praticamente: non abbiamo idea di quale dovrebbe essere il valore $\bar{t}$ dalla definizione di direzione di discesa, né possiamo ragionevolmente verificare l'andamento non discendente della funzione lungo tutte le infinite possibili direzioni.
+
+Gli strumenti computazionali che ci permettono di trattare concretamente le soluzioni e l'ottimalità provengono dall'analisi numerica. Infatti, se facciamo ipotesi di differenziabilità su $f$, possiamo enunciare il seguente risultato.
+
+**Proposizione 3.2.5.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile, $\bar{x}\in\mathbb{R}^{n}$ e sia $d\in\mathbb{R}^{n}$ una direzione. Se $\nabla f(\bar{x})^{T}d<0$, allora $d$ è una direzione di discesa per $f$ in $\bar{x}$.
+
+*Dimostrazione.* Per la differenziabilità di $f$, abbiamo che
+
+\[
+0>\nabla f(\bar{x})^{T}d=\mathcal{D}_{f}(\bar{x},d)=\lim_{t\to 0^{+}}\frac{f(\bar{x}+td)-f(\bar{x})}{t}
+\]
+
+e quindi $\lim_{t\to 0^{+}}f(\bar{x}+td)-f(\bar{x})<0.$ Allora, per $t>0$ sufficientemente piccolo abbiamo certamente
+
+\[
+f(\bar{x}+td)<f(\bar{x}),
+\]
+
+il che completa la dimostrazione. $\square$
+
+La Proposizione 3.2.5 introduce una condizione sufficiente di discesa con funzioni lisce: se la derivata direzionale in un punto lungo una direzione è negativa, allora quella direzione è di discesa in quel punto. Questa condizione è molto utile in pratica poiché, contrariamente a tutte le condizioni che abbiamo visto finora, è verificabile numericamente; dobbiamo solo calcolare il gradiente ed eseguire un prodotto scalare per verificare se una direzione è di discesa. Nota che la condizione è solo sufficiente; infatti, abbiamo tre scenari:
+
+* se $\nabla f(\bar{x})^{T}d<0$ allora la direzione è di discesa;
+* se $\nabla f(\bar{x})^{T}d>0$ allora la direzione è di salita;
+* se $\nabla f(\bar{x})^{T}d=0$ allora la direzione potrebbe essere di salita, discesa o nessuna delle due.
+
+Le diverse situazioni sono illustrate nella Figura 3.6.
+
+Tuttavia, la combinazione delle Proposizioni 3.2.4 e 3.2.5 ci permette di enunciare immediatamente il seguente risultato.
+
+**Proposizione 3.2.6.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile e sia $\bar{x}\in\mathbb{R}^{n}$ un minimizzatore locale. Allora, non può esistere $d\in\mathbb{R}^{n}$ tale che $\nabla f(\bar{x})^{T}d<0$.
+
+La proposizione di cui sopra ancora non risolve esplicitamente il problema della verificabilità, poiché in principio ci chiederebbe di verificare una condizione per tutte le possibili direzioni. Fortunatamente, tuttavia, possiamo sfruttare quel risultato per ottenere una condizione pratica da verificare.
+
+**Proposizione 3.2.7 (Condizione necessaria di ottimalità del primo ordine).** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile e sia $\bar{x}\in\mathbb{R}^{n}$ un minimizzatore locale. Allora, $\nabla f(\bar{x})=0$.
+
+*Dimostrazione.* Assumiamo per contraddizione che $\nabla f(\bar{x})\neq 0$, cioè $\|\nabla f(\bar{x})\|>0$. Allora possiamo scegliere la direzione $d=-\nabla f(x^{k})$: otteniamo immediatamente
+
+\[
+\nabla f(\bar{x})^{T}d=-\nabla f(\bar{x})^{T}\nabla f(\bar{x})=-\|\nabla f(\bar{x})\|^{2}<0.
+\]
+
+Per la Proposizione 3.2.6 questo è assurdo, poiché $\bar{x}$ è un minimizzatore locale. $\square$
+
+Abbiamo finalmente identificato una condizione di ottimalità facilmente verificabile (necessaria) che possiamo fissare come nostro obiettivo quando progettiamo algoritmi; sappiamo che, se siamo interessati a trovare minimizzatori locali o globali, possiamo restringere la nostra ricerca tra punti dove il gradiente è nullo. Diamo un nome ai punti che soddisfano questa proprietà.
+
+**Definizione 3.2.3.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile. Diciamo che $\bar{x}\in\mathbb{R}^{n}$ è un *punto stazionario* per $f$ se $\nabla f(\bar{x})=0$.
+
+Un'interessante prospettiva sulla condizione di stazionarietà, interpretata in termini di direzioni di discesa, è che in un punto stazionario la direzione di *discesa più ripida* è nulla. Il gradiente negativo $-\nabla f(x)$ identifica infatti la direzione di discesa più ripida. Per vederlo, consideriamo il problema
+
+\[
+\min_{d:\|d\|=1}\ \nabla f(x)^{T}d,
+\]
+
+cioè il problema di trovare la direzione con la derivata direzionale negativamente più grande tra quelle con norma unitaria. Per le proprietà del prodotto scalare, abbiamo
+
+\[
+\nabla f(x)^{T}d=\|d\|\|\nabla f(x)\|\cos(\theta(d,\nabla f(x))),
+\]
+
+dove $\theta(d,\nabla f(x))$ denota l'angolo tra i vettori $d$ e $\nabla f(x)$; poiché $\|d\|=1$ e $\|\nabla f(x)\|$ è costante rispetto a $x$, il minimo nel problema è raggiunto quando $\cos(\theta(d,\nabla f(x)))$ è minimo, cioè $\cos(\theta(d,\nabla f(x)))=-1$; ciò si verifica quando $d$ è allineato con $\nabla f(x)$ ma con orientamento opposto. La soluzione del problema è quindi la direzione del gradiente negativo (normalizzata), cioè $d=-\frac{\nabla f(x)}{\|\nabla f(x)\|}$.
+
+Ancora una volta, le cose diventano più belle sotto ipotesi di convessità: le proprietà che abbiamo visto finora in questo capitolo diventano più forti nel caso convesso.
+
+**Proposizione 3.2.8.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione convessa continuamente differenziabile e $\bar{x}\in\mathbb{R}^{n}$. La direzione $d\in\mathbb{R}^{n}$ è una direzione di discesa per $f$ in $\bar{x}$ se e solo se $\nabla f(\bar{x})^{T}d<0$.
+
+*Dimostrazione.* L'implicazione $\nabla f(\bar{x})^{T}d<0\implies d$ di discesa deriva dalla Proposizione 3.2.5.
+
+Assumiamo quindi che $d$ sia di discesa; allora, $f(\bar{x}+td)<f(\bar{x})$ per $t>0$ sufficientemente piccolo. Per la convessità di $f$, abbiamo anche che $f(\bar{x}+td)\geq f(\bar{x})+t\nabla f(\bar{x})^{T}d$. Combinando le due disuguaglianze otteniamo per $t>0$ sufficientemente piccolo che
+
+\[
+f(\bar{x})>f(\bar{x})+t\nabla f(\bar{x})^{T}d,
+\]
+
+il che implica $\nabla f(\bar{x})^{T}d<0$. $\square$
+
+La condizione che collega le direzioni di discesa e le derivate direzionali è quindi necessaria e sufficiente nel caso convesso; in altre parole, questo risultato risolve l'incertezza sulle direzioni di discesa quando la derivata direzionale è zero. Possiamo ora passare a un risultato ancora più interessante.
+
+**Proposizione 3.2.9 (Condizione necessaria e sufficiente del primo ordine per l'ottimalità globale per problemi convessi).** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile. Un punto $\bar{x}\in\mathbb{R}^{n}$ è un minimizzatore globale se e solo se $\nabla f(\bar{x})=0$.
+
+*Dimostrazione.* Ancora una volta, la condizione necessaria deriva dal caso generale. Assumiamo ora che $f$ sia convessa e che $\bar{x}$ sia un punto stazionario, cioè $\nabla f(\bar{x})=0$. Per le proprietà delle funzioni convesse differenziabili, possiamo scrivere per un arbitrario $x\in\mathbb{R}^{n}$:
+
+\[
+f(x)\geq f(\bar{x})+\nabla f(\bar{x})^{T}(x-\bar{x})=f(\bar{x})+0^{T}(x-\bar{x})=f(\bar{x}).
+\]
+
+Abbiamo quindi $f(\bar{x})\leq f(x)$ per tutti gli $x\in\mathbb{R}^{n}$, il che completa la dimostrazione. $\square$
+
+Dalla proposizione precedente, vediamo che la stazionarietà è equivalente all'ottimalità globale nel caso convesso. Questo risultato è enorme, non solo perché in questo scenario abbiamo accesso a uno strumento numerico per verificare l'ottimalità globale, ma anche perché algoritmi progettati per trovare punti stazionari ci condurrebbero effettivamente verso soluzioni ottimali di problemi convessi.
+
+Per dire qualcosa di più sulle soluzioni ottimali nel caso non convesso, dobbiamo ricorrere a informazioni di ordine superiore. Nella parte conclusiva di questa sezione, assumiamo quindi che $f$ sia due volte continuamente differenziabile. Possiamo introdurre un'ulteriore caratterizzazione delle direzioni.
+
+**Definizione 3.2.4.** Sia $f;\mathbb{R}^{n}\to\mathbb{R}$ una funzione due volte continuamente differenziabile. Una direzione $d\in\mathbb{R}^{n}$ è una *direzione di curvatura negativa* in un punto $x\in\mathbb{R}^{n}$ se $d^{T}\nabla^{2}f(x)d<0$.
+
+L'informazione sulla curvatura permette di superare alcuni dei casi di indecisione dove $\nabla f(x)^{T}d=0$.
+
+**Proposizione 3.2.10.** Sia $f;\mathbb{R}^{n}\to\mathbb{R}$ una funzione due volte continuamente differenziabile. Sia $x\in\mathbb{R}^{n}$ e $d\in\mathbb{R}^{n}$. Se $\nabla f(x)^{T}d=0$ e $d^{T}\nabla^{2}f(x)d<0$, allora $d$ è una direzione di discesa in $x$.
+
+*Dimostrazione.* Applicando lo sviluppo di Taylor del
 
 ## 4. Algoritmi di Ottimizzazione Non Vincolata
 
