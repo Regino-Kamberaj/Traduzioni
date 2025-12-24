@@ -152,37 +152,37 @@
 ### **Giorno 2: Strumenti per l'Esistenza & Convessità Base (Lec 03)**
 **Riferimenti:** [GS 1.4, C.1-C.3]
 - [x] Definizione di **coercività** di una funzione
-- [ ] Dimostrare/sapere perché le **norme** e le **forme quadratiche definite positive** sono coercive
+- [x] Dimostrare/sapere perché le **norme** e le **forme quadratiche definite positive** sono coercive
 - [x] **Implicazione chiave:** funzione continua + coerciva → insieme di livello compatto → minimo esiste (via Weierstrass)
-- [ ] Definizione di **minimizzatore locale**
-- [ ] Definizioni di base: **insieme convesso**, **funzione convessa**
-- [ ] Proprietà fondamentali delle funzioni convesse
+- [x] Definizione di **minimizzatore locale**
+- [x] Definizioni di base: **insieme convesso**, **funzione convessa**
+- [x] Proprietà fondamentali delle funzioni convesse
 
 ### **Giorno 3: Convessità & Ottimalità - Primi Strumenti (Lec 04)**
 **Riferimenti:** [GS 1.2, App. B], [LN X.XX]
-- [ ] **Teorema fondamentale:** Per funzioni convesse, ogni minimo locale è globale
-- [ ] Convessità **stretta** → unicità del minimo
-- [ ] Concetto di **convessità forte** (strong convexity) [dalle note]
-- [ ] Panoramica sulle **condizioni di ottimalità** (cosa studieremo)
-- [ ] Richiami su **funzioni differenziabili** (gradiente, derivate parziali, matrice jacobiana)
+- [x] **Teorema fondamentale:** Per funzioni convesse, ogni minimo locale è globale
+- [x] Convessità **stretta** → unicità del minimo
+- [x] Concetto di **convessità forte** (strong convexity) [dalle note]
+- [x] Panoramica sulle **condizioni di ottimalità** (cosa studieremo)
+- [x] Richiami su **funzioni differenziabili** (gradiente, derivate parziali, matrice jacobiana)
 
 ### **Giorno 4: Condizioni di Ottimalità del Primo Ordine (Lec 05)**
 **Riferimenti:** [GS App. C.5, 2.1-2.3]
-- [ ] Proprietà delle **funzioni convesse e differenziabili** (derivata prima e convessità)
-- [ ] Concetto di **direzione di discesa**
-- [ ] **Condizione di discesa del primo ordine** (se ∇f(x)ᵀd < 0, allora d è direzione di discesa)
-- [ ] **Condizione necessaria del primo ordine (FONC)** per ottimo locale: ∇f(x*) = 0
-- [ ] **Per funzioni convesse:** FONC diventa anche **condizione sufficiente** per ottimo globale
+- [x] Proprietà delle **funzioni convesse e differenziabili** (derivata prima e convessità)
+- [x] Concetto di **direzione di discesa**
+- [x] **Condizione di discesa del primo ordine** (se ∇f(x)ᵀd < 0, allora d è direzione di discesa)
+- [x] **Condizione necessaria del primo ordine (FONC)** per ottimo locale: ∇f(x*) = 0
+- [x] **Per funzioni convesse:** FONC diventa anche **condizione sufficiente** per ottimo globale
 
 ### **Giorno 5: Condizioni di Ottimalità del Secondo Ordine (Lec 06)**
 **Riferimenti:** [GS 2.2, 2.3]
-- [ ] **Condizione di discesa per funzioni convesse** (dimostrazione)
-- [ ] **Condizione necessaria e sufficiente per ottimo** nel caso convesso
-- [ ] Concetto di **direzione di curvatura negativa**
-- [ ] **Condizione di discesa del secondo ordine**
-- [ ] **Condizione necessaria del secondo ordine (SONC):** ∇f(x*)=0 e Hessiana H(x*) è semidefinita positiva
-- [ ] **Condizione sufficiente del secondo ordine (SOSC):** ∇f(x*)=0 e H(x*) è definita positiva → x* è minimo locale stretto
-- [ ] Caso particolare: **funzioni quadratiche** (applicazione delle condizioni)
+- [x] **Condizione di discesa per funzioni convesse** (dimostrazione)
+- [x] **Condizione necessaria e sufficiente per ottimo** nel caso convesso
+- [x] Concetto di **direzione di curvatura negativa**
+- [x] **Condizione di discesa del secondo ordine**
+- [x] **Condizione necessaria del secondo ordine (SONC):** ∇f(x*)=0 e Hessiana H(x*) è semidefinita positiva
+- [x] **Condizione sufficiente del secondo ordine (SOSC):** ∇f(x*)=0 e H(x*) è definita positiva → x* è minimo locale stretto
+- [x] Caso particolare: **funzioni quadratiche** (applicazione delle condizioni)
 
 ### **Giorno 6: Modelli & Introduzione agli Algoritmi (Lec 07)**
 **Riferimenti:** [LN 6.2, 4.1], [GS 3.1]

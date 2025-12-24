@@ -1,0 +1,2 @@
+**Definizione 1.3.7 (Matrice Jacobiana)** 
+Sia $F : \mathbb{R}^n \to \mathbb{R}^m$ una funzione vettoriale **continua**. Diciamo che $F$ è una [[continuamente differenziabile]] se ogni componente $F_i : \mathbb{R}^n \to \mathbb{R}$ è **continuamente differenziabile** e definiamo la *matrice Jacobiana* $J_F : \mathbb{R}^n \to \mathbb{R}^{m \times n}$ come $$J_F(x) =\begin{pmatrix}\nabla F_1(x)^T \\\vdots \\\nabla F_m(x)^T\end{pmatrix}$$

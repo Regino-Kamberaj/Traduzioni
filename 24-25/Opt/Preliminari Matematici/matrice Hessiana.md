@@ -1,0 +1,5 @@
+
+**Definizione 1.3.10 (Matrice Hessiana)** 
+Sia $f : \mathbb{R}^n \to \mathbb{R}$, con $f \in C^1(\mathbb{R}^n)$. Supponiamo che, in un punto $x \in \mathbb{R}^n$, ogni componente $\nabla f(x)_i$ del gradiente **ammetta la derivata parziale** ==rispetto a ciascuna variabile== $x_j$, con $j = 1, \dots, n$.
+Definiamo la *matrice Hessiana* $\nabla^2 f(x)$ di $f$ in $x$ come la matrice (simmetrica) data dalle **derivate seconde** di $f$, ossia: $$\nabla^2 f(x) = \begin{pmatrix} \frac{\partial^2 f (x)}{\partial x_1^2} & \dots & \frac{\partial^2 f (x)}{\partial x_1 \partial x_n} \\ \vdots & \ddots & \vdots \\ \frac{\partial^2 f (x)}{\partial x_n \partial x_1} & \dots & \frac{\partial^2 f (x)}{\partial x_n^2} \end{pmatrix}$$
+Si noti che l'Hessiana può essere visto come la [[matrice Jacobiana]] del gradiente $\nabla f(x)$, ossia:$$\nabla^2 f(x) = J_{\nabla f}(x)$$

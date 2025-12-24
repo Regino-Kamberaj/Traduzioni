@@ -71,65 +71,7 @@ In questa sezione riportiamo alcuni concetti preliminari, definizioni e propriet
 - Denotiamo con $\mathcal{S}_n \subset \mathbb{R}^{n \times n}$ l’insieme delle matrici quadrate simmetriche di dimensione $n \times n$.
 - Data una matrice $A \in \mathcal{S}_n$ (di cui sappiamo che gli autovalori sono numeri reali), denotiamo con $\lambda_{\text{min}}(A)$ e $\lambda_{\text{max}}(A)$ rispettivamente il più piccolo e il più grande autovalore di $A$.
 
-### Matrice definita/semidefinita positiva
 
-**Definizione 1.1:** Una matrice $A \in \mathcal{S}_n$ è:
-
-- *Semidefinita positiva*, denotata $A \succeq 0$, se $x^T A x \geq 0$ per ogni $x \in \mathbb{R}^n$;
-- *Definita positiva*, denotata $A \succ 0$, se $x^T A x > 0$ per ogni $x \in \mathbb{R}^n, x \neq 0$.
-
-**Proposizione 1.1:** Una matrice $A \in \mathcal{S}_n$ è *semidefinita positiva* se e solo se:
-- Tutti gli autovalori di $A$ sono **non negativi**, cioè $\lambda_{\text{min}}(A) \geq 0$. 
-Analogamente, $A$ è *definita positiva* se e solo se:
-- Tutti gli autovalori di $A$ sono **strettamente positivi**, cioè $\lambda_{\text{min}}(A) > 0$.
-
-**Proposizione 1.2:** Data $A \in \mathcal{S}_n, A \succeq 0$, per ogni $x \in \mathbb{R}^n$ abbiamo:
-
-- $\lambda_{\text{min}}(A) |x|_2^2 \leq x^T A x \leq \lambda_{\text{max}}(A) |x|_2^2$;
-- $\lambda_{\text{min}}(A) |x| \leq |A x| \leq \lambda_{\text{max}}(A) |x|$.
-
-
-### Riepilogo derivate 
-
-**Definizione 1.3. (Derivata Direzionale)** Sia $f : \mathbb{R}^n \to \mathbb{R}$. Diciamo che una funzione ha *derivata direzionale* $Df(x, d)$ in un punto $x \in \mathbb{R}^n$ lungo la direzione $d \in \mathbb{R}^n$ se:
-- il limite $\lim_{t \to 0^+} \frac{f(x + td) - f(x)}{t} = Df(x, d)$ **esiste ed è finito**.
-
-**Definizione 1.4. (Derivata Parziale)** Sia $f : \mathbb{R}^n \to \mathbb{R}$. Diciamo che una funzione ha *derivata parziale* $\frac{\partial f}{\partial x_j}(x)$ in un punto $x \in \mathbb{R}^n$ rispetto alla variabile $x_j$ se:
-- $f$ ha una derivata direzionale lungo $e_j$ e  $Df(x, e_j) = \frac{\partial f (x)}{\partial x_j}$
-
-**Definizione 1.5. (Gradiente)** Sia $f : \mathbb{R}^n \to \mathbb{R}$ e si supponga che $f$ ammetta in un punto $x$ la derivata parziale rispetto a ciascuna variabile $x_i$, con $i = 1, \dots, n$.
-- Definiamo il *gradiente* $\nabla f(x)$ di $f$ in $x$ come il vettore dato da:
-	$\nabla f(x) = \begin{pmatrix} \frac{\partial f (x)}{\partial x_1} \\ \vdots \\ \frac{\partial f (x)}{\partial x_n}\end{pmatrix}$
-
-**Definizione 1.6. (Funzione continuamente differenziabile)** Sia $f : \mathbb{R}^n \to \mathbb{R}$. Diciamo che $f$ è *continuamente differenziabile* su $\mathbb{R}^n$, e lo denotiamo con $f \in C^1(\mathbb{R}^n)$, se:
-- Il gradiente $\nabla f(x)$ **esiste** per ogni $x \in \mathbb{R}^n$
-- E la funzione $\nabla f : \mathbb{R}^n \to \mathbb{R}^n$ è continua su $\mathbb{R}^n$
-
-**Proposizione 1.4.** Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione continuamente differenziabile. Allora, per ogni $x \in \mathbb{R}^n$ e $d \in \mathbb{R}^n$, si ha:
-
-	$Df(x, d) = \nabla f(x)^T d$
-
-**Definizione 1.7. (Matrice Jacobiana)** Sia $F : \mathbb{R}^n \to \mathbb{R}^m$ una funzione vettoriale **continua**. Diciamo che $F$ è **continuamente differenziabile** se ogni componente $F_i : \mathbb{R}^n \to \mathbb{R}$ è **continuamente differenziabile** e definiamo la *matrice Jacobiana* $J_F : \mathbb{R}^n \to \mathbb{R}^{m \times n}$ come
-
-	$J_F(x) =\begin{pmatrix}\nabla F_1(x)^T \\\vdots \\\nabla F_m(x)^T\end{pmatrix}$
-
-**Definizione 1.8. (Matrice Hessiana)** Sia $f : \mathbb{R}^n \to \mathbb{R}$, con $f \in C^1(\mathbb{R}^n)$. 
-Supponiamo che, in un punto $x \in \mathbb{R}^n$, ogni componente $\nabla f(x)_i$ del gradiente **ammetta la derivata parziale** ==rispetto a ciascuna variabile== $x_j$, con $j = 1, \dots, n$.
-Definiamo la *matrice Hessiana* $\nabla^2 f(x)$ di $f$ in $x$ come la matrice (simmetrica) data dalle **derivate seconde** di $f$, ossia:
-
-	$\nabla^2 f(x) = \begin{pmatrix} \frac{\partial^2 f (x)}{\partial x_1^2} & \dots & \frac{\partial^2 f (x)}{\partial x_1 \partial x_n} \\ \vdots & \ddots & \vdots \\ \frac{\partial^2 f (x)}{\partial x_n \partial x_1} & \dots & \frac{\partial^2 f (x)}{\partial x_n^2} \end{pmatrix}$
-
-
-**Definizione 1.11.** Sia $f : \mathbb{R}^n \to \mathbb{R}$.
-Diciamo che $f$ è **due volte continuamente differenziabile** su $\mathbb{R}^n$, e lo denotiamo con $f \in C^2(\mathbb{R}^n)$, se:
-- La matrice Hessiana $\nabla^2 f(x)$ **esiste per ogni** $x \in \mathbb{R}^n$
-- La funzione $\nabla^2 f : \mathbb{R}^n \to \mathbb{R}^{n \times n}$ è **continua** su $\mathbb{R}^n$
-
-Si noti che l'Hessiano può essere visto come la matrice Jacobiana del gradiente $\nabla f(x)$, ossia:	$\nabla^2 f(x) = J_{\nabla f}(x)$
-
-**Proposizione 1.5.** Sia $f (x) = \frac{1}{2} x^T Qx + c^T x$, con $Q \in S^n$ e $x \in \mathbb{R}^n$. Allora si ha:
-- $\nabla f (x) = Qx + c$;
-- $\nabla^2 f (x) = Q$
 ##### Lipschitz-continuità e L-smoothness
 
 **Definizione 1.9.** Sia $F : \mathbb{R}^n \to \mathbb{R}^m$. Diciamo che $f$ è *Lipschitz-continua* con costante $L$ se:
@@ -150,39 +92,10 @@ Si noti che l'Hessiano può essere visto come la matrice Jacobiana del gradiente
 	- $f (x + d) = f (x) + \nabla f (\xi)^T d$
 	- inoltre $f (x + d) = f (x) + \nabla f (x)^T d + \beta (x, d)$  dove $\lim_{\|d\| \to 0} \frac{\beta (x, d)}{\|d\|} = 0$
 
-- (**Taylor**) Se $f \in C^2 (\mathbb{R}^n)$, per ogni $x \in \mathbb{R}^n$ e $d \in \mathbb{R}^n$, esiste $t \in (0,1)$ tale che $\xi = x + td$ e
-	- $f (x + d) = f (x) + \nabla f (x)^T d + \frac{1}{2} d^T \nabla^2 f (\xi) d$
-	- inoltre, $f (x + d) = f (x) + \nabla f (x)^T d + \frac{1}{2} d^T \nabla^2 f (x) d + \beta (x, d)$ dove $\lim_{\|d\| \to 0} \frac{\beta (x, d)}{\|d\|^2} = 0$
-
 **Proposizione 1.7** (**Teorema del valor medio per gli integrali**). Sia $F : \mathbb{R}^n \to \mathbb{R}^m$ una funzione **continuamente differenziabile**. Allora, per ogni $x, y \in \mathbb{R}^n$, si ha
 
 	$F (x) = F (y) + \int_0^1 J_F (y + t (x - y)) (x - y) dt$
 
-### Convessità
-
-**Definizione 1.12.** Diciamo che una funzione $f : \mathbb{R}^n \to \mathbb{R}$ è:
-- **convessa** se, per ogni $x, y \in \mathbb{R}^n$ e $\lambda \in [0,1]$, si ha:
-
-	  $f (\lambda x + (1 - \lambda) y) \leq \lambda f (x) + (1 - \lambda) f (y)$ (funzione sta sotto)
-
-- **strettamente convessa** se, per ogni $x, y \in \mathbb{R}^n$ e $\lambda \in (0,1)$, si ha:
-  
-	$f (\lambda x + (1 - \lambda) y) < \lambda f (x) + (1 - \lambda) f (y)$
-
-- **fortemente convessa** se esiste $\mu > 0$ tale che $f (x) - \mu \|x\|^2$ è una **funzione convessa**, ovvero $f (x) = g (x) + \mu \|x\|^2$ con $g$ funzione convessa.
-
-**Proposizione 1.9.** Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione *fortemente convessa*. Allora $f$ è **coerciva** e **strettamente convessa**.
-
-**Proposizione 1.10.** Sia $f : \mathbb{R}^n \to \mathbb{R}$. Le seguenti proprietà valgono:
-- Se  $f \in C^1 (\mathbb{R}^n)$, allora $f$ è **convessa** se e solo se:
-	
-	$f (y) \geq f (x) + \nabla f (x)^T (y - x) \quad \forall x, y \in \mathbb{R}^n$ (funzione sta sopra)
-	
-- Se $f \in C^2 (\mathbb{R}^n)$, allora $f$ è **convessa** se e solo se
-
-	  $\nabla^2 f (x) \succeq 0 \quad \forall x \in \mathbb{R}^n$ (Hessiana semidefinita positiva)
-
-  Inoltre, se $\nabla^2 f (x) \succ 0$ per ogni $x \in \mathbb{R}^n$, allora $f$ è **strettamente convessa**.
 
 ## 2. Introduzione ai Problemi di Ottimizzazione
 
@@ -242,6 +155,8 @@ Qui ci occuperemo di problemi non lineari e continui di ottimizzazione, sia **co
 	=> Notare è un problema di ottimizzazione non vincolato!
  
 ## 3. Problemi di ottimizzazione: caratterizzazione delle soluzioni
+
+### Definzione punto ammissibile
 
 In queste note, saremo interessati a trattare in modo appropriato problemi di ottimizzazione della forma: $$\min_{x\in S}\ f(x), \tag{3.1}$$
 dove $f:\mathbb{R}^{n}\to\mathbb{R}$ è una funzione che, per il momento, assumiamo solo essere **continua**, e $S\subseteq\mathbb{R}^{n}$ è l'insieme ammissibile.
@@ -311,7 +226,7 @@ In entrambi i casi abbiamo quindi $f(\bar{x})\leq f(z)$; poiché $z$ è un punto
 
 A prima vista, il risultato di cui sopra potrebbe sembrare un po' astratto, poiché non è chiaro come stabilire praticamente se una funzione ha o meno un insieme di livello compatto. Tuttavia, richiamando la proposizione 1.3.1, otteniamo immediatamente la seguente condizione sufficiente di esistenza di soluzioni.
 
-**Proposizione 3.1.3.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continua. Se $f$ è [[coerciva]], allora $f$ ammette un punto di minimo su $\mathbb{R}^{n}$.
+**Proposizione 3.1.3.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continua. Se $f$ è **[[coerciva]]**, allora $f$ ammette un punto di minimo su $\mathbb{R}^{n}$.
 => coerciva ha insiemi di livello compatti => insieme di livello compatto $f$ ammette punto di minimo su $\mathbb{R}^n$ => il problema ammette soluzione e dunque è ben definito.
 
 Per avere un'intuizione della condizione sufficiente della Proposizione 3.1.3, vedere la Figura 3.2.
@@ -327,206 +242,769 @@ Infatti, è facile mostrare che, per qualsiasi successione $\{x^{k}\}$ tale che 
 
 **Esempio 3.1.2.** Un'importante classe di problemi di ottimizzazione a cui faremo spesso riferimento è quella dei *problemi quadratici*, cioè problemi della forma $$
 \min_{x\in\mathbb{R}^{n}}\ f(x)=\frac{1}{2}x^{T}Qx+c^{T}x$$
-dove $Q\in\mathcal{S}_{n}$ (ovvero appartiene al set di matrici quadratiche e simmetriche di dimensioni nxn) e $c\in\mathbb{R}^{n}$. Un'istanza di questa classe di problemi ammette una soluzione ottimale se $Q\succ 0$. (è definita positiva). In effetti, $f$ è coercitiva se $Q$ è definita positiva.
+dove $Q\in\mathcal{S}_{n}$ (ovvero appartiene al set di matrici quadratiche e simmetriche di dimensioni nxn) e $c\in\mathbb{R}^{n}$. Un'istanza di questa classe di problemi ammette una soluzione ottimale se $Q\succ 0$. (è definita positiva). In effetti, $f$ è coercitiva se $Q$ è [[definita positiva]].
 
-Infatti, sia $Q\succ 0$ e sia $\{x^{k}\}$ una successione arbitraria tale che $\|x^{k}\|\to\infty$. Richiamando la Proposizione 1.2.3 e la disuguaglianza di Cauchy-Schwarz, per tutti i $k$, abbiamo$$f(x^{k})=(x^{k})^{T}Qx^{k}+c^{T}x^{k}\geq\lambda_{\min}(Q)\|x^{k}\|^{2}-\|c\|\|x^{k}\|=\|x^{k}\|(\lambda_{\min}(Q)\|x^{k}\|-\|c\|).
+Infatti, sia $Q\succ 0$ e sia $\{x^{k}\}$ una successione arbitraria tale che $\|x^{k}\|\to\infty$. Richiamando la Proposizione 1.2.3 e la ![[disuguaglianza di Cauchy-Schwarz]], per tutti i $k$, abbiamo$$f(x^{k})=(x^{k})^{T}Qx^{k}+c^{T}x^{k}\geq\lambda_{\min}(Q)\|x^{k}\|^{2}-\|c\|\|x^{k}\|=\|x^{k}\|(\lambda_{\min}(Q)\|x^{k}\|-\|c\|).
 $$
 Prendendo i limiti per $k\to\infty$, otteniamo immediatamente che $f(x^{k})\to\infty$; essendo $\{x^{k}\}$ arbitraria, questo prova che $f$ è **coercitiva**.
 
 In realtà, una funzione quadratica è coercitiva solo se $Q\succ 0$. Assumiamo per contraddizione che $f$ sia coercitiva ma $Q\not\succ 0$. Per quest'ultima ipotesi, esiste $y\in\mathbb{R}^{n}$, $y\neq 0$, tale che $y^{T}Qy\leq 0$. Assumiamo, senza perdita di generalità, che $c^{T}y\leq 0$, e sia $\{x^{k}\}$ una successione definita come $x^{k}=ky$. Chiaramente, $\|x^{k}\|\to\infty$. Abbiamo anche $$f(x^{k})=k^{2}y^{T}Qy+kc^{T}y\leq 0$$
 Prendendo i limiti per $k\to\infty$ deve essere $\lim_{k\to\infty}f(x^{k})\leq 0$, il che è assurdo poiché $f$ è coercitiva.
 
-### **3.2 Condizioni di ottimalità**
+### 3.2 Condizioni di ottimalità
 
 Nella sezione precedente, abbiamo discusso ampiamente dell'esistenza di soluzioni ottimali e della buona posizione dei problemi di ottimizzazione. Questa discussione fondamentale ma preliminare, tuttavia, non si avvicina al nostro vero interesse: vogliamo trovare soluzioni ottimali e, a tal fine, dobbiamo caratterizzarle precisamente.
 
-Ora, la prima deludente verità di cui dobbiamo essere consapevoli è che risolvere, in termini stretti, problemi di ottimizzazione è difficile. In generale, trovare un minimizzatore globale è difficile. Certificare che una soluzione è un minimizzatore globale è praticamente impossibile, a meno che il problema non abbia caratteristiche piacevoli da sfruttare. Anche nel caso abbastanza favorevole di una funzione $L$-liscia su un insieme ammissibile compatto, ottenere un minimizzatore globale certificato è noto essere un compito $\mathcal{NP}$-difficile.
+Ora, la prima deludente verità di cui dobbiamo essere consapevoli è che risolvere, in termini stretti, problemi di ottimizzazione è difficile. In generale, trovare un **minimizzatore globale** è difficile. Certificare che una soluzione è un minimizzatore globale è praticamente impossibile, a meno che il problema non abbia caratteristiche piacevoli da sfruttare. Anche nel caso abbastanza favorevole di una funzione $L$-liscia su un insieme ammissibile compatto, ottenere un minimizzatore globale certificato è noto essere un **compito $\mathcal{NP}$-difficile**.
 
 Nei problemi non vincolati, non abbiamo speranza. La ragione di ciò risiede nella stessa definizione di ottimalità globale: anche se raggiungessimo una soluzione molto buona, dovremmo essere sicuri che da nessuna parte, in uno spazio infinito, la funzione scenda al di sotto di quel valore, per poter affermare con certezza che il problema è stato risolto (Figura 3.3).
 
-Un argomento simile può essere fatto per problemi con un insieme ammissibile limitato ma in cui la funzione obiettivo può variare a un ritmo arbitrariamente veloce. Un ramo importante della programmazione matematica, chiamato *ottimizzazione globale*, si concentra sull'elaborazione di strategie per recuperare efficacemente soluzioni ottimali globali in scenari generali. Gli algoritmi di ottimizzazione globale, che non verranno trattati qui in dettaglio, combinano strategie euristiche, lo sfruttamento di informazioni utili dal problema particolare e subroutine algoritmiche mirate a migliorare la soluzione localmente. Questi ultimi metodi, chiamati *algoritmi di ottimizzazione locale* saranno al centro di questo corso, e sono progettati per raggiungere soluzioni che soddisfino un concetto "rilassato" di ottimalità.
+![[Pasted image 20251222203920.png]]
 
-**Definizione 3.2.1.** Un punto ammissibile $\bar{x}\in S$ è un *punto di ottimo locale* (o minimizzatore locale) se esiste $\epsilon>0$ tale che $f(\bar{x})\leq f(x)$ per tutti gli $x\in S\cap B(\bar{x},\epsilon)$.
+Un argomento simile può essere fatto per problemi con un insieme ammissibile limitato ma in cui la funzione obiettivo può variare a un ritmo arbitrariamente veloce. 
 
-In altre parole, un minimizzatore locale soddisfa la stessa condizione dell'ottimalità globale, ma ristretta a un intorno (ammissibile) di punti. L'ottimalità locale può essere vista come una *condizione necessaria di ottimalità globale*, poiché ovviamente qualsiasi minimizzatore globale è anche un minimizzatore locale. Ci rendiamo immediatamente conto che il concetto di ottimalità locale è molto più gestibile di quello globale, poiché non siamo tenuti ad avere conoscenza su punti arbitrariamente distanti.
+Un ramo importante della programmazione matematica, chiamato *ottimizzazione globale*, si concentra sull'elaborazione di strategie per recuperare efficacemente **soluzioni ottimali globali** in scenari generali. Gli algoritmi di ottimizzazione globale, che non verranno trattati qui in dettaglio, combinano strategie euristiche, lo sfruttamento di informazioni utili dal problema particolare e subroutine algoritmiche mirate a migliorare la **soluzione localmente**. Questi ultimi metodi, chiamati *algoritmi di ottimizzazione locale* saranno al centro di questo corso, e sono progettati per raggiungere soluzioni che soddisfino un concetto "rilassato" di ottimalità.
 
-Nella presentazione degli algoritmi di ottimizzazione svolta nei capitoli successivi, stabiliremo come nostro obiettivo l'ottenimento di un punto di ottimo locale, e ne saremo soddisfatti. Poi, come accennato in precedenza, tali algoritmi locali potrebbero in linea di principio essere impiegati all'interno di framework di ottimizzazione globale; come semplice esempio, pensa di eseguire un metodo locale in modalità multi-start: raggiungeremmo diversi minimizzatori locali e potremmo infine scegliere il migliore tra di essi.
+**Definizione 3.2.1.** Un punto ammissibile $\bar{x}\in S$ è un *punto di **ottimo locale*** (o minimizzatore locale) se esiste $\epsilon>0$ tale che $f(\bar{x})\leq f(x)$ per tutti gli $x\in S\cap B(\bar{x},\epsilon)$.
 
-Un altro aspetto abbastanza ovvio è che non tutti gli ottimizzatori locali saranno uguali; con riferimento alla Figura 3.3, finire nel minimizzatore locale nell'angolo in alto a destra dell'immagine non è la stessa cosa che arrivare ai minimizzatori in basso a sinistra. Il primo punto è infatti molto peggiore di molte soluzioni "non localmente ottimali", mentre le seconde sono tutte molto vicine in valore obiettivo al presunto minimizzatore globale.
+In altre parole, un minimizzatore locale soddisfa la stessa condizione dell'ottimalità globale, m==a ristretta a un intorno (ammissibile) di punti==. L'ottimalità locale può essere vista come una *condizione necessaria di ottimalità globale*, poiché ovviamente qualsiasi minimizzatore globale è anche un minimizzatore locale. Ci rendiamo immediatamente conto che il concetto di ottimalità locale è molto più gestibile di quello globale, poiché non siamo tenuti ad **avere conoscenza** su punti arbitrariamente distanti.
+
+Nella presentazione degli algoritmi di ottimizzazione svolta nei capitoli successivi, stabiliremo come nostro obiettivo l'ottenimento di un punto di **ottimo locale**, e ne saremo soddisfatti. Poi, come accennato in precedenza, tali algoritmi locali potrebbero in linea di principio essere impiegati all'interno di framework di ottimizzazione globale; come semplice esempio, pensa di eseguire un metodo locale in modalità multi-start: raggiungeremmo diversi minimizzatori locali e potremmo infine scegliere il migliore tra di essi.
+
+Un altro aspetto abbastanza ovvio è che non tutti gli ottimizzatori locali saranno uguali; con riferimento alla Figura 3.3, finire nel minimizzatore locale nell'angolo in alto a destra dell'immagine non è la stessa cosa che arrivare ai minimizzatori in basso a sinistra. Il primo punto è infatti molto peggiore di molte soluzioni "non localmente ottimali", mentre le seconde sono tutte molto vicine in valore obiettivo al **presunto minimizzatore globale**.
+
+---
 
 La discussione finora è generale e vale nella maggior parte dei casi. C'è, tuttavia, uno scenario fortunato e cruciale in cui le cose sono in realtà molto migliori. Formalizziamo questo caso con la seguente proposizione.
 
-**Proposizione 3.2.1.** Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso e $f:S\to\mathbb{R}$ una funzione convessa. Allora, tutti i minimizzatori locali di $f$ su $S$ sono anche minimizzatori globali.
+**Proposizione 3.2.1.**
+Sia $S\subseteq\mathbb{R}^{n}$ un **[[insieme convesso]]** e $f:S\to\mathbb{R}$ una **[[funzione convessa]]**. Allora, tutti i minimizzatori **locali** di $f$ su $S$ sono anche minimizzatori **globali**.
 
-*Dimostrazione.* Sia $\bar{x}$ un minimizzatore locale, cioè esiste $\epsilon>0$ tale che $f(\bar{x})\leq f(x)$ per tutti gli $x\in B(\bar{x},\epsilon)\cap S$. Sia $y\in S$ una soluzione ammissibile arbitraria. Per la convessità di $f$, sappiamo che
+*Dimostrazione.*
+Sia $\bar{x}$ un **minimizzatore locale**, cioè esiste $\epsilon>0$ tale che $f(\bar{x})\leq f(x)$ per tutti gli $x\in B(\bar{x},\epsilon)\cap S$. 
 
-\[
-f((1-\lambda)\bar{x}+\lambda y)\leq(1-\lambda)f(\bar{x})+\lambda f(y)
-\]
+Sia $y\in S$ una **soluzione ammissibile** arbitraria. Per la convessità di $f$, sappiamo che $$f((1-\lambda)\bar{x}+\lambda y)\leq(1-\lambda)f(\bar{x})+\lambda f(y)$$per tutti i $\lambda\in[0,1]$. 
 
-per tutti i $\lambda\in[0,1]$. Sia $z=(1-\lambda)\bar{x}+\lambda y$. Per la convessità di $S$, $z\in S$ per tutti i $\lambda\in[0,1]$. Inoltre, per $\lambda\to 0$ abbiamo $z\to\bar{x}$; quindi, per $\lambda>0$ sufficientemente piccolo, $z\in B(\bar{x},\epsilon)$. Quindi, $z\in S\cap B(\bar{x},\epsilon)$ e poi
+Sia $z=(1-\lambda)\bar{x}+\lambda y$. Per la convessità di $S$, $z\in S$ per tutti i $\lambda\in[0,1]$.
 
-\[
-f(z)\geq f(\bar{x}).
-\]
+Inoltre, per $\lambda\to 0$ abbiamo $z\to\bar{x}$; quindi, per $\lambda>0$ sufficientemente piccolo, $z\in B(\bar{x},\epsilon)$. Quindi, $z\in S\cap B(\bar{x},\epsilon)$ e poi $f(z)\geq f(\bar{x})$ (Rivedere)
 
-Combinando le due disuguaglianze, abbiamo
+Combinando le due disuguaglianze, abbiamo$$f(\bar{x})\leq f(z)\leq(1-\lambda)f(\bar{x})+\lambda f(y)$$
+da cui otteniamo $\lambda f(\bar{x})\leq\lambda f(y)$ e infine $f(\bar{x})\leq f(y)$. Poiché $y$ è un punto ammissibile arbitrario, otteniamo la tesi. => il minimizzatore locale è minimo anche per qualsiasi altro punto di $S$ 
 
-\[
-f(\bar{x})\leq f(z)\leq(1-\lambda)f(\bar{x})+\lambda f(y),
-\]
+---
 
-da cui otteniamo $\lambda f(\bar{x})\leq\lambda f(y)$ e infine $f(\bar{x})\leq f(y)$. Poiché $y$ è un punto ammissibile arbitrario, otteniamo la tesi. $\square$
-
-La Proposizione 3.2.1 ci fornisce un risultato tremendamente forte e utile: sotto ipotesi di convessità, minimizzatori locali e globali coincidono. In un problema convesso, se siamo in grado di raggiungere una soluzione localmente ottimale abbiamo finito: siamo garantiti di aver raggiunto una soluzione globalmente ottimale. Siamo quindi particolarmente felici quando qualche compito del mondo reale può essere modellato come un problema di ottimizzazione convesso, poiché sappiamo che possiamo davvero ottenere la soluzione migliore possibile. Nei capitoli successivi vedremo altri motivi che rendono la convessità una proprietà molto desiderabile.
+La Proposizione 3.2.1 ci fornisce un risultato tremendamente forte e utile: sotto ipotesi di **convessità**, ==minimizzatori locali e globali coincidono==. In un problema convesso (vincolato), se siamo in grado di raggiungere una soluzione localmente ottimale abbiamo finito: siamo garantiti di aver raggiunto una soluzione **globalmente ottimale**. Siamo quindi particolarmente felici quando qualche compito del mondo reale può essere modellato come un problema di ottimizzazione **convesso**, poiché sappiamo che possiamo davvero ottenere la soluzione migliore possibile. Nei capitoli successivi vedremo altri motivi che rendono la convessità una proprietà molto desiderabile.
 
 Un'ulteriore bella proprietà può essere affermata sotto ipotesi leggermente più forti.
 
-**Proposizione 3.2.2.** Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso e $f:S\to\mathbb{R}$ una funzione strettamente convessa. Allora, il minimizzatore globale di $f$ su $S$, se esiste, è unico.
+**Proposizione 3.2.2.** 
+Sia $S\subseteq\mathbb{R}^{n}$ un [[insieme convesso]] e $f:S\to\mathbb{R}$ una  [[funzione convessa]] **strettamente**. Allora, il minimizzatore globale di $f$ su $S$, **se esiste, è unico**.
 
-*Dimostrazione.* Supponiamo per contraddizione che $f$ abbia due minimizzatori globali distinti $x,y\in S$. In altre parole $f(x)=f(y)=f^{*}$ e $x\neq y$. Per la stretta convessità di $f$, possiamo scrivere
+*Dimostrazione.* 
+Supponiamo per contraddizione che $f$ abbia ==due minimizzatori globali distinti== $x,y\in S$.In altre parole $f(x)=f(y)=f^{*}$ e $x\neq y$.
+Per la **stretta convessità** di $f$, possiamo scrivere per tutti i $\lambda\in(0,1)$. $$f((1-\lambda)x+\lambda y)<(1-\lambda)f(x)+\lambda f(y)$$
+Per la convessità di $S$, il punto $z=(1-\lambda)x+\lambda y$ appartiene a $S$. Abbiamo quindi $$f(z)<(1-\lambda)f(x)+\lambda f(y)=(1-\lambda+\lambda)f^{*}=f^{*}$$
+il che è assurdo, poiché il valore di $f$ nel punto ammissibile $z$ non può essere strettamente inferiore all'ottimo globale $f^{*}$. => ho trovato un punto con valore della funziona minore dell'ottimo globale... contraddizione!
 
-\[
-f((1-\lambda)x+\lambda y)<(1-\lambda)f(x)+\lambda f(y)
-\]
+---
 
-per tutti i $\lambda\in(0,1)$. Per la convessità di $S$, il punto $z=(1-\lambda)x+\lambda y$ appartiene a $S$. Abbiamo quindi
+Richiamando le Proposizioni 1.3.7 (sulle funzioni fortemente convesse) e 3.1.3 (funzioni coercive ammettono minimo), otteniamo immediatamente un ultimo risultato per **funzioni fortemente convesse.**
 
-\[
-f(z)<(1-\lambda)f(x)+\lambda f(y)=(1-\lambda+\lambda)f^{*}=f^{*},
-\]
+**Proposizione 3.2.3.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione fortemente convessa. Allora, $f$ ammette un unico minimizzatore globale su $\mathbb{R}^{n}$. => funzioni fortemente convesse => coercive e strettamente convesse => ammettono minimo e questo è unico!
 
-il che è assurdo, poiché il valore di $f$ nel punto ammissibile $z$ non può essere strettamente inferiore all'ottimo globale $f^{*}$. $\square$
+A questo punto, dobbiamo evidenziare un problema pratico associato all'ottimalità locale: ancora non sappiamo ==come controllare concretamente se una soluzione è un ottimizzatore locale== o meno. La definizione non ci aiuta, non è chiaro quale sarebbe il raggio $\epsilon$ dell'intorno e, soprattutto, non c'è modo di controllare il valore obiettivo in ciascuno degli infiniti punti dell'intorno. Abbiamo quindi bisogno di arrivare a qualche condizione di ottimalità che sia verificabile per mezzo di operazioni numeriche. Questo sarà il nostro obiettivo per le prossime sezioni.
 
-Richiamando le Proposizioni 1.3.7 e 3.1.3, otteniamo immediatamente un ultimo risultato per funzioni fortemente convesse.
-
-**Proposizione 3.2.3.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione fortemente convessa. Allora, $f$ ammette un unico minimizzatore globale su $\mathbb{R}^{n}$.
-
-A questo punto, dobbiamo evidenziare un problema pratico associato all'ottimalità locale: ancora non sappiamo come controllare concretamente se una soluzione è un ottimizzatore locale o meno. La definizione non ci aiuta, non è chiaro quale sarebbe il raggio $\epsilon$ dell'intorno e, soprattutto, non c'è modo di controllare il valore obiettivo in ciascuno degli infiniti punti dell'intorno. Abbiamo quindi bisogno di arrivare a qualche condizione di ottimalità che sia verificabile per mezzo di operazioni numeriche. Questo sarà il nostro obiettivo per le prossime sezioni.
-
-### **3.2.1 Il caso non vincolato**
+#### 3.2.1 Il caso non vincolato
 
 In questa sezione, affrontiamo specificamente il caso $S=\mathbb{R}^{n}$, cioè analizziamo problemi non vincolati. Per sviluppare ulteriormente la nostra discussione, dobbiamo introdurre un concetto che costituirà un ingranaggio chiave sia nell'analisi delle soluzioni che nella progettazione di algoritmi nell'ottimizzazione non lineare.
 
-**Definizione 3.2.2.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ e $x\in\mathbb{R}^{n}$. Diciamo che una direzione $d\in\mathbb{R}^{n}$ è una *direzione di discesa* per $f$ nel punto $x$ se esiste $\bar{t}>0$ tale che $f(x+td)<f(x)$ per tutti i $t\in(0,\bar{t})$.
+**Definizione 3.2.2.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ e $x\in\mathbb{R}^{n}$. Diciamo che una direzione $d\in\mathbb{R}^{n}$ è una ***direzione di discesa*** per $f$ nel punto $x$ se esiste $\bar{t}>0$ tale che $f(x+td)<f(x)$ per tutti i $t\in(0,\bar{t})$.
 
-In parole povere, se ci muoviamo da $x$ con un passo sufficientemente piccolo lungo $d$, siamo garantiti di far diminuire la funzione obiettivo. Ci aspettiamo naturalmente che tale operazione non sia possibile in un minimizzatore locale $\bar{x}$: in quel caso abbiamo infatti $f(\bar{x})\leq f(x)$ per tutti gli $x$ in un intorno, e quindi per qualsiasi punto ottenuto come $\bar{x}+td$ per qualsiasi direzione e per $t$ sufficientemente piccolo.
+In parole povere, se ci muoviamo da $x$ con **un passo sufficientemente piccolo** lungo $d$, siamo garantiti di far **diminuire** la funzione obiettivo.
+
+![[Pasted image 20251222234046.png]]
+
+---
+
+Ci aspettiamo naturalmente che tale operazione ==non sia possibile in un minimizzatore locale== $\bar{x}$: in quel caso abbiamo infatti $f(\bar{x})\leq f(x)$ per tutti gli $x$ in un intorno, e quindi per qualsiasi punto ottenuto come $\bar{x}+td$ per qualsiasi direzione e per $t$ sufficientemente piccolo.
 
 Possiamo quindi enunciare la seguente condizione di ottimalità.
 
-**Proposizione 3.2.4.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ e sia $\bar{x}$ un minimizzatore locale di $f$; allora, non esiste alcuna direzione di discesa per $f$ in $\bar{x}$.
+**Proposizione 3.2.4.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ e sia $\bar{x}$ un **minimizzatore locale** di $f$; allora, ==non esiste alcuna direzione di discesa== per $f$ in $\bar{x}$.
 
-Alla prima impressione, la condizione di cui sopra è spesso immaginata essere una condizione necessaria e sufficiente per l'ottimalità locale. In realtà, è *solo necessaria*. Il seguente esempio aiuta a persuadere che non è sufficiente.
+Alla prima impressione, la condizione di cui sopra è spesso immaginata essere una condizione necessaria e sufficiente per l'ottimalità locale. In realtà, è *solo necessaria*. Il seguente esempio aiuta a persuadere che **non è sufficiente**.
 
 **Esempio 3.2.1.** Facendo riferimento anche alla Figura 3.5, considera la funzione
+$$f(x)=\begin{cases}x\sin(\frac{1}{x})&\text{se }x\neq 0,\\
+0&\text{se }x=0,\end{cases}$$
 
-\[
-f(x)=\begin{cases}x\sin(\frac{1}{x})&\text{se }x\neq 0,\\
-0&\text{se }x=0,\end{cases}
-\]
+che è continua ovunque ($\lim_{x\to 0}f(x)=0=f(0)$). Il punto $\bar{x}=0$ non è un minimizzatore locale. Infatti, per qualsiasi $\epsilon>0$, è possibile trovare un valore $a_{\epsilon}\in(0,\epsilon)$ tale che $f(a_{\epsilon})=a_{\epsilon}\sin(\frac{1}{a_{\epsilon}})<0$. 
+D'altra parte, possiamo fare un ragionamento simile per vedere che **non c'è direzione di discesa**: lungo entrambe le direzioni $d=1$ e $d=-1$, per qualsiasi $\bar{t}>0$ possiamo sempre trovare un valore di $t\in(0,\bar{t})$ tale che $f(\bar{x}+td)=t\sin(\frac{1}{t})>0=f(\bar{x})$. => la non presenza di direzioni di discesa non ci assicura sul fatto che x sia minimo locale/globale
 
-che è continua ovunque ($\lim_{x\to 0}f(x)=0=f(0)$). Il punto $\bar{x}=0$ non è un minimizzatore locale. Infatti, per qualsiasi $\epsilon>0$, è possibile trovare un valore $a_{\epsilon}\in(0,\epsilon)$ tale che $f(a_{\epsilon})=a_{\epsilon}\sin(\frac{1}{a_{\epsilon}})<0$. D'altra parte, possiamo fare un ragionamento simile per vedere che non c'è direzione di discesa: lungo entrambe le direzioni $d=1$ e $d=-1$, per qualsiasi $\bar{t}>0$ possiamo sempre trovare un valore di $t\in(0,\bar{t})$ tale che $f(\bar{x}+td)=t\sin(\frac{1}{t})>0=f(\bar{x})$.
+![[Pasted image 20251222232408.png]]
 
-Mentre la Proposizione 3.2.4 ci fornisce una bella condizione necessaria per l'ottimalità locale (e quindi anche per quella globale), non abbiamo ancora uno strumento per verificarla praticamente: non abbiamo idea di quale dovrebbe essere il valore $\bar{t}$ dalla definizione di direzione di discesa, né possiamo ragionevolmente verificare l'andamento non discendente della funzione lungo tutte le infinite possibili direzioni.
+Mentre la Proposizione 3.2.4 ci fornisce una bella condizione **necessaria** per l'ottimalità locale (e quindi anche per quella globale), non abbiamo ancora uno strumento per verificarla praticamente: non abbiamo idea di quale dovrebbe essere il valore $\bar{t}$ dalla definizione di direzione di discesa, né possiamo ragionevolmente verificare l'andamento non discendente della funzione lungo **tutte le infinite possibili direzioni**.
 
-Gli strumenti computazionali che ci permettono di trattare concretamente le soluzioni e l'ottimalità provengono dall'analisi numerica. Infatti, se facciamo ipotesi di differenziabilità su $f$, possiamo enunciare il seguente risultato.
+---
 
-**Proposizione 3.2.5.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile, $\bar{x}\in\mathbb{R}^{n}$ e sia $d\in\mathbb{R}^{n}$ una direzione. Se $\nabla f(\bar{x})^{T}d<0$, allora $d$ è una direzione di discesa per $f$ in $\bar{x}$.
+Gli strumenti computazionali che ci permettono di trattare concretamente le soluzioni e l'ottimalità provengono dall'**analisi numerica**. Infatti, se facciamo ipotesi di *differenziabilità* su $f$, possiamo enunciare il seguente risultato.
 
-*Dimostrazione.* Per la differenziabilità di $f$, abbiamo che
+**Proposizione 3.2.5.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione [[continuamente differenziabile]], $\bar{x}\in\mathbb{R}^{n}$ e sia $d\in\mathbb{R}^{n}$ una direzione. Se $\nabla f(\bar{x})^{T}d<0$, allora $d$ è una **direzione di discesa** per $f$ in $\bar{x}$.
 
-\[
-0>\nabla f(\bar{x})^{T}d=\mathcal{D}_{f}(\bar{x},d)=\lim_{t\to 0^{+}}\frac{f(\bar{x}+td)-f(\bar{x})}{t}
-\]
-
-e quindi $\lim_{t\to 0^{+}}f(\bar{x}+td)-f(\bar{x})<0.$ Allora, per $t>0$ sufficientemente piccolo abbiamo certamente
-
-\[
-f(\bar{x}+td)<f(\bar{x}),
-\]
-
-il che completa la dimostrazione. $\square$
+*Dimostrazione.* Per la [[differenziabilità]] di $f$, abbiamo che $$
+0>\nabla f(\bar{x})^{T}d=\mathcal{D}_{f}(\bar{x},d)=\lim_{t\to 0^{+}}\frac{f(\bar{x}+td)-f(\bar{x})}{t}$$
+e quindi $\lim_{t\to 0^{+}}f(\bar{x}+td)-f(\bar{x})<0.$ Allora, per $t>0$ sufficientemente piccolo abbiamo certamente $$f(\bar{x}+td)<f(\bar{x})$$
+il che completa la dimostrazione.
 
 La Proposizione 3.2.5 introduce una condizione sufficiente di discesa con funzioni lisce: se la derivata direzionale in un punto lungo una direzione è negativa, allora quella direzione è di discesa in quel punto. Questa condizione è molto utile in pratica poiché, contrariamente a tutte le condizioni che abbiamo visto finora, è verificabile numericamente; dobbiamo solo calcolare il gradiente ed eseguire un prodotto scalare per verificare se una direzione è di discesa. Nota che la condizione è solo sufficiente; infatti, abbiamo tre scenari:
 
-* se $\nabla f(\bar{x})^{T}d<0$ allora la direzione è di discesa;
-* se $\nabla f(\bar{x})^{T}d>0$ allora la direzione è di salita;
+* se $\nabla f(\bar{x})^{T}d<0$ allora la direzione è di **discesa**;
+* se $\nabla f(\bar{x})^{T}d>0$ allora la direzione è di **salita**;
 * se $\nabla f(\bar{x})^{T}d=0$ allora la direzione potrebbe essere di salita, discesa o nessuna delle due.
 
 Le diverse situazioni sono illustrate nella Figura 3.6.
 
-Tuttavia, la combinazione delle Proposizioni 3.2.4 e 3.2.5 ci permette di enunciare immediatamente il seguente risultato.
+![[Pasted image 20251223113558.png]]
 
-**Proposizione 3.2.6.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile e sia $\bar{x}\in\mathbb{R}^{n}$ un minimizzatore locale. Allora, non può esistere $d\in\mathbb{R}^{n}$ tale che $\nabla f(\bar{x})^{T}d<0$.
+---
 
-La proposizione di cui sopra ancora non risolve esplicitamente il problema della verificabilità, poiché in principio ci chiederebbe di verificare una condizione per tutte le possibili direzioni. Fortunatamente, tuttavia, possiamo sfruttare quel risultato per ottenere una condizione pratica da verificare.
+Tuttavia, la combinazione delle Proposizioni 3.2.4 (punti di minimo non hanno direzioni di discesa) e 3.2.5 (la derivata direzionale è negativa) ci permette di enunciare immediatamente il seguente risultato.
 
-**Proposizione 3.2.7 (Condizione necessaria di ottimalità del primo ordine).** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile e sia $\bar{x}\in\mathbb{R}^{n}$ un minimizzatore locale. Allora, $\nabla f(\bar{x})=0$.
+**Proposizione 3.2.6.** 
+Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione [[continuamente differenziabile]] e sia $\bar{x}\in\mathbb{R}^{n}$ un *minimizzatore locale*. Allora, **non può esistere** $d\in\mathbb{R}^{n}$ tale che $\nabla f(\bar{x})^{T}d<0$.
 
-*Dimostrazione.* Assumiamo per contraddizione che $\nabla f(\bar{x})\neq 0$, cioè $\|\nabla f(\bar{x})\|>0$. Allora possiamo scegliere la direzione $d=-\nabla f(x^{k})$: otteniamo immediatamente
+---
 
-\[
-\nabla f(\bar{x})^{T}d=-\nabla f(\bar{x})^{T}\nabla f(\bar{x})=-\|\nabla f(\bar{x})\|^{2}<0.
-\]
+La proposizione di cui sopra ancora non risolve esplicitamente il problema della verificabilità, poiché in principio ci chiederebbe di verificare una condizione per **tutte** le possibili direzioni. 
+Fortunatamente, tuttavia, possiamo sfruttare quel risultato per ottenere una condizione pratica da verificare.
 
-Per la Proposizione 3.2.6 questo è assurdo, poiché $\bar{x}$ è un minimizzatore locale. $\square$
+**Proposizione 3.2.7 (Condizione necessaria di ottimalità del primo ordine).** 
+Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile e sia $\bar{x}\in\mathbb{R}^{n}$ un minimizzatore locale. Allora, $\nabla f(\bar{x})=0$.
 
-Abbiamo finalmente identificato una condizione di ottimalità facilmente verificabile (necessaria) che possiamo fissare come nostro obiettivo quando progettiamo algoritmi; sappiamo che, se siamo interessati a trovare minimizzatori locali o globali, possiamo restringere la nostra ricerca tra punti dove il gradiente è nullo. Diamo un nome ai punti che soddisfano questa proprietà.
+*Dimostrazione.*
+Assumiamo per contraddizione che $\nabla f(\bar{x})\neq 0$, cioè $\|\nabla f(\bar{x})\|>0$. Allora possiamo scegliere la direzione $d=-\nabla f(x^{k})$: otteniamo immediatamente $$\nabla f(\bar{x})^{T}d=-\nabla f(\bar{x})^{T}\nabla f(\bar{x})=-\|\nabla f(\bar{x})\|^{2}<0$$
+Per la Proposizione 3.2.6 questo è assurdo, poiché $\bar{x}$ è un **minimizzatore locale**. 
 
-**Definizione 3.2.3.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile. Diciamo che $\bar{x}\in\mathbb{R}^{n}$ è un *punto stazionario* per $f$ se $\nabla f(\bar{x})=0$.
+Abbiamo finalmente identificato una condizione di ottimalità facilmente verificabile (**necessaria**) che possiamo fissare come nostro obiettivo quando progettiamo algoritmi; sappiamo che, se siamo interessati a trovare minimizzatori locali o globali, ==possiamo restringere la nostra ricerca tra punti dove il gradiente è nullo==. Diamo un nome ai punti che soddisfano questa proprietà.
 
-Un'interessante prospettiva sulla condizione di stazionarietà, interpretata in termini di direzioni di discesa, è che in un punto stazionario la direzione di *discesa più ripida* è nulla. Il gradiente negativo $-\nabla f(x)$ identifica infatti la direzione di discesa più ripida. Per vederlo, consideriamo il problema
+**Definizione 3.2.3.** 
+Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile. Diciamo che $\bar{x}\in\mathbb{R}^{n}$ è un ***punto stazionario*** per $f$ se $\nabla f(\bar{x})=0$.
 
-\[
-\min_{d:\|d\|=1}\ \nabla f(x)^{T}d,
-\]
+Un'interessante prospettiva sulla condizione di **stazionarietà**, interpretata in termini di direzioni di discesa, è che in un punto stazionario la direzione di *discesa più ripida* è nulla. Il gradiente negativo $-\nabla f(x)$ identifica infatti la direzione di discesa più ripida. ù
 
-cioè il problema di trovare la direzione con la derivata direzionale negativamente più grande tra quelle con norma unitaria. Per le proprietà del prodotto scalare, abbiamo
+Per vederlo, consideriamo il problema $$\min_{d:\|d\|=1}\ \nabla f(x)^{T}d$$
+cioè il problema di trovare la **direzione** con la derivata direzionale negativamente più grande tra quelle con norma unitaria. Per le proprietà del prodotto scalare, abbiamo $$\nabla f(x)^{T}d=\|d\|\|\nabla f(x)\|\cos(\theta(d,\nabla f(x)))$$
+dove $\theta(d,\nabla f(x))$ denota l'angolo tra i vettori $d$ e $\nabla f(x)$; poiché $\|d\|=1$ e $\|\nabla f(x)\|$ è costante rispetto a $x$, il minimo nel problema è raggiunto quando $\cos(\theta(d,\nabla f(x)))$ è **minimo**, cioè $\cos(\theta(d,\nabla f(x)))=-1$; ciò si verifica quando $d$ è allineato con $\nabla f(x)$ ma con **orientamento opposto**. La soluzione del problema è quindi la direzione del **gradiente negativo** (normalizzata), cioè $$d=-\frac{\nabla f(x)}{\|\nabla f(x)\|}$$
 
-\[
-\nabla f(x)^{T}d=\|d\|\|\nabla f(x)\|\cos(\theta(d,\nabla f(x))),
-\]
+---
 
-dove $\theta(d,\nabla f(x))$ denota l'angolo tra i vettori $d$ e $\nabla f(x)$; poiché $\|d\|=1$ e $\|\nabla f(x)\|$ è costante rispetto a $x$, il minimo nel problema è raggiunto quando $\cos(\theta(d,\nabla f(x)))$ è minimo, cioè $\cos(\theta(d,\nabla f(x)))=-1$; ciò si verifica quando $d$ è allineato con $\nabla f(x)$ ma con orientamento opposto. La soluzione del problema è quindi la direzione del gradiente negativo (normalizzata), cioè $d=-\frac{\nabla f(x)}{\|\nabla f(x)\|}$.
+Ancora una volta, le cose diventano più belle sotto ipotesi di **convessità**: le proprietà che abbiamo visto finora in questo capitolo diventano più forti nel caso convesso.
 
-Ancora una volta, le cose diventano più belle sotto ipotesi di convessità: le proprietà che abbiamo visto finora in questo capitolo diventano più forti nel caso convesso.
+**Proposizione 3.2.8.** 
+Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una [[funzione convessa]] e [[continuamente differenziabile]] e $\bar{x}\in\mathbb{R}^{n}$.
+La direzione $d\in\mathbb{R}^{n}$ è una direzione di discesa per $f$ in $\bar{x}$ **se e solo se** $\nabla f(\bar{x})^{T}d<0$.
 
-**Proposizione 3.2.8.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione convessa continuamente differenziabile e $\bar{x}\in\mathbb{R}^{n}$. La direzione $d\in\mathbb{R}^{n}$ è una direzione di discesa per $f$ in $\bar{x}$ se e solo se $\nabla f(\bar{x})^{T}d<0$.
+*Dimostrazione.*
+L'implicazione $\nabla f(\bar{x})^{T}d<0\implies d$ di discesa deriva dalla Proposizione 3.2.5. (f deve essere cont. differenziabile)
 
-*Dimostrazione.* L'implicazione $\nabla f(\bar{x})^{T}d<0\implies d$ di discesa deriva dalla Proposizione 3.2.5.
+Assumiamo quindi che $d$ **sia di discesa**; allora, $f(\bar{x}+td)<f(\bar{x})$ per $t>0$ sufficientemente piccolo (def di direnzione di discesa).
+Per la **convessità** di $f$, abbiamo anche che $f(\bar{x}+td)\geq f(\bar{x})+t\nabla f(\bar{x})^{T}d$. (Proposizione 1.3.8) 
 
-Assumiamo quindi che $d$ sia di discesa; allora, $f(\bar{x}+td)<f(\bar{x})$ per $t>0$ sufficientemente piccolo. Per la convessità di $f$, abbiamo anche che $f(\bar{x}+td)\geq f(\bar{x})+t\nabla f(\bar{x})^{T}d$. Combinando le due disuguaglianze otteniamo per $t>0$ sufficientemente piccolo che
-
-\[
-f(\bar{x})>f(\bar{x})+t\nabla f(\bar{x})^{T}d,
-\]
-
+Combinando le due disuguaglianze otteniamo per $t>0$ sufficientemente piccolo che $$
+f(\bar{x})>f(\bar{x})+t\nabla f(\bar{x})^{T}d$$
 il che implica $\nabla f(\bar{x})^{T}d<0$. $\square$
 
-La condizione che collega le direzioni di discesa e le derivate direzionali è quindi necessaria e sufficiente nel caso convesso; in altre parole, questo risultato risolve l'incertezza sulle direzioni di discesa quando la derivata direzionale è zero. Possiamo ora passare a un risultato ancora più interessante.
+La condizione che collega le direzioni di discesa e le derivate direzionali è ==quindi necessaria e sufficiente nel caso convesso==; in altre parole, questo risultato risolve l'incertezza sulle direzioni di discesa quando la derivata direzionale è zero.
 
-**Proposizione 3.2.9 (Condizione necessaria e sufficiente del primo ordine per l'ottimalità globale per problemi convessi).** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile. Un punto $\bar{x}\in\mathbb{R}^{n}$ è un minimizzatore globale se e solo se $\nabla f(\bar{x})=0$.
+---
 
-*Dimostrazione.* Ancora una volta, la condizione necessaria deriva dal caso generale. Assumiamo ora che $f$ sia convessa e che $\bar{x}$ sia un punto stazionario, cioè $\nabla f(\bar{x})=0$. Per le proprietà delle funzioni convesse differenziabili, possiamo scrivere per un arbitrario $x\in\mathbb{R}^{n}$:
+Possiamo ora passare a un risultato ancora più interessante.
 
-\[
-f(x)\geq f(\bar{x})+\nabla f(\bar{x})^{T}(x-\bar{x})=f(\bar{x})+0^{T}(x-\bar{x})=f(\bar{x}).
-\]
+**Proposizione 3.2.9 (Condizione necessaria e sufficiente del primo ordine per l'ottimalità globale per problemi convessi).** 
+Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione [[continuamente differenziabile]]. Un punto $\bar{x}\in\mathbb{R}^{n}$ è un *minimizzatore globale* **se e solo se** $\nabla f(\bar{x})=0$.
+
+*Dimostrazione.* 
+Ancora una volta, la condizione necessaria deriva dal caso generale. Assumiamo ora che $f$ sia **convessa** e che $\bar{x}$ sia un **punto stazionario**, cioè $\nabla f(\bar{x})=0$. Per le proprietà delle funzioni convesse differenziabili (in C1), possiamo scrivere **per un arbitrario** $x\in\mathbb{R}^{n}$ (notare x qualsiasi):
+$$f(x)\geq f(\bar{x})+\nabla f(\bar{x})^{T}(x-\bar{x})=f(\bar{x})+0^{T}(x-\bar{x})=f(\bar{x})$$
 
 Abbiamo quindi $f(\bar{x})\leq f(x)$ per tutti gli $x\in\mathbb{R}^{n}$, il che completa la dimostrazione. $\square$
 
-Dalla proposizione precedente, vediamo che la stazionarietà è equivalente all'ottimalità globale nel caso convesso. Questo risultato è enorme, non solo perché in questo scenario abbiamo accesso a uno strumento numerico per verificare l'ottimalità globale, ma anche perché algoritmi progettati per trovare punti stazionari ci condurrebbero effettivamente verso soluzioni ottimali di problemi convessi.
+Dalla proposizione precedente, vediamo che la ==stazionarietà è equivalente all'ottimalità globale nel caso **convesso**==. Questo risultato è enorme, non solo perché in questo scenario abbiamo accesso a uno strumento numerico per **verificare l'ottimalità globale**, ma anche perché algoritmi progettati per trovare punti stazionari ci condurrebbero effettivamente verso **soluzioni ottimali** di problemi convessi.
 
-Per dire qualcosa di più sulle soluzioni ottimali nel caso non convesso, dobbiamo ricorrere a informazioni di ordine superiore. Nella parte conclusiva di questa sezione, assumiamo quindi che $f$ sia due volte continuamente differenziabile. Possiamo introdurre un'ulteriore caratterizzazione delle direzioni.
+---
 
-**Definizione 3.2.4.** Sia $f;\mathbb{R}^{n}\to\mathbb{R}$ una funzione due volte continuamente differenziabile. Una direzione $d\in\mathbb{R}^{n}$ è una *direzione di curvatura negativa* in un punto $x\in\mathbb{R}^{n}$ se $d^{T}\nabla^{2}f(x)d<0$.
+Per dire qualcosa di più sulle soluzioni ottimali nel caso non convesso, dobbiamo ricorrere a informazioni di **ordine superiore**. Nella parte conclusiva di questa sezione, assumiamo quindi che $f$ sia [[due volte continuamente differenziabile]]. Possiamo introdurre un'ulteriore caratterizzazione delle direzioni.
 
+**Definizione 3.2.4.** 
+Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione due volte continuamente differenziabile. Una direzione $d\in\mathbb{R}^{n}$ è una *direzione di curvatura negativa* in un punto $x\in\mathbb{R}^{n}$ se $$d^{T}\nabla^{2}f(x)d<0$$
 L'informazione sulla curvatura permette di superare alcuni dei casi di indecisione dove $\nabla f(x)^{T}d=0$.
 
-**Proposizione 3.2.10.** Sia $f;\mathbb{R}^{n}\to\mathbb{R}$ una funzione due volte continuamente differenziabile. Sia $x\in\mathbb{R}^{n}$ e $d\in\mathbb{R}^{n}$. Se $\nabla f(x)^{T}d=0$ e $d^{T}\nabla^{2}f(x)d<0$, allora $d$ è una direzione di discesa in $x$.
+**Proposizione 3.2.10.** 
+Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione [[due volte continuamente differenziabile]]. Sia $x\in\mathbb{R}^{n}$ e $d\in\mathbb{R}^{n}$. Se $\nabla f(x)^{T}d=0$ e $d^{T}\nabla^{2}f(x)d<0$, allora $d$ è una **direzione di discesa** in $x$.
 
-*Dimostrazione.* Applicando lo sviluppo di Taylor del
+*Dimostrazione.* 
+Applicando lo [[sviluppo di Taylor]] del secondo ordine a $f(x+td)$ possiamo scrivere $$f(x+td)=f(x)+t\nabla f(x)^{T}d+\frac{1}{2}t^{2}d^{T}\nabla^{2}f(x)d+\beta(x,td)$$
+con $\frac{\beta(x,td)}{t^{2}}\to 0$ per $t\to 0$.
 
+Riorganizzando l'equazione e ricordando che $\nabla f(x)^{T}d=0$, abbiamo $$f(x+td)-f(x)=\frac{1}{2}t^{2}d^{T}\nabla^{2}f(x)d+\beta(x,td)$$
+e quindi $$\frac{f(x+td)-f(x)}{t^{2}}=\frac{1}{2}d^{T}\nabla^{2}f(x)d+\frac{\beta(x,td)}{t^{2}}$$
+
+prendendo i limiti per $t\to 0^{+}$, abbiamo che $$\lim_{t\to 0^{+}}\frac{f(x+td)-f(x)}{t^{2}}=\frac{1}{2}d^{T}\nabla^{2}f(x)d<0$$
+il che implica che $f(x+td)<f(x)$ per $t>0$ sufficientemente piccolo. Questo completa la dimostrazione. $\square$
+
+![[Pasted image 20251223234825.png]]
+
+---
+
+Questo nuovo strumento introdotto ci permette di enunciare una condizione di ottimalità più profonda.
+
+**Proposizione 3.2.11 (Condizione necessaria di ottimalità del secondo ordine).** 
+Sia $f:\mathbb{R}^{n}\rightarrow\mathbb{R}$ una funzione [[due volte continuamente differenziabile]] e sia $\bar{x}\in\mathbb{R}^{n}$ un **minimizzatore locale**. Allora, $\nabla f(\bar{x})=0$ e $\nabla^{2}f(\bar{x})\succeq 0$. (serve info sull'hessiana!)
+
+*Dimostrazione.*
+Sappiamo per la condizione di ottimalità del **primo ordine** che $\nabla f(\bar{a})=0$; ora, **assumiamo per contraddizione** che $\nabla^{2}f(\bar{x})\not \succeq 0$. 
+Allora, esiste $y\in\mathbb{R}^{n}$ con $y\neq 0$ tale che $y^{T}\nabla^{2}f(\bar{x})y<0$; ma $\nabla f(\bar{x})^{T}y=0$, quindi abbiamo una direzione di curvatura negativa con derivata direzionale zero ==in un minimizzatore locale;== per la Proposizione 3.2.10, questo è assurdo. (ho una direzione di discesa in un minimo locale => assurdo!) $\square$
+
+La condizione di cui sopra è certamente interessante; dobbiamo notare, tuttavia, che non lavoreremo sempre con funzioni obiettivo **due volte differenziabili**; inoltre, vorremmo ricorrere il meno frequentemente possibile nella pratica a informazioni del secondo ordine, poiché il calcolo della matrice hessiana è un'operazione costosa. D'altra parte, le informazioni del secondo ordine sono abbastanza potenti da fornirci una condizione di ottimalità (locale) sufficiente.
+
+**Proposizione 3.2.12 (Condizione sufficiente di ottimalità locale del secondo ordine).** 
+Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione [[due volte continuamente differenziabile]] e sia $\bar{x}\in\mathbb{R}^{n}$ **un punto stazionario**, cioè $\nabla f(\bar{x})=0$.
+Se una delle seguenti condizioni vale:
+* $\nabla f^{2}(\bar{x})\succ 0$,
+* esiste $\epsilon>0$ tale che $\nabla f^{2}(x)\succeq 0$ per tutti gli $x\in B(\bar{x},\epsilon)$,
+=> allora $\bar{x}$ è un **minimizzatore locale** di $f$ su $\mathbb{R}^{n}$.
+
+(Qui ho il caso opposto => parto da un punto stazionario => vedo se ho minimizzatore... se invece ho minimizzatore necessariamente grad nullo e hessiana semidefinita positiva)
+
+**Esempio 3.2.2.** Analizziamo ancora una volta il caso specifico dei problemi quadratici della forma $$\min_{x\in\mathbb{R}^{n}}\ f(x)=\frac{1}{2}x^{T}Qx+c^{T}x$$
+dove $Q\in\mathcal{S}_{n}$ e $c\in\mathbb{R}^{n}$. 
+Le seguenti affermazioni sulle soluzioni ottimali di questi problemi sono vere:
+(a) $f$ ammette un minimizzatore **globale** se e solo se esiste $\bar{x}$ tale che $Q\bar{x}+c=0$ e $Q\succeq 0$;
+(b) se $Q\succeq 0$, ogni $\bar{x}$ tale che $Q\bar{x}+c=0$ è un **minimizzatore globale**;
+(c) il minimizzatore globale è **unico** se e solo se $Q\succ 0$.
+
+Le affermazioni possono essere facilmente provate con i risultati che abbiamo raccolto finora:
+* (a, $\implies$) segue direttamente dalla Proposizione 3.2.11, ricordando che $\nabla f(x)=Qx+c$ e $\nabla^{2}f(x)=Q$;
+* (a, $\Longleftarrow$) segue dal fatto che $\bar{x}$ è stazionario e $f$ è **convessa** (per $Q\succeq 0$);
+* (b) come sopra, segue dal fatto che $\bar{x}$ è un punto stazionario e $f$ è convessa (poiché $Q\succeq 0$);
+* (c, $\Longleftarrow$) segue da $Q\succ 0$, il che significa che $f$ è **strettamente convessa**;
+* (c, $\implies$) può essere mostrato per contraddizione; assumiamo che il minimizzatore globale $\bar{x}$ sia unico e $Q\not\succ 0$; per il punto (a), $Q\succeq 0$, quindi $\det(Q)=0$ e $\operatorname{rank}(Q)<n$. Poiché $\bar{x}$ è un minimizzatore globale, sappiamo che $\nabla f(\bar{x})=Q\bar{x}+c=0$. Il sistema lineare $Qx=-c$ ammette quindi almeno una soluzione. Poiché $\operatorname{rank}(Q)<n$, ha allora infinite soluzioni, cioè esistono infiniti punti tali che $Qx=-c$; per il punto (b), ==tutti questi punti sono minimizzatori globali==, il che contraddice il fatto che $\bar{x}$ sia unico.
+
+Nota come il punto (c) in particolare ci dia qualcosa in più rispetto a quanto avevamo visto finora: per funzioni quadratiche, il minimizzatore sarà unico solo con ipotesi di **stretta convessità** - mentre nel caso generale la stretta convessità è solo una condizione sufficiente di unicità (pensa a $f(x)=x^{4}-8x^{2}+4x$).
+
+#### 3.2.2 Il caso vincolato
+
+Per trattare il caso vincolato, possiamo seguire un percorso simile a quello fatto nello scenario non vincolato. L'enorme differenza ovviamente risiede nel fatto che non dobbiamo solo concentrarci sulla funzione obiettivo, ma dobbiamo tenere conto dell'insieme ammissibile $S\subset\mathbb{R}^{n}$ e dobbiamo gestire il fatto che un miglioramento nel valore obiettivo potrebbe essere associato a una perdita di ammissibilità.
+
+Per gestire il caso $S=\mathbb{R}^{n}$ ci siamo affidati pesantemente al concetto di direzione di discesa. In presenza di vincoli, dobbiamo arricchire la descrizione delle direzioni in $\mathbb{R}^{n}$ con una proprietà aggiuntiva.
+
+**Definizione 3.2.5.** Sia $S\subseteq\mathbb{R}^{n}$ e $x\in S$. Diciamo che una direzione $d\in\mathbb{R}^{n}$ è una *direzione ammissibile* per $S$ nel punto $x$ se esiste $\bar{t}>0$ tale che $x+td\in S$ per tutti i $t\in(0,\bar{t})$.
+
+Come notiamo immediatamente dalla definizione, l'ammissibilità delle direzioni permette di caratterizzare le direzioni in termini dei vincoli in modo speculare rispetto a come la proprietà di discesa caratterizza le direzioni in termini della funzione obiettivo.
+
+Ora che possiamo descrivere le direzioni in termini di discesa e ammissibilità, la seguente condizione di ottimalità viene piuttosto direttamente.
+
+**Proposizione 3.2.13.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$, $S\subseteq\mathbb{R}^{n}$ e sia $\bar{x}$ un minimizzatore locale di $f$; allora, non esiste alcuna direzione che sia ammissibile e di discesa in $\bar{x}$.
+
+Chiaramente, ci troviamo ancora una volta con una bella condizione necessaria di ottimalità che è a malapena verificabile da un punto di vista numerico. Un passo avanti per superare questo problema viene ancora dall'impiego di strumenti di analisi sotto ipotesi di differenziabilità.
+
+**Proposizione 3.2.14 (Condizione necessaria di ottimalità del primo ordine).** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile, $S\subseteq\mathbb{R}^{n}$ e sia $\bar{x}$ un minimizzatore locale di $f$; allora, non esiste alcuna direzione ammissibile $d$ in $\bar{x}$ tale che $\nabla f(\bar{x})^{T}d<0$.
+
+**Proposizione 3.2.15 (Condizione necessaria di ottimalità del secondo ordine).** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile, $S\subseteq\mathbb{R}^{n}$ e sia $\bar{x}$ un minimizzatore locale di $f$; allora, non esiste alcuna direzione ammissibile $d$ in $\bar{x}$ tale che $\nabla f(\bar{x})^{T}d=0$ e $d^{T}\nabla^{2}f(\bar{x})d<0$.
+
+Dalla Proposizione 3.2.14 possiamo anche generalizzare il concetto di punto stazionario a problemi possibilmente vincolati.
+
+**Definizione 3.2.6.** Un punto $\bar{x}\in S\subseteq\mathbb{R}^{n}$ è un *punto stazionario* per $f$ in $S$ se $\nabla f(\bar{x})^{T}d\geq 0$ per tutte le direzioni ammissibili $d$ in $\bar{x}$.
+
+Nota che la definizione di cui sopra include effettivamente il caso di $S=\mathbb{R}^{n}$. Nello scenario non vincolato, in ogni punto $x\in\mathbb{R}^{n}$ tutte le direzioni $d\in\mathbb{R}^{n}$ sono ammissibili; quindi secondo la definizione di cui sopra per un punto stazionario abbiamo $\nabla f(\bar{x})^{T}d\geq 0$ per tutti i $d\in\mathbb{R}^{n}$, il che è possibile solo se $\nabla f(\bar{x})=0$.
+
+La Proposizione 3.2.14 ancora non ci aiuta fino in fondo, poiché ci fornisce una condizione da verificare "per tutte le direzioni ammissibili"; non abbiamo idea di come verificare se una direzione è ammissibile, né possiamo verificare la condizione per infinite direzioni.
+
+Sfortunatamente, non possiamo fare ulteriori progressi significativi se non facciamo ipotesi sull'insieme ammissibile. Tuttavia, possiamo gestire accuratamente un'importante e ampia classe di insiemi ammissibili: nel seguito, assumeremo che i vincoli definiscano un *insieme convesso*. Il primo vantaggio di questo scenario deriva dalla seguente proprietà, che è anche illustrata nella Figura 3.9.
+
+**Proposizione 3.2.16.** Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso e sia $\bar{x}\in S$. La direzione $d=x-\bar{x}$ è ammissibile in $\bar{x}$ per tutti gli $x\in S$.
+
+*Dimostrazione.* Per la convessità di $S$, sappiamo che $(1-\lambda)\bar{x}+\lambda x\in S$ per tutti i $\lambda\in[0,1]$. Riorganizzando, otteniamo che $\bar{x}+\lambda(x-\bar{x})\in S$ per tutti i $\lambda\in[0,1]$; secondo la definizione di direzione ammissibile, $d=x-\bar{x}$ è ammissibile (con $\bar{t}=1$) in $\bar{x}$. $\square$
+
+Come conseguenza immediata, abbiamo la seguente proposizione.
+
+**Proposizione 3.2.17 (Condizione necessaria di ottimalità del primo ordine con insiemi convessi).** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile, $S\subseteq\mathbb{R}^{n}$ un insieme convesso e sia $\bar{x}$ un minimizzatore locale di $f$; allora, $\nabla f(\bar{x})^{T}(x-\bar{x})\geq 0$ per tutti gli $x\in S$.
+
+Si può dimostrare che, per un $S$ convesso, le due condizioni $\nabla f(\bar{x})^{T}d\geq 0$ per tutte le $d$ ammissibili e $\nabla f(\bar{x})^{T}(x-\bar{x})\geq 0$ per tutti gli $x\in S$ sono completamente equivalenti. Possiamo quindi riferirci a punti che soddisfano quest'ultima condizione come punti stazionari.
+
+Con l'ulteriore ipotesi di convessità della funzione obiettivo, otteniamo anche un risultato presumibilmente atteso.
+
+**Proposizione 3.2.18 (Condizione necessaria e sufficiente del primo ordine per l'ottimalità per problemi convessi).** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione convessa continuamente differenziabile, e $S\subseteq\mathbb{R}^{n}$ un insieme convesso. Un punto $\bar{x}\in S$ è un minimizzatore globale per $f$ su $S$ se e solo se $\nabla f(\bar{x})^{T}(x-\bar{x})\geq 0$ per tutti gli $x\in S$.
+
+*Dimostrazione.* La condizione necessaria segue dalla Proposizione 3.2.17. Assumiamo quindi che $\bar{x}$ sia stazionario. Per la convessità e differenziabilità di $f$ possiamo scrivere per tutti gli $x\in S$
+
+\[
+f(x)\geq f(\bar{x})+\nabla f(\bar{x})^{T}(x-\bar{x})\geq f(\bar{x}),
+\]
+
+dove la seconda disuguaglianza deriva da $\nabla f(\bar{x})^{T}(x-\bar{x})\geq 0$; poiché $f(\bar{x})\leq f(x)$ per una soluzione ammissibile arbitraria $x$, la dimostrazione è completa. $\square$
+
+**Esempio 3.2.3 (Vincoli poliedrici).** Un *insieme poliedrico* $P$ è un insieme definito da uguaglianze e disuguaglianze affini. Per semplicità, iniziamo considerando un insieme definito da disuguaglianze affini, cioè
+
+\[
+P=\{x\in\mathbb{R}^{n}\mid Ax\leq b\},
+\]
+
+dove $A\in\mathbb{R}^{m\times n}$ e $b\in\mathbb{R}^{m}$ (vedi Fig. 3.10a).
+
+Per studiare l'insieme delle direzioni ammissibili in un punto $x\in P$, dobbiamo prima definire l'insieme dei *vincoli attivi* in $x$ come
+
+\[
+I(x)=\{i\mid a_{i}^{T}x=b_{i}\}.
+\]
+
+L'insieme $I(x)$ contiene quindi gli indici dei vincoli che sono soddisfatti con l'uguaglianza stretta; in altre parole, i vincoli attivi sono quei vincoli che potrebbero essere violati se ci muovessimo di un piccolo passo lungo una direzione sbagliata.
+
+Guardando la Figura 3.10b per un'intuizione, possiamo anche mostrare formalmente che
+
+una direzione $d$ è ammissibile in un punto $x\in P\iff a_{i}^{T}d\leq 0$ per tutti gli $i\in I(x)$.
+
+Da un lato, possiamo assumere che $d$ sia ammissibile in $x$ e, per contraddizione, che $a_{i}^{T}d>0$ per qualche $i\in I(x)$. Dall'ammissibilità di $d$, sappiamo che per $t>0$ sufficientemente piccolo deve essere $x+td\in P$, cioè $(x+td)^{T}a_{i}\leq b_{i}$. In altre parole abbiamo $x^{T}a_{i}+td^{T}a_{i}\leq b_{i}$ e quindi, ricordando $i\in I(x)$ e $t>0$, $d^{T}a_{i}\leq 0$, il che contraddice la nostra ipotesi.
+
+Dall'altro lato, sia $a_{i}^{T}d\leq 0$ per tutti gli $i\in I(x)$. Possiamo mostrare che esiste $\bar{t}>0$ tale che $A(x+td)\leq b$ per tutti i $t\in[0,\bar{t}]$. Infatti, sia $j\in\{1,\ldots,m\}$ un qualsiasi indice di vincolo. Abbiamo tre possibili casi:
+
+1. $j\in I(x)$; in questo caso, abbiamo $(x+td)^{T}a_{j}=x^{T}a_{j}+td^{T}a_{j}=b_{j}+td^{T}a_{j}$; ricordando $t>0$ e $d^{T}a_{j}$ per le ipotesi, otteniamo $b_{j}+td^{T}a_{j}\leq b_{j}$ e quindi $x+td$ soddisfa il vincolo;
+2. $j\notin I(x)$ e $a_{j}^{T}d\leq 0$; poiché $j$ denota un vincolo non attivo, abbiamo $a_{j}^{T}x<b$; possiamo quindi ottenere $(x+td)^{T}a_{j}=x^{T}a_{j}+td^{T}a_{j}<b_{j}+td^{T}a_{j}\leq b_{j}$; $x+td$ soddisfa quindi il $j$-esimo vincolo per tutti i $t>0$ (la direzione punta lontano dal bordo del vincolo);
+3. $j\notin I(x)$ e $a_{j}^{T}d>0$; possiamo vedere che $(x+td)^{T}a_{j}=x^{T}a_{j}+td^{T}a_{j}\leq b_{j}$ se e solo se $t\leq\frac{b_{j}-x^{T}a_{j}}{d^{T}a_{j}}$ (per questo valore del passo colpiamo il bordo del vincolo).
+
+Pertanto, prendendo un valore di $\bar{t}$ che è il più piccolo dei limiti superiori dei casi (iii), cioè
+
+\[
+\bar{t}=\begin{cases}\min_{j\in I(x):a_{j}^{T}d>0}\frac{b_{j}-x^{T}a_{j}}{d^{T}a_{j}}&\text{se }\{j\notin I(x)\mid a_{j}^{T}d>0\}\neq\emptyset\\ \infty&\text{altrimenti},\end{cases}
+\]
+
+completiamo la dimostrazione.
+
+Consideriamo ora il caso in cui sono presenti anche alcuni vincoli di uguaglianza, cioè
+
+\[
+P=\{x\in\mathbb{R}^{n}\mid a_{i}^{T}x\leq b_{i},\ i=1,\ldots,m,\ \mu_{j}^{T}x=c_{j},\ j=1,\ldots,p\}.
+\]
+
+Possiamo notare che ogni vincolo di uguaglianza può essere visto come la congiunzione di due vincoli di disuguaglianza:
+
+\[
+\mu_{i}^{T}x=c_{i}\iff\mu_{i}^{T}x\leq c_{i}\ \text{e}\ -\mu_{i}^{T}x\leq-c_{i}.
+\]
+
+Quindi, per il risultato precedente, una direzione $d$ è ammissibile rispetto al vincolo di uguaglianza se e solo se $\mu_{i}^{T}d\leq 0$ e $-\mu_{i}^{T}d\leq 0$, cioè $\mu_{i}^{T}d=0$. Poiché i vincoli di uguaglianza sono sempre attivi, la condizione complessiva di ammissibilità è quindi
+
+\[
+d\text{ è ammissibile in }x\in P\ \Longleftrightarrow\ a_{i}^{T}d\leq 0\text{ per tutti gli }i\in I(x)\text{ e }\mu_{j}^{T}d=0\text{ per tutti i }j=1,\ldots,p.
+\]
+
+**Esempio 3.2.4 (Vincoli di box).** Un caso molto speciale di vincoli poliedrici è quello dei vincoli di *box* (o *bound*):
+
+\[
+S=\{x\in\mathbb{R}^{n}\mid l_{i}\leq x_{i}\leq u_{i},\ i=1,\ldots,n\},
+\]
+
+dove $l,u\in\mathbb{R}^{n}$, $l\leq u$. In altre parole, il vincolo $l\leq x\leq u$ impone limiti inferiori e superiori ai valori ammissibili di ciascuna singola variabile (Figura 3.11). Questo tipo di vincolo è molto comune nei problemi del mondo reale.
+
+Concentriamoci ora sull'ammissibilità delle direzioni $\pm e_{i}$. Dato un punto $x$, per tutti gli $i$ l'ammissibilità della direzione $e_{i}$ o $-e_{i}$ dipende solo dal valore della variabile $x_{i}$; in particolare, $e_{i}$ è ammissibile se $x_{i}<u_{i}$ e $-e_{i}$ è ammissibile se $x_{i}>l_{i}$ (Figura 3.11). Da questa osservazione, possiamo concludere che se un punto $\bar{x}$ è ottimale per un problema $\min_{x}f(x)$ s.t. $x\in S$, allora la seguente condizione deve valere per tutti gli $i=1,\ldots,n$:
+
+\[
+\frac{\partial f(\bar{x})}{\partial x_{i}}\begin{cases}\geq 0&\text{se }\bar{x}_{i}=l_{i},\\ =0&\text{se }l_{i}<\bar{x}_{i}<u_{i},\\ \leq 0&\text{se }\bar{x}_{i}=u_{i}.\end{cases}
+\]
+
+Infatti, se $\bar{x}_{i}<u_{i}$ la direzione $e_{i}$ è ammissibile e quindi per la condizione di stazionarietà otteniamo
+
+\[
+0\leq\nabla f(\bar{x})^{T}e_{i}=\frac{\partial f(\bar{x})}{\partial x_{i}}.
+\]
+
+Analogamente, se $\bar{x}_{i}>l_{i}$ sappiamo che $-e_{i}$ è ammissibile e quindi
+
+\[
+0\leq\nabla f(\bar{x})^{T}(-e_{i})=-\frac{\partial f(\bar{x})}{\partial x_{i}}.
+\]
+
+Combinando i due risultati otteniamo la condizione di cui sopra.
+
+**Esempio 3.2.5 (Vincoli del simplesso).** I vincoli del simplesso standard sono un altro importante caso particolare di vincoli poliedrici. In questo caso, l'insieme ammissibile $S$ è definito come
+
+\[
+S=\{x\in\mathbb{R}^{n}\mid x\geq 0,\ e^{T}x=1\},
+\]
+
+cioè è l'insieme delle soluzioni non negative che sommano a $1$ (come, ad esempio, nei problemi di selezione del portafoglio).
+
+Per problemi con questo insieme ammissibile, possiamo caratterizzare le soluzioni ottimali $x^{*}$ come segue:
+
+\[
+\frac{\partial f(x^{*})}{\partial x_{i}}\leq\frac{\partial f(x^{*})}{\partial x_{j}}\text{ per tutti gli }i:x^{*}_{i}>0\text{ e }j=1,\ldots,n.
+\]
+
+Infatti, se $x^{*}_{i}>0$, possiamo mostrare che, per tutti i $j$, la direzione $d$ tale che
+
+\[
+d_{h}=\begin{cases}1&\text{se }h=j,\\ -1&\text{se }h=i,\\ 0&\text{altrimenti},\end{cases}
+\]
+
+è ammissibile. Infatti, possiamo riscrivere i vincoli come $-e^{T}_{h}x\leq 0$ e $e^{T}x=1$ e verificare che:
+
+\[
+e^{T}d=\sum_{h=1}^{n}d_{h}=1-1=0,
+\]
+
+e
+
+\[
+-e^{T}_{h}d=\begin{cases}-1&\text{se }h=j,\\ 1&\text{se }h=i,\\ 0&\text{altrimenti}.\end{cases}
+\]
+
+Poiché il vincolo $-e^{T}_{i}x$ non è attivo, vediamo che $d$ soddisfa la condizione di ammissibilità per insiemi poliedrici. Per la condizione di stazionarietà in $x^{*}$ abbiamo quindi
+
+\[
+0\leq\nabla f(x^{*})^{T}d=\frac{\partial f(x^{*})}{\partial x_{j}}-\frac{\partial f(x^{*})}{\partial x_{i}},
+\]
+
+cioè $\frac{\partial f(x^{*})}{\partial x_{i}}\leq\frac{\partial f(x^{*})}{\partial x_{j}}$, il che completa la dimostrazione.
+
+##### **Condizioni basate sulla proiezione**
+
+Abbiamo già visto che la caratterizzazione delle direzioni ammissibili e dei punti stazionari può essere migliorata rispetto al caso generale quando l'insieme ammissibile è convesso. In effetti, qualcosa di ancora più potente può essere affermato per questo importante caso, basandosi sul concetto introdotto di seguito.
+
+**Definizione 3.2.7 (Proiezione euclidea).** Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso chiuso e sia $x\in\mathbb{R}^{n}$. Diciamo che il punto $\hat{x}\in S$ è la proiezione euclidea di $x$ su $S$, e la denotiamo come $P_{S}(x)$, se $\hat{x}$ è la soluzione del problema di ottimizzazione
+
+\[
+\min_{y\in S}\frac{1}{2}\|y-x\|^{2}. \tag{3.2}
+\]
+
+Dobbiamo sottolineare che, per un insieme convesso chiuso $S$, la proiezione esiste sempre ed è unica per qualsiasi punto $x\in\mathbb{R}^{n}$. Infatti, il problema (3.2) ha un insieme ammissibile convesso chiuso e una funzione obiettivo fortemente convessa, quindi ammette sempre una soluzione unica. Possiamo quindi parlare di una *mappa di proiezione* $P_{S}:\mathbb{R}^{n}\to S$. Questa mappa associa ogni punto dello spazio al punto appartenente all'insieme $S$ che è più vicino al punto stesso; chiaramente, se un punto appartiene già all'insieme ammissibile, allora coincide con la propria proiezione (vedi Figura 3.13).
+
+La proiezione può essere caratterizzata in modo interessante secondo i seguenti risultati.
+
+**Proposizione 3.2.19.** Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso chiuso e $x\in\mathbb{R}^{n}$. Un punto $\hat{x}$ è la proiezione di $x$ su $S$ se e solo se $(x-\hat{x})^{T}(y-\hat{x})\leq 0$ per tutti gli $y\in S$.
+
+*Dimostrazione.* Per definizione, $\hat{x}=P_{S}(x)$ è la soluzione ottimale del problema convesso (3.2). Per la condizione necessaria e sufficiente di ottimalità, ponendo $r(y)=\frac{1}{2}\|y-x\|^{2}$, questo equivale a affermare
+
+\[
+\nabla r(\hat{x})^{T}(y-\hat{x})=(\hat{x}-x)^{T}(y-\hat{x})\geq 0\text{ per tutti gli }y\in S.
+\]
+
+Riorganizzando, otteniamo immediatamente
+
+\[
+(x-\hat{x})^{T}(y-\hat{x})\leq 0\text{ per tutti gli }y\in S. \quad \square
+\]
+
+**Proposizione 3.2.20.** Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso chiuso. La mappa di proiezione $P_{S}:\mathbb{R}^{n}\to S$ è una funzione continua.
+
+La proiezione ci permette di caratterizzare la stazionarietà in modo molto più conveniente.
+
+**Proposizione 3.2.21.** Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso chiuso e $f:\mathbb{R}^{n}\rightarrow\mathbb{R}$ una funzione continuamente differenziabile. Un punto $\bar{x}\in S$ è un punto stazionario per $f$ in $S$ se e solo se $P_{S}(\bar{x}-\nabla f(\bar{x}))=\bar{x}$.
+
+*Dimostrazione.* Sia $\bar{x}$ tale che $P_{S}(\bar{x}-\nabla f(\bar{x}))=\bar{x}$. Per la Proposizione 3.2.19 questo vale se e solo se
+
+\[
+((\bar{x}-\nabla f(\bar{x}))-P_{S}(\bar{x}-\nabla f(\bar{x})))^{T}(y-P_{S}(\bar{x}-\nabla f(\bar{x})))\leq 0\text{ per tutti gli }y\in S,
+\]
+
+cioè
+
+\[
+0\geq((\bar{x}-\nabla f(\bar{x}))-\bar{x})^{T}(y-\bar{x})=-\nabla f(\bar{x})^{T}(y-\bar{x})\text{ per tutti gli }y\in S.
+\]
+
+Riorganizzando, abbiamo
+
+\[
+\nabla f(\bar{x})^{T}(y-\bar{x})\geq 0\text{ per tutti gli }y\in S. \quad \square
+\]
+
+Naturalmente, la condizione diventa anche sufficiente per l'ottimalità sotto ipotesi di convessità per l'obiettivo.
+
+**Proposizione 3.2.22.** Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso chiuso e $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione convessa continuamente differenziabile. Un punto $\bar{x}\in S$ è un ottimizzatore globale per $f$ in $S$ se e solo se $P_{S}(\bar{x}-\nabla f(\bar{x}))=\bar{x}$.
+
+I risultati di cui sopra forniscono fondamentalmente una definizione equivalente di stazionarietà. L'intuizione geometrica di questo risultato è mostrata nella Figura 3.14.
+
+Quest'ultimo modo di caratterizzare i punti stazionari è estremamente importante da un punto di vista pratico. Infatti, possiamo ora verificare direttamente la stazionarietà mediante operazioni computazionali, piuttosto che verificare che qualche proprietà valga "per tutte le $d$". Questo sarà particolarmente conveniente per tutti quegli insiemi dove l'operazione di proiezione può essere eseguita con un piccolo costo computazionale.
+
+**Esempio 3.2.6 (Proiezione su vincoli di box).** Vogliamo derivare come dovremmo calcolare la proiezione sull'insieme ammissibile (convesso) $S=\{x\in\mathbb{R}^{n}\mid l\leq x\leq u\}$. Il problema di proiezione sul box è
+
+\[
+\min_{y\in S}\frac{1}{2}\|y-x\|^{2},
+\]
+
+che può essere riscritto più convenientemente come
+
+\[
+\min_{y_{i}\in[l_{i},u_{i}],\,i=1,\ldots,n}\,\frac{1}{2}\sum_{i=1}^{n}(y_{i}-x_{i})^{2}.
+\]
+
+Possiamo ora notare che il problema è effettivamente separabile: ogni termine nella somma riguarda una singola variabile, i cui vincoli non sono influenzati dai valori delle altre variabili.
+
+Possiamo quindi trovare il valore ottimale per ciascuna variabile risolvendo
+
+\[
+y_{i}^{*}=\operatorname*{arg\,min}_{y_{i}\in[l_{i},u_{i}]}\frac{1}{2}(y_{i}-x_{i})^{2}=\begin{cases}x_{i}&\text{se }x_{i}\in[l_{i},u_{i}]\\ l_{i}&\text{se }x_{i}<l_{i}\\ u_{i}&\text{se }x_{i}>u_{i}.\end{cases}
+\]
+
+La proiezione può quindi essere eseguita componente per componente, richiedendo una serie di $n$ controlli di valore molto semplici. La Figura 3.15 rappresenta graficamente tale operazione.
+
+**Esempio 3.2.7 (Proiezione sull'ipersfera).** La proiezione su un'ipersfera $S=\{x\in\mathbb{R}^{n}\mid\|x\|\leq R\}$ può essere semplicemente fatta come segue (vedi anche Figura 3.15):
+
+\[
+P_{S}(x)=\begin{cases}x&\text{se }\|x\|\leq R,\\ \frac{R}{\|x\|}x&\text{altrimenti}.\end{cases}
+\]
+
+##### **Condizioni di ottimalità con vincoli in forma analitica**
+
+Fino a questo punto, abbiamo parlato di insiemi ammissibili come oggetti geometrici con una struttura nota che ci permette di trarre conclusioni sull'ammissibilità delle direzioni e sull'ottimalità dei punti, possibilmente per mezzo di operazioni ad hoc come la proiezione. In molti casi, tuttavia, l'insieme ammissibile $S$ è descritto da un sistema di uguaglianze e disuguaglianze (possibilmente non lineari); questo può valere sia per oggetti geometrici semplici (la sfera può essere definita come l'insieme di punti tali che $\|x\|^{2}\leq\rho$) sia per insiemi complicati che non siamo in grado di identificare altrimenti. È quindi utile introdurre alcuni strumenti per gestire analiticamente i vincoli senza la necessità di "visualizzare" l'insieme ammissibile. Consideriamo quindi problemi della forma
+
+\[
+\begin{split}
+\min_{x\in\mathbb{R}^{n}}& f(x)\\
+\text{s.t.}& g_{i}(x)\leq 0,\quad i=1,\ldots,m\\
+& h_{i}(x)=0,\quad i=1,\ldots,p,
+\end{split} \tag{3.3}
+\]
+
+dove assumiamo che $f:\mathbb{R}^{n}\to\mathbb{R}$, $g:\mathbb{R}^{n}\to\mathbb{R}^{m}$ e $h:\mathbb{R}^{n}\to\mathbb{R}^{p}$, cioè la funzione obiettivo e tutte le funzioni che definiscono i vincoli siano continuamente differenziabili.
+
+Il seguente risultato ci fornisce un primo insieme di condizioni di ottimalità per problemi di questa forma.
+
+**Proposizione 3.2.23 (Condizioni di ottimalità di Fritz-John).** Sia $x^{*}\in\mathbb{R}^{n}$ una soluzione ottimale per il problema (3.3). Allora, esistono moltiplicatori $\lambda_{0}\in\mathbb{R}$, $\lambda\in\mathbb{R}^{p}$ e $\mu\in\mathbb{R}^{m}$ tali che:
+
+\[
+g_{i}(x^{*})\leq 0,\quad i=1,\ldots,m, \quad\text{(ammissibilità)}
+\]
+\[
+h_{i}(x^{*})=0,\quad i=1,\ldots,p, \quad\text{(ammissibilità)}
+\]
+\[
+\mu_{i}\geq 0,\quad i=1,\ldots,m, \quad\text{(ammissibilità duale)}
+\]
+\[
+\lambda_{0}\geq 0 \quad\text{(ammissibilità duale)}
+\]
+\[
+(\lambda_{0},\lambda,\mu)\neq 0 \quad\text{(ammissibilità duale)}
+\]
+\[
+\mu_{i}g_{i}(x^{*})=0,\quad i=1,\ldots,m, \quad\text{(complementarità)}
+\]
+\[
+\lambda_{0}\nabla f(x^{*})+\sum_{i=1}^{m}\mu_{i}\nabla g_{i}(x^{*})+\sum_{i=1}^{p}\lambda_{i}\nabla h_{i}(x^{*})=0, \quad\text{(gradiente nullo del Lagrangiano)}
+\]
+
+Le prime due condizioni di cui sopra affermano banalmente che una soluzione ottimale deve essere ammissibile per il problema. Le tre condizioni successive riguardano i valori dei moltiplicatori; questi sono quantità ciascuna associata a una specifica funzione: in effetti, abbiamo tanti moltiplicatori $\lambda$ quanti sono i vincoli di uguaglianza, tanti $\mu$ quanti i vincoli di disuguaglianza e un unico moltiplicatore $\lambda_{0}$ per la funzione obiettivo; il significato intrinseco dei moltiplicatori sarà più chiaro tra poco; la condizione di complementarità afferma che il valore dei moltiplicatori associati ai vincoli di disuguaglianza deve essere zero se il vincolo non è attivo. L'ultima condizione è probabilmente la più significativa e complessa.
+
+La *funzione Lagrangiana* associata a un problema di ottimizzazione vincolato della forma (3.3) è definita come
+
+\[
+\mathcal{L}(x,\lambda_{0},\lambda,\mu)=\lambda_{0}f(x)+\sum_{i=1}^{m}\mu_{i}g_{i}(x)+\sum_{i=1}^{p}\lambda_{i}h_{i}(x).
+\]
+
+Questa funzione cattura in qualche modo l'intera essenza del problema, combinando l'obiettivo con i vincoli; se i moltiplicatori assumono valori adeguati, i termini $\mu_{i}g_{i}(x)$ e $\lambda_{i}h_{i}(x)$ rappresentano penalità per la violazione dei vincoli; ad esempio, assumiamo che $\mu_{i}\geq 0$; allora una violazione del vincolo $g_{i}(x)\leq 0$ si traduce in un aumento del valore di $\mathcal{L}$; in altre parole, $\mathcal{L}$ cerca di riassumere quanto è buona una soluzione bilanciando la qualità del valore obiettivo e le violazioni dei vincoli.
+
+Ora, l'ultima delle condizioni di Fritz-John richiede che il gradiente di questa funzione sia zero; poiché al vettore dei moltiplicatori non è permesso essere tutto zero, ciò significa che i gradienti di tutte le funzioni coinvolte nel problema sono linearmente dipendenti all'ottimo, con l'ulteriore requisito che il coefficiente per i vincoli di disuguaglianza sia sempre non negativo e esattamente zero se il vincolo non è attivo.
+
+Le condizioni di Fritz-John possono essere convenientemente riscritte in forma vettoriale come segue:
+
+\[
+g(x^{*})\leq 0,\quad h(x^{*})=0,
+\]
+\[
+\mu\geq 0,\quad\lambda_{0}\geq 0,\quad(\lambda_{0},\lambda,\mu)\neq 0,
+\]
+\[
+\mu_{i}g_{i}(x^{*})=0,\quad i=1,\ldots,m,
+\]
+\[
+\nabla\mathcal{L}(x^{*},\lambda_{0},\lambda,\mu)=\lambda_{0}\nabla f(x^{*})+\mu^{T}J_{g}(x^{*})+\lambda^{T}J_{h}(x^{*})=0.
+\]
+
+A questo punto, sfortunatamente dobbiamo evidenziare una grave debolezza della condizione di Fritz-John, che è messa in luce nel seguente esempio.
+
+**Esempio 3.2.8.** Consideriamo il problema
+
+\[
+\min_{x,y} f(x,y)
+\]
+\[
+\text{s.t. } y^{2}=0.
+\]
+
+Le condizioni di Fritz-John per questo problema affermano che, per una soluzione ottimale $(\bar{x},\bar{y})$, esiste un moltiplicatore $\lambda$ associato al vincolo di uguaglianza e un moltiplicatore $\lambda_{0}$ associato alla funzione obiettivo tali che
+
+\[
+\bar{y}^{2}=0,\quad\lambda_{0}\geq 0,\quad(\lambda_{0},\lambda)\neq(0,0),
+\]
+\[
+\lambda_{0}\nabla f(\bar{x},\bar{y})+\lambda\left(\begin{array}{c}0\\ 2\bar{y}\end{array}\right)=0.
+\]
+
+Ora, per la condizione di ammissibilità deve essere $\bar{y}=0$; abbiamo quindi
+
+\[
+\lambda_{0}\nabla f(\bar{x},\bar{y})=0,
+\]
+
+che è soddisfatta ponendo $\lambda_{0}=0$. Scegliendo qualsiasi valore non nullo per $\lambda$, otteniamo che $(\bar{x},\bar{y})=(x,0)$, $\lambda_{0}=0$ e $\lambda\neq 0$ costituisce una tupla di Fritz-John per il problema, per qualsiasi valore di $x$.
+
+La conclusione è quindi che qualsiasi punto della forma $(x,0)$ soddisfa la condizione necessaria di ottimalità. Tuttavia, se guardiamo attentamente, ci rendiamo conto che $(x,0)$ sono tutti punti ammissibili per il problema. Quindi, le condizioni di Fritz-John in questo caso non offrono alcun filtro aggiuntivo nella ricerca della soluzione ottimale rispetto al banale suggerimento "cerca tra i punti ammissibili".
+
+In effetti, noteremmo che arriveremmo alla stessa conclusione con qualsiasi possibile $f$; l'unica informazione fornita dalle condizioni riguarda in questo caso l'insieme ammissibile.
+
+L'inganno nell'esempio di cui sopra risiede nel fatto che le condizioni FJ possono essere soddisfatte anche se il moltiplicatore $\lambda_{0}$ associato alla funzione obiettivo è posto a 0. In tal caso, qualsiasi riferimento alla specifica funzione obiettivo scompare nelle condizioni e l'unica informazione che possiamo ottenere è relativa all'insieme ammissibile.
+
+L'insieme di condizioni introdotto nella seguente proposizione supera precisamente questa limitazione, fornendo una caratterizzazione in cui $\lambda_{0}$ è garantito essere diverso da zero.
+
+**Proposizione 3.2.24 (Condizioni di ottimalità di Karush-Khun-Tucker (KKT)).** Sia $x^{*}\in\mathbb{R}^{n}$ una soluzione ottimale per il problema (3.3) e assumiamo che qualche condizione di regolarità valga per l'insieme ammissibile nel punto $x^{*}$. Allora, esistono moltiplicatori $\lambda\in\mathbb{R}^{p}$ e $\mu\in\mathbb{R}^{m}$ tali che:
+
+\[
+g_{i}(x^{*})\leq 0,\quad i=1,\ldots,m, \qquad\text{(ammissibilità)}
+\]
+\[
+h_{i}(x^{*})=0,\quad i=1,\ldots,p, \qquad\text{(ammissibilità)}
+\]
+\[
+\mu_{i}\geq 0,\quad i=1,\ldots,m, \qquad\text{(ammissibilità duale)}
+\]
+\[
+\mu_{i}g_{i}(x^{*})=0,\quad i=1,\ldots,m, \qquad\text{(complementarità)}
+\]
+\[
+\nabla f(x^{*})+\sum_{i=1}^{m}\mu_{i}\nabla g_{i}(x^{*})+\sum_{i=1}^{p}\lambda_{i}\nabla h_{i}(x^{*})=0, \qquad\text{(gradiente nullo del Lagrangiano)}
+\]
+
+Le condizioni KKT sono esattamente le condizioni di Fritz-John con la garanzia che $\lambda_{0}\neq 0$¹. La proposizione precedente ci fornisce una nuova condizione necessaria di ottimalità più significativa, che dice che un punto ottimale deve soddisfare le condizioni KKT *se l'insieme dei vincoli è localmente regolare*; formalizzeremo brevemente questo requisito di regolarità. Il takeaway, tuttavia, è che dovremmo cercare soluzioni ottimali tra tutti i punti KKT e tutti i punti in cui l'insieme ammissibile ha un comportamento irregolare.
+
+Dobbiamo ora formalizzare cosa intendiamo per "condizione di regolarità". In termini tecnici, diciamo che i vincoli soddisfano (globalmente o localmente) una *qualificazione dei vincoli* (CQ). Esistono molte qualificazioni dei vincoli, alcune più forti di altre, che implicano che le KKT siano una condizione necessaria di ottimalità in una soluzione. Elenchiamo qui di seguito alcune delle CQ più famose e utili:
+
+* *Qualificazione dei vincoli lineari (LCQ)*: tutti i vincoli sono funzioni lineari e affini. Questa CQ, quando vale, è verificata su tutto l'insieme ammissibile. Nella Figura 3.16 troviamo un'intuizione del significato delle KKT in questo scenario.
+* *Qualificazione dei vincoli di indipendenza lineare (LICQ)*: questa qualificazione dei vincoli vale in un punto ammissibile $x$ se i gradienti dei vincoli di uguaglianza $\nabla h_{i}(x)$, per $i=1,\ldots,p$, e i gradienti dei vincoli di disuguaglianza attivi $\nabla g_{i}(x)$, per $i\in I(x)$, sono tutti linearmente indipendenti. Nota che questa condizione è relativa al punto corrente e non è una proprietà globale dell'insieme ammissibile.
+* *Qualificazione dei vincoli di Mangasarian-Fromowitz (MFCQ)*: questa qualificazione dei vincoli vale in un punto ammissibile $x$ se i gradienti dei vincoli di uguaglianza $\nabla h_{i}(x)$, per $i=1,\ldots,p$, sono linearmente indipendenti e esiste una direzione $d\in\mathbb{R}^{n}$ tale che $\nabla h_{i}(x)^{T}d=0$ per tutti gli $i=1,\ldots,p$ e $\nabla g_{i}(x)^{T}d<0$ per tutti gli $i\in I(x)$. Anche questa è chiaramente una proprietà che vale in punti individuali.
+* *Qualificazione dei vincoli di Slater (SCQ)*: $f$ è una funzione convessa, $h_{i}$, $i=1,\ldots,p$, sono funzioni affini e $g_{i}$, $i=1,\ldots,m$ sono funzioni convesse e esiste $x\in\mathbb{R}^{n}$ tale che $h(x)=0$ e $g(x)<0$. Nota che questa è una proprietà globale del problema, che tuttavia richiede anche qualcosa sulla funzione obiettivo.
+
+**Esempio 3.2.9 (LICQ è effettivamente una CQ).** Dimostriamo qui che LICQ è effettivamente una qualificazione dei vincoli, cioè che una soluzione ottimale che soddisfa la LICQ soddisfa necessariamente le KKT, cioè le condizioni FJ con $\lambda_{0}\neq 0$.
+
+Assumiamo che $x^{*}$ sia una soluzione ottimale per il problema (3.3) e che la LICQ sia soddisfatta in $x^{*}$. Per la Proposizione 3.2.23, sappiamo che esistono moltiplicatori $(\lambda_{0},\lambda,\mu)$ che soddisfano le condizioni di Fritz-John. Assumiamo per contraddizione che $\lambda_{0}=0$. Otteniamo quindi che
+
+\[
+\sum_{i=1}^{m}\mu_{i}\nabla g_{i}(x^{*})+\sum_{i=1}^{p}\lambda_{i}\nabla h_{i}(x^{*})=0.
+\]
+
+Ora, per la condizione di complementarità sappiamo anche che $\mu_{i}=0$ per tutti gli $i\notin I(x^{*})$. Possiamo quindi riscrivere l'uguaglianza di cui sopra rimuovendo tutti i termini $\mu_{i}\nabla g_{i}(x^{*})$ per $i\notin I(x^{*})$, ottenendo
+
+\[
+\sum_{i\in I(x^{*})}\mu_{i}\nabla g_{i}(x^{*})+\sum_{i=1}^{p}\lambda_{i}\nabla h_{i}(x^{*})=0.
+\]
+
+Ricordando che la LICQ vale in $x^{*}$, sappiamo che tutti i gradienti nella combinazione di cui sopra sono linearmente indipendenti, cosicché i moltiplicatori $\mu_{i}$, $i\in I(x^{*})$ e $\lambda_{i}$, $i=1,\ldots,p$, sono necessariamente zero. Abbiamo quindi
+
+\[
+\lambda_{i}=0\ \forall\,i=1,\ldots,n,\quad\mu_{i}=0\ \forall\,i\in I(x^{*}),\quad\mu_{i}=0\ \forall\,i\notin I(x^{*}),\quad\lambda_{0}=0,
+\]
+
+cioè $(\lambda_{0},\lambda,\mu)=(0,0,0)$, violando una delle condizioni FJ. Quindi, deve essere $\lambda_{0}\neq 0$.
+
+Interessante, sotto ipotesi di convessità, le KKT diventano anche condizioni sufficienti di ottimalità.
+
+**Proposizione 3.2.25.** Siano le funzioni $f$ e $g_{i}$, $i=1,\ldots,m$, convesse e siano le funzioni $h_{i}$, $i=1,\ldots,p$, affini. Se $x^{*}\in\mathbb{R}^{n}$ soddisfa le condizioni KKT, allora è un minimizzatore globale del problema. Se $f$ è strettamente convessa, $x^{*}$ è unico.
+
+Il risultato di cui sopra è in linea con i risultati che abbiamo derivato per il caso generale con $f$ convessa su $S$ convesso. Nota che i vincoli di uguaglianza devono essere affini (cioè lineari) poiché questo è l'unico caso in cui i vincoli di uguaglianza risultano essere convessi.
+
+**Esempio 3.2.10 (Condizioni di ottimalità per problemi con vincoli di box tramite KKT).** La condizione di ottimalità per problemi con vincoli di box derivata nell'Esempio 3.2.4 può essere ottenuta anche seguendo un percorso diverso, basato sulle KKT.
+
+I vincoli di box possono essere riscritti come coppie di vincoli
+
+\[
+-e_{i}^{T}x\leq-l_{i},\quad e_{i}^{T}x\leq u_{i},\quad\forall\,i=1,\ldots,n.
+\]
+
+I vincoli sono lineari, quindi vale la LCQ e le KKT sono condizioni necessarie di ottimalità. Pertanto, per una soluzione ottimale $x^{*}$ di un problema con vincoli di box esistono moltiplicatori $\lambda^{+},\lambda^{-}\in\mathbb{R}^{n}$ tali che
+
+\[
+\nabla f(x^{*})+\sum_{i=1}^{n}\lambda_{i}^{-}(-e_{i})+\sum_{i=1}^{n}\lambda_{i}^{+}e_{i}=0,
+\]
+\[
+\lambda^{+},\lambda^{-}\geq 0,
+\]
+\[
+\lambda_{i}^{+}(x_{i}^{*}-u_{i})=0\ \forall\,i=1,\ldots,n,
+\]
+\[
+\lambda_{i}^{-}(-x_{i}^{*}+l_{i})=0\ \forall\,i=1,\ldots,n,
+\]
+\[
+x^{*}\in[l,u].
+\]
+
+Se guardiamo la prima condizione componente per componente, otteniamo per ciascuna derivata parziale
+
+\[
+\frac{\partial f(x^{*})}{\partial x_{i}}-\lambda_{i}^{-}+\lambda_{i}^{+}=0.
+\]
+
+Per la condizione di complementarità, vediamo che $\lambda_{i}^{+}=0$ per tutti gli $i$ tali che $x_{i}^{*}\neq u_{i}$ e $\lambda_{i}^{-}=0$ per tutti gli $i$ tali che $x_{i}^{*}\neq l_{i}$. Abbiamo quindi
+
+\[
+\frac{\partial f(x^{*})}{\partial x_{i}}=\begin{cases}0&\text{se }l_{i}<x_{i}^{*}<u_{i},\\ -\lambda_{i}^{+}&\text{se }x_{i}^{*}=u_{i},\\ \lambda_{i}^{-}&\text{se }x_{i}^{*}=l_{i}.\end{cases}
+\]
+
+Richiamando il vincolo di non negatività per i moltiplicatori associati ai vincoli di disuguaglianza, recuperiamo
+
+\[
+\frac{\partial f(x^{*})}{\partial x_{i}}\begin{cases}=0&\text{se }l_{i}<x_{i}^{*}<u_{i},\\ \leq 0&\text{se }x_{i}^{*}=u_{i},\\ \geq 0&\text{se }x_{i}^{*}=l_{i}.\end{cases}
+\]
+
+**Esempio 3.2.11 (Condizioni di ottimalità per problemi con vincoli del simplesso tramite KKT).** I vincoli del simplesso standard ($S=\{x\mid e^{T}x=1,x\geq 0\}$, vedi Figura 3.12) sono vincoli lineari e quindi le KKT sono condizioni necessarie di ottimalità per problemi con tale insieme ammissibile. Sappiamo quindi, per un $x^{*}$ ottimale, che esistono moltiplicatori $\lambda\in\mathbb{R}$ e $\mu\in\mathbb{R}^{n}$ tali che
+
+\[
+e^{T}x^{*}=1,\quad -e_{i}^{T}x^{*}\leq 0,\ \forall\,i=\ldots,n,
+\]
+\[
+\mu_{i}(-x_{i}^{*})=0\ \forall\,i=1,\ldots,n,
+\]
+\[
+\mu\geq 0,
+\]
+\[
+\nabla f(x^{*})+\lambda e+\sum_{i=1}^{n}\mu_{i}(-e_{i})=0.
+\]
+
+Se ci concentriamo sull'ultima condizione componente per componente, otteniamo per tutti gli $i=1,\ldots,n$
+
+\[
+\frac{\partial f(x^{*})}{\partial x_{i}}+\lambda-\mu_{i}=0,
+\]
+
+cioè, per tutti gli $i$ possiamo scrivere
+
+\[
+\frac{\partial f(x^{*})}{\partial x_{i}}=-\lambda+\mu_{i}\geq-\lambda.
+\]
+
+Per il vincolo di complementarità, sappiamo che $\mu_{i}=0$ per tutti gli $i$ tali che $x_{i}^{*}\neq 0$. Quindi, per il caso particolare di una variabile $x_{j}$ tale che $x_{j}^{*}>0$ abbiamo
+
+\[
+\frac{\partial f(x^{*})}{\partial x_{j}}=-\lambda.
+\]
+
+Pertanto, data qualsiasi coppia di variabili $x_{i},x_{j}$ tale che $x^{*}_{j}>0$, possiamo concludere che
+
+\[
+\frac{\partial f(x^{*})}{\partial x_{j}}=-\lambda\leq\frac{\partial f(x^{*})}{\partial x_{i}}.
+\]
+
+Per riassumere, abbiamo recuperato la condizione necessaria di ottimalità per problemi con vincoli del simplesso che avevamo ottenuto con un ragionamento diverso nell'Esempio 3.2.5, cioè
+
+\[
+\frac{\partial f(x^{*})}{\partial x_{j}}\leq\frac{\partial f(x^{*})}{\partial x_{i}}\quad\text{per tutti gli }i=1,\ldots,n,\text{ e tutti i }j\text{ tali che }x^{*}_{j}>0.
+\]
+
+---
+
+¹ Una volta garantito $\lambda_{0}\neq 0$, senza perdita di generalità possiamo dividere l'intero vettore dei moltiplicatori delle condizioni FJ per $\lambda_{0}$ stesso - riscalando $\lambda$ e $\mu$ - così che $\lambda_{0}$ può essere omesso subito, semplificando la notazione.
 ## 4. Algoritmi di Ottimizzazione Non Vincolata
 
 ### 4.1 Metodi Iterativi di Ottimizzazione
