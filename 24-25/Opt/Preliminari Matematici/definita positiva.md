@@ -12,5 +12,5 @@ Analogamente, $A$ è *definita positiva* se e solo se:
 
 **Proposizione 1.2.3**
 Data $A \in \mathcal{S}_n, A \succeq 0$, per ogni $x \in \mathbb{R}^n$ abbiamo:
-- $\lambda_{\text{min}}(A) |x|_2^2 \leq x^T A x \leq \lambda_{\text{max}}(A) |x|_2^2$;
-- $\lambda_{\text{min}}(A) |x| \leq |A x| \leq \lambda_{\text{max}}(A) |x|$.
+- $\lambda_{\text{min}}(A) ||x||^2 \leq x^T A x \leq \lambda_{\text{max}}(A) ||x||^2$;
+- $\lambda_{\text{min}}(A) ||x|| \leq ||A x|| \leq \lambda_{\text{max}}(A) ||x||$.

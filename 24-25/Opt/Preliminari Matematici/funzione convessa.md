@@ -9,7 +9,7 @@ Diciamo che una funzione $f : \mathbb{R}^n \to \mathbb{R}$ è:
 => Ad esempio le norme sono funzioni convesse. Infatti preso $\lambda in [0,1]$ e $x,y \in \mathbb{R}^n$ abbiamo: $$ ||(1-\lambda)x+\lambda y|| \, \leq \, ||(1-\lambda)x|| + \lambda ||y||  \, = \, (1-\lambda)||x|| + \lambda ||y|| $$
 ![[Pasted image 20251222213451.png]]
 
-**Proposizione 1.3.7** Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione *fortemente convessa*. Allora $f$ è **coerciva** e **strettamente convessa**.
+**Proposizione 1.3.7** Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione *fortemente convessa*. Allora $f$ è [[coerciva]] e **strettamente convessa**.
 
 ![[Pasted image 20251222213714.png]]
 

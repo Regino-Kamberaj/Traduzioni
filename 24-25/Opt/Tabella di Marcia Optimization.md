@@ -186,22 +186,22 @@
 
 ### **Giorno 6: Modelli & Introduzione agli Algoritmi (Lec 07)**
 **Riferimenti:** [LN 6.2, 4.1], [GS 3.1]
-- [ ] **Regressione Lineare Regolarizzata (L2):** problema, perché la convessità forte garantisce esistenza e unicità della soluzione
-- [ ] Schema generale di un **algoritmo iterativo** per ottimizzazione non vincolata
-- [ ] Concetto di **successione di punti** generata da un algoritmo
-- [ ] Panoramica sui tipi di algoritmi: **line search**, **trust region**, **direct search**
-- [ ] **Condizione sufficiente per l'esistenza di punti di accumulazione** per una successione
-- [ ] Convergenza di una sottosuccessione verso un **punto stazionario** (∇f(x)=0)
+- [x] **Regressione Lineare Regolarizzata (L2):** problema, perché la convessità forte garantisce esistenza e unicità della soluzione
+- [x] Schema generale di un **algoritmo iterativo** per ottimizzazione non vincolata
+- [x] Concetto di **successione di punti** generata da un algoritmo
+- [x] Panoramica sui tipi di algoritmi: **line search**, **trust region**, **direct search**
+- [x] **Condizione sufficiente per l'esistenza di punti di accumulazione** per una successione
+- [x] Convergenza di una sottosuccessione verso un **punto stazionario** (∇f(x)=0)
 
 ### **Giorno 7: Convergenza degli Algoritmi & Line Search (Lec 08-09)**
 **Riferimenti:** [LN 4.1.2, 4.1.3, 4.2, 4.2.1]
-- [ ] Controesempi alla convergenza (cosa succede se non si scelgono bene direzione e passo?)
-- [ ] Concetti di **convergenza globale vs. locale**, **velocità di convergenza**, **limiti di complessità**
-- [ ] Schema generale dei metodi di **line search**: `x_{k+1} = x_k + α_k d_k`
-- [ ] Due scelte cruciali: **direzione d_k** e **passo α_k**
-- [ ] **Ricerca di linea esatta vs. inesatta**
-- [ ] **Condizione di sufficiente decrescita (Armijo):** `f(x_k + αd_k) ≤ f(x_k) + γα∇f(x_k)ᵀd_k`
-- [ ] Proprietà di **terminazione finita** della line search di Armijo (con backtracking)
+- [x] Controesempi alla convergenza (cosa succede se non si scelgono bene direzione e passo?)
+- [x] Concetti di **convergenza globale vs. locale**, **velocità di convergenza**, **limiti di complessità**
+- [x] Schema generale dei metodi di **line search**: `x_{k+1} = x_k + α_k d_k`
+- [x] Due scelte cruciali: **direzione d_k** e **passo α_k**
+- [x] **Ricerca di linea esatta vs. inesatta**
+- [x] **Condizione di sufficiente decrescita (Armijo):** `f(x_k + αd_k) ≤ f(x_k) + γα∇f(x_k)ᵀd_k`
+- [x] Proprietà di **terminazione finita** della line search di Armijo (con backtracking)
 
 ---
 
@@ -209,47 +209,47 @@
 
 ### **Giorno 8: Convergenza Globale dei Metodi di Line Search (Lec 10-11 Parte 1)**
 **Riferimenti:** [LN 4.2.2, 4.2.3]
-- [ ] Definizione di **direzioni legate al gradiente (gradient-related)**
-- [ ] Condizione degli **autovalori limitati** per le direzioni
-- [ ] **Teorema di convergenza globale** per metodi di line search con direzioni legate al gradiente e passo di Armijo
-- [ ] Concetto di **L-smoothness** (gradiente Lipschitziano) e **Descent Lemma**
-- [ ] Per funzioni L-smooth, esiste un **intervallo di passi accettabili** per Armijo
-- [ ] Limitazione superiore al numero di backtrack / limitazione inferiore al passo α
+- [x] Definizione di **direzioni legate al gradiente (gradient-related)**
+- [x] Condizione degli **autovalori limitati** per le direzioni
+- [x] **Teorema di convergenza globale** per metodi di line search con direzioni legate al gradiente e passo di Armijo
+- [x] Concetto di **L-smoothness** (gradiente Lipschitziano) e **Descent Lemma**
+- [x] Per funzioni L-smooth, esiste un **intervallo di passi accettabili** per Armijo
+- [x] Limitazione superiore al numero di backtrack / limitazione inferiore al passo α
 
 ### **Giorno 9: Complessità & Gradient Descent (Lec 11 Parte 2 - 12 Parte 1)**
 **Riferimenti:** [LN 4.2.3, 4.3], [GS 6.1-6.2]
-- [ ] **Complessità** (numero di iterazioni) del framework generale sotto ipotesi di L-smoothness
-- [ ] Limite ottimale per metodi del primo ordine (cenni)
-- [ ] **Algoritmo del Gradient Descent (GD)**: `x_{k+1} = x_k - α∇f(x_k)`
-- [ ] Proprietà di convergenza del GD
-- [ ] GD con **passo costante**: condizioni su α per la convergenza (α < 2/L)
-- [ ] Complessità del GD per funzioni **convesse** e L-smooth
-- [ ] Velocità di convergenza per funzioni **fortemente convesse**
+- [x] **Complessità** (numero di iterazioni) del framework generale sotto ipotesi di L-smoothness
+- [x] Limite ottimale per metodi del primo ordine (cenni)
+- [x] **Algoritmo del Gradient Descent (GD)**: `x_{k+1} = x_k - α∇f(x_k)`
+- [x] Proprietà di convergenza del GD
+- [x] GD con **passo costante**: condizioni su α per la convergenza (α < 2/L)
+- [x] Complessità del GD per funzioni **convesse** e L-smooth
+- [x] Velocità di convergenza per funzioni **fortemente convesse**
 
 ### **Giorno 10: Algoritmi Avanzati del 1° Ordine (Lec 12 Parte 2 - 14 Parte 1)**
 **Riferimenti:** [LN 4.3, 4.4, 4.4.1-4.4.3]
-- [ ] Impatto della **regolarizzazione L2** nei problemi di ML (rende il problema fortemente convesso)
-- [ ] Idea degli **algoritmi con momento (momentum)**
-- [ ] **Metodo della Palla Pesante (Heavy-ball)**
-- [ ] **Metodo del Gradiente Accelerato (es. Nesterov)**
-- [ ] Metodi a **direzioni coniugate non lineari**, strategie di **restart**
-- [ ] **Condizioni di Wolfe** per la line search (condizioni più forti di Armijo)
-- [ ] **Metodo del Gradiente Coniugato per problemi quadratici**: idea e proprietà di terminazione finita
+- [x] Impatto della **regolarizzazione L2** nei problemi di ML (rende il problema fortemente convesso)
+- [x] Idea degli **algoritmi con momento (momentum)**
+- [x] **Metodo della Palla Pesante (Heavy-ball)**
+- [x] **Metodo del Gradiente Accelerato (es. Nesterov)**
+- [x] Metodi a **direzioni coniugate non lineari**, strategie di **restart**
+- [x] **Condizioni di Wolfe** per la line search (condizioni più forti di Armijo)
+- [x] **Metodo del Gradiente Coniugato per problemi quadratici**: idea e proprietà di terminazione finita
 
 ### **Giorno 11: Metodi del Secondo Ordine & Quasi-Newton (Lec 14 Parte 2 - 16 Parte 1)**
 **Riferimenti:** [LN 4.5, 4.6]
-- [ ] **Metodo di Newton**: direzione `d_k = -[H(x_k)]⁻¹∇f(x_k)` (minimizza l'approssimazione quadratica)
-- [ ] **Mancanza di convergenza globale**: controesempio
-- [ ] **Convergenza locale quadratica** (con dimostrazione delle ipotesi)
-- [ ] Strategie di **globalizzazione** di Newton (es. Newton + Armijo)
-- [ ] Approssimazione dell'Hessiana: **equazione di Quasi-Newton** `B_{k+1} s_k = y_k`
-- [ ] Regole di aggiornamento **diretta (B)** e **inversa (H)**
-- [ ] Aggiornamenti di **rango 1 e rango 2** (es. DFP, SR1)
+- [x] **Metodo di Newton**: direzione `d_k = -[H(x_k)]⁻¹∇f(x_k)` (minimizza l'approssimazione quadratica)
+- [x] **Mancanza di convergenza globale**: controesempio
+- [x] **Convergenza locale quadratica** (con dimostrazione delle ipotesi)
+- [x] Strategie di **globalizzazione** di Newton (es. Newton + Armijo)
+- [x] Approssimazione dell'Hessiana: **equazione di Quasi-Newton** `B_{k+1} s_k = y_k`
+- [x] Regole di aggiornamento **diretta (B)** e **inversa (H)**
+- [x] Aggiornamenti di **rango 1 e rango 2** (es. DFP, SR1)
 
 ### **Giorno 12: Quasi-Newton & Ottimizzazione Vincolata Base (Lec 16 Parte 2 - 17)**
 **Riferimenti:** [LN 4.6.1-4.6.2], [GS 17.2.1-17.2.3]
-- [ ] **Metodo BFGS** (formula di aggiornamento inversa, proprietà di simmetria e definita positività)
-- [ ] **L-BFGS** per problemi su larga scala (memoria limitata)
+- [x] **Metodo BFGS** (formula di aggiornamento inversa, proprietà di simmetria e definita positività)
+- [x] **L-BFGS** per problemi su larga scala (memoria limitata)
 - [ ] Transizione a problemi **vincolati**: insieme ammissibile, direzioni ammissibili
 - [ ] **Condizione necessaria di ottimalità** per problemi vincolati generali (basata su direzioni ammissibili)
 - [ ] Caso di **vincoli convessi**: caratterizzazione delle direzioni ammissibili
@@ -294,9 +294,69 @@
 - [ ] **Simulazione Esame**: Svolgere una traccia completa a tempo
 
 **STATO PREPARAZIONE:**
-- [ ] **Fondamenti Teorici (Giorni 1-6)** Completati: ___/6
-- [ ] **Algoritmi & Applicazioni (Giorni 7-14)** Completati: ___/8
-- [ ] **Revisione Finale** Completata: [ ]
+- [ ] **Fondamenti Teorici (Giorni 1-6)** Completati: ___6/6
+- [ ] **Algoritmi & Applicazioni (Giorni 7-14)** Completati: ___1/8
+- [ ] **Revisione Finale** Completata: [  ]
+
+**Dimostrazioni da sapere:**
+- [ ] 3.0 Definizione punto ammissibile
+- [ ] 3.1 Esistenza soluzioni ottimali
+	- [ ] Proposizione 3.1.1 => Teorema di Weierstrass
+	- [ ] Proposizione 3.1.2 => Insiemi di livello compatti ammettono minimi globali
+	- [ ] Proposizione 3.1.3 => funzioni coercive ammettono punti di minimo
+- [ ] 3.2 Condizioni di ottimalità
+	- [ ] 3.2.1 Definizione ottimo locale
+	- [ ] Proposizione 3.2.1 => funzione convessa su insieme convessa => minimi locali sono anche globali
+	- [ ] Proposizione 3.2.2 => su funzioni strettamente convesse minimo globale **unico**
+	- [ ] Proposizione 3.2.3 => su funzioni fortemente convesse minimo globale unico su tutto $\mathbb{R}^n$
+	- [ ] 3.2.2 Definizione direzione di discesa
+	- [ ] Proposizione 3.2.4 => in minimo locale ? non esistono direzioni di discesa
+	- [ ] Proposizione 3.2.5 => definizione direzione di discesa per funzioni continuamente differenziabili
+	- [ ] Proposizione 3.2.6 => per funzioni cont. diff non esistono direzioni di discesa in minimizzatori locali
+	- [ ] Proposizione 3.2.7 => condizione necessaria di ottimalità prim ordine (minimizzatori locali hanno gradiente nullo) + definzione 3.2.3 punto stazionario
+	- [ ] Proposizione 3.2.8 => se funzione convessa oltre a cont. diff, direzione di discesa neccesariamente (e suff) ha derivata direzionale negativa
+	- [ ] Proposizione 3.2.9 => Condizione necessaria e sufficiente del prim ordine per problemi convessi => minimizzatori globali a gradiente nullo
+	- [ ] Definizione 3.2.4 => direzione di curvatura negativa
+	- [ ] Proposizione 3.2.10 => direzioni di discesa hanno curvature negative
+	- [ ] Proposizione 3.2.11 => Condizione necessaria ottimalità secondo ordine => minimi locali hanno gradiente nullo e hessiana definita semipositiva
+	- [ ] Proposizione 3.2.12 => Condizione sufficiente di ottimalità locale del secondo ordine => punti stazionari se hanno hessiana definita pos o hessiana semidefinita positiva (in un intorno del punto), allora sono anche minimi locali
+- [ ] 4.1 Metodi iterativi di ottimizzazione
+	- [ ] regole aggiornamento
+	- [ ] Proposizione 4.1.1 => sequenze definite su insiemi di livello compatti hanno punti di accumulazione e la sequenza (se definita monotona decrescente) converge ad un valore finito
+	- [ ] Convergenza globale vs convergenza locale => esempi su convergenza => non sempre si converge a punti stazionari
+	- [ ] Definizione 4.1.1 => tasso di convergenza (sub vs linear vs super)
+	- [ ] Definizione 4.1.2 => notazione o grande
+	- [ ] Definizione 4.1.3 => errore di iterazione/complessità d'iterazione
+- [ ] 4.2 Metodi di discesa basati su line search
+	- [ ] Occhio a scelta direzione e passo => servono condizioni più forti su direzioni di discesa
+	- [ ] esempio line search esatta
+	- [ ] Algoritmo 1 => line search di armijo per ricerca passo ottimale (condizione di armijo)
+	- [ ] Proposizione 4.2.1 => line search termina in un numero di iterazioni
+	- [ ] Definizione 4.2.1 => direzioni gradient related 
+	- [ ] Proposizione 4.2.2 => convergenza globale a punti stazionari con passo scelto tramite armijo e direzioni gradient related ( e sequenza su insieme di livello compatto)
+	- [ ] Proposizione 4.2.3 => per funzioni l-smooth, passi ottenuti da armijo sono limitati da valore fisso
+	- [ ] Proposizione 4.2.4 => numero massimo di backtrack
+	- [ ] Proposizione 4.2.5 => complessità nel caso non convesso => sublineare $O(\epsilon^{-2})$ (valido anche per valutazione funzioni)
+	- [ ] Proposizione 4.2.6 => limite per metodi del primo ordine
+- [ ] 4.3 Metodo di discesa del gradiente 
+	- [ ] algoritmo 2 => line search con direzione antigrad e passo con algoritmo 1 => riottengo stesse proprietà viste prima => convergenza globale - complessità ottimale per metodi non convessi (sublineare) - num passi backtrack limitato => complessità per valutazione funzione rimane la stessa
+	- [ ] Proposizione 4.3.1 => nel caso convesso (e con passo costante), ottengo complessità migliore (ma non ottimale => ancora sublineare) $O(\frac{1}{\epsilon})$ 
+
+	- [ ] Proposizione 4.3.2 => nel caso fortemente convesso (e con passo costante), ottengo complessità  ancora migliore (stavolta lineare) $O(log{\frac{1}{\epsilon}})$ => convergo ad un unico punto di minimo globale 
+- [ ] 4.4 Metodi del gradiente con momento
+	- [ ] 4.4.1 Heavy ball (metodo locale) => tasso di conv lineare ma locale (e convesso)
+	- [ ] Metodo del gradiente accelerato di nesterov => proposizione 4.4.1 => bound su funzioni convesse del primo ordine $O\left(\frac{1}{\sqrt{\epsilon}}\right)$  (meglio di grad descent) => ovvero solo con info dei gradienti
+	- [ ] 4.4.2 gradiente coniugato => perdo direzioni grad related e quindi garanzie di convergenza => metodi per recuperare garanzie di conv. => salvaguardie e restart => torno a conv globale e complessità di grad descent
+	- [ ] Line search di wolfe => condizione più forte di armijo => wolfe deboli vs wolfe forti => limito passo andando a guardare dove derivata direzionale soddisfa condizioni => aumentano costi computazionali => ma garantisco direzioni di discesa e convergenza globale
+	- [ ] Caso quadrato + definzioni direzioni mutuamente coniugate
+	- [ ] Proposizione 4.4.2 => convergenza finita del meodo del gradiente coniugato nel caso quadratico => raggiungo minimo globale in n iterazioni
+- [ ] 4.5 Metodo di newton => convergenza dipende fortemente dal punto di partenza ma molto veloce
+	- [ ] Proposizione 4.5.1 Proprietà metodo di newton => preso punto a gradiente nullo e hessiana non singolare => allora sequenza definita a partire da quel punto è ben definita e rimane **nell'intorno** - metodo converge con tasso superlineare => tasso = 0
+	- [ ] metodo di discesa line search con newton => ottengo conv globale e veloce 
+- [ ] 4.6 Metodi quasi newton => approx delle hessiane 
+	- [ ] Algoritmo 4
+	- [ ] Algoritmo bfgs => proposizione 4.6.1 => matrice di approx definita positiva sotto det condizioni => tipo wolfe => riottengo convergenza globale e tasso superlineare senza info del secondo ordine
+	- [ ] low-bfgs => bfgs con approx interrotta... diminuiscono costi computazionali ma perdo proprietà teoriche => conv globale garantita con salvaguardie 
 
 **Note e Punti Deboli da Ripassare:**
 1.

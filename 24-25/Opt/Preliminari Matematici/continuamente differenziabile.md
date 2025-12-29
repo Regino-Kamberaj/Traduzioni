@@ -6,4 +6,4 @@ Sia $f : \mathbb{R}^n \to \mathbb{R}$. Diciamo che $f$ è *continuamente differe
 - E la funzione $\nabla f : \mathbb{R}^n \to \mathbb{R}^n$ è **continua** su $\mathbb{R}^n$
 
 **Proposizione 1.4.** 
-Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione **continuamente differenziabile**. Allora, per ogni $x \in \mathbb{R}^n$ e $d \in \mathbb{R}^n$, si ha:$$Df(x, d) = \nabla f(x)^T d$$ => la sua derivata parziale è parti al prodotto scalare del gradiente per la direzione $d$ 
+Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione **continuamente differenziabile**. Allora, per ogni $x \in \mathbb{R}^n$ e $d \in \mathbb{R}^n$, si ha:$$Df(x, d) = \nabla f(x)^T d$$ => la sua derivata parziale (derivata direzionale lungo la direzione d) è parti al prodotto scalare del gradiente per la direzione $d$ 
