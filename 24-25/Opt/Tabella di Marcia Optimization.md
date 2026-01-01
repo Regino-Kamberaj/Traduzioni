@@ -250,40 +250,41 @@
 **Riferimenti:** [LN 4.6.1-4.6.2], [GS 17.2.1-17.2.3]
 - [x] **Metodo BFGS** (formula di aggiornamento inversa, proprietà di simmetria e definita positività)
 - [x] **L-BFGS** per problemi su larga scala (memoria limitata)
-- [ ] Transizione a problemi **vincolati**: insieme ammissibile, direzioni ammissibili
-- [ ] **Condizione necessaria di ottimalità** per problemi vincolati generali (basata su direzioni ammissibili)
-- [ ] Caso di **vincoli convessi**: caratterizzazione delle direzioni ammissibili
-- [ ] Caso di **vincoli lineari** e di **vincoli di scatola (box)**: condizioni di ottimalità specifiche
+- [x] Transizione a problemi **vincolati**: insieme ammissibile, direzioni ammissibili
+- [x] **Condizione necessaria di ottimalità** per problemi vincolati generali (basata su direzioni ammissibili)
+- [x] Caso di **vincoli convessi**: caratterizzazione delle direzioni ammissibili
+- [x] Caso di **vincoli lineari** e di **vincoli di scatola (box)**: condizioni di ottimalità specifiche
 
 ### **Giorno 13: Metodi per Vincoli Connessi & KKT (Lec 18-19)**
 **Riferimenti:** [GS 17.2.4, 17.3-17.5, D.1-D.2]
-- [ ] **Proiezione su un insieme convesso**: definizione, proprietà di non espansività
-- [ ] **Condizione di stazionarietà basata sulla proiezione**: `x* è minimo su C ⇔ x* = Proj_C(x* - ∇f(x*))`
-- [ ] Proiezioni su **scatola** e **palla** (formule esplicite)
-- [ ] Line search di Armijo **vincolata**
-- [ ] **Metodo del Gradiente Proiettato**: schema e proprietà di convergenza
-- [ ] **Metodo di Frank-Wolfe (Conditional Gradient)**: schema e proprietà
-- [ ] Problemi con **vincoli analitici** (uguaglianze/disuguaglianze)
-- [ ] **Condizioni di Fritz-John**
-- [ ] **Condizioni di Karush-Kuhn-Tucker (KKT)**: Lagrangiana, moltiplicatori, condizioni di stazionarietà, complementarità
-- [ ] **Qualificazioni dei vincoli (CQ)**: LCQ, LICQ (con dim.), SCQ
+- [x] **Proiezione su un insieme convesso**: definizione, proprietà di non espansività
+- [x] **Condizione di stazionarietà basata sulla proiezione**: `x* è minimo su C ⇔ x* = Proj_C(x* - ∇f(x*))`
+- [x] Proiezioni su **scatola** e **palla** (formule esplicite)
+- [x] Line search di Armijo **vincolata**
+- [x] **Metodo del Gradiente Proiettato**: schema e proprietà di convergenza
+- [x] **Metodo di Frank-Wolfe (Conditional Gradient)**: schema e proprietà
+- [x] Problemi con **vincoli analitici** (uguaglianze/disuguaglianze)
+- [x] **Condizioni di Fritz-John**
+- [x] **Condizioni di Karush-Kuhn-Tucker (KKT)**: Lagrangiana, moltiplicatori, condizioni di stazionarietà, complementarità
+- [x] **Qualificazioni dei vincoli (CQ)**: LCQ, LICQ (con dim.), SCQ
 
 ### **Giorno 14: Applicazioni Finali - SVM & Algoritmi Stocastici (Lec 20-24)**
 **Riferimenti:** [GS D.5], [LN 7, 7.1-7.2, 4.7-4.8, 8, 8.1-8.2]
-- [ ] Caso particolare: **vincoli di simplesso**, condizione di ottimalità
-- [ ] **Problemi di classificazione binaria**
-- [ ] **Support Vector Machines (SVM)**: formulazione primale (minimizzazione hinge loss + L2), interpretazione geometrica (massimo margine)
-- [ ] **Duale di Wolfe**: proprietà generali
-- [ ] **Derivazione del duale SVM**, interpretazione geometrica della soluzione, **Kernel SVM** (idea)
-- [ ] **Tecniche a Decomposizione** per problemi di grandi dimensioni
-- [ ] **Risolvere il duale SVM per decomposizione**: algoritmo **SMO (Sequential Minimal Optimization)**
-- [ ] Aggiornamento a 2 variabili, direzioni ammissibili e di discesa, schema SMO, aggiornamento dei gradienti
-- [ ] Condizioni di ottimalità per il duale SVM, **Most Violating Pair**, convergenza di SMO
-- [ ] **Problemi finite-sum**, **Stochastic Gradient Descent (SGD)**, **Minibatch SGD**
-- [ ] Proprietà di convergenza e complessità di SGD (confronto con GD)
-- [ ] Panoramica sul **training di Deep Network**: caratteristiche del problema e motivazioni per Minibatch SGD
-- [ ] SGD nello scenario DL: termini di **accelerazione (momentum)** e **learning rate adattivo**
-- [ ] **Differenziazione Automatica e Backpropagation** (principio di funzionamento)
+- [x] Caso particolare: **vincoli di simplesso**, condizione di ottimalità
+- [x] **Problemi di classificazione binaria**
+- [x] **Support Vector Machines (SVM)**: formulazione primale (minimizzazione hinge loss + L2), interpretazione geometrica (massimo margine)
+- [x] **Duale di Wolfe**: proprietà generali
+- [x] **Derivazione del duale SVM**, interpretazione geometrica della soluzione, **Kernel SVM** (idea)
+- [ ] Skipped
+	- [ ] **Tecniche a Decomposizione** per problemi di grandi dimensioni
+	- [ ] **Risolvere il duale SVM per decomposizione**: algoritmo **SMO (Sequential Minimal Optimization)**
+	- [ ] Aggiornamento a 2 variabili, direzioni ammissibili e di discesa, schema SMO, aggiornamento dei gradienti
+	- [ ] Condizioni di ottimalità per il duale SVM, **Most Violating Pair**, convergenza di SMO
+- [x] **Problemi finite-sum**, **Stochastic Gradient Descent (SGD)**, **Minibatch SGD**
+- [x] Proprietà di convergenza e complessità di SGD (confronto con GD)
+- [x] Panoramica sul **training di Deep Network**: caratteristiche del problema e motivazioni per Minibatch SGD
+- [x] SGD nello scenario DL: termini di **accelerazione (momentum)** e **learning rate adattivo**
+- [x] **Differenziazione Automatica e Backpropagation** (principio di funzionamento)
 
 ---
 

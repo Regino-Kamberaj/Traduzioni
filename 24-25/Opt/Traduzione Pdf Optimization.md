@@ -79,7 +79,7 @@ Qui ci occuperemo di problemi non lineari e continui di ottimizzazione, sia **co
  
 ## 3. Problemi di ottimizzazione: caratterizzazione delle soluzioni
 
-### Definzione punto ammissibile
+### Definizione punto ammissibile
 
 In queste note, saremo interessati a trattare in modo appropriato problemi di ottimizzazione della forma: $$\min_{x\in S}\ f(x), \tag{3.1}$$
 dove $f:\mathbb{R}^{n}\to\mathbb{R}$ è una funzione che, per il momento, assumiamo solo essere **continua**, e $S\subseteq\mathbb{R}^{n}$ è l'insieme ammissibile.
@@ -418,517 +418,8 @@ Le affermazioni possono essere facilmente provate con i risultati che abbiamo ra
 Nota come il punto (c) in particolare ci dia qualcosa in più rispetto a quanto avevamo visto finora: per funzioni quadratiche, il minimizzatore sarà unico solo con ipotesi di **stretta convessità** - mentre nel caso generale la stretta convessità è solo una condizione sufficiente di unicità (pensa a $f(x)=x^{4}-8x^{2}+4x$).
 
 #### 3.2.2 Il caso vincolato
+ Spostato al capitolo 5
 
-Per trattare il caso vincolato, possiamo seguire un percorso simile a quello fatto nello scenario non vincolato. L'enorme differenza ovviamente risiede nel fatto che non dobbiamo solo concentrarci sulla funzione obiettivo, ma dobbiamo tenere conto dell'insieme ammissibile $S\subset\mathbb{R}^{n}$ e dobbiamo gestire il fatto che un miglioramento nel valore obiettivo potrebbe essere associato a una perdita di ammissibilità.
-
-Per gestire il caso $S=\mathbb{R}^{n}$ ci siamo affidati pesantemente al concetto di direzione di discesa. In presenza di vincoli, dobbiamo arricchire la descrizione delle direzioni in $\mathbb{R}^{n}$ con una proprietà aggiuntiva.
-
-**Definizione 3.2.5.** Sia $S\subseteq\mathbb{R}^{n}$ e $x\in S$. Diciamo che una direzione $d\in\mathbb{R}^{n}$ è una *direzione ammissibile* per $S$ nel punto $x$ se esiste $\bar{t}>0$ tale che $x+td\in S$ per tutti i $t\in(0,\bar{t})$.
-
-Come notiamo immediatamente dalla definizione, l'ammissibilità delle direzioni permette di caratterizzare le direzioni in termini dei vincoli in modo speculare rispetto a come la proprietà di discesa caratterizza le direzioni in termini della funzione obiettivo.
-
-Ora che possiamo descrivere le direzioni in termini di discesa e ammissibilità, la seguente condizione di ottimalità viene piuttosto direttamente.
-
-**Proposizione 3.2.13.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$, $S\subseteq\mathbb{R}^{n}$ e sia $\bar{x}$ un minimizzatore locale di $f$; allora, non esiste alcuna direzione che sia ammissibile e di discesa in $\bar{x}$.
-
-Chiaramente, ci troviamo ancora una volta con una bella condizione necessaria di ottimalità che è a malapena verificabile da un punto di vista numerico. Un passo avanti per superare questo problema viene ancora dall'impiego di strumenti di analisi sotto ipotesi di differenziabilità.
-
-**Proposizione 3.2.14 (Condizione necessaria di ottimalità del primo ordine).** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile, $S\subseteq\mathbb{R}^{n}$ e sia $\bar{x}$ un minimizzatore locale di $f$; allora, non esiste alcuna direzione ammissibile $d$ in $\bar{x}$ tale che $\nabla f(\bar{x})^{T}d<0$.
-
-**Proposizione 3.2.15 (Condizione necessaria di ottimalità del secondo ordine).** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile, $S\subseteq\mathbb{R}^{n}$ e sia $\bar{x}$ un minimizzatore locale di $f$; allora, non esiste alcuna direzione ammissibile $d$ in $\bar{x}$ tale che $\nabla f(\bar{x})^{T}d=0$ e $d^{T}\nabla^{2}f(\bar{x})d<0$.
-
-Dalla Proposizione 3.2.14 possiamo anche generalizzare il concetto di punto stazionario a problemi possibilmente vincolati.
-
-**Definizione 3.2.6.** Un punto $\bar{x}\in S\subseteq\mathbb{R}^{n}$ è un *punto stazionario* per $f$ in $S$ se $\nabla f(\bar{x})^{T}d\geq 0$ per tutte le direzioni ammissibili $d$ in $\bar{x}$.
-
-Nota che la definizione di cui sopra include effettivamente il caso di $S=\mathbb{R}^{n}$. Nello scenario non vincolato, in ogni punto $x\in\mathbb{R}^{n}$ tutte le direzioni $d\in\mathbb{R}^{n}$ sono ammissibili; quindi secondo la definizione di cui sopra per un punto stazionario abbiamo $\nabla f(\bar{x})^{T}d\geq 0$ per tutti i $d\in\mathbb{R}^{n}$, il che è possibile solo se $\nabla f(\bar{x})=0$.
-
-La Proposizione 3.2.14 ancora non ci aiuta fino in fondo, poiché ci fornisce una condizione da verificare "per tutte le direzioni ammissibili"; non abbiamo idea di come verificare se una direzione è ammissibile, né possiamo verificare la condizione per infinite direzioni.
-
-Sfortunatamente, non possiamo fare ulteriori progressi significativi se non facciamo ipotesi sull'insieme ammissibile. Tuttavia, possiamo gestire accuratamente un'importante e ampia classe di insiemi ammissibili: nel seguito, assumeremo che i vincoli definiscano un *insieme convesso*. Il primo vantaggio di questo scenario deriva dalla seguente proprietà, che è anche illustrata nella Figura 3.9.
-
-**Proposizione 3.2.16.** Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso e sia $\bar{x}\in S$. La direzione $d=x-\bar{x}$ è ammissibile in $\bar{x}$ per tutti gli $x\in S$.
-
-*Dimostrazione.* Per la convessità di $S$, sappiamo che $(1-\lambda)\bar{x}+\lambda x\in S$ per tutti i $\lambda\in[0,1]$. Riorganizzando, otteniamo che $\bar{x}+\lambda(x-\bar{x})\in S$ per tutti i $\lambda\in[0,1]$; secondo la definizione di direzione ammissibile, $d=x-\bar{x}$ è ammissibile (con $\bar{t}=1$) in $\bar{x}$. $\square$
-
-Come conseguenza immediata, abbiamo la seguente proposizione.
-
-**Proposizione 3.2.17 (Condizione necessaria di ottimalità del primo ordine con insiemi convessi).** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile, $S\subseteq\mathbb{R}^{n}$ un insieme convesso e sia $\bar{x}$ un minimizzatore locale di $f$; allora, $\nabla f(\bar{x})^{T}(x-\bar{x})\geq 0$ per tutti gli $x\in S$.
-
-Si può dimostrare che, per un $S$ convesso, le due condizioni $\nabla f(\bar{x})^{T}d\geq 0$ per tutte le $d$ ammissibili e $\nabla f(\bar{x})^{T}(x-\bar{x})\geq 0$ per tutti gli $x\in S$ sono completamente equivalenti. Possiamo quindi riferirci a punti che soddisfano quest'ultima condizione come punti stazionari.
-
-Con l'ulteriore ipotesi di convessità della funzione obiettivo, otteniamo anche un risultato presumibilmente atteso.
-
-**Proposizione 3.2.18 (Condizione necessaria e sufficiente del primo ordine per l'ottimalità per problemi convessi).** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione convessa continuamente differenziabile, e $S\subseteq\mathbb{R}^{n}$ un insieme convesso. Un punto $\bar{x}\in S$ è un minimizzatore globale per $f$ su $S$ se e solo se $\nabla f(\bar{x})^{T}(x-\bar{x})\geq 0$ per tutti gli $x\in S$.
-
-*Dimostrazione.* La condizione necessaria segue dalla Proposizione 3.2.17. Assumiamo quindi che $\bar{x}$ sia stazionario. Per la convessità e differenziabilità di $f$ possiamo scrivere per tutti gli $x\in S$
-
-\[
-f(x)\geq f(\bar{x})+\nabla f(\bar{x})^{T}(x-\bar{x})\geq f(\bar{x}),
-\]
-
-dove la seconda disuguaglianza deriva da $\nabla f(\bar{x})^{T}(x-\bar{x})\geq 0$; poiché $f(\bar{x})\leq f(x)$ per una soluzione ammissibile arbitraria $x$, la dimostrazione è completa. $\square$
-
-**Esempio 3.2.3 (Vincoli poliedrici).** Un *insieme poliedrico* $P$ è un insieme definito da uguaglianze e disuguaglianze affini. Per semplicità, iniziamo considerando un insieme definito da disuguaglianze affini, cioè
-
-\[
-P=\{x\in\mathbb{R}^{n}\mid Ax\leq b\},
-\]
-
-dove $A\in\mathbb{R}^{m\times n}$ e $b\in\mathbb{R}^{m}$ (vedi Fig. 3.10a).
-
-Per studiare l'insieme delle direzioni ammissibili in un punto $x\in P$, dobbiamo prima definire l'insieme dei *vincoli attivi* in $x$ come
-
-\[
-I(x)=\{i\mid a_{i}^{T}x=b_{i}\}.
-\]
-
-L'insieme $I(x)$ contiene quindi gli indici dei vincoli che sono soddisfatti con l'uguaglianza stretta; in altre parole, i vincoli attivi sono quei vincoli che potrebbero essere violati se ci muovessimo di un piccolo passo lungo una direzione sbagliata.
-
-Guardando la Figura 3.10b per un'intuizione, possiamo anche mostrare formalmente che
-
-una direzione $d$ è ammissibile in un punto $x\in P\iff a_{i}^{T}d\leq 0$ per tutti gli $i\in I(x)$.
-
-Da un lato, possiamo assumere che $d$ sia ammissibile in $x$ e, per contraddizione, che $a_{i}^{T}d>0$ per qualche $i\in I(x)$. Dall'ammissibilità di $d$, sappiamo che per $t>0$ sufficientemente piccolo deve essere $x+td\in P$, cioè $(x+td)^{T}a_{i}\leq b_{i}$. In altre parole abbiamo $x^{T}a_{i}+td^{T}a_{i}\leq b_{i}$ e quindi, ricordando $i\in I(x)$ e $t>0$, $d^{T}a_{i}\leq 0$, il che contraddice la nostra ipotesi.
-
-Dall'altro lato, sia $a_{i}^{T}d\leq 0$ per tutti gli $i\in I(x)$. Possiamo mostrare che esiste $\bar{t}>0$ tale che $A(x+td)\leq b$ per tutti i $t\in[0,\bar{t}]$. Infatti, sia $j\in\{1,\ldots,m\}$ un qualsiasi indice di vincolo. Abbiamo tre possibili casi:
-
-1. $j\in I(x)$; in questo caso, abbiamo $(x+td)^{T}a_{j}=x^{T}a_{j}+td^{T}a_{j}=b_{j}+td^{T}a_{j}$; ricordando $t>0$ e $d^{T}a_{j}$ per le ipotesi, otteniamo $b_{j}+td^{T}a_{j}\leq b_{j}$ e quindi $x+td$ soddisfa il vincolo;
-2. $j\notin I(x)$ e $a_{j}^{T}d\leq 0$; poiché $j$ denota un vincolo non attivo, abbiamo $a_{j}^{T}x<b$; possiamo quindi ottenere $(x+td)^{T}a_{j}=x^{T}a_{j}+td^{T}a_{j}<b_{j}+td^{T}a_{j}\leq b_{j}$; $x+td$ soddisfa quindi il $j$-esimo vincolo per tutti i $t>0$ (la direzione punta lontano dal bordo del vincolo);
-3. $j\notin I(x)$ e $a_{j}^{T}d>0$; possiamo vedere che $(x+td)^{T}a_{j}=x^{T}a_{j}+td^{T}a_{j}\leq b_{j}$ se e solo se $t\leq\frac{b_{j}-x^{T}a_{j}}{d^{T}a_{j}}$ (per questo valore del passo colpiamo il bordo del vincolo).
-
-Pertanto, prendendo un valore di $\bar{t}$ che è il più piccolo dei limiti superiori dei casi (iii), cioè
-
-\[
-\bar{t}=\begin{cases}\min_{j\in I(x):a_{j}^{T}d>0}\frac{b_{j}-x^{T}a_{j}}{d^{T}a_{j}}&\text{se }\{j\notin I(x)\mid a_{j}^{T}d>0\}\neq\emptyset\\ \infty&\text{altrimenti},\end{cases}
-\]
-
-completiamo la dimostrazione.
-
-Consideriamo ora il caso in cui sono presenti anche alcuni vincoli di uguaglianza, cioè
-
-\[
-P=\{x\in\mathbb{R}^{n}\mid a_{i}^{T}x\leq b_{i},\ i=1,\ldots,m,\ \mu_{j}^{T}x=c_{j},\ j=1,\ldots,p\}.
-\]
-
-Possiamo notare che ogni vincolo di uguaglianza può essere visto come la congiunzione di due vincoli di disuguaglianza:
-
-\[
-\mu_{i}^{T}x=c_{i}\iff\mu_{i}^{T}x\leq c_{i}\ \text{e}\ -\mu_{i}^{T}x\leq-c_{i}.
-\]
-
-Quindi, per il risultato precedente, una direzione $d$ è ammissibile rispetto al vincolo di uguaglianza se e solo se $\mu_{i}^{T}d\leq 0$ e $-\mu_{i}^{T}d\leq 0$, cioè $\mu_{i}^{T}d=0$. Poiché i vincoli di uguaglianza sono sempre attivi, la condizione complessiva di ammissibilità è quindi
-
-\[
-d\text{ è ammissibile in }x\in P\ \Longleftrightarrow\ a_{i}^{T}d\leq 0\text{ per tutti gli }i\in I(x)\text{ e }\mu_{j}^{T}d=0\text{ per tutti i }j=1,\ldots,p.
-\]
-
-**Esempio 3.2.4 (Vincoli di box).** Un caso molto speciale di vincoli poliedrici è quello dei vincoli di *box* (o *bound*):
-
-\[
-S=\{x\in\mathbb{R}^{n}\mid l_{i}\leq x_{i}\leq u_{i},\ i=1,\ldots,n\},
-\]
-
-dove $l,u\in\mathbb{R}^{n}$, $l\leq u$. In altre parole, il vincolo $l\leq x\leq u$ impone limiti inferiori e superiori ai valori ammissibili di ciascuna singola variabile (Figura 3.11). Questo tipo di vincolo è molto comune nei problemi del mondo reale.
-
-Concentriamoci ora sull'ammissibilità delle direzioni $\pm e_{i}$. Dato un punto $x$, per tutti gli $i$ l'ammissibilità della direzione $e_{i}$ o $-e_{i}$ dipende solo dal valore della variabile $x_{i}$; in particolare, $e_{i}$ è ammissibile se $x_{i}<u_{i}$ e $-e_{i}$ è ammissibile se $x_{i}>l_{i}$ (Figura 3.11). Da questa osservazione, possiamo concludere che se un punto $\bar{x}$ è ottimale per un problema $\min_{x}f(x)$ s.t. $x\in S$, allora la seguente condizione deve valere per tutti gli $i=1,\ldots,n$:
-
-\[
-\frac{\partial f(\bar{x})}{\partial x_{i}}\begin{cases}\geq 0&\text{se }\bar{x}_{i}=l_{i},\\ =0&\text{se }l_{i}<\bar{x}_{i}<u_{i},\\ \leq 0&\text{se }\bar{x}_{i}=u_{i}.\end{cases}
-\]
-
-Infatti, se $\bar{x}_{i}<u_{i}$ la direzione $e_{i}$ è ammissibile e quindi per la condizione di stazionarietà otteniamo
-
-\[
-0\leq\nabla f(\bar{x})^{T}e_{i}=\frac{\partial f(\bar{x})}{\partial x_{i}}.
-\]
-
-Analogamente, se $\bar{x}_{i}>l_{i}$ sappiamo che $-e_{i}$ è ammissibile e quindi
-
-\[
-0\leq\nabla f(\bar{x})^{T}(-e_{i})=-\frac{\partial f(\bar{x})}{\partial x_{i}}.
-\]
-
-Combinando i due risultati otteniamo la condizione di cui sopra.
-
-**Esempio 3.2.5 (Vincoli del simplesso).** I vincoli del simplesso standard sono un altro importante caso particolare di vincoli poliedrici. In questo caso, l'insieme ammissibile $S$ è definito come
-
-\[
-S=\{x\in\mathbb{R}^{n}\mid x\geq 0,\ e^{T}x=1\},
-\]
-
-cioè è l'insieme delle soluzioni non negative che sommano a $1$ (come, ad esempio, nei problemi di selezione del portafoglio).
-
-Per problemi con questo insieme ammissibile, possiamo caratterizzare le soluzioni ottimali $x^{*}$ come segue:
-
-\[
-\frac{\partial f(x^{*})}{\partial x_{i}}\leq\frac{\partial f(x^{*})}{\partial x_{j}}\text{ per tutti gli }i:x^{*}_{i}>0\text{ e }j=1,\ldots,n.
-\]
-
-Infatti, se $x^{*}_{i}>0$, possiamo mostrare che, per tutti i $j$, la direzione $d$ tale che
-
-\[
-d_{h}=\begin{cases}1&\text{se }h=j,\\ -1&\text{se }h=i,\\ 0&\text{altrimenti},\end{cases}
-\]
-
-è ammissibile. Infatti, possiamo riscrivere i vincoli come $-e^{T}_{h}x\leq 0$ e $e^{T}x=1$ e verificare che:
-
-\[
-e^{T}d=\sum_{h=1}^{n}d_{h}=1-1=0,
-\]
-
-e
-
-\[
--e^{T}_{h}d=\begin{cases}-1&\text{se }h=j,\\ 1&\text{se }h=i,\\ 0&\text{altrimenti}.\end{cases}
-\]
-
-Poiché il vincolo $-e^{T}_{i}x$ non è attivo, vediamo che $d$ soddisfa la condizione di ammissibilità per insiemi poliedrici. Per la condizione di stazionarietà in $x^{*}$ abbiamo quindi
-
-\[
-0\leq\nabla f(x^{*})^{T}d=\frac{\partial f(x^{*})}{\partial x_{j}}-\frac{\partial f(x^{*})}{\partial x_{i}},
-\]
-
-cioè $\frac{\partial f(x^{*})}{\partial x_{i}}\leq\frac{\partial f(x^{*})}{\partial x_{j}}$, il che completa la dimostrazione.
-
-##### **Condizioni basate sulla proiezione**
-
-Abbiamo già visto che la caratterizzazione delle direzioni ammissibili e dei punti stazionari può essere migliorata rispetto al caso generale quando l'insieme ammissibile è convesso. In effetti, qualcosa di ancora più potente può essere affermato per questo importante caso, basandosi sul concetto introdotto di seguito.
-
-**Definizione 3.2.7 (Proiezione euclidea).** Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso chiuso e sia $x\in\mathbb{R}^{n}$. Diciamo che il punto $\hat{x}\in S$ è la proiezione euclidea di $x$ su $S$, e la denotiamo come $P_{S}(x)$, se $\hat{x}$ è la soluzione del problema di ottimizzazione
-
-\[
-\min_{y\in S}\frac{1}{2}\|y-x\|^{2}. \tag{3.2}
-\]
-
-Dobbiamo sottolineare che, per un insieme convesso chiuso $S$, la proiezione esiste sempre ed è unica per qualsiasi punto $x\in\mathbb{R}^{n}$. Infatti, il problema (3.2) ha un insieme ammissibile convesso chiuso e una funzione obiettivo fortemente convessa, quindi ammette sempre una soluzione unica. Possiamo quindi parlare di una *mappa di proiezione* $P_{S}:\mathbb{R}^{n}\to S$. Questa mappa associa ogni punto dello spazio al punto appartenente all'insieme $S$ che è più vicino al punto stesso; chiaramente, se un punto appartiene già all'insieme ammissibile, allora coincide con la propria proiezione (vedi Figura 3.13).
-
-La proiezione può essere caratterizzata in modo interessante secondo i seguenti risultati.
-
-**Proposizione 3.2.19.** Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso chiuso e $x\in\mathbb{R}^{n}$. Un punto $\hat{x}$ è la proiezione di $x$ su $S$ se e solo se $(x-\hat{x})^{T}(y-\hat{x})\leq 0$ per tutti gli $y\in S$.
-
-*Dimostrazione.* Per definizione, $\hat{x}=P_{S}(x)$ è la soluzione ottimale del problema convesso (3.2). Per la condizione necessaria e sufficiente di ottimalità, ponendo $r(y)=\frac{1}{2}\|y-x\|^{2}$, questo equivale a affermare
-
-\[
-\nabla r(\hat{x})^{T}(y-\hat{x})=(\hat{x}-x)^{T}(y-\hat{x})\geq 0\text{ per tutti gli }y\in S.
-\]
-
-Riorganizzando, otteniamo immediatamente
-
-\[
-(x-\hat{x})^{T}(y-\hat{x})\leq 0\text{ per tutti gli }y\in S. \quad \square
-\]
-
-**Proposizione 3.2.20.** Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso chiuso. La mappa di proiezione $P_{S}:\mathbb{R}^{n}\to S$ è una funzione continua.
-
-La proiezione ci permette di caratterizzare la stazionarietà in modo molto più conveniente.
-
-**Proposizione 3.2.21.** Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso chiuso e $f:\mathbb{R}^{n}\rightarrow\mathbb{R}$ una funzione continuamente differenziabile. Un punto $\bar{x}\in S$ è un punto stazionario per $f$ in $S$ se e solo se $P_{S}(\bar{x}-\nabla f(\bar{x}))=\bar{x}$.
-
-*Dimostrazione.* Sia $\bar{x}$ tale che $P_{S}(\bar{x}-\nabla f(\bar{x}))=\bar{x}$. Per la Proposizione 3.2.19 questo vale se e solo se
-
-\[
-((\bar{x}-\nabla f(\bar{x}))-P_{S}(\bar{x}-\nabla f(\bar{x})))^{T}(y-P_{S}(\bar{x}-\nabla f(\bar{x})))\leq 0\text{ per tutti gli }y\in S,
-\]
-
-cioè
-
-\[
-0\geq((\bar{x}-\nabla f(\bar{x}))-\bar{x})^{T}(y-\bar{x})=-\nabla f(\bar{x})^{T}(y-\bar{x})\text{ per tutti gli }y\in S.
-\]
-
-Riorganizzando, abbiamo
-
-\[
-\nabla f(\bar{x})^{T}(y-\bar{x})\geq 0\text{ per tutti gli }y\in S. \quad \square
-\]
-
-Naturalmente, la condizione diventa anche sufficiente per l'ottimalità sotto ipotesi di convessità per l'obiettivo.
-
-**Proposizione 3.2.22.** Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso chiuso e $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione convessa continuamente differenziabile. Un punto $\bar{x}\in S$ è un ottimizzatore globale per $f$ in $S$ se e solo se $P_{S}(\bar{x}-\nabla f(\bar{x}))=\bar{x}$.
-
-I risultati di cui sopra forniscono fondamentalmente una definizione equivalente di stazionarietà. L'intuizione geometrica di questo risultato è mostrata nella Figura 3.14.
-
-Quest'ultimo modo di caratterizzare i punti stazionari è estremamente importante da un punto di vista pratico. Infatti, possiamo ora verificare direttamente la stazionarietà mediante operazioni computazionali, piuttosto che verificare che qualche proprietà valga "per tutte le $d$". Questo sarà particolarmente conveniente per tutti quegli insiemi dove l'operazione di proiezione può essere eseguita con un piccolo costo computazionale.
-
-**Esempio 3.2.6 (Proiezione su vincoli di box).** Vogliamo derivare come dovremmo calcolare la proiezione sull'insieme ammissibile (convesso) $S=\{x\in\mathbb{R}^{n}\mid l\leq x\leq u\}$. Il problema di proiezione sul box è
-
-\[
-\min_{y\in S}\frac{1}{2}\|y-x\|^{2},
-\]
-
-che può essere riscritto più convenientemente come
-
-\[
-\min_{y_{i}\in[l_{i},u_{i}],\,i=1,\ldots,n}\,\frac{1}{2}\sum_{i=1}^{n}(y_{i}-x_{i})^{2}.
-\]
-
-Possiamo ora notare che il problema è effettivamente separabile: ogni termine nella somma riguarda una singola variabile, i cui vincoli non sono influenzati dai valori delle altre variabili.
-
-Possiamo quindi trovare il valore ottimale per ciascuna variabile risolvendo
-
-\[
-y_{i}^{*}=\operatorname*{arg\,min}_{y_{i}\in[l_{i},u_{i}]}\frac{1}{2}(y_{i}-x_{i})^{2}=\begin{cases}x_{i}&\text{se }x_{i}\in[l_{i},u_{i}]\\ l_{i}&\text{se }x_{i}<l_{i}\\ u_{i}&\text{se }x_{i}>u_{i}.\end{cases}
-\]
-
-La proiezione può quindi essere eseguita componente per componente, richiedendo una serie di $n$ controlli di valore molto semplici. La Figura 3.15 rappresenta graficamente tale operazione.
-
-**Esempio 3.2.7 (Proiezione sull'ipersfera).** La proiezione su un'ipersfera $S=\{x\in\mathbb{R}^{n}\mid\|x\|\leq R\}$ può essere semplicemente fatta come segue (vedi anche Figura 3.15):
-
-\[
-P_{S}(x)=\begin{cases}x&\text{se }\|x\|\leq R,\\ \frac{R}{\|x\|}x&\text{altrimenti}.\end{cases}
-\]
-
-##### **Condizioni di ottimalità con vincoli in forma analitica**
-
-Fino a questo punto, abbiamo parlato di insiemi ammissibili come oggetti geometrici con una struttura nota che ci permette di trarre conclusioni sull'ammissibilità delle direzioni e sull'ottimalità dei punti, possibilmente per mezzo di operazioni ad hoc come la proiezione. In molti casi, tuttavia, l'insieme ammissibile $S$ è descritto da un sistema di uguaglianze e disuguaglianze (possibilmente non lineari); questo può valere sia per oggetti geometrici semplici (la sfera può essere definita come l'insieme di punti tali che $\|x\|^{2}\leq\rho$) sia per insiemi complicati che non siamo in grado di identificare altrimenti. È quindi utile introdurre alcuni strumenti per gestire analiticamente i vincoli senza la necessità di "visualizzare" l'insieme ammissibile. Consideriamo quindi problemi della forma
-
-\[
-\begin{split}
-\min_{x\in\mathbb{R}^{n}}& f(x)\\
-\text{s.t.}& g_{i}(x)\leq 0,\quad i=1,\ldots,m\\
-& h_{i}(x)=0,\quad i=1,\ldots,p,
-\end{split} \tag{3.3}
-\]
-
-dove assumiamo che $f:\mathbb{R}^{n}\to\mathbb{R}$, $g:\mathbb{R}^{n}\to\mathbb{R}^{m}$ e $h:\mathbb{R}^{n}\to\mathbb{R}^{p}$, cioè la funzione obiettivo e tutte le funzioni che definiscono i vincoli siano continuamente differenziabili.
-
-Il seguente risultato ci fornisce un primo insieme di condizioni di ottimalità per problemi di questa forma.
-
-**Proposizione 3.2.23 (Condizioni di ottimalità di Fritz-John).** Sia $x^{*}\in\mathbb{R}^{n}$ una soluzione ottimale per il problema (3.3). Allora, esistono moltiplicatori $\lambda_{0}\in\mathbb{R}$, $\lambda\in\mathbb{R}^{p}$ e $\mu\in\mathbb{R}^{m}$ tali che:
-
-\[
-g_{i}(x^{*})\leq 0,\quad i=1,\ldots,m, \quad\text{(ammissibilità)}
-\]
-\[
-h_{i}(x^{*})=0,\quad i=1,\ldots,p, \quad\text{(ammissibilità)}
-\]
-\[
-\mu_{i}\geq 0,\quad i=1,\ldots,m, \quad\text{(ammissibilità duale)}
-\]
-\[
-\lambda_{0}\geq 0 \quad\text{(ammissibilità duale)}
-\]
-\[
-(\lambda_{0},\lambda,\mu)\neq 0 \quad\text{(ammissibilità duale)}
-\]
-\[
-\mu_{i}g_{i}(x^{*})=0,\quad i=1,\ldots,m, \quad\text{(complementarità)}
-\]
-\[
-\lambda_{0}\nabla f(x^{*})+\sum_{i=1}^{m}\mu_{i}\nabla g_{i}(x^{*})+\sum_{i=1}^{p}\lambda_{i}\nabla h_{i}(x^{*})=0, \quad\text{(gradiente nullo del Lagrangiano)}
-\]
-
-Le prime due condizioni di cui sopra affermano banalmente che una soluzione ottimale deve essere ammissibile per il problema. Le tre condizioni successive riguardano i valori dei moltiplicatori; questi sono quantità ciascuna associata a una specifica funzione: in effetti, abbiamo tanti moltiplicatori $\lambda$ quanti sono i vincoli di uguaglianza, tanti $\mu$ quanti i vincoli di disuguaglianza e un unico moltiplicatore $\lambda_{0}$ per la funzione obiettivo; il significato intrinseco dei moltiplicatori sarà più chiaro tra poco; la condizione di complementarità afferma che il valore dei moltiplicatori associati ai vincoli di disuguaglianza deve essere zero se il vincolo non è attivo. L'ultima condizione è probabilmente la più significativa e complessa.
-
-La *funzione Lagrangiana* associata a un problema di ottimizzazione vincolato della forma (3.3) è definita come
-
-\[
-\mathcal{L}(x,\lambda_{0},\lambda,\mu)=\lambda_{0}f(x)+\sum_{i=1}^{m}\mu_{i}g_{i}(x)+\sum_{i=1}^{p}\lambda_{i}h_{i}(x).
-\]
-
-Questa funzione cattura in qualche modo l'intera essenza del problema, combinando l'obiettivo con i vincoli; se i moltiplicatori assumono valori adeguati, i termini $\mu_{i}g_{i}(x)$ e $\lambda_{i}h_{i}(x)$ rappresentano penalità per la violazione dei vincoli; ad esempio, assumiamo che $\mu_{i}\geq 0$; allora una violazione del vincolo $g_{i}(x)\leq 0$ si traduce in un aumento del valore di $\mathcal{L}$; in altre parole, $\mathcal{L}$ cerca di riassumere quanto è buona una soluzione bilanciando la qualità del valore obiettivo e le violazioni dei vincoli.
-
-Ora, l'ultima delle condizioni di Fritz-John richiede che il gradiente di questa funzione sia zero; poiché al vettore dei moltiplicatori non è permesso essere tutto zero, ciò significa che i gradienti di tutte le funzioni coinvolte nel problema sono linearmente dipendenti all'ottimo, con l'ulteriore requisito che il coefficiente per i vincoli di disuguaglianza sia sempre non negativo e esattamente zero se il vincolo non è attivo.
-
-Le condizioni di Fritz-John possono essere convenientemente riscritte in forma vettoriale come segue:
-
-\[
-g(x^{*})\leq 0,\quad h(x^{*})=0,
-\]
-\[
-\mu\geq 0,\quad\lambda_{0}\geq 0,\quad(\lambda_{0},\lambda,\mu)\neq 0,
-\]
-\[
-\mu_{i}g_{i}(x^{*})=0,\quad i=1,\ldots,m,
-\]
-\[
-\nabla\mathcal{L}(x^{*},\lambda_{0},\lambda,\mu)=\lambda_{0}\nabla f(x^{*})+\mu^{T}J_{g}(x^{*})+\lambda^{T}J_{h}(x^{*})=0.
-\]
-
-A questo punto, sfortunatamente dobbiamo evidenziare una grave debolezza della condizione di Fritz-John, che è messa in luce nel seguente esempio.
-
-**Esempio 3.2.8.** Consideriamo il problema
-
-\[
-\min_{x,y} f(x,y)
-\]
-\[
-\text{s.t. } y^{2}=0.
-\]
-
-Le condizioni di Fritz-John per questo problema affermano che, per una soluzione ottimale $(\bar{x},\bar{y})$, esiste un moltiplicatore $\lambda$ associato al vincolo di uguaglianza e un moltiplicatore $\lambda_{0}$ associato alla funzione obiettivo tali che
-
-\[
-\bar{y}^{2}=0,\quad\lambda_{0}\geq 0,\quad(\lambda_{0},\lambda)\neq(0,0),
-\]
-\[
-\lambda_{0}\nabla f(\bar{x},\bar{y})+\lambda\left(\begin{array}{c}0\\ 2\bar{y}\end{array}\right)=0.
-\]
-
-Ora, per la condizione di ammissibilità deve essere $\bar{y}=0$; abbiamo quindi
-
-\[
-\lambda_{0}\nabla f(\bar{x},\bar{y})=0,
-\]
-
-che è soddisfatta ponendo $\lambda_{0}=0$. Scegliendo qualsiasi valore non nullo per $\lambda$, otteniamo che $(\bar{x},\bar{y})=(x,0)$, $\lambda_{0}=0$ e $\lambda\neq 0$ costituisce una tupla di Fritz-John per il problema, per qualsiasi valore di $x$.
-
-La conclusione è quindi che qualsiasi punto della forma $(x,0)$ soddisfa la condizione necessaria di ottimalità. Tuttavia, se guardiamo attentamente, ci rendiamo conto che $(x,0)$ sono tutti punti ammissibili per il problema. Quindi, le condizioni di Fritz-John in questo caso non offrono alcun filtro aggiuntivo nella ricerca della soluzione ottimale rispetto al banale suggerimento "cerca tra i punti ammissibili".
-
-In effetti, noteremmo che arriveremmo alla stessa conclusione con qualsiasi possibile $f$; l'unica informazione fornita dalle condizioni riguarda in questo caso l'insieme ammissibile.
-
-L'inganno nell'esempio di cui sopra risiede nel fatto che le condizioni FJ possono essere soddisfatte anche se il moltiplicatore $\lambda_{0}$ associato alla funzione obiettivo è posto a 0. In tal caso, qualsiasi riferimento alla specifica funzione obiettivo scompare nelle condizioni e l'unica informazione che possiamo ottenere è relativa all'insieme ammissibile.
-
-L'insieme di condizioni introdotto nella seguente proposizione supera precisamente questa limitazione, fornendo una caratterizzazione in cui $\lambda_{0}$ è garantito essere diverso da zero.
-
-**Proposizione 3.2.24 (Condizioni di ottimalità di Karush-Khun-Tucker (KKT)).** Sia $x^{*}\in\mathbb{R}^{n}$ una soluzione ottimale per il problema (3.3) e assumiamo che qualche condizione di regolarità valga per l'insieme ammissibile nel punto $x^{*}$. Allora, esistono moltiplicatori $\lambda\in\mathbb{R}^{p}$ e $\mu\in\mathbb{R}^{m}$ tali che:
-
-\[
-g_{i}(x^{*})\leq 0,\quad i=1,\ldots,m, \qquad\text{(ammissibilità)}
-\]
-\[
-h_{i}(x^{*})=0,\quad i=1,\ldots,p, \qquad\text{(ammissibilità)}
-\]
-\[
-\mu_{i}\geq 0,\quad i=1,\ldots,m, \qquad\text{(ammissibilità duale)}
-\]
-\[
-\mu_{i}g_{i}(x^{*})=0,\quad i=1,\ldots,m, \qquad\text{(complementarità)}
-\]
-\[
-\nabla f(x^{*})+\sum_{i=1}^{m}\mu_{i}\nabla g_{i}(x^{*})+\sum_{i=1}^{p}\lambda_{i}\nabla h_{i}(x^{*})=0, \qquad\text{(gradiente nullo del Lagrangiano)}
-\]
-
-Le condizioni KKT sono esattamente le condizioni di Fritz-John con la garanzia che $\lambda_{0}\neq 0$¹. La proposizione precedente ci fornisce una nuova condizione necessaria di ottimalità più significativa, che dice che un punto ottimale deve soddisfare le condizioni KKT *se l'insieme dei vincoli è localmente regolare*; formalizzeremo brevemente questo requisito di regolarità. Il takeaway, tuttavia, è che dovremmo cercare soluzioni ottimali tra tutti i punti KKT e tutti i punti in cui l'insieme ammissibile ha un comportamento irregolare.
-
-Dobbiamo ora formalizzare cosa intendiamo per "condizione di regolarità". In termini tecnici, diciamo che i vincoli soddisfano (globalmente o localmente) una *qualificazione dei vincoli* (CQ). Esistono molte qualificazioni dei vincoli, alcune più forti di altre, che implicano che le KKT siano una condizione necessaria di ottimalità in una soluzione. Elenchiamo qui di seguito alcune delle CQ più famose e utili:
-
-* *Qualificazione dei vincoli lineari (LCQ)*: tutti i vincoli sono funzioni lineari e affini. Questa CQ, quando vale, è verificata su tutto l'insieme ammissibile. Nella Figura 3.16 troviamo un'intuizione del significato delle KKT in questo scenario.
-* *Qualificazione dei vincoli di indipendenza lineare (LICQ)*: questa qualificazione dei vincoli vale in un punto ammissibile $x$ se i gradienti dei vincoli di uguaglianza $\nabla h_{i}(x)$, per $i=1,\ldots,p$, e i gradienti dei vincoli di disuguaglianza attivi $\nabla g_{i}(x)$, per $i\in I(x)$, sono tutti linearmente indipendenti. Nota che questa condizione è relativa al punto corrente e non è una proprietà globale dell'insieme ammissibile.
-* *Qualificazione dei vincoli di Mangasarian-Fromowitz (MFCQ)*: questa qualificazione dei vincoli vale in un punto ammissibile $x$ se i gradienti dei vincoli di uguaglianza $\nabla h_{i}(x)$, per $i=1,\ldots,p$, sono linearmente indipendenti e esiste una direzione $d\in\mathbb{R}^{n}$ tale che $\nabla h_{i}(x)^{T}d=0$ per tutti gli $i=1,\ldots,p$ e $\nabla g_{i}(x)^{T}d<0$ per tutti gli $i\in I(x)$. Anche questa è chiaramente una proprietà che vale in punti individuali.
-* *Qualificazione dei vincoli di Slater (SCQ)*: $f$ è una funzione convessa, $h_{i}$, $i=1,\ldots,p$, sono funzioni affini e $g_{i}$, $i=1,\ldots,m$ sono funzioni convesse e esiste $x\in\mathbb{R}^{n}$ tale che $h(x)=0$ e $g(x)<0$. Nota che questa è una proprietà globale del problema, che tuttavia richiede anche qualcosa sulla funzione obiettivo.
-
-**Esempio 3.2.9 (LICQ è effettivamente una CQ).** Dimostriamo qui che LICQ è effettivamente una qualificazione dei vincoli, cioè che una soluzione ottimale che soddisfa la LICQ soddisfa necessariamente le KKT, cioè le condizioni FJ con $\lambda_{0}\neq 0$.
-
-Assumiamo che $x^{*}$ sia una soluzione ottimale per il problema (3.3) e che la LICQ sia soddisfatta in $x^{*}$. Per la Proposizione 3.2.23, sappiamo che esistono moltiplicatori $(\lambda_{0},\lambda,\mu)$ che soddisfano le condizioni di Fritz-John. Assumiamo per contraddizione che $\lambda_{0}=0$. Otteniamo quindi che
-
-\[
-\sum_{i=1}^{m}\mu_{i}\nabla g_{i}(x^{*})+\sum_{i=1}^{p}\lambda_{i}\nabla h_{i}(x^{*})=0.
-\]
-
-Ora, per la condizione di complementarità sappiamo anche che $\mu_{i}=0$ per tutti gli $i\notin I(x^{*})$. Possiamo quindi riscrivere l'uguaglianza di cui sopra rimuovendo tutti i termini $\mu_{i}\nabla g_{i}(x^{*})$ per $i\notin I(x^{*})$, ottenendo
-
-\[
-\sum_{i\in I(x^{*})}\mu_{i}\nabla g_{i}(x^{*})+\sum_{i=1}^{p}\lambda_{i}\nabla h_{i}(x^{*})=0.
-\]
-
-Ricordando che la LICQ vale in $x^{*}$, sappiamo che tutti i gradienti nella combinazione di cui sopra sono linearmente indipendenti, cosicché i moltiplicatori $\mu_{i}$, $i\in I(x^{*})$ e $\lambda_{i}$, $i=1,\ldots,p$, sono necessariamente zero. Abbiamo quindi
-
-\[
-\lambda_{i}=0\ \forall\,i=1,\ldots,n,\quad\mu_{i}=0\ \forall\,i\in I(x^{*}),\quad\mu_{i}=0\ \forall\,i\notin I(x^{*}),\quad\lambda_{0}=0,
-\]
-
-cioè $(\lambda_{0},\lambda,\mu)=(0,0,0)$, violando una delle condizioni FJ. Quindi, deve essere $\lambda_{0}\neq 0$.
-
-Interessante, sotto ipotesi di convessità, le KKT diventano anche condizioni sufficienti di ottimalità.
-
-**Proposizione 3.2.25.** Siano le funzioni $f$ e $g_{i}$, $i=1,\ldots,m$, convesse e siano le funzioni $h_{i}$, $i=1,\ldots,p$, affini. Se $x^{*}\in\mathbb{R}^{n}$ soddisfa le condizioni KKT, allora è un minimizzatore globale del problema. Se $f$ è strettamente convessa, $x^{*}$ è unico.
-
-Il risultato di cui sopra è in linea con i risultati che abbiamo derivato per il caso generale con $f$ convessa su $S$ convesso. Nota che i vincoli di uguaglianza devono essere affini (cioè lineari) poiché questo è l'unico caso in cui i vincoli di uguaglianza risultano essere convessi.
-
-**Esempio 3.2.10 (Condizioni di ottimalità per problemi con vincoli di box tramite KKT).** La condizione di ottimalità per problemi con vincoli di box derivata nell'Esempio 3.2.4 può essere ottenuta anche seguendo un percorso diverso, basato sulle KKT.
-
-I vincoli di box possono essere riscritti come coppie di vincoli
-
-\[
--e_{i}^{T}x\leq-l_{i},\quad e_{i}^{T}x\leq u_{i},\quad\forall\,i=1,\ldots,n.
-\]
-
-I vincoli sono lineari, quindi vale la LCQ e le KKT sono condizioni necessarie di ottimalità. Pertanto, per una soluzione ottimale $x^{*}$ di un problema con vincoli di box esistono moltiplicatori $\lambda^{+},\lambda^{-}\in\mathbb{R}^{n}$ tali che
-
-\[
-\nabla f(x^{*})+\sum_{i=1}^{n}\lambda_{i}^{-}(-e_{i})+\sum_{i=1}^{n}\lambda_{i}^{+}e_{i}=0,
-\]
-\[
-\lambda^{+},\lambda^{-}\geq 0,
-\]
-\[
-\lambda_{i}^{+}(x_{i}^{*}-u_{i})=0\ \forall\,i=1,\ldots,n,
-\]
-\[
-\lambda_{i}^{-}(-x_{i}^{*}+l_{i})=0\ \forall\,i=1,\ldots,n,
-\]
-\[
-x^{*}\in[l,u].
-\]
-
-Se guardiamo la prima condizione componente per componente, otteniamo per ciascuna derivata parziale
-
-\[
-\frac{\partial f(x^{*})}{\partial x_{i}}-\lambda_{i}^{-}+\lambda_{i}^{+}=0.
-\]
-
-Per la condizione di complementarità, vediamo che $\lambda_{i}^{+}=0$ per tutti gli $i$ tali che $x_{i}^{*}\neq u_{i}$ e $\lambda_{i}^{-}=0$ per tutti gli $i$ tali che $x_{i}^{*}\neq l_{i}$. Abbiamo quindi
-
-\[
-\frac{\partial f(x^{*})}{\partial x_{i}}=\begin{cases}0&\text{se }l_{i}<x_{i}^{*}<u_{i},\\ -\lambda_{i}^{+}&\text{se }x_{i}^{*}=u_{i},\\ \lambda_{i}^{-}&\text{se }x_{i}^{*}=l_{i}.\end{cases}
-\]
-
-Richiamando il vincolo di non negatività per i moltiplicatori associati ai vincoli di disuguaglianza, recuperiamo
-
-\[
-\frac{\partial f(x^{*})}{\partial x_{i}}\begin{cases}=0&\text{se }l_{i}<x_{i}^{*}<u_{i},\\ \leq 0&\text{se }x_{i}^{*}=u_{i},\\ \geq 0&\text{se }x_{i}^{*}=l_{i}.\end{cases}
-\]
-
-**Esempio 3.2.11 (Condizioni di ottimalità per problemi con vincoli del simplesso tramite KKT).** I vincoli del simplesso standard ($S=\{x\mid e^{T}x=1,x\geq 0\}$, vedi Figura 3.12) sono vincoli lineari e quindi le KKT sono condizioni necessarie di ottimalità per problemi con tale insieme ammissibile. Sappiamo quindi, per un $x^{*}$ ottimale, che esistono moltiplicatori $\lambda\in\mathbb{R}$ e $\mu\in\mathbb{R}^{n}$ tali che
-
-\[
-e^{T}x^{*}=1,\quad -e_{i}^{T}x^{*}\leq 0,\ \forall\,i=\ldots,n,
-\]
-\[
-\mu_{i}(-x_{i}^{*})=0\ \forall\,i=1,\ldots,n,
-\]
-\[
-\mu\geq 0,
-\]
-\[
-\nabla f(x^{*})+\lambda e+\sum_{i=1}^{n}\mu_{i}(-e_{i})=0.
-\]
-
-Se ci concentriamo sull'ultima condizione componente per componente, otteniamo per tutti gli $i=1,\ldots,n$
-
-\[
-\frac{\partial f(x^{*})}{\partial x_{i}}+\lambda-\mu_{i}=0,
-\]
-
-cioè, per tutti gli $i$ possiamo scrivere
-
-\[
-\frac{\partial f(x^{*})}{\partial x_{i}}=-\lambda+\mu_{i}\geq-\lambda.
-\]
-
-Per il vincolo di complementarità, sappiamo che $\mu_{i}=0$ per tutti gli $i$ tali che $x_{i}^{*}\neq 0$. Quindi, per il caso particolare di una variabile $x_{j}$ tale che $x_{j}^{*}>0$ abbiamo
-
-\[
-\frac{\partial f(x^{*})}{\partial x_{j}}=-\lambda.
-\]
-
-Pertanto, data qualsiasi coppia di variabili $x_{i},x_{j}$ tale che $x^{*}_{j}>0$, possiamo concludere che
-
-\[
-\frac{\partial f(x^{*})}{\partial x_{j}}=-\lambda\leq\frac{\partial f(x^{*})}{\partial x_{i}}.
-\]
-
-Per riassumere, abbiamo recuperato la condizione necessaria di ottimalità per problemi con vincoli del simplesso che avevamo ottenuto con un ragionamento diverso nell'Esempio 3.2.5, cioè
-
-\[
-\frac{\partial f(x^{*})}{\partial x_{j}}\leq\frac{\partial f(x^{*})}{\partial x_{i}}\quad\text{per tutti gli }i=1,\ldots,n,\text{ e tutti i }j\text{ tali che }x^{*}_{j}>0.
-\]
-
----
-
-¹ Una volta garantito $\lambda_{0}\neq 0$, senza perdita di generalità possiamo dividere l'intero vettore dei moltiplicatori delle condizioni FJ per $\lambda_{0}$ stesso - riscalando $\lambda$ e $\mu$ - così che $\lambda_{0}$ può essere omesso subito, semplificando la notazione.
 ## 4. Algoritmi di Ottimizzazione Non Vincolata
 
 ### 4.1 Metodi Iterativi di Ottimizzazione
@@ -2058,51 +1549,35 @@ Possibili regole di scelta che assicurano convergenza a punti stazionari includo
 
 ### 4.8 Metodo del Gradiente Stocastico per Problemi con Somma Finita
 
-I problemi di **somma finita**, tipici in apprendimento automatico, sono rappresentati come:
+Una classe particolarmente rilevante di problemi di ottimizzazione non lineare non vincolata è quella dei **problemi a somma finita**, cioè:$$\min_{x \in \mathbb{R}^n} f(x) = \frac{1}{N} \sum_{i=1}^N f_i(x)$$
+Quando il numero $N$ di termini nella somma che definisce la funzione obiettivo è grande, affrontare questo problema con metodi di discesa standard potrebbe essere proibitivo. Gestire l'intera funzione obiettivo $f$ in una volta potrebbe infatti diventare costoso in termini di memoria o tempo computazionale.
 
-	$\min_{x \in \mathbb{R}^n} f(x) = \frac{1}{N} \sum_{i=1}^N f_i(x)$
+Lo **Stochastic Gradient Descent (SGD)** è il prototipo dei metodi di ottimizzazione stocastica, risalente agli anni '50, progettato per affrontare questa classe di problemi in modo specializzato. L'idea principale dell'ottimizzazione stocastica di problemi a somma finita è aggiornare le variabili ad ogni iterazione con passi di discesa, approssimando il vero gradiente della funzione $\nabla f(x)$ con la direzione$$d_k = -\nabla f_{i_k}(x^k),$$
+dove $i_k$ è un indice estratto casualmente da $\{1, \ldots, N\}$ all'iterazione $k$. L'approssimazione in qualche modo allevia l'onere del calcolo delle derivate, poiché dobbiamo solo calcolare un gradiente $\nabla f_i$ ad ogni iterazione invece degli $N$ termini necessari per valutare il vero $\nabla f$.
 
-Quando $N$ è molto grande, calcolare il gradiente completo $\nabla f(x)$ diventa oneroso. Affrontare l'intera funzione obiettivo $f$ da sola potrebbe diventare costoso in termini di memoria e tempi di computazione.
-
-L'**algoritmo di discesa del gradiente stocastico (SGD)** fornisce una soluzione computazionalmente più leggera, aggiornando le variabili ad ogni iterazione con passi stocastici basati su un gradiente approssimato:	$x^{k+1} = x^k - \alpha_k \nabla f_{i_k}(x^k)$ (19), dove $i_k$ è un indice **scelto casualmente** tra $\{1, \dots, N\}$ all'iterazione K.
-L'approssimazione allevia la pesantezza del calcolo delle derivata, in quanto dobbiamo calcolare solo un gradiente $\nabla f_i$ , ad ogni iterazione rispetto agli $N$ termini necessari per calcolare la vera $\nabla f$ 
-
-Il passo $\alpha_k$ è spesso impostato a un valore costante o segue una sequenza predefinita. Le tradizionali ricerche di linee (line searches) non sono generalmente adatte in questo caso, poiché la funzione obiettivo cambia a ogni iterazione. Questo porta a due problematiche principali:
-16. Non si può garantire una diminuzione sufficiente della funzione obiettivo reale.
-17. Forzare una diminuzione sufficiente sull'approssimazione corrente potrebbe non portare benefici.
-
-La scelta stocastica della direzione di discesa si basa sul fatto che, se consideriamo il **valore atteso** della quantità $\nabla f_{i_k}(x^k)$, e assumendo una distribuzione uniforme sui valori $\{1, \ldots, N\}$, otteniamo (con $p_i = \frac{1}{N}$):
-
-$E[\nabla f_i(x^k)] = \sum_{i=1}^N p_i \nabla f_i(x^k) = \sum_{i=1}^N \frac{1}{N} \nabla f_i(x^k) = \frac{1}{N} \sum_{i=1}^N \nabla f_i(x^k)$
-$= \nabla f(x^k)$
-
+Abbiamo quindi aggiornamenti della forma:$$x^{k+1} = x^k - \alpha_k \nabla f_{i_k}(x^k), \tag{4.19}$$
+dove il passo $\alpha_k$ è solitamente impostato a un valore costante, o al massimo segue una sequenza predefinita di valori. Le line search classiche invece non sono generalmente adatte in questo caso, poiché la funzione obiettivo cambia ad ogni iterazione: da un lato, non possiamo garantire una diminuzione sufficiente del vero $f$; dall'altro, forzare una diminuzione sufficiente sull'approssimazione corrente potrebbe non fornirci benefici effettivi.
+La ragione di questa scelta stocastica della direzione di ricerca è che, se osserviamo il valore atteso di questa quantità, ricordando che per una distribuzione uniforme sugli $N$ valori $\{1, \ldots, N\}$ abbiamo $p_i = \frac{1}{N}$, otteniamo: $$E[\nabla f_i(x^k)] = \sum_{i=1}^N p_i \nabla f_i(x^k) = \sum_{i=1}^N \frac{1}{N} \nabla f_i(x^k) = \frac{1}{N} \sum_{i=1}^N \nabla f_i(x^k)= \nabla f(x^k)$$
 In altre parole, ==in media ci si aspetta di ottenere il gradiente reale==. 
 
-Formalmente, diciamo che una direzione $d_k$ tale che $E[d_k]=-\nabla f(x^k)$ è uno **stimatore non distorto** (_unbiased_) del vero gradiente $\nabla f(x^k)$. In principio, vorremmo usare una direzione di ricerca fra i diversi stimatori unbiased di $-\nabla f(x^k)$, che abbia piccola varianza. In quanto riducendo questa, implicherebbe una minore probabilità di fare grossi errori nella stima della direzione del gradiente.
+Formalmente, diciamo che una direzione $d_k$ tale che $\mathbb{E}[d_k] = -\nabla f(x^k)$ è uno **stimatore non distorto** del vero gradiente $\nabla f(x^k)$. In linea di principio, vorremmo impiegare una direzione di ricerca, tra i molti stimatori non distorti di $-\nabla f(x^k)$, uno con varianza piccola. Infatti, ridurre la varianza implicherebbe una minore probabilità di commettere grandi errori nella stima della direzione del gradiente.
 
-Strategie di riduzione della varianza sono state proposte per migliorare il tasso di convergenza teorico di SGD. 
-Tuttavia, queste strategie richiedono o elevati requisiti di memoria, oppure calcolo del gradiente reale in alcune iterazioni.
-Per questo motivo, tali strategie sono applicabili solo in problemi particolarmente strutturati.
+trategie di **riduzione della varianza** sono state proposte per SGD, portando a miglioramenti teorici nel tasso di convergenza dell'algoritmo; tuttavia, questi approcci richiedono grandi requisiti di memoria o di calcolare il vero gradiente in alcune iterazioni; per questo motivo, questi metodi possono essere utilizzati solo per problemi particolarmente strutturati.
 
-Un approccio pratico per ottenere un effetto di riduzione della varianza è basare il calcolo del gradiente non su un singolo termine della somma, ma su un sottoinsieme di termini $B_k \subset \{1, \ldots, N\}$, con $|B_k| = M \ll N$:
-
-	$d_k = -\frac{1}{|B_k|} \sum_{i \in B_k} \nabla f_i(x^k)$.
-
-**Remark 4.1.** Nel contesto del **machine learning** e dell'apprendimento statistico:
-
+Il modo più comune impiegato in pratica per indurre un effetto di riduzione della varianza con basso costo e buone prestazioni è stimare i gradienti non basandosi su un singolo termine della somma, ma piuttosto su un sottoinsieme di termini $B_k \subset \{1, \ldots, N\}$, con $|B_k| = M \ll N$:$$d_k = -\frac{1}{|B_k|} \sum_{i \in B_k} \nabla f_i(x^k)$$
+**Osservazione 4.8.1** Nel contesto del **machine learning** e dell'apprendimento statistico:
 - Ogni termine $f_i$ corrisponde alla **perdita associata a un campione**.
 - Un sottoinsieme $B_k$ di esempi è detto _mini-batch_, in contrasto con il *full batch*, che include l'intero dataset.
-
 Nel contesto del **deep learning**, il passo $\alpha_k$ è comunemente noto come **learning rate**.
 
 Le tecniche di mini-batching e le strategie stocastiche sono spesso combinate con un *rimescolamento casuale*: Invece di scegliere gli indici in $B_k$ completamente a caso a ogni iterazione, si effettuano **macro-iterazioni** (chiamate *epoche*), in cui ==tutti i termini della somma sono usati esattamente una volta==.
 
 La struttura di un algoritmo di **mini-batch SGD con random reshuffling** è mostrata in _Algorithm 5_.
-Praticamente entro ogni epoca (indicizzata da $k$), sono eseguite $\frac{N}{M}$ iterazioni (indicizzate da $t$) del minibatch GD, successivamente un diverso minibatch della funzione viene considerato, in modo tale che non ci sia overlap e dentro ogni epoca ogni termine viene considerato una ed una sola volta. Nota che che il random split in minibatches è diverso per ogni epoca.
+Sostanzialmente, all'interno di ogni epoca (indicizzata da $k$), vengono eseguite $\frac{N}{M}$ iterazioni (indicizzate da $t$) di Minibatch GD; ogni volta, viene considerato un minibatch diverso di funzioni, in modo che non ci sia sovrapposizione e all'interno di un'epoca ogni termine sia considerato una e una sola volta. Si noti che la suddivisione casuale in minibatch è diversa per ogni epoca.
 
 #### 4.8.1 Analisi Teorica del SGD
 
-In questa sezione, riportiamo l'analisi di convergenza per l'analisi di un metodo SGD base, dove un singolo e randomico sample è scelto per approssimare il gradiente ad ogni iterazione; seguendo  i passi della forma (19).
+In questa sezione, riportiamo l'analisi di convergenza per l'analisi di un metodo SGD base, in cui ad ogni iterazione viene selezionato un singolo campione casuale per approssimare il gradiente; in altre parole, l'algoritmo che andremo ad analizzare esegue passi della forma (4.19).
 
 ---
 **Algoritmo 5: Mini-batch Discesa del Gradiente con Rimescolamento randomico**
@@ -2121,70 +1596,72 @@ In questa sezione, riportiamo l'analisi di convergenza per l'analisi di un metod
 
 Diversamente dall'algoritmo di discesa del gradiente, SGD non necessariamente abbassa il valore della funzione obiettivo ad ogni passo. 
 
-Per studiare rigorosamente l'SGD, si introducono alcune ipotesi aggiuntive che caratterizzano quanto lontano i campioni del gradiente possono distare da questo:
-
-22. $f$ è **limitata inferiormente**.
-23. Il modulo dei campioni di gradiente è limitato da una costante $G > 0: \|\nabla f_i(x)\| \leq G, \quad \forall x \in \mathbb{R}^n$.
-24. La funzione obiettivo è _L-lipschitziana_ (L-smooth).
+ Per studiare rigorosamente l'algoritmo, abbiamo prima bisogno di un nuovo assunto che caratterizza quanto i campioni di gradiente possano essere lontani dal vero gradiente. Assumiamo che $f$ sia limitata inferiormente e che, per qualche costante $G > 0$, la magnitudine dei campioni di gradiente sia limitata, per tutti $x \in \mathbb{R}^n$, da:$\|\nabla f_i(x)\| \leq G$. Assumeremo anche che la funzione obiettivo sia $L$-smooth.
 
 ---
-**Proposizione 4.14**
+**Proposizione 4.8.1**
+
+Sia $\{x^k\}$ la sequenza generata dall'algoritmo SGD con una sequenza di passi $\{\alpha_k\}$ tale che:
+- $\sum_{k=0}^\infty \alpha_k = \infty$,
+- $\sum_{k=0}^\infty \alpha_k^2 < \infty$.
+
+Assumiamo inoltre che, ad ogni iterazione $k$, l'algoritmo restituisca casualmente $z^k = x^\tau$ con probabilità:$$\mathbb{P}(\tau = t) = \frac{\alpha_t}{\sum_{i=0}^{k-1} \alpha_i} \quad \text{per } t = 0, \ldots, k-1.$$Allora:$$\lim_{k \to \infty} \mathbb{E}\left[\|\nabla f(z^k)\|^2\right] = 0.$$
+
+---
+
+**Dimostrazione.**
+Sia $k$ una qualsiasi iterazione. Dalla Proposizione 1.3.6 e ricordando l'ipotesi di limitatezza sulle funzioni $\nabla f_i$, otteniamo che:
+
+$$\begin{aligned}
+f(x^{k+1}) &= f(x^k - \alpha_k \nabla f_{i_k}(x^k)) \\
+&\leq f(x^k) - \alpha_k \nabla f_{i_k}(x^k)^T \nabla f(x^k) + \frac{\alpha_k^2 L}{2} \|\nabla f_{i_k}(x^k)\|^2 \\
+&\leq f(x^k) - \alpha_k \nabla f_{i_k}(x^k)^T \nabla f(x^k) + \frac{\alpha_k^2 L G^2}{2}.
+\end{aligned}$$
+
+Ora, il termine $\alpha_k \nabla f_{i_k}(x^k)^T \nabla f(x^k)$ non è necessariamente non negativo, quindi non stiamo necessariamente facendo progressi nella funzione obiettivo. Vediamo quindi cosa succede in valore atteso: $$\begin{aligned}
+\mathbb{E}\left[f(x^{k+1})\right] &\leq \mathbb{E}\left[f(x^k) - \alpha_k \nabla f_{i_k}(x^k)^T \nabla f(x^k) + \frac{\alpha_k^2 L G^2}{2}\right] \\
+&= \mathbb{E}\left[f(x^k)\right] - \alpha_k \mathbb{E}\left[\nabla f_{i_k}(x^k)^T \nabla f(x^k)\right] + \frac{\alpha_k^2 L G^2}{2}.
+\end{aligned}$$
+
+Ora, il valore atteso di $\nabla f_{i_k}(x^k)$ dato $x^k$ è:$$\mathbb{E}\left[\nabla f_{i_k}(x^k) \mid x^k\right] = \sum_{i=1}^{N} \nabla f_i(x^k) \cdot \mathbb{P}(i_k = i \mid x^k) = \sum_{i=1}^{N} \nabla f_i(x^k) \cdot \frac{1}{N} = \nabla f(x^k),$$
+quindi⁶:$$\mathbb{E}\left[f(x^{k+1})\right] \leq \mathbb{E}\left[f(x^k)\right] - \alpha_k \mathbb{E}\left[\|\nabla f(x^k)\|^2\right] + \frac{\alpha_k^2 L G^2}{2}.$$
+Applicando ricorsivamente la disuguaglianza e notando che $\mathbb{E}[f(x^0)] = f(x^0)$, otteniamo:$$
+\mathbb{E}\left[f(x^{k+1})\right] - f(x^0) \leq -\sum_{t=0}^{k} \alpha_t \mathbb{E}\left[\|\nabla f(x^t)\|^2\right] + \frac{L G^2}{2} \sum_{t=0}^{k} \alpha_t^2,$$
+cioè:$$\sum_{t=0}^{k} \alpha_t \mathbb{E}\left[\|\nabla f(x^t)\|^2\right] \leq f(x^0) - \mathbb{E}\left[f(x^{k+1})\right] + \frac{L G^2}{2} \sum_{t=0}^{k} \alpha_t^2 \leq f(x^0) - f^* + \frac{L G^2}{2} \sum_{t=0}^{k} \alpha_t^2,$$dove $f^*$ è l'ottimo globale (finito) di $f$. Ora, consideriamo il valore atteso del gradiente alla soluzione di "output" $z^{k+1}$:$$\begin{aligned}
+\mathbb{E}\left[\|\nabla f(z^{k+1})\|^2\right] &= \sum_{t=0}^{k} \mathbb{E}\left[\|\nabla f(x^t)\|^2\right] \cdot \mathbb{P}(z^{k+1} = x^t) \\
+&= \sum_{t=0}^{k} \mathbb{E}\left[\|\nabla f(x^t)\|^2\right] \cdot \frac{\alpha_t}{\sum_{i=0}^{k} \alpha_i} \\
+&= \frac{1}{\sum_{i=0}^{k} \alpha_i} \sum_{t=0}^{k} \alpha_t \mathbb{E}\left[\|\nabla f(x^t)\|^2\right].
+\end{aligned}$$
+Abbiamo quindi:$$
+\mathbb{E}\left[\|\nabla f(z^{k+1})\|^2\right] \leq \frac{1}{\sum_{i=0}^{k} \alpha_i} \left(f(x^0) - f^* + \frac{L G^2}{2} \sum_{t=0}^{k} \alpha_t^2\right).$$
+Prendendo i limiti per $k \to \infty$, ricordando che $\sum \alpha_t = \infty$ e $\sum \alpha_t^2 < \infty$, otteniamo:$$\lim_{k \to \infty} \mathbb{E}\left[\|\nabla f(z^{k+1})\|^2\right] = 0.
+\quad \square$$
+---
+
+**Proposizione 4..8.2**
 
 Sia $\{x^k\}$ la sequenza generata dall'algoritmo SGD con una sequenza di passi $\{\alpha_k\}$ tale che:
 
 - $\sum_{k=0}^\infty \alpha_k = \infty$,
 - $\sum_{k=0}^\infty \alpha_k^2 < \infty$.
 
-Assumendo che, a ogni iterazione $k$, l'algoritmo selezioni casualmente un $\tau \in \{0, \ldots, k-1\}$ con probabilità:
-
-	$P(\tau = t) = \frac{\alpha_t}{\sum_{i=0}^{k-1} \alpha_i}$,
-
-allora:
-	$\lim_{k \to \infty} E\left[\|\nabla f(z^k)\|^2\right] = 0$.
+Allora:$$\liminf_{k \to \infty} \|\nabla f(x^k)\| = 0$$
 
 ---
 
-**Dimostrazione (Schizzo male)**
+La proposizione sopra ci dice che, se valgono le stesse ipotesi sui passi richieste per la Proposizione 4.8.1, possiamo ottenere un risultato di convergenza alla stazionarietà, in valore atteso, per la sequenza $\{x^k\}$.
 
-Dalla proprietà di smoothness e l'ipotesi sui campioni del gradiente, si ottiene che:
+Una regola sui passi che garantisce la convergenza in valore atteso ai punti stazionari per l'algoritmo SGD è, ad esempio: $$\alpha_k = \frac{\alpha_0}{k + 1}$$
+In pratica, i passi ==devono tendere a zero per garantire la convergenza, ma devono farlo "abbastanza **lentamente**"== da consentire all'algoritmo di raggiungere un punto stazionario.
 
-	$f(x^{k+1}) \leq f(x^k) - \alpha_k \nabla f_{i_k}(x^k)^T \nabla f(x^k) + \frac{\alpha_k^2 L G^2}{2}$.
+Per quanto riguarda la complessità dell'algoritmo, la velocità di convergenza è inferiore a quella dei metodi full-batch, come possiamo osservare nella Tabella 4.3. Il limite di complessità nel caso peggiore è peggiore per SGD rispetto a GD nei casi non convesso, convesso e fortemente convesso. In particolare, nel caso fortemente convesso abbiamo tassi di convergenza lineari vs. sublineari per i due algoritmi.
 
-Sotto aspettazione (?) e applicando le ipotesi di $\alpha_k$, si dimostra che la successione converge in media a un punto stazionario, soddisfacendo:
+|         | **$f$ non convessa**                           | **$f$ convessa**                               | **$f$ fortemente convessa**                                   |
+| ------- | ---------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------- |
+| **GD**  | $\mathcal{O}\left(\frac{1}{\epsilon^2}\right)$ | $\mathcal{O}\left(\frac{1}{\epsilon}\right)$   | $\mathcal{O}\left(\log\left(\frac{1}{\epsilon}\right)\right)$ |
+| **SGD** | $\mathcal{O}\left(\frac{1}{\epsilon^4}\right)$ | $\mathcal{O}\left(\frac{1}{\epsilon^2}\right)$ | $\mathcal{O}\left(\frac{1}{\epsilon}\right)$                  |
 
-	$\lim_{k \to \infty} E[\|\nabla f(z^k)\|^2] = 0$
-
----
-
-**Proposizione 4.15**
-
-Sia $\{x^k\}$ la sequenza generata dall'algoritmo SGD con una sequenza di passi $\{\alpha_k\}$ tale che:
-
-- $\sum_{k=0}^\infty \alpha_k = \infty$,
-- $\sum_{k=0}^\infty \alpha_k^2 < \infty$.
-
-Allora:
-	$\liminf_{k \to \infty} \|\nabla f(x^k)\| = 0$.
-
----
-
-La proposizione sopra afferma che, se la regola sui passi $\{\alpha_k\}$ richiesta dalla Proposizione 4.14 è soddisfatta, possiamo ottenere un risultato di convergenza in stazionarietà, in valore atteso, per la sequenza $\{x_k\}$. 
-
-Una regola sui passi che garantisce la convergenza in valore atteso ai punti stazionari per l'algoritmo SGD è, ad esempio: $\alpha_k = \frac{\alpha_0}{k + 1}$.
-
-In pratica, i passi ==devono tendere a zero per garantire la convergenza, ma devono farlo "abbastanza lentamente"== da consentire all'algoritmo di raggiungere un punto stazionario.
-
-Per la complessità dell'algoritmo, la **velocità di convergenza** dell'SGD è inferiore rispetto a quella dei metodi a batch completo (GD), come osservabile nella tabella successiva. Il limite di complessità nel caso peggiore è peggiore per l'SGD rispetto al GD nei casi non convessi, convessi e fortemente convessi. In particolare, nel caso fortemente convesso, i tassi di convergenza sono **lineari** per GD contro **sottolineari** per SGD.
-
-| **Caso**                | **GD**                                              | **SGD**                              |
-| ----------------------- | --------------------------------------------------- | ------------------------------------ |
-| Non convesso $f$        | $O\left(\frac{1}{\epsilon^2}\right)$                | $O\left(\frac{1}{\epsilon^4}\right)$ |
-| Convesso $f$            | $O\left(\frac{1}{\epsilon}\right)$                  | $O\left(\frac{1}{\epsilon^2}\right)$ |
-| Fortemente convesso $f$ | $O\left(\log\left(\frac{1}{\epsilon}\right)\right)$ | $O\left(\frac{1}{\epsilon}\right)$   |
-
-**Tabella 3:** Esempi di complessità per GD e SGD.
-
-I valori nella tabella aiutano a visualizzare i trend; tuttavia, ricordiamo che i limiti sono validi asintoticamente, ovvero sono più accurati per piccoli valori di $\epsilon$
+**Tabella 4.3:** Esempi di tipi di complessità. I valori nella tabella dovrebbero aiutare a visualizzare le tendenze; tuttavia, si ricordi che i limiti valgono asintoticamente, cioè sono più accurati per valori piccoli di $\epsilon$.
 
 ---
 
@@ -2197,385 +1674,749 @@ L'**efficienza del GD rispetto all'SGD** si osserva solo per valori molto piccol
 ![[Pasted image 20250204183712.png]]
 
 ## 5. Algoritmi di ottimizzazione vincolata
+### 3.2.2 Condizioni di ottimalità nel caso vincolato 
 
-TBD (Per ora vedi Pdf notes_palchetti_2023/ notes_senoner_2024)
+Per trattare il caso vincolato, possiamo seguire un percorso simile a quello fatto nello scenario non vincolato. L'enorme differenza ovviamente risiede nel fatto che non dobbiamo solo concentrarci sulla funzione obiettivo, ==ma dobbiamo tenere conto dell'insieme ammissibile== $S\subset\mathbb{R}^{n}$ e dobbiamo gestire il fatto che un miglioramento nel valore obiettivo potrebbe essere associato a una **perdita di ammissibilità.**
+
+---
+
+Per gestire il caso $S=\mathbb{R}^{n}$ ci siamo affidati pesantemente al concetto di direzione di discesa. In presenza di vincoli, dobbiamo arricchire la descrizione delle direzioni in $\mathbb{R}^{n}$ con una proprietà aggiuntiva.
+
+**Definizione 3.2.5.** Sia $S\subseteq\mathbb{R}^{n}$ e $x\in S$. Diciamo che una direzione $d\in\mathbb{R}^{n}$ è una *direzione ammissibile* per $S$ nel punto $x$ se esiste $\bar{t}>0$ tale che $x+td\in S$ per tutti i $t\in(0,\bar{t})$.
+
+![[Pasted image 20251229162334.png]]
+
+Come notiamo immediatamente dalla definizione, l'ammissibilità delle direzioni permette di caratterizzare le direzioni in termini dei vincoli in **modo speculare** rispetto a come la proprietà di discesa caratterizza le direzioni in termini della funzione obiettivo.
+
+---
+
+Ora che possiamo descrivere le direzioni in termini di discesa e ammissibilità, la seguente **condizione di ottimalità** viene piuttosto direttamente.
+
+**Proposizione 3.2.13.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$, $S\subseteq\mathbb{R}^{n}$ e sia $\bar{x}$ un **minimizzatore locale** di $f$; allora, non esiste alcuna direzione che sia **ammissibile** e di **discesa** in $\bar{x}$.
+
+---
+
+Chiaramente, ci troviamo ancora una volta con una bella condizione necessaria di ottimalità che è a malapena verificabile da un punto di vista numerico. Un passo avanti per superare questo problema viene ancora dall'impiego di strumenti di analisi sotto ipotesi di **differenziabilità**.
+
+**Proposizione 3.2.14 (Condizione necessaria di ottimalità del primo ordine).** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione **continuamente differenziabile,** $S\subseteq\mathbb{R}^{n}$ e sia $\bar{x}$ un **minimizzatore locale** di $f$; allora, non esiste alcuna **direzione ammissibile** $d$ in $\bar{x}$ tale che $\nabla f(\bar{x})^{T}d<0$. => ovvero che sia di discesa
+
+**Proposizione 3.2.15 (Condizione necessaria di ottimalità del secondo ordine).** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione **continuamente differenziabile**, $S\subseteq\mathbb{R}^{n}$ e sia $\bar{x}$ un **minimizzatore locale** di $f$; allora, non esiste alcuna direzione ammissibile $d$ in $\bar{x}$ tale che $\nabla f(\bar{x})^{T}d=0$ e $d^{T}\nabla^{2}f(\bar{x})d<0$.
+
+---
+
+Dalla Proposizione 3.2.14 possiamo anche generalizzare il concetto di punto stazionario a problemi possibilmente vincolati.
+
+**Definizione 3.2.6.** Un punto $\bar{x}\in S\subseteq\mathbb{R}^{n}$ è un *punto stazionario* per $f$ in $S$ se $$\nabla f(\bar{x})^{T}d\geq 0$$ per tutte le **direzioni ammissibili** $d$ in $\bar{x}$.
+
+Nota che la definizione di cui sopra include effettivamente il caso di $S=\mathbb{R}^{n}$. Nello scenario non vincolato, in ogni punto $x\in\mathbb{R}^{n}$ tutte le direzioni $d\in\mathbb{R}^{n}$ sono ammissibili; quindi secondo la definizione di cui sopra per un punto stazionario abbiamo $\nabla f(\bar{x})^{T}d\geq 0$ per tutti i $d\in\mathbb{R}^{n}$, il che è possibile solo se $\nabla f(\bar{x})=0$.
+
+---
+
+La Proposizione 3.2.14 ancora non ci aiuta fino in fondo, poiché ci fornisce una condizione da verificare "per **tutte** le direzioni ammissibili"; non abbiamo idea di come verificare se una direzione è ammissibile, né possiamo verificare la condizione per **infinite direzioni.**
+
+Sfortunatamente, non possiamo fare ulteriori progressi significativi se non facciamo ipotesi sull'insieme ammissibile. Tuttavia, possiamo gestire accuratamente un'importante e ampia classe di insiemi ammissibili: nel seguito, assumeremo che i vincoli definiscano un *insieme convesso*. Il primo vantaggio di questo scenario deriva dalla seguente proprietà, che è anche illustrata nella Figura 3.9.
+
+![[Pasted image 20251229163158.png]]
+
+**Proposizione 3.2.16.** Sia $S\subseteq\mathbb{R}^{n}$ un [[insieme convesso]] e sia $\bar{x}\in S$. La direzione $d=x-\bar{x}$ è ammissibile in $\bar{x}$ per tutti gli $x\in S$.
+
+*Dimostrazione.* 
+Per la convessità di $S$, sappiamo che $(1-\lambda)\bar{x}+\lambda x\in S$ per tutti i $\lambda\in[0,1]$. Riorganizzando, otteniamo che $\bar{x}+\lambda(x-\bar{x})\in S$ per tutti i $\lambda\in[0,1]$; secondo la **definizione di direzione ammissibile,** $d=x-\bar{x}$ è ammissibile (con $\bar{t}=1$) in $\bar{x}$. $\square$
+
+---
+
+Come conseguenza immediata, abbiamo la seguente proposizione.
+
+**Proposizione 3.2.17 (Condizione necessaria di ottimalità del primo ordine con insiemi convessi).** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione **continuamente differenziabile**, $S\subseteq\mathbb{R}^{n}$ un i**nsieme convesso** e sia $\bar{x}$ un **minimizzatore locale** di $f$; allora, $\nabla f(\bar{x})^{T}(x-\bar{x})\geq 0$ per tutti gli $x\in S$. (notare questo è valido per qualsiasi punto!)
+
+Si può dimostrare che, per un $S$ convesso, le due condizioni $\nabla f(\bar{x})^{T}d\geq 0$ per tutte le $d$ ammissibili e $\nabla f(\bar{x})^{T}(x-\bar{x})\geq 0$ per tutti gli $x\in S$ sono completamente equivalenti. Possiamo quindi riferirci a punti che soddisfano quest'ultima condizione come **punti stazionari**.
+
+---
+
+Con l'ulteriore ipotesi di **convessità della funzione** obiettivo, otteniamo anche un risultato presumibilmente atteso. (aggiungo globalità e sufficienza)
+
+**Proposizione 3.2.18 (Condizione necessaria e sufficiente del primo ordine per l'ottimalità per problemi convessi).** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una [[funzione convessa]] **continuamente differenziabile**, e $S\subseteq\mathbb{R}^{n}$ un **insieme convesso**. Un punto $\bar{x}\in S$ è un **minimizzatore globale** per $f$ su $S$ se e solo se $\nabla f(\bar{x})^{T}(x-\bar{x})\geq 0$ per tutti gli $x\in S$.
+
+*Dimostrazione.* 
+La condizione necessaria segue dalla Proposizione 3.2.17. Assumiamo quindi che $\bar{x}$ sia stazionario. Per la **convessità** e **differenziabilità** (prop 1.3.8) di $f$ possiamo scrivere per tutti gli $x\in S$ $$f(x)\geq f(\bar{x})+\nabla f(\bar{x})^{T}(x-\bar{x})\geq f(\bar{x})$$dove la seconda disuguaglianza deriva da $\nabla f(\bar{x})^{T}(x-\bar{x})\geq 0$;
+
+Ma poiché $f(\bar{x})\leq f(x)$ per una soluzione **ammissibile arbitraria** $x$, la dimostrazione è completa. $\square$
+
+---
+
+**Esempio 3.2.3 (Vincoli poliedrici).**  (skip this)
+Un *insieme poliedrico* $P$ è un insieme definito da **uguaglianze** e **disuguaglianze** *affini*. Per semplicità, iniziamo considerando un insieme definito da **disuguaglianze** affini, cioè $$P=\{x\in\mathbb{R}^{n}\mid Ax\leq b\}$$
+dove $A\in\mathbb{R}^{m\times n}$ e $b\in\mathbb{R}^{m}$ (vedi Fig. 3.10a).
+
+![[Pasted image 20251229171103.png]]
+
+Per studiare l'insieme delle **direzioni ammissibili** in un punto $x\in P$, dobbiamo prima definire l'insieme dei *vincoli attivi* in $x$ come $$I(x)=\{i\mid a_{i}^{T}x=b_{i}\}$$
+L'insieme $I(x)$ contiene quindi gli indici dei vincoli che sono soddisfatti con l'**uguaglianza stretta**; in altre parole, i vincoli attivi sono quei vincoli che potrebbero essere violati se ci muovessimo di *un piccolo passo* **lungo una direzione sbagliata.**
+
+Guardando la Figura 3.10b per un'intuizione, possiamo anche mostrare formalmente che $$\text{una direzione } d \text{ è ammissibile in un punto } x\in P\iff a_{i}^{T}d\leq 0 \text{ per tutti gli } i\in I(x)$$
+Da un lato, possiamo assumere che $d$ sia ammissibile in $x$ e, per contraddizione, che $a_{i}^{T}d>0$ per qualche $i\in I(x)$. Dall'ammissibilità di $d$, sappiamo che per $t>0$ sufficientemente piccolo deve essere $x+td\in P$, cioè $(x+td)^{T}a_{i}\leq b_{i}$. In altre parole abbiamo $x^{T}a_{i}+td^{T}a_{i}\leq b_{i}$ e quindi, ricordando $i\in I(x)$ e $t>0$, $d^{T}a_{i}\leq 0$, il che contraddice la nostra ipotesi.
+
+Dall'altro lato, sia $a_{i}^{T}d\leq 0$ per tutti gli $i\in I(x)$. Possiamo mostrare che esiste $\bar{t}>0$ tale che $A(x+td)\leq b$ per tutti i $t\in[0,\bar{t}]$. Infatti, sia $j\in\{1,\ldots,m\}$ un qualsiasi indice di vincolo. 
+Abbiamo tre possibili casi:
+1. $j\in I(x)$; in questo caso, abbiamo $(x+td)^{T}a_{j}=x^{T}a_{j}+td^{T}a_{j}=b_{j}+td^{T}a_{j}$; ricordando $t>0$ e $d^{T}a_{j}$ per le ipotesi, otteniamo $b_{j}+td^{T}a_{j}\leq b_{j}$ e quindi $x+td$ **soddisfa il vincolo**;
+2. $j\notin I(x)$ e $a_{j}^{T}d\leq 0$; poiché $j$ denota un vincolo **non attivo**, abbiamo $a_{j}^{T}x<b$; possiamo quindi ottenere $(x+td)^{T}a_{j}=x^{T}a_{j}+td^{T}a_{j}<b_{j}+td^{T}a_{j}\leq b_{j}$; $x+td$ **soddisfa** quindi il $j$-esimo vincolo per tutti i $t>0$ (la direzione punta lontano dal bordo del vincolo);
+3. $j\notin I(x)$ e $a_{j}^{T}d>0$; possiamo vedere che $(x+td)^{T}a_{j}=x^{T}a_{j}+td^{T}a_{j}\leq b_{j}$ se e solo se $t\leq\frac{b_{j}-x^{T}a_{j}}{d^{T}a_{j}}$ (per questo valore del passo colpiamo il bordo del vincolo).
+
+Pertanto, prendendo un valore di $\bar{t}$ che è il più piccolo dei limiti superiori dei casi (iii), cioè $$
+\bar{t}=\begin{cases}\min_{j\in I(x):a_{j}^{T}d>0}\frac{b_{j}-x^{T}a_{j}}{d^{T}a_{j}}&\text{se }\{j\notin I(x)\mid a_{j}^{T}d>0\}\neq\emptyset\\ \infty&\text{altrimenti},\end{cases}$$
+completiamo la dimostrazione.
+
+---
+
+Consideriamo ora il caso in cui sono presenti anche alcuni **vincoli di uguaglianza**, cioè $$
+P=\{x\in\mathbb{R}^{n}\mid a_{i}^{T}x\leq b_{i},\ i=1,\ldots,m,\ \mu_{j}^{T}x=c_{j},\ j=1,\ldots,p\}$$
+Possiamo notare che ogni vincolo di uguaglianza può essere visto come la congiunzione di due vincoli di **disuguaglianza**: $$\mu_{i}^{T}x=c_{i}\iff\mu_{i}^{T}x\leq c_{i}\ \text{e}\ -\mu_{i}^{T}x\leq-c_{i}$$
+Quindi, per il risultato precedente, una direzione $d$ è ammissibile rispetto al vincolo di uguaglianza se e solo se $\mu_{i}^{T}d\leq 0$ e $-\mu_{i}^{T}d\leq 0$, cioè $\mu_{i}^{T}d=0$. 
+
+Poiché i vincoli di uguaglianza sono sempre attivi, ==la condizione complessiva di ammissibilità== è quindi $$d\text{ è ammissibile in }x\in P\ \Longleftrightarrow\ a_{i}^{T}d\leq 0\text{ per tutti gli }i\in I(x)\text{ e }\mu_{j}^{T}d=0\text{ per tutti i }j=1,\ldots,p$$
+
+---
+
+**Esempio 3.2.4 (Vincoli di box).** 
+Un caso molto speciale di vincoli poliedrici è quello dei vincoli di *box* (o *bound*):
+$$S=\{x\in\mathbb{R}^{n}\mid l_{i}\leq x_{i}\leq u_{i},\ i=1,\ldots,n\}$$
+dove $l,u\in\mathbb{R}^{n}$, $l\leq u$. In altre parole, il vincolo $l\leq x\leq u$ impone limiti **inferiori** e **superiori** ai valori ammissibili di ciascuna singola variabile (Figura 3.11). Questo tipo di vincolo è molto comune nei problemi del mondo reale.
+
+![[Pasted image 20251229172949.png]]
+
+Concentriamoci ora sull'**ammissibilità** delle direzioni $\pm e_{i}$. Dato un punto $x$, per tutti gli $i$ l'ammissibilità della direzione $e_{i}$ o $-e_{i}$ dipende solo dal **valore della variabile** $x_{i}$; in particolare, $e_{i}$ è ammissibile se $x_{i}<u_{i}$ e $-e_{i}$ è ammissibile se $x_{i}>l_{i}$ (Figura 3.11). Da questa osservazione, possiamo concludere che se un punto $\bar{x}$ è ottimale per un problema $\min_{x}f(x)$ s.t. $x\in S$, allora la seguente condizione **deve valere per tutti** gli $i=1,\ldots,n$: $$\frac{\partial f(\bar{x})}{\partial x_{i}}\begin{cases}\geq 0&\text{se }\bar{x}_{i}=l_{i},\\ =0&\text{se }l_{i}<\bar{x}_{i}<u_{i},\\ \leq 0&\text{se }\bar{x}_{i}=u_{i}.\end{cases}$$
+Infatti, se $\bar{x}_{i}<u_{i}$ la direzione $e_{i}$ è **ammissibile** e quindi per la condizione di stazionarietà otteniamo $$0\leq\nabla f(\bar{x})^{T}e_{i}=\frac{\partial f(\bar{x})}{\partial x_{i}}$$
+Analogamente, se $\bar{x}_{i}>l_{i}$ sappiamo che $-e_{i}$ è **ammissibile** e quindi $$0\leq\nabla f(\bar{x})^{T}(-e_{i})=-\frac{\partial f(\bar{x})}{\partial x_{i}}$$
+Combinando i due risultati otteniamo la condizione di cui sopra.
+
+---
+
+**Esempio 3.2.5 (Vincoli del simplesso).**  (also skip this)
+I vincoli del simplesso standard sono un altro importante caso particolare di vincoli **poliedrici**. In questo caso, l'insieme ammissibile $S$ è definito come $$S=\{x\in\mathbb{R}^{n}\mid x\geq 0,\ e^{T}x=1\}$$cioè è l'insieme delle soluzioni **non negative** che sommano a $1$ (come, ad esempio, nei problemi di selezione del portafoglio).
+
+![[Pasted image 20251229174920.png]]
+
+Per problemi con questo insieme ammissibile, possiamo caratterizzare le soluzioni ottimali $x^{*}$ come segue: $$\frac{\partial f(x^{*})}{\partial x_{i}}\leq\frac{\partial f(x^{*})}{\partial x_{j}}\text{ per tutti gli }i:x^{*}_{i}>0\text{ e }j=1,\ldots,n$$
+Infatti, se $x^{*}_{i}>0$, possiamo mostrare che, per tutti i $j$, la direzione $d$ tale che $$d_{h}=\begin{cases}1&\text{se }h=j,\\ -1&\text{se }h=i,\\ 0&\text{altrimenti},\end{cases}$$
+è ammissibile. Infatti, possiamo riscrivere i vincoli come $-e^{T}_{h}x\leq 0$ e $e^{T}x=1$ e verificare che:$$e^{T}d=\sum_{h=1}^{n}d_{h}=1-1=0$$e $$-e^{T}_{h}d=\begin{cases}-1&\text{se }h=j,\\ 1&\text{se }h=i,\\ 0&\text{altrimenti}.\end{cases}$$
+Poiché il vincolo $-e^{T}_{i}x$ **non è attivo**, vediamo che $d$ soddisfa la condizione di ammissibilità per insiemi poliedrici. Per la condizione di **stazionarietà** in $x^{*}$ abbiamo quindi $$0\leq\nabla f(x^{*})^{T}d=\frac{\partial f(x^{*})}{\partial x_{j}}-\frac{\partial f(x^{*})}{\partial x_{i}}$$cioè $\frac{\partial f(x^{*})}{\partial x_{i}}\leq\frac{\partial f(x^{*})}{\partial x_{j}}$, il che completa la dimostrazione.
+
+---
+### 5.0 Algoritmi di Ottimizzazione Vincolata - Introduzione
+
+In questo capitolo, discuteremo alcuni algoritmi di base progettati per affrontare problemi della forma $$\min_{x\in S}\ f(x)$$
+dove l'insieme ammissibile $S$ è un **insieme convesso** chiuso. Qui tratteremo $S$ come un oggetto geometrico con struttura nota; i metodi specifici per problemi con vincoli in forma analitica (3.3 vedi dopo con KKT) sono in qualche modo al di là dello scopo di questo testo e non verranno trattati; menzioniamo solo che, in quei casi, i metodi sequenziali di **penalità** o barriera sono spesso gli approcci di scelta.
+
+Per gestire la classe di problemi considerata, prenderemo in prestito la maggior parte degli strumenti che abbiamo già introdotto per gli **algoritmi non vincolati**; in particolare, ci concentreremo su algoritmi basati su *line-search*, facendo passi lungo direzioni che siano di discesa e, in questo scenario, anche **ammissibili**.
+**L'ammissibilità della direzione** è importante nei framework algoritmici tanto quanto lo era per caratterizzare l'ottimalità. È infatti immediato rendersi conto che dobbiamo fare passi verso soluzioni che siano ammissibili per il problema e, quindi, usare direzioni che garantiscano di finire all'interno della regione ammissibile, almeno per passi sufficientemente piccoli.
+
+La struttura degli algoritmi che affronteremo segue quindi la solita regola di aggiornamento$$
+x^{k+1}=x^{k}+\alpha_{k}d_{k}$$dove $\alpha_{k}$ è un **passo positivo** e $d_{k}$ è una direzione **ammissibile** di **discesa**.
+
+Poiché abbiamo assunto la **convessità per l'insieme** $S$, possiamo caratterizzare le direzioni di discesa secondo $$d_{k}=\hat{x}^{k}-x^{k}$$
+dove $\hat{x}^{k}$ è un qualsiasi **punto ammissibile** in $S$. La definizione della **direzione di ricerca** si riduce quindi alla selezione di un opportuno punto ammissibile $\hat{x}^{k}$; per un algoritmo funzionante correttamente, il punto selezionato dovrebbe portare a una direzione $\hat{x}^{k}-x^{k}$ che **sia di discesa**.
+
+Per quanto riguarda il passo, sfrutteremo il classico **algoritmo di Armijo** che abbiamo analizzato per il caso non vincolato, con una precauzione cruciale:
+* In aggiunta alla condizione di **sufficiente decremento**, dobbiamo verificare che il punto $x^{k}+\alpha_{k}d_{k}$ **sia ammissibile**; se non lo è, ==dobbiamo fare backtrack anche se avessimo ottenuto il sufficiente decremento==; nota che, se la direzione è **ammissibile**, abbiamo la garanzia che il backtrack si fermi, in modo simile a quanto osservato per la condizione di decremento;
+* In alternativa, invece di controllare ogni volta se il punto di prova è ammissibile, possiamo semplicemente iniziare con un passo iniziale $\Delta_{0}\leq 1$: in questo caso, per la convessità di $S$, sappiamo per certo che qualsiasi **punto nel segmento** da $x^{k}$ a $$x^{k}+d_{k}=x^{k}+\hat{x}^{k}-x^{k}=\hat{x}^{k}$$ è ammissibile.
+
+L'uso della line search di Armijo nel caso vincolato ci porta la seguente proprietà:
+
+**Proposizione 5.0.1**
+Sia $f \in C^1(\mathbb{R}^n)$ e sia $S$ un insieme non vuoto, convesso e compatto. Assumi che $\{x^k\}$ sia la sequenza prodotta da un algoritmo della forma $x^{k+1} = x^k +\alpha_k d_k$, dove $d_k$ è ammissibile, $\nabla f(x^k)^Td_k <0$ e $\alpha_k$ sia scelta con una line search di Armijo vincolata per ogni k. Allora:
+- $x^{k+1} \in S$ per ogni $k$; 
+- $f(x^{k+1}) < f(x^k)$ per ogni $k$; 
+- $\lim_{k\to \infty} \nabla f(x^k)^Td_k = 0$
+
+---
+#### Condizioni basate sulla proiezione
+
+Abbiamo già visto che la caratterizzazione delle direzioni ammissibili e dei punti stazionari può essere migliorata rispetto al caso generale quando l'**insieme ammissibile** è **convesso**. In effetti, qualcosa di ancora più potente può essere affermato per questo importante caso, basandosi sul concetto introdotto di seguito.
+
+**Definizione 3.2.7 (Proiezione euclidea).** 
+Sia $S\subseteq\mathbb{R}^{n}$ un **insieme convesso** chiuso e sia $x\in\mathbb{R}^{n}$. Diciamo che il punto $\hat{x}\in S$ è la *proiezione euclidea* di $x$ su $S$, e la denotiamo come $P_{S}(x)$, se $\hat{x}$ è la **soluzione del problema** di ottimizzazione $$\min_{y\in S}\frac{1}{2}\|y-x\|^{2}. \tag{3.2}$$
+Dobbiamo sottolineare che, per un insieme convesso chiuso $S$, la proiezione **esiste sempre** ed è **unica** per qualsiasi punto $x\in\mathbb{R}^{n}$. Infatti, il problema (3.2) ha un insieme ammissibile convesso chiuso e una funzione obiettivo **fortemente convessa**, quindi ammette sempre una soluzione **unica**. 
+
+Possiamo quindi parlare di una *mappa di proiezione* $P_{S}:\mathbb{R}^{n}\to S$. Questa mappa associa **ogni punto dello spazio** al punto appartenente all'insieme $S$ che è **più vicino** al punto stesso; chiaramente, se un punto appartiene già all'insieme ammissibile, allora coincide con la propria proiezione (vedi Figura 3.13).
+
+![[Pasted image 20251229221701.png]]
+
+---
+
+La proiezione può essere caratterizzata in modo interessante secondo i seguenti risultati.
+
+**Proposizione 3.2.19.** Sia $S\subseteq\mathbb{R}^{n}$ un [[insieme convesso]] chiuso e $x\in\mathbb{R}^{n}$ (uno qualsiasi ?). Un punto $\hat{x}$ è la proiezione di $x$ su $S$ se e solo se $(x-\hat{x})^{T}(y-\hat{x})\leq 0$ per tutti gli $y\in S$.
+
+*Dimostrazione.* 
+==Per definizione, $\hat{x}=P_{S}(x)$ è la **soluzione ottimale** del problema convesso (==3.2). Per la condizione necessaria e sufficiente di ottimalità, ponendo $r(y)=\frac{1}{2}\|y-x\|^{2}$, questo equivale a affermare $$\nabla r(\hat{x})^{T}(y-\hat{x})=(\hat{x}-x)^{T}(y-\hat{x})\geq 0\text{ per tutti gli }y\in S$$
+Riorganizzando, otteniamo immediatamente $$(x-\hat{x})^{T}(y-\hat{x})\leq 0\text{ per tutti gli }y\in S. \quad \square$$
+
+---
+**Proposizione 3.2.20**
+
+Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso chiuso. La *mappa di proiezione* $P_{S}:\mathbb{R}^{n}\to S$ è una **funzione continua**.
+
+La proiezione ci permette di caratterizzare la stazionarietà in modo molto più conveniente.
+
+---
+**Proposizione 3.2.21**
+
+Sia $S\subseteq\mathbb{R}^{n}$ un **insieme convesso** chiuso e $f:\mathbb{R}^{n}\rightarrow\mathbb{R}$ una funzione continuamente differenziabile. Un punto $\bar{x}\in S$ è un **punto stazionario** per $f$ in $S$ se e solo se $P_{S}(\bar{x}-\nabla f(\bar{x}))=\bar{x}$.
+
+*Dimostrazione.* 
+Sia $\bar{x}$ tale che $P_{S}(\bar{x}-\nabla f(\bar{x}))=\bar{x}$. Per la **Proposizione 3.2.19** questo vale se e solo se $$
+((\bar{x}-\nabla f(\bar{x}))-P_{S}(\bar{x}-\nabla f(\bar{x})))^{T}(y-P_{S}(\bar{x}-\nabla f(\bar{x})))\leq 0\text{ per tutti gli }y\in S$$cioè $$0\geq((\bar{x}-\nabla f(\bar{x}))-\bar{x})^{T}(y-\bar{x})=-\nabla f(\bar{x})^{T}(y-\bar{x})\text{ per tutti gli }y\in S$$
+Riorganizzando, abbiamo $$\nabla f(\bar{x})^{T}(y-\bar{x})\geq 0\text{ per tutti gli }y\in S. \quad \square$$ => vale condizione necessaria della proposizione 3.2.17 => $\bar x$ è un minimizzatore locale 
+
+---
+
+Naturalmente, la condizione diventa anche **sufficiente** per l'ottimalità sotto ipotesi di **convessità per l'obiettivo.**
+
+**Proposizione 3.2.22** 
+Sia $S\subseteq\mathbb{R}^{n}$ un insieme convesso chiuso e $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione **convessa** continuamente differenziabile. Un punto $\bar{x}\in S$ è un ottimizzatore globale per $f$ in $S$ se e solo se $P_{S}(\bar{x}-\nabla f(\bar{x}))=\bar{x}$.
+
+I risultati di cui sopra forniscono fondamentalmente una definizione equivalente di stazionarietà. L'intuizione geometrica di questo risultato è mostrata nella Figura 3.14.
+
+![[Pasted image 20251229224934.png]]
+
+Quest'ultimo modo di caratterizzare i punti stazionari è estremamente importante da un punto di vista pratico. Infatti, possiamo ora verificare direttamente la stazionarietà mediante operazioni computazionali, piuttosto che verificare che qualche proprietà valga "per tutte le $d$". Questo sarà particolarmente conveniente per tutti quegli insiemi dove l'operazione di proiezione può essere eseguita con un **piccolo costo computazionale**.
+
+---
+
+**Esempio 3.2.6 (Proiezione su vincoli di box).** (skip this)
+Vogliamo derivare come dovremmo calcolare la proiezione sull'insieme ammissibile (convesso) $S=\{x\in\mathbb{R}^{n}\mid l\leq x\leq u\}$. Il problema di proiezione sul box è $$ \min_{y\in S}\frac{1}{2}\|y-x\|^{2}$$
+che può essere riscritto più convenientemente come $$\min_{y_{i}\in[l_{i},u_{i}],\,i=1,\ldots,n}\,\frac{1}{2}\sum_{i=1}^{n}(y_{i}-x_{i})^{2}$$
+Possiamo ora notare che il problema è effettivamente separabile: ogni termine nella somma riguarda una singola variabile, i cui vincoli non sono influenzati dai valori delle altre variabili.
+
+Possiamo quindi trovare il valore **ottimale** per ciascuna variabile risolvendo $$y_{i}^{*}=\operatorname*{arg\,min}_{y_{i}\in[l_{i},u_{i}]}\frac{1}{2}(y_{i}-x_{i})^{2}=\begin{cases}x_{i}&\text{se }x_{i}\in[l_{i},u_{i}]\\ l_{i}&\text{se }x_{i}<l_{i}\\ u_{i}&\text{se }x_{i}>u_{i}.\end{cases}$$
+La proiezione può quindi essere eseguita **componente per componente**, richiedendo una serie di $n$ controlli di valore molto semplici. La Figura 3.15 rappresenta graficamente tale operazione.
+
+![[Pasted image 20251229230135.png]]
+
+---
+
+**Esempio 3.2.7 (Proiezione sull'ipersfera).** 
+La proiezione su un'*ipersfera* $S=\{x\in\mathbb{R}^{n}\mid\|x\|\leq R\}$ può essere semplicemente fatta come segue (vedi anche Figura 3.15): $$P_{S}(x)=\begin{cases}x&\text{se }\|x\|\leq R,\\ \frac{R}{\|x\|}x&\text{altrimenti}.\end{cases}$$
+
+---
+
+### 5.1 Metodo del Gradiente Proiettato
+
+Il metodo del gradiente proiettato soddisfa la regola generale di selezione della direzione cercando di generalizzare il metodo del gradiente al caso vincolato, ponendo $\hat{x}^{k}=P_{S}(x^{k}-\nabla f(x^{k}))$. La costruzione della direzione di ricerca è quindi illustrata nella Figura 5.1.
+
+![[Pasted image 20251229231920.png]]
+
+Dobbiamo ora notare che
+* La direzione $d_{k}=\hat{x}^{k}-x^{k}$ è certamente **ammissibile** poiché $\hat{x}^{k}$ è il risultato di un'**operazione di proiezione** ed è quindi una soluzione ammissibile in $S$;
+* $d_{k}$ è anche una **direzione di discesa**; infatti, richiamando la **Proposizione 3.2.19** (sulle proiezioni) , possiamo scrivere $$(x^k -\nabla f(x^{k})-\hat{x}^{k})^{T}(x^{k}-\hat{x}^{k})\leq 0$$cioè$$0\geq(x^{k}-\hat{x}^{k})^{T}(x^{k}-\hat{x}^{k})-\nabla f(x^{k})^{T}(x^{k}-\hat{x}^{k})=\|x^{k}-\hat{x}^{k}\|^{2}-\nabla f(x^{k})^{T}(x^{k}-\hat{x}^{k})$$così che possiamo concludere che $\nabla f(x^{k})^{T}(\hat{x}^{k}-x^{k})\leq -\|x^{k}-\hat{x}^{k}\|^{2}$. (ho scambiato di posizione nel termine a moltiplicare il gradiente => sembra di più una direzione di discesa)
+* Quindi:
+	* Se $x^{k}=\hat{x}^{k}=P_{S}(x^{k}-\nabla f(x^{k}))$, il punto $x^{k}$ è **stazionario** e avremmo finito;
+	* Se $x^{k}\neq\hat{x}^{k}$, allora $\nabla f(x^{k})^{T}(\hat{x}^{k}-x^{k})<0$ e la direzione del gradiente proiettato è quindi una direzione di discesa.
+
+---
+
+Il framework algoritmico del metodo del gradiente proiettato è descritto nell'Algoritmo 6.
+
+---
+**Algoritmo 6**: $\texttt{Metodo del Gradiente Proiettato}$
+1. Input: $x^0 \in S$
+2. $k=0$
+3. while $\| x^k - P_S(x^k-\nabla f(x^k))\| \not = 0$ 
+	1. calcola $\hat x^k =P_S(x^k-\nabla f(x^k)$
+	2. setta $d_k = \hat x^k -x^k$
+	3. calcola $\alpha_k \in (0,1]$ lungo $d_k$ da una line search di Armijo
+	4. $x^{k+1} = x^k + \alpha_k d_k$
+	5. $k=k+1$ 
+----
+
+Per l'algoritmo del gradiente proiettato, sotto ipotesi di compattezza su $S$, possiamo enunciare e dimostrare proprietà di **convergenza globale**.
+
+**Proposizione 5.1.1 (Convergenza Globale del Metodo del Gradiente Proiettato).** 
+Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione **continuamente differenziabile** e $S\subset\mathbb{R}^{n}$ un **insieme convesso** [[compatto]] non vuoto. Sia $x^{0}\in S$ e sia $\{x^{k}\}$ la successione prodotta dal **Metodo del Gradiente Proiettato**. Allora, $\{x^{k}\}$ ammette **punti di accumulazione**, ciascuno dei quali è un **punto stazionario** per $f$ in $S$.
+
+*Dimostrazione.* 
+Per l'ammissibilità della direzione $d_{k}$ e la line-search di Armijo, possiamo invocare la Proposizione 5.0.1 ($d_k$ veniva appunto chiesto ammissibile) per osservare che $x^{k+1}$ è per costruzione una **soluzione ammissibile** per ogni $k$ (rimango in S). Pertanto, $\{x^{k}\}\subseteq S$; poiché $S$ è **compatto**, la successione ha **sicuramente punti di accumulazione.**
+
+Ora, sia $\bar{x}$ un tale punto di accumulazione, cioè sia $K\subset\{0,1,\ldots\}$ una sottosuccessione tale che
+$$\lim_{\substack{k\in K \\ k\to\infty}} x^{k}=\bar{x}$$
+
+Consideriamo quindi la successione $\{\hat{x}^{k}\}$; per la continuità di $\nabla f$ e dell'operatore di proiezione, possiamo scrivere $$\lim_{\substack{k\in K \\ k\to\infty}} \hat{x}^{k}=\lim_{\substack{k\in K \\ k\to\infty}} P_{S}(x^{k}-\nabla f(x^{k}))=P_{S}(\bar{x}-\nabla f(\bar{x}))=\hat{x}$$
+Dalla Proposizione 5.0.1, abbiamo anche che $$ 0=\lim_{\substack{k\in K \\ k\to\infty}} \nabla f(x^{k})^{T}d_{k}=\lim_{\substack{k\in K \\ k\to\infty}} \nabla f(x^{k})^{T}(\hat{x}^{k}-x^{k})=\nabla f(\bar{x})^{T}(\hat{x}-\bar{x})$$
+Per la Proposizione 3.2.19 sappiamo anche che $$(\bar{x}-\nabla f(\bar{x})-\hat{x})^{T}(\bar{x}-\hat{x})\leq 0$$
+quindi $$\nabla f(\bar{x})^{T}(\hat{x}-\bar{x})\leq -\|\bar{x}-\hat{x}\|^{2}$$
+Combinando i due risultati, otteniamo $$-\|\bar{x}-\hat{x}\|^{2}\geq 0$$
+il che è possibile solo se $\bar{x}=\hat{x}=P_{S}(\bar{x}-\nabla f(\bar{x}))$, cioè se $\bar{x}$ è **stazionario**. $\square$
+
+---
+
+Dato il risultato di cui sopra, concludiamo che il metodo del gradiente proiettato può essere una scelta solida per affrontare problemi **con vincoli convessi**, purché l'**operatore di proiezione sia disponibile** (e possibilmente economico) per il particolare insieme ammissibile.
+
+### 5.2 Metodo di Frank-Wolfe
+
+L'algoritmo di Frank-Wolfe rappresenta un'alternativa al metodo del gradiente proiettato per generalizzare il metodo del gradiente al caso vincolato, senza ricorrere all'operatore di **proiezione** In questo caso, il punto $\hat{x}^{k}$ che definisce la direzione di ricerca è scelto come **una soluzione** (potrebbero essercene molte) del sottoproblema $$\min_{x\in S}\nabla f(x^{k})^{T}(x-x^{k})$$
+nel problema di cui sopra stiamo minimizzando **l'approssimazione lineare** di $f$ intorno a $x^{k}$ su tutto l'insieme ammissibile; infatti, l'approssimazione di Taylor del primo ordine della funzione obiettivo è $f(x^{k})+\nabla f(x^{k})^{T}(x-x^{k})$, con il termine $f(x^{k})$ **costante**. 
+
+Dobbiamo ora sottolineare due aspetti importanti:
+* Perché questo metodo funzioni, $S$ dovrebbe essere **compatto**: altrimenti, il sottoproblema linearizzato sarebbe probabilmente **illimitato inferiormente** e quindi non ammetterebbe una soluzione;
+* L'applicabilità dell'algoritmo dipende dalla disponibilità di un ***risolutore* per il sottoproblema;** ad esempio, se $S$ è un insieme poliedrico, il sottoproblema è un problema di programmazione lineare che può essere risolto efficientemente con il metodo del simplesso anche su larga scala; inoltre, nel caso di vincoli di box, il sottoproblema ha una soluzione in forma chiusa.
+
+Per analizzare l'algoritmo risultante, definiamo anche $z^{k}$ come il **valore ottimale del sottoproblema**; dovremmo quindi notare che
+* $z^{k}$ **non può essere maggiore di zero**, poiché la soluzione $x^{k}$ è ammissibile per il sottoproblema con un **valore obiettivo** di 0;
+* Se $z^{k}=0$, allora il punto $x^{k}$ è **stazionario**: vediamo infatti che$$0=\min_{x\in S}\nabla f(x^{k})^{T}(x-x^{k})\leq\nabla f(x^{k})^{T}(x-x^{k})\quad\forall\,x\in S$$cioè $\nabla f(x^{k})^{T}(x-x^{k})\geq 0$ per tutti gli $x\in S$;
+* Se $z^{k}<0$, allora $\nabla f(x^{k})^{T}(\hat{x}^{k}-x^{k})=z^{k}<0$ e quindi $d_{k}=(\hat{x}^{k}-x^{k})$ è **una direzione di discesa** (che è anche ammissibile poiché sia $x^{k}$ che $\hat{x}^{k}$ sono punti nell'insieme convesso $S$).
+
+Le istruzioni dell'algoritmo di Frank-Wolfe sono mostrate nell'Algoritmo 7. Possiamo osservare che le uniche differenze rispetto al metodo del gradiente proiettato riguardano **la definizione di** $\hat{x}^{k}$ e la **condizione di arresto**.
+
+---
+**Algoritmo 7**: $\texttt{Metodo di Frank-Wolfe}$
+1. Input: $x^0 \in S$
+2. $k=0$
+3. while $\min_{x\in S} \nabla f(x^k)^T(x-x^k) < 0$ 
+	1. calcola $\hat x^k \in \arg \min_{x\in S} \nabla f(x^k)^T(x-x^k) < 0$
+	2. setta $d_k = \hat x^k -x^k$
+	3. calcola $\alpha_k \in (0,1]$ lungo $d_k$ da una line search di Armijo
+	4. $x^{k+1} = x^k + \alpha_k d_k$
+	5. $k=k+1$
+
+---
+
+Per il metodo di Frank-Wolfe, possiamo enunciare ancora una volta **proprietà di convergenza globale.**
+
+**Proposizione 5.2.1.** 
+Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione **continuamente differenziabile** e $S\subset\mathbb{R}^{n}$ un **insieme convesso compatto** non vuoto. Sia $x^{0}\in S$ e sia $\{x^{k}\}$ la successione prodotta dall'**algoritmo di Frank-Wolfe**. Allora, $\{x^{k}\}$ ammette **punti di accumulazione**, ciascuno dei quali è un **punto stazionario** per $f$ in $S$.
+
+*Dimostrazione.* 
+Per costruzione $d_k$ è ancora ammissibile; siccome sfruttiamo la line search di Armijo otteniamo dalla proposizione 5.0.1 che $x^{k+1}$ è una soluzione ammissibile per ogni $k$; ovvero l'intera $\{x^k\}$ appartiene all'insieme compatto $S$ che quindi ammette punti di accumulazione
+
+Sia ora $\bar x$ un punto di accumulazione della sequenza, ovvero esiste un $K \subset \{0,1,\dots\}$ tale che $$\lim_{\substack{k\in K \\ k\to\infty}} x^{k}=\bar{x}$$
+Sempre dalla proposizione 5.0.1 sappiamo che $$\lim_{\substack{k\in K \\ k\to\infty}} \nabla f(x^{k})^Td_k=0$$
+Ora, sia $y \in S$ un punto ammissibile arbitrario. Per la definizione di $\hat x^k$, sappiamo che per ogni $k$: $$
+\nabla f(x^{k})^Td_k = \nabla f(x^{k})^T(\hat x^k-x^k) = \min_{x\in S} \nabla f(x^{k})^T(x-x^k) \leq \nabla f(x^{k})^T(y-x^k)$$
+Sostituendo i limiti per $k \in K, k \to \infty$, otteniamo: $$0 = \nabla f(x^{k})^Td_k \leq \nabla f(x^{k})^T(y-x^k) = \nabla f(\bar x)^T(y-\bar x)$$
+ovvero $$\nabla f(\bar x)^T(y-\bar x)\geq 0$$
+Siccome $y$ è stato scelto in modo arbitrario dal insieme ammissibile, otteniamo la tesi.
+
+---
+### Condizioni di ottimalità con vincoli in forma analitica
+
+Fino a questo punto, abbiamo parlato di **insiemi ammissibili** come oggetti geometrici con una struttura nota che ci permette di trarre conclusioni sull'ammissibilità delle direzioni e sull'ottimalità dei punti, possibilmente per mezzo di operazioni ad hoc come la *proiezione*. In molti casi, tuttavia, l'insieme ammissibile $S$ è descritto da un sistema di **uguaglianze** e **disuguaglianze** (possibilmente non lineari); questo può valere sia per oggetti geometrici semplici (la sfera può essere definita come l'insieme di punti tali che $\|x\|^{2}\leq\rho$) sia per insiemi complicati che non siamo in grado di identificare altrimenti. 
+È quindi utile introdurre alcuni strumenti per gestire analiticamente i vincoli senza la necessità di "visualizzare" l'insieme ammissibile. Consideriamo quindi problemi della forma $$\begin{split}
+\min_{x\in\mathbb{R}^{n}}& f(x)\\
+\text{s.t. }& g_{i}(x)\leq 0,\quad i=1,\ldots,m\\
+& h_{i}(x)=0,\quad i=1,\ldots,p,
+\end{split} \tag{3.3}$$
+dove assumiamo che $f:\mathbb{R}^{n}\to\mathbb{R}$, $g:\mathbb{R}^{n}\to\mathbb{R}^{m}$ e $h:\mathbb{R}^{n}\to\mathbb{R}^{p}$, cioè la **funzione obiettivo** e tutte le funzioni che definiscono i **vincoli** siano continuamente differenziabili.
+
+---
+
+Il seguente risultato ci fornisce un primo insieme di condizioni di ottimalità per problemi di questa forma.
+
+**Proposizione 3.2.23 (Condizioni di ottimalità di Fritz-John).** 
+Sia $x^{*}\in\mathbb{R}^{n}$ una **soluzione ottimale** per il problema (3.3). Allora, esistono ***moltiplicatori*** $\lambda_{0}\in\mathbb{R}$, $\lambda\in\mathbb{R}^{p}$ e $\mu\in\mathbb{R}^{m}$ tali che: $$g_{i}(x^{*})\leq 0,\quad i=1,\ldots,m, \quad\text{(ammissibilità)}$$$$h_{i}(x^{*})=0,\quad i=1,\ldots,p, \quad\text{(ammissibilità)}$$$$\mu_{i}\geq 0,\quad i=1,\ldots,m, \quad\text{(ammissibilità duale)}$$$$\lambda_{0}\geq 0 \quad\text{(ammissibilità duale)}$$$$(\lambda_{0},\lambda,\mu)\neq 0 \quad\text{(ammissibilità duale)}$$$$\mu_{i}g_{i}(x^{*})=0,\quad i=1,\ldots,m, \quad\text{(complementarità)}$$
+$$\lambda_{0}\nabla f(x^{*})+\sum_{i=1}^{m}\mu_{i}\nabla g_{i}(x^{*})+\sum_{i=1}^{p}\lambda_{i}\nabla h_{i}(x^{*})=0, \quad\text{(gradiente nullo del Lagrangiano)}$$
+
+Le prime due condizioni di cui sopra affermano banalmente che una soluzione ottimale deve essere **ammissibile per il problema**. Le tre condizioni successive riguardano i valori dei moltiplicatori; questi sono quantità ciascuna associata a una specifica funzione: in effetti, abbiamo:
+- tanti moltiplicatori $\lambda$ quanti sono i **vincoli di uguaglianza** => p moltiplicatori
+- tanti $\mu$ quanti i **vincoli di disuguaglianza** => m moltiplicatori
+- un **unico** moltiplicatore $\lambda_{0}$ per la **funzione obiettivo**; 
+il significato intrinseco dei moltiplicatori sarà più chiaro tra poco.
+La *condizione di complementarità* afferma che il valore dei moltiplicatori associati ai vincoli di disuguaglianza **deve essere zero** se il vincolo **non è attivo** (ovvero non è di uguaglianza). L'ultima condizione è probabilmente la più significativa e complessa.
+
+La *funzione Lagrangiana* associata a un problema di ottimizzazione vincolato della forma (3.3) è definita come$$\mathcal{L}(x,\lambda_{0},\lambda,\mu)=\lambda_{0}f(x)+\sum_{i=1}^{m}\mu_{i}g_{i}(x)+\sum_{i=1}^{p}\lambda_{i}h_{i}(x)$$
+Questa funzione cattura in qualche modo l'intera essenza del problema, combinando **l'obiettivo con i vincoli**; se i moltiplicatori assumono valori adeguati, i termini $\mu_{i}g_{i}(x)$ e $\lambda_{i}h_{i}(x)$ rappresentano *penalità* per la **violazione dei vincoli**; ad esempio, assumiamo che $\mu_{i}\geq 0$; allora una violazione del vincolo $g_{i}(x)\leq 0$ si traduce in un **aumento del valore** di $\mathcal{L}$; in altre parole, $\mathcal{L}$ cerca di riassumere **quanto è buona una soluzione** bilanciando la **qualità** del valore obiettivo e le **violazioni** dei vincoli.
+
+Ora, l'ultima delle condizioni di **Fritz-John** richiede che il **gradiente di questa funzione** sia zero; ma poiché al vettore dei moltiplicatori **non è permesso essere tutto zero** (altra condizione di ammissibilità), ciò significa che i gradienti di tutte le funzioni coinvolte nel problema sono **linearmente dipendenti** all'ottimo, con l'ulteriore requisito che il coefficiente per i vincoli di disuguaglianza sia sempre **non negativo** e **esattamente zero se il vincolo non è attivo**.
+
+Le condizioni di Fritz-John possono essere convenientemente riscritte in forma vettoriale come segue:$$g(x^{*})\leq 0,\quad h(x^{*})=0,$$$$\mu\geq 0,\quad\lambda_{0}\geq 0,\quad(\lambda_{0},\lambda,\mu)\neq 0,$$$$\mu_{i}g_{i}(x^{*})=0,\quad i=1,\ldots,m,$$$$\nabla\mathcal{L}(x^{*},\lambda_{0},\lambda,\mu)=\lambda_{0}\nabla f(x^{*})+\mu^{T}J_{g}(x^{*})+\lambda^{T}J_{h}(x^{*})=0.$$
+A questo punto, sfortunatamente dobbiamo evidenziare una grave debolezza della condizione di Fritz-John, che è messa in luce nel seguente esempio.
+
+---
+**Esempio 3.2.8.**
+
+Consideriamo il problema$$\min_{x,y} f(x,y)\quad \text{s.t. } y^{2}=0$$
+Le condizioni di **Fritz-John** per questo problema affermano che, per una **soluzione ottimale** $(\bar{x},\bar{y})$ esiste un moltiplicatore $\lambda$ associato al **vincolo di uguaglianza** e un moltiplicatore $\lambda_{0}$ associato alla **funzione obiettivo** (non ho vincoli di disuguaglianza) tali che $$\bar{y}^{2}=0,\quad\lambda_{0}\geq 0,\quad(\lambda_{0},\lambda)\neq(0,0),$$$$\lambda_{0}\nabla f(\bar{x},\bar{y})+\lambda\left(\begin{array}{c}0\\ 2\bar{y}\end{array}\right)=0$$
+Ora, per la condizione di ammissibilità deve essere $\bar{y}=0$; abbiamo quindi $$\lambda_{0}\nabla f(\bar{x},\bar{y})=0$$
+che è soddisfatta **ponendo** $\lambda_{0}=0$. Scegliendo qualsiasi valore non nullo per $\lambda$, otteniamo che $(\bar{x},\bar{y})=(x,0)$, $\lambda_{0}=0$ e $\lambda\neq 0$ costituisce una tupla **di Fritz-John per il problema**, per **qualsiasi** valore di $x$.
+
+La conclusione è quindi che qualsiasi punto della forma $(x,0)$ soddisfa la condizione necessaria di ottimalità. Tuttavia, se guardiamo attentamente, ci rendiamo conto che $(x,0)$ ==sono tutti punti ammissibili per il problema==. Quindi, le condizioni di Fritz-John in questo caso **non offrono alcun filtro aggiuntivo** nella ricerca della soluzione ottimale rispetto al banale suggerimento "cerca tra i punti ammissibili".
+
+In effetti, noteremmo che arriveremmo alla stessa conclusione con qualsiasi possibile $f$; l'unica informazione fornita dalle condizioni riguarda in questo caso l'insieme ammissibile.
+
+L'inganno nell'esempio di cui sopra risiede nel fatto che le condizioni FJ possono essere soddisfatte anche se ==il moltiplicatore $\lambda_{0}$ associato alla funzione obiettivo è posto a 0==. In tal caso, qualsiasi **riferimento** alla specifica funzione obiettivo **scompare** nelle condizioni e l'unica **informazione** che possiamo ottenere è relativa all'**insieme ammissibile**.
+
+---
+
+L'insieme di condizioni introdotto nella seguente proposizione supera precisamente questa limitazione, fornendo una caratterizzazione in cui $\lambda_{0}$ è garantito essere **diverso da zero**.
+
+**Proposizione 3.2.24 (Condizioni di ottimalità di Karush-Khun-Tucker (KKT)).**
+Sia $x^{*}\in\mathbb{R}^{n}$ una soluzione ottimale per il problema (3.3) e assumiamo che qualche condizione di regolarità valga per l'insieme ammissibile nel punto $x^{*}$. Allora, esistono moltiplicatori $\lambda\in\mathbb{R}^{p}$ e $\mu\in\mathbb{R}^{m}$ tali che:$$g_{i}(x^{*})\leq 0,\quad i=1,\ldots,m, \qquad\text{(ammissibilità)}$$$$h_{i}(x^{*})=0,\quad i=1,\ldots,p, \qquad\text{(ammissibilità)}$$$$\mu_{i}\geq 0,\quad i=1,\ldots,m, \qquad\text{(ammissibilità duale)}$$$$\mu_{i}g_{i}(x^{*})=0,\quad i=1,\ldots,m, \qquad\text{(complementarità)}$$$$\nabla f(x^{*})+\sum_{i=1}^{m}\mu_{i}\nabla g_{i}(x^{*})+\sum_{i=1}^{p}\lambda_{i}\nabla h_{i}(x^{*})=0, \qquad\text{(gradiente nullo del Lagrangiano)}$$
+Le *condizioni KKT* sono esattamente le condizioni di *Fritz-John* con la garanzia che $\lambda_{0}\neq 0$. La proposizione precedente ci fornisce una nuova condizione necessaria di ottimalità più significativa, che dice che un **punto ottimale** deve soddisfare le condizioni KKT *se l'insieme dei vincoli è localmente **regolare***; formalizzeremo brevemente questo requisito di regolarità. Il takeaway, tuttavia, è che dovremmo cercare soluzioni ottimali tra tutti i punti KKT e tutti i punti in cui l'insieme ammissibile ha un comportamento irregolare.
+
+Dobbiamo ora formalizzare cosa intendiamo per "condizione di regolarità". In termini tecnici, diciamo che i vincoli soddisfano (globalmente o localmente) una *qualificazione dei vincoli* (CQ - costrain qualification). 
+Esistono molte qualificazioni dei vincoli, alcune più forti di altre, che implicano che le KKT siano una condizione **necessaria di ottimalità** in una soluzione. Elenchiamo qui di seguito alcune delle CQ più famose e utili:
+* *Qualificazione dei vincoli lineari (LCQ)*: tutti i vincoli sono funzioni **lineari** e affini. Questa CQ, quando vale, è verificata **su tutto l'insieme ammissibile**. Nella Figura 3.16 troviamo un'intuizione del significato delle KKT in questo scenario.
+* *Qualificazione dei vincoli di indipendenza lineare (LICQ)*: questa qualificazione dei **vincoli** vale in un punto ammissibile $x$ se i **gradienti dei vincoli di uguaglianza** $\nabla h_{i}(x)$, per $i=1,\ldots,p$, e i **gradienti dei vincoli di disuguaglianza** **attivi** $\nabla g_{i}(x)$, per $i\in I(x)$, sono tutti **linearmente indipendenti**. Nota che questa condizione è relativa al **punto corrente** e non è una proprietà globale dell'insieme ammissibile.
+* *Qualificazione dei vincoli di Mangasarian-Fromowitz (MFCQ)*: questa qualificazione dei vincoli vale in un **punto ammissibile** $x$ se i gradienti dei **vincoli di uguaglianza** $\nabla h_{i}(x)$, per $i=1,\ldots,p$, sono **linearmente indipendenti** e esiste una direzione $d\in\mathbb{R}^{n}$ tale che $\nabla h_{i}(x)^{T}d=0$ per tutti gli $i=1,\ldots,p$ e $\nabla g_{i}(x)^{T}d<0$ per tutti gli $i\in I(x)$. Anche questa è chiaramente una proprietà che vale in punti individuali.
+* *Qualificazione dei vincoli di Slater (SCQ)*: $f$ è una funzione **convessa**, $h_{i}$, $i=1,\ldots,p$, sono **funzioni affini** e $g_{i}$, $i=1,\ldots,m$ sono **funzioni convesse** e esiste $x\in\mathbb{R}^{n}$ tale che $h(x)=0$ e $g(x)<0$. Nota che questa è una proprietà **globale** del problema, che tuttavia richiede anche qualcosa sulla funzione obiettivo.
+
+![[Pasted image 20251230165710.png]]
+=> solo y e z sono punti KKT => ovvero punti ammisibili che rispettano le condizioni => in particolare $-\nabla f(z)$ è combinazione lineare di $\nabla h(z)$ e $\nabla g(z)$ (con coefficiente positivo)
+
+---
+
+**Esempio 3.2.9 (LICQ è effettivamente una CQ).** 
+Dimostriamo qui che LICQ è effettivamente una qualificazione dei vincoli, cioè che ==una soluzione ottimale che soddisfa la LICQ soddisfa necessariamente le KKT==, cioè le condizioni FJ con $\lambda_{0}\neq 0$.
+
+Assumiamo che $x^{*}$ sia una **soluzione ottimale** per il problema (3.3) e che la LICQ sia soddisfatta in $x^{*}$. Per la Proposizione 3.2.23, sappiamo che esistono moltiplicatori $(\lambda_{0},\lambda,\mu)$ che soddisfano le condizioni di **Fritz-John**. Assumiamo per contraddizione che $\lambda_{0}=0$. Otteniamo quindi che $$
+\sum_{i=1}^{m}\mu_{i}\nabla g_{i}(x^{*})+\sum_{i=1}^{p}\lambda_{i}\nabla h_{i}(x^{*})=0$$
+Ora, per la *condizione di complementarità* sappiamo anche che $\mu_{i}=0$ per tutti gli $i\notin I(x^{*})$. Possiamo quindi riscrivere l'uguaglianza di cui sopra rimuovendo tutti i termini $\mu_{i}\nabla g_{i}(x^{*})$ per $i\notin I(x^{*})$, ottenendo $$\sum_{i\in I(x^{*})}\mu_{i}\nabla g_{i}(x^{*})+\sum_{i=1}^{p}\lambda_{i}\nabla h_{i}(x^{*})=0$$
+Ricordando che la LICQ vale in $x^{*}$, sappiamo che tutti i gradienti nella combinazione di cui sopra sono **linearmente indipendenti,** cosicché i moltiplicatori $\mu_{i}$, $i\in I(x^{*})$ e $\lambda_{i}$, $i=1,\ldots,p$, sono **necessariamente zero**. Abbiamo quindi $$\lambda_{i}=0\ \forall\,i=1,\ldots,n,\quad\mu_{i}=0\ \forall\,i\in I(x^{*}),\quad\mu_{i}=0\ \forall\,i\notin I(x^{*}),\quad\lambda_{0}=0$$
+cioè $(\lambda_{0},\lambda,\mu)=(0,0,0)$, **violando una delle condizioni FJ**. Quindi, deve essere $\lambda_{0}\neq 0$.
+
+---
+
+Interessante, sotto ipotesi di **convessità**, le KKT diventano anche condizioni **sufficienti** di ottimalità.
+
+**Proposizione 3.2.25.** (no dim)
+Siano le funzioni $f$ e $g_{i}$, $i=1,\ldots,m$, **convesse** e siano le funzioni $h_{i}$, $i=1,\ldots,p$, *affini*. Se $x^{*}\in\mathbb{R}^{n}$ soddisfa le condizioni KKT, allora è un **minimizzatore globale del problema**. Se $f$ è **strettamente convessa**, $x^{*}$ è unico.
+
+Il risultato di cui sopra è in linea con i risultati che abbiamo derivato per il caso generale con $f$ **convessa** su $S$ **convesso**. Nota che i vincoli di uguaglianza devono essere affini (cioè **lineari**) poiché ==questo è l'unico caso in cui i vincoli di uguaglianza risultano essere convessi.==
+
+----
+
+**Esempio 3.2.10 (Condizioni di ottimalità per problemi con vincoli di box tramite KKT).** 
+La condizione di ottimalità per problemi con vincoli di box derivata nell'Esempio 3.2.4 può essere ottenuta anche seguendo un percorso diverso, basato sulle KKT.
+
+I **vincoli di box** possono essere riscritti come coppie di vincoli $$-e_{i}^{T}x\leq-l_{i},\quad e_{i}^{T}x\leq u_{i},\quad\forall\,i=1,\ldots,n.$$ (notare sono scritte in modo da rispettare il vincolo $g_i(x^*)\leq 0$
+I vincoli sono lineari, quindi vale la LCQ e le KKT sono c**ondizioni necessarie di ottimalità**. Pertanto, per una soluzione ottimale $x^{*}$ di un problema con vincoli di box esistono moltiplicatori $\lambda^{+},\lambda^{-}\in\mathbb{R}^{n}$ tali che $$\nabla f(x^{*})+\sum_{i=1}^{n}\lambda_{i}^{-}(-e_{i})+\sum_{i=1}^{n}\lambda_{i}^{+}e_{i}=0,$$$$\lambda^{+},\lambda^{-}\geq 0,$$$$\lambda_{i}^{+}(x_{i}^{*}-u_{i})=0\ \forall\,i=1,\ldots,n,$$$$\lambda_{i}^{-}(-x_{i}^{*}+l_{i})=0\ \forall\,i=1,\ldots,n,$$
+$$x^{*}\in[l,u].$$
+
+Se guardiamo la prima condizione componente per componente, otteniamo per ciascuna **derivata parziale** $$\frac{\partial f(x^{*})}{\partial x_{i}} -\lambda_{i}^{-}+\lambda_{i}^{+}=0$$
+Per la condizione di complementarità, vediamo che $\lambda_{i}^{+}=0$ per tutti gli $i$ tali che $x_{i}^{*}\neq u_{i}$ e $\lambda_{i}^{-}=0$ per tutti gli $i$ tali che $x_{i}^{*}\neq l_{i}$. Abbiamo quindi $$\frac{\partial f(x^{*})}{\partial x_{i}}=\begin{cases}0&\text{se }l_{i}<x_{i}^{*}<u_{i},\\ -\lambda_{i}^{+}&\text{se }x_{i}^{*}=u_{i},\\ \lambda_{i}^{-}&\text{se }x_{i}^{*}=l_{i}.\end{cases}$$
+Richiamando il vincolo di **non negatività** per i moltiplicatori associati ai vincoli di disuguaglianza, recuperiamo $$\frac{\partial f(x^{*})}{\partial x_{i}}\begin{cases}=0&\text{se }l_{i}<x_{i}^{*}<u_{i},\\ \leq 0&\text{se }x_{i}^{*}=u_{i},\\ \geq 0&\text{se }x_{i}^{*}=l_{i}.\end{cases}$$
+
+---
+
+**Esempio 3.2.11 (Condizioni di ottimalità per problemi con vincoli del simplesso tramite KKT).** I vincoli del simplesso standard ($S=\{x\mid e^{T}x=1,x\geq 0\}$, vedi Figura 3.12) sono vincoli **lineari** e quindi le KKT sono condizioni **necessarie di ottimalità** per problemi con tale insieme ammissibile. Sappiamo quindi, per un $x^{*}$ ottimale, che esistono moltiplicatori $\lambda\in\mathbb{R}$ e $\mu\in\mathbb{R}^{n}$ tali che $$e^{T}x^{*}=1,\quad -e_{i}^{T}x^{*}\leq 0,\ \forall\,i=\ldots,n,$$$$\mu_{i}(-x_{i}^{*})=0\ \forall\,i=1,\ldots,n,$$$$\mu\geq 0,$$$$\nabla f(x^{*})+\lambda e+\sum_{i=1}^{n}\mu_{i}(-e_{i})=0.$$
+Se ci concentriamo sull'ultima condizione componente per componente, otteniamo per tutti gli $i=1,\ldots,n$ $$\frac{\partial f(x^{*})}{\partial x_{i}}+\lambda-\mu_{i}=0$$
+cioè, per tutti gli $i$ possiamo scrivere $$\frac{\partial f(x^{*})}{\partial x_{i}}=-\lambda+\mu_{i}\geq-\lambda$$
+Per il **vincolo di complementarità**, sappiamo che $\mu_{i}=0$ per tutti gli $i$ tali che $x_{i}^{*}\neq 0$. Quindi, per il caso particolare di una variabile $x_{j}$ tale che $x_{j}^{*}>0$ abbiamo $$\frac{\partial f(x^{*})}{\partial x_{j}}=-\lambda$$
+Pertanto, data qualsiasi **coppia di variabili** $x_{i},x_{j}$ tale che $x^{*}_{j}>0$, possiamo concludere che $$
+\frac{\partial f(x^{*})}{\partial x_{j}}=-\lambda\leq\frac{\partial f(x^{*})}{\partial x_{i}}$$
+Per riassumere, abbiamo recuperato la **condizione necessaria di ottimalità** per problemi con vincoli del simplesso che avevamo ottenuto con un ragionamento diverso nell'Esempio 3.2.5, cioè
+$$\frac{\partial f(x^{*})}{\partial x_{j}}\leq\frac{\partial f(x^{*})}{\partial x_{i}}\quad\text{per tutti gli }i=1,\ldots,n,\text{ e tutti i }j\text{ tali che }x^{*}_{j}>0$$
+
+---
+
+Una volta garantito $\lambda_{0}\neq 0$, senza perdita di generalità possiamo dividere **l'intero vettore dei moltiplicatori** delle condizioni FJ per $\lambda_{0}$ stesso - riscalando $\lambda$ e $\mu$ - così che $\lambda_{0}$ può essere omesso subito, semplificando la notazione.
 
 ## 6. Problemi di Ottimizzazione nel Machine Learning: Concetti di Base
 
 ### 6.1 Introduzione
 
-Il machine learning non è **ottimizzazione**. Il machine learning è un ramo dell’intelligenza artificiale che si è dimostrato estremamente efficace in numerosi compiti negli ultimi anni; il suo successo è probabilmente attribuibile alle forti proprietà statistiche possedute dai modelli di apprendimento, che permettono di sfruttare correttamente la grande quantità di dati oggi disponibile; inoltre, l’enorme progresso in corso degli strumenti hardware e software ha giocato un ruolo cruciale nel rendere i sistemi di apprendimento effettivamente impiegabili.
+Il machine learning non è **ottimizzazione**. Il machine learning è un ramo dell’intelligenza artificiale che si è dimostrato estremamente efficace in numerosi tasks negli ultimi anni; il suo successo è probabilmente attribuibile alle forti proprietà statistiche possedute dai modelli di apprendimento, che permettono di sfruttare correttamente la grande quantità di dati oggi disponibile; inoltre, l’enorme progresso in corso degli strumenti hardware e software ha giocato un ruolo cruciale nel rendere i sistemi di apprendimento effettivamente impiegabili.
 
-Tuttavia, l’*ottimizzazione matematica* è un elemento centrale per questa tecnologia: spesso si utilizza la metafora del "motore". Infatti, il processo di addestramento di un sistema di apprendimento consiste, per la stragrande maggioranza dei modelli, nella risoluzione di un problema di ottimizzazione. Molte librerie di machine learning sono diventate popolari e ampiamente utilizzate negli ultimi anni; in ciascuna di esse, premere il "pulsante di esecuzione" non fa altro che ==avviare un algoritmo di ottimizzazione.==
+Tuttavia, l’*ottimizzazione matematica* è un elemento centrale per questa tecnologia: spesso si utilizza la metafora del "motore". Infatti, **il processo di addestramento** di un sistema di apprendimento consiste, per la stragrande maggioranza dei modelli, nella risoluzione di un problema di ottimizzazione. Molte librerie di machine learning sono diventate popolari e ampiamente utilizzate negli ultimi anni; in ciascuna di esse, premere il "pulsante di esecuzione" non fa altro che ==avviare un algoritmo di ottimizzazione.==
 
 Per questa ragione, è estremamente importante per gli esperti e gli ingegneri di machine learning conoscere in dettaglio i meccanismi di questi processi; questo è particolarmente vero per essere in grado di interpretare comportamenti anomali e correggere i problemi che frequentemente si verificano nella progettazione e implementazione dei sistemi di apprendimento.
 
-Nel corso di questo capitolo, ci concentreremo sugli algoritmi di ottimizzazione più rilevanti impiegati nei compiti di apprendimento supervisionato. 
-Consideriamo quindi un dataset:
+Nel corso di questo capitolo, ci concentreremo sugli algoritmi di ottimizzazione più rilevanti impiegati nei compiti di **apprendimento supervisionato**. In questo tipo di problemi, affrontiamo una legge nascosta $h: \mathcal{X}\to \mathcal{Y}$ che mappa in qualche spazio di input a qualche valore di output.
 
-	$D = \left\{ (x^{(i)}, y^{(i)}) \mid x^{(i)} \in X, y^{(i)} \in Y, i = 1, \dots, n \right\}$
+Possiamo in generale assumere che $\mathcal X \subseteq \mathbb{R}^p$, allora gli input sono caratterizzati da valori numerici. Dall'altra parte $\mathcal{Y}$ è o l'insieme dei numeri reali  $\mathbb{R}$, in tal caso si parla di compiti di *regressione*, oppure un insieme finito come {-1;1}, in tal caso parliamo di compiti di *classificazione binaria*.
 
-dove $X \subseteq \mathbb{R}^p$ ed $Y = \mathbb{R}$ (compiti di regressione) oppure $Y = \{0,1\}$ (compiti di classificazione binaria). Il dataset rappresenta un **campionamento** da una qualche distribuzione, dove esiste una relazione $f$ tra le coppie $(x, y)$, tale che $f(x) = y$.
+In modo simile all'esempio visto nel capitolo 2, vogliamo costruire una funzione $\hat h$ che approssimo in modo migliore possibile il vero meccanismo di $h$ di interesse, ovvero che **catturi *l’essenza*** di $h$ e di essere in in grado di portare (nuovi) valori di $y$ dato qualsiasi input $x$. Il modello $\hat h$ apparitene alla classe $\mathcal H$ di funzioni, scelte inizialmente dall'umano e parametrizzati tramite un set di parametri, o *pesi* $w$ . In altre parole la particolare funzione $\hat h(. ; w)$ è definita in $\mathcal H$ dai valori di $w$.
 
-L’obiettivo del machine learning è costruire, basandosi sulle coppie in $D$, una funzione $\hat{f}$ che catturi *l’essenza* di $f$, essendo in grado di fornire "accuratamente" valori di $\hat{y} = \hat{f}(x)$ per punti $x$ che **non sono presenti** nel set di addestramento $D$.
+Ovviamente, vorremo che l'errore commesso dal modello nello stimare l'output corretto $y$ di vettore $x$ sia piccolo. Chiaramente, è necessaria qualche metrica per misurare quantitativamente gli errori. In questo contesto, le funzioni di errore sono chiamate solitamente *loss function* $\ell : \mathbb R \text{ x } \mathcal Y \to \mathbb R$. Le loss function più comunemente usate in machine learning sono:
+- Per task di *regressione:*
+	- **Loss quadratica:** $\ell(u, y) = (u - y)^2$;
+	- **Loss assoluta $\ell_1$:** $\ell(u, y) = |u - y|$;
+- Per task di *classificazione binaria*:
+	- **Loss logaritmica:** $\ell(u, y) = -(u \log(y) + (1 - u) \log(1 - y))$;
+	- **Loss 0-1:** $\ell(u, y) = 1 - \mathbb{1}\{u = y\}$;
+	- **Hinge loss:** $\ell(u, y) = \max\{0, 1 - uy\}$.
 
-L’addestramento è tipicamente modellato come un problema di ottimizzazione (**minimizzazione del rischio empirico**), dove una *funzione di perdita* deve essere minimizzata rispetto ai parametri $w$ del modello $f$.
+Come possiamo osservare nella figura 6.1, la log loss e la hinge loss, possono essere viste come versioni "più lisce" della step function.
 
-La forma usuale dei problemi di ottimizzazione per l’addestramento è:
+![[Pasted image 20251230180357.png]]
 
-	$\min_{w} L(w) = \frac{1}{n} \sum_{i=1}^{n} \ell(f(x^{(i)};w), y^{(i)})$ (20)
+Ora in principio, vorremo determinare un modello da distribuire per la nostra applicazione come il miglior modello per il fenomeno con cui abbiamo a che fare, a seconda della loss function scelta. In altre parole vorremo essere in grado di risolvere il problema di *expected risk minimization*: $$\min_{w} \mathbb E_{\mathcal X}\left [ \ell (\hat h(x;w),h(x))\right] = \int_{x\in\mathcal X} \ell(\hat h(x;w), h(x)) p(x) dx$$
+In questo modo procedere è evidentemente utopico. In pratica, non sappiamo mai come i possibili input $x$ siano distribuiti nello spazio $\mathcal X$ e come "similmente" ogni $x$ sarà al momento del test. In più non abbiamo alcuna conoscenza  sul valore di $h(x)$ per ogni $x$, altrimenti il problema sarebbe stato risolto semplicemente dall'inizio. Dunque dobbiamo spostarci verso un altro soluzione: andremo a campionare dati, dunque costruire un dataset: $$\mathcal D = \left\{ (x^{(i)}, y^{(i)}) \mid x^{(i)} \in \mathcal X, y^{(i)} \in \mathcal Y, y^{(i)} = h(x^{(i)}), i = 1, \dots, n \right\}$$
+Quello che possiamo fare è quindi, sfrutta la conoscenza di $\mathcal D$ per approssimare la vera funzione di rischio da un *rischio empirico*, ovvero facendo la media di tutti errori commessi fra i campioni del dataset. Il risultante problema di ottimizzazione è dunque chiamato *empirical risk minimization* ed è dato da $$\min_{w} L(w) = \frac{1}{n} \sum_{i=1}^{n} \ell(\hat h(x^{(i)};w), y^{(i)})\tag{6.1}$$
+Ora, essere in grado di risolvere efficacemente il problema di ottimizzazione (6.1) non è sufficiente per garantire che il modello risultante funzioni bene su dati fuori campione; si verificano spesso due situazioni sfortunate:
 
-cioè, vogliamo **minimizzare** la somma finita di termini **che possono avere forme diverse**, a seconda della specifica funzione di perdita impiegata; alcuni esempi di funzioni di perdita sono:
-
-- **Loss quadratica:** $\ell(u, v) = (u - v)^2$ (regressione);
-- **Loss $\ell_1$:** $\ell(u, v) = |u - v|$ (regressione);
-- **Loss logaritmica:** $\ell(u, v) = -(u \log(v) + (1 - u) \log(1 - v))$ (classificazione binaria);
-- **Loss 0-1:** $\ell(u, v) = 1 - \mathbb{1}\{u = v\}$ (classificazione binaria);
-- **Hinge loss:** $\ell(u, v) = \max\{0, 1 - uv\}$ (classificazione binaria).
-
-Ora, essere in grado di risolvere efficacemente il problema di ottimizzazione (20) non è sufficiente per garantire che il modello risultante funzioni bene su dati fuori campione; si verificano spesso due situazioni sfortunate:
-
-- Se la qualità dei dati è **scarsa**, o se il modello è **troppo semplice** rispetto alla distribuzione dei dati, non è possibile identificare una buona approssimazione della “vera” $f$, anche se il problema di ottimizzazione è risolto accuratamente; questo problema è noto come ***underfitting*** e non può essere affrontato con i soli strumenti di ottimizzazione matematica.
-- Il secondo problema è in qualche modo l’opposto del primo e si verifica quando il problema di ottimizzazione è risolto “troppo bene”; infatti, nel problema (20) viene utilizzata una funzione obiettivo "surrogata": si minimizza l’errore sul set di addestramento, mentre si vorrebbe minimizzare l’errore ==su tutta la distribuzione dei dati==, inclusi quelli non visti. Se il modello di apprendimento è sufficientemente espressivo (come spesso accade con i modelli parametrici di grandi dimensioni), si potrebbe ottenere una funzione di previsione molto complessa, perfettamente adattata ai dati in $D$, ma assolutamente scorretta per i dati non visti. Questo problema è noto come ***overfitting***.
+- Se la qualità dei dati è **scarsa**, o se il modello è **troppo semplice** rispetto alla distribuzione dei dati, non è possibile identificare una **buona approssimazione** della “vera” $f$, anche se il problema di ottimizzazione è risolto accuratamente; questo problema è noto come ***underfitting*** e non può essere affrontato con i soli strumenti di ottimizzazione matematica; tipo dati migliori oppure classi di modelli più forti possono essere usati per risolvere il task.
+- Il secondo problema è in qualche modo l’opposto del primo e si verifica quando il problema di ottimizzazione è risolto “troppo bene”; infatti, nel problema (6.1) viene utilizzata una funzione obiettivo "surrogata": si minimizza l’errore sul **set di addestramento,** mentre si vorrebbe minimizzare l’errore ==su tutta la distribuzione dei dati==, inclusi quelli non visti. Se il modello di apprendimento è sufficientemente espressivo (come spesso accade con i modelli parametrici di grandi dimensioni), si potrebbe ottenere una funzione di previsione molto complessa, perfettamente adattata ai dati in $\mathcal D$, ma assolutamente scorretta per i dati non visti. Questo problema è noto come ***overfitting***.
 
 Per mitigare parzialmente questo problema, solitamente si introduce un termine di **regolarizzazione** nel problema di addestramento per migliorare ==la capacità di generalizzazione== del modello di apprendimento. 
-Il problema di ottimizzazione risultante è:
-
-	$\min_{w} L(w) + \Omega(w)$,
-
+Il problema di ottimizzazione risultante è:$$\min_{w} L(w) + \Omega(w) \tag{6.2}$$
 dove il termine di regolarizzazione $\Omega(w)$ è solitamente scelto tra:
 
 - $\Omega(w) = \|w\|_2^2$ (regolarizzazione quadratica);
 - $\Omega(w) = \|w\|_1$ (regolarizzazione $\ell_1$);
 - $\Omega(w) = \|w\|_0$ (regolarizzazione $\ell_0$, con $\|w\|_0 = |\{i : w_i \neq 0\}|$).
 
-La **regolarizzazione quadratica** è la più utilizzata per la sua semplicità e le sue proprietà di regolarità. I regolarizzatori $\ell_1$ e $\ell_0$ inducono **sparsità**, con il primo che ha proprietà di regolarità molto più forti rispetto al secondo. La **sparsità** è spesso una caratteristica desiderabile nei modelli predittivi.
+La **regolarizzazione quadratica** è la più utilizzata per la sua semplicità e le sue proprietà di **regolarità**. I regolarizzatori $\ell_1$ e $\ell_0$ inducono **sparsità**, con il primo che ha proprietà di regolarità molto più forti rispetto al secondo. La **sparsità** è spesso una caratteristica desiderabile nei modelli predittivi.
 
-D’ora in avanti, non ci concentreremo sugli aspetti statistici dei modelli di apprendimento, ma considereremo solo il punto di vista della pura ottimizzazione matematica.
+D’ora in avanti, non ci concentreremo sugli aspetti statistici dei modelli di apprendimento, ma considereremo solo il punto di vista della pura **ottimizzazione matematica**.
 
-Infatti, si noti che l’aggiunta di un termine di regolarizzazione quadratico nel problema di ottimizzazione non solo ha un valore statistico, migliorando le proprietà di generalizzazione del modello addestrato, ma trasforma anche funzioni obiettivo convesse in funzioni **fortemente convesse**. Tenendo conto della discussione sulla complessità computazionale degli algoritmi di ottimizzazione nella Sezione 4.2.3, possiamo sottolineare che la regolarizzazione dovrebbe anche **accelerare significativamente** il processo di ottimizzazione. Inoltre, il termine di regolarizzazione rende qualsiasi funzione di perdita limitata **coerciva** (anche in assenza di proprietà di convessità), ==garantendo l’esistenza di soluzioni== per il problema di ottimizzazione sottostante.
+Infatti, si noti che l’**aggiunta di un termine di regolarizzazione quadratico** nel problema di ottimizzazione non solo ha un valore statistico, migliorando le proprietà di generalizzazione del modello addestrato, ==ma trasforma anche funzioni obiettivo convesse in funzioni **fortemente convesse**. ==Tenendo conto della discussione sulla complessità computazionale degli algoritmi di ottimizzazione nella Sezione 4.2.3, possiamo sottolineare che la regolarizzazione dovrebbe anche **accelerare significativamente** il processo di ottimizzazione. Inoltre, il termine di regolarizzazione rende qualsiasi funzione di perdita limitata **coerciva** (anche in assenza di proprietà di convessità), ==garantendo l’esistenza di soluzioni== per il problema di ottimizzazione sottostante.
 
 ---
 
 ### 6.2 Regressione Lineare
 
-Il modello più semplice per i tasks di regressione è la **regressione lineare**. I regressori lineari sono solitamente ottenuti risolvendo un problema di minimi quadrati **regolarizzato**:
-	
-	$\min_{w \in \mathbb{R}^p} \|Aw - b\|^2 + \lambda\|w\|^2$ (22)
+Il modello più semplice per i tasks di regressione è la **regressione lineare**. Per regressione lineare vorremmo identificare i pesi $w$ tali che la risposta $\hat b$ per un punto $a \in \mathbb{R}^p$ sarà ottenuto come $\hat b = w^Ta$. (vedi figura 6.2)
 
+![[Pasted image 20251230215015.png]]
+
+I regressori lineari sono solitamente ottenuti risolvendo un problema di minimi quadrati **regolarizzato**: $$\min_{w \in \mathbb{R}^p} \|Aw - b\|^2 + \lambda\|w\|^2 \tag{6.3}$$
 dove $A \in \mathbb{R}^{n \times p}$ e $b \in \mathbb{R}^{n}$. Il problema è **convesso** e può essere risolto trovando una soluzione con **gradiente nullo**.
-Definendo:
-
-	$f(w) = \|Aw - b\|^2 + \lambda\|w\|^2 = w^T A^T A w - 2w^T A^T b + \|b\|^2 + \lambda w^T w$
-
-e calcolando il gradiente:
-
-	$\nabla f(w) = 2A^T A w - 2A^T b + 2\lambda w$
-
-il problema si riduce alla risoluzione del seguente sistema lineare, noto come **equazione normale**:
-
-	$(A^T A + \lambda I)w = A^T b$ (23)
-
-**Proposizione 6.1** Il Problema 22 ammette soluzione ottimale unica.
-Dimostrazione.
-La funzione obiettivo è coerciva:
-
-	$\lim_{\|w\| \to \infty} \|Aw - b\|^2 + \lambda\|w\|^2 \geq \lim_{\|w\| \to \infty} \lambda\|w\|^2 = +\infty$ 
-
-Per cui, dal teorema di Weierstrass.
-
-La matrice Hessiana della funzione obiettivo è data da:
-
-	$\nabla^2 f(w) = 2A^T A + 2\lambda I$
-
-che è definita positiva, infatti per ogni $w \neq 0$ abbiamo:
-
-	$2w^TA^T A w + 2w^T(\lambda I)w = 2\|Aw\|^2 + 2\lambda \|w\|^2 \geq \lambda \|w\|^2 > 0$
-
-Dunque $f(w)$ è strettamente convessa è il minimo (globale) è unico.
+Definendo: $$f(w) = \|Aw - b\|^2 + \lambda\|w\|^2 = w^T A^T A w - 2w^T A^T b + \|b\|^2 + \lambda w^T w$$
+e calcolando il gradiente(rispetto ai pesi):	$$\nabla f(w) = 2A^T A w - 2A^T b + 2\lambda w$$
+il problema si riduce alla risoluzione del seguente sistema lineare, noto come **equazione normale**:$$(A^T A + \lambda I)w = A^T b \tag{6.4}$$
 
 ---
-Il sistema di equazioni (23) ha soluzione unica, che può essere calcolata:
+
+**Proposizione 6.2.1** 
+Il Problema 6.3 ammette soluzione ottimale **unica**. => vedo se hessiana definita positiva => f sarà strettamente convessa
+
+Dimostrazione.
+La **funzione obiettivo** è [[coerciva]]:$$\lim_{\|w\| \to \infty} \|Aw - b\|^2 + \lambda\|w\|^2 \geq \lim_{\|w\| \to \infty} \lambda\|w\|^2 = +\infty$$
+Per cui, dal teorema di Weierstrass, il problema ammette soluzione (proposizione 3.1.3 => f coerciva => ammette punto di minimo)
+
+La **matrice Hessiana** della funzione obiettivo è data da:$$\nabla^2 f(w) = 2A^T A + 2\lambda I$$
+che è **definita positiva**, infatti per ogni $w \neq 0$ abbiamo:$$2w^TA^T A w + 2w^T(\lambda I)w = 2\|Aw\|^2 + 2\lambda \|w\|^2 \geq \lambda \|w\|^2 > 0$$
+Dunque $f(w)$ è **strettamente convessa** è il minimo (globale) **è unico**.
+
+---
+
+Il sistema di equazioni (6.4) ha soluzione unica, che può essere calcolata:
 - In forma chiusa, tramite una matrice inversa $w^* = (A^TA + \lambda I)^{-1}A^Tb$. Questo approccio può essere usato se $p$ è relativamente piccolo (il costo della matrice inversa è $O(p^3)$) e se A non è mal condizionata
 - Usando un metodo iterativo, come il metodo di discesa del gradiente o quello di Newton; nei fatti il metodo del *gradiente coniugato* è spesso usato nei sistemi lineari.
 
 #### 6.2.1 Casi senza Regolarizzatore
 
-Il problema:
+Il problema:	$$min_{w \in \mathbb{R}^p}\|Aw-b\|^2 \tag{6.5}$$
+Ha proprietà simili alla sua controparte regolarizzata $\ell_2$  e può essere risolto similmente, ma far vedere che la soluzione del problema **sempre esiste** è un po' più complicato; inoltre la soluzione **non sempre è unica**, se il **rango** della matrice **non è il massimo**, la matrice Hessiana $A^TA$ ==non è strettamente definita positiva== e $f$ non è necessariamente **coerciva** nè **strettamente convessa**.
 
-	$min_{w \in \mathbb{R}^p}\|Aw-b\|^2$ (24)
+**Proposizione 6.2.2** 
+Il problema (6.5) ammette sempre soluzione.
 
-Ha proprietà simili alla sua controparte regolarizzata $\ell_2$  e può essere risolto similmente, ma far vedere che la soluzione del problema sempre esiste è un po' più complicato; inoltre la soluzione non sempre è unica, se il rango della matrice non è il massimo, la matrice Hessiana $A^TA$ non è strettamente definita positiva e $f$ non è necessariamente coerciva nè strettamente convessa.
-
-**Proposizione 6.2** Il problema (24) ammette sempre soluzione.
 Dimostrazione.
-Consideriamo il problema:
-	
-	$min_z \frac{1}{2}\|b-z\|^2 \quad \text{t.c.} \quad A^Tz=0$
+Consideriamo il problema:	$$\min_z \frac{1}{2}\|b-z\|^2 \quad \text{t.c.} \quad A^Tz=0$$
+La  funzione obiettiva del problema è *coerciva* e l'insieme ammissibile è chiuso, dunque il problema ammette una soluzione.
+Siccome inoltre la funzione obiettivo è quadratica e i **vincoli sono lineari**, le KKT sono condizioni necessarie e sufficienti per l'ottimalità: $\exists \mu^* \in \mathbb{R}^p$ tale che: $$\nabla_z L(z^*,\mu^*) = -(b-z^*) + A\mu^* = 0 \quad \text{con} \quad A^Tz^* = 0$$
+Dunque, $b = z^* + A\mu^*$, con $z^* \space : \space A^Tz^*=0 \quad e \quad \mu^*\in \mathbb{R}^p$ Abbiamo ottenuto un risultato base della geometria: $b = b_R+b_N$ tale che:$$b_R = A\mu^* \in Im(A) \quad (\exists:Ay =b_R), \quad b_N = z^* \in Ker(A^T) \quad (A^Tb_N = 0)$$
+Ora, possiamo osservare che:	$$A^Tb = (A^Tz^*+A^TA\mu^*) = A^TA\mu^*$$
+ovvero $b_R = A\mu^*$ è la **soluzione** dell'equazione normale.
 
-La  funzione obiettiva del problema è coerciva e l'insieme raggiungibile(?) è chiuso, dunque il problema ammette una soluzione.
-Siccome inoltre la funzione obiettivo è quadratica e i vincoli sono lineari, le KKT sono condizioni necessarie e sufficienti per l'ottimalità: $\exists \mu^* \in \mathbb{R}^p$ tale che:
-
-	$\nabla_z L(z^*,\mu^*) = -(b-z^*) + A\mu^* = 0 \quad \text{con} \quad A^Tz^* = 0$
-
-Dunque, $b = z^* + A\mu^*$, con $z^* \space : \space A^Tz^*=0 \quad e \quad \mu^*\in \mathbb{R}^p$ Abbiamo ottenuto un risultato base della geometria: $b = b_R+b_N$ tale che:
-
-	$b_R = A\mu^* \in Im(A) \quad (\exists:Ay =b_R), b_N = z^* \in Ker(A^T) \quad (A^Tb_N = 0)$
-
-Ora, possiamo osservare che:
-
-	$A^Tb = (A^Tz^*+A^TA\mu^*) = A^TA\mu^*$
-
-ovvero $b_R = A\mu^*$ è la soluzione dell'equazione normale.
-
+---
 ### 6.3 Classificatori Lineari e Regressione Logistica
 
-In questa sezione affrontiamo il problema dell'addestramento di un modello di **regressione logistica**. 
-Il problema di ottimizzazione per questo modello ha la seguente forma:
+In questa sezione, descriviamo il problema di fittare un modello di classificazione lineare, ovvero una funzione che fornisce un output in base al valore di uno o più funzioni lineari.
+Per semplicità ci focalizziamo su problemi di classificazione binaria, dunque il dataset ha la forma:$$\mathcal D = \left\{ (x^{(i)}, y^{(i)}) \mid x^{(i)} \in \mathbb R^p, y^{(i)} \in {-1,1}, i = 1, \dots, n \right\}$$e vogliamo ottenere un insieme di pesi $w$ e bias $b$ tali che una stima affidabile $\hat y^{(i)}$ di $y^{(i)}$ può essere ottenuta per tutti gli i (e anche per dati fuori dal campione) secondo: $\hat y^{(i)} = sign(w^Tx+b)$ (vedi figura 6.3)
 
-	$\min_{w \in \mathbb{R}^p} L(w) + \lambda \Omega(w)$
+![[Pasted image 20251230222532.png]]
+=> la scelta finale dell'iperpiano separatore è guidato da problema di minimizzazione del rischio empirico (6.6)
 
-dove $L(w)$ è la funzione di **log-verosimiglianza negativa** del modello logistico, che è una funzione convessa, e $\Omega(w)$ è un regolarizzatore convesso. Si noti che questa impostazione è concettualmente equivalente ad altri problemi di addestramento con funzioni di perdita convesse, come la **regressione softmax** o il fitting di modelli **ARMA** nelle serie temporali.
+Un modello lineare può essere identificato risolvendo il problema di rischio empirico regolarizzato $$\min_{w \in \mathbb{R}^p, b \in \mathbb R} L(w,b) + \lambda \Omega(w) \tag{6.6}$$
+dove $L(w)$ è la funzione di perdita che misura gli errori del modello parametrizzato da $w$ e $b$ sul dataset, e $\Omega(w)$ è il regolarizzatore.
+Quando decidiamo di usare la log-loss per addestrare il modello lineare, la loss function risultante è data da: $$\mathcal L(w,b,X,y) = \frac{1}{N}\sum_{i=1}^N \log(1+\exp(-y^{(i)}(w^Tx^{(i)}+b)))$$ e alla fine quello che si ottiene è il modello di regressione logistica; questa scelta ha diverse valide motivazioni:
+- Se si assume che i dati assumino una distribuzione di Bernoulli, la funzione $\mathcal L$ allora rappresenta la *negative log-likelihood* del modello; che cosa otteniamo risolvendo il problema è dunque il modello statisticamente più probabile a spiegare i dati.
+- Il modello è "calibrato" per costruzione, la probabilità che un campione $x$ appartenga alla classe positiva $y=1$ è stimata da $$\mathbb P(y=1|x) = \frac{1}{1+\exp(-w^Tx-b)}$$
+- La cosa più importanti dalla nostra prospettiva di ottimizzazione: la funzione di loss è convessa e (doppiamente) continuamente differenziabile
 
-Per risolvere problemi di questa forma, è necessario un algoritmo iterativo di ottimizzazione; metodi come **discesa del gradiente** o **metodo di Newton** sono opzioni valide. Tuttavia, l'algoritmo **L-BFGS** è generalmente considerato il metodo più efficiente per l'ottimizzazione non vincolata, sia nel caso convesso che in quello non convesso (quando non è richiesta l'ottimalità globale), anche per problemi di dimensioni considerevoli. Per dataset di grandi dimensioni, può essere considerato anche un metodo di tipo **SGD**.
-#### Regressione logistica 
+Per risolvere problemi di questa forma, una soluzione in forma chiusa non è accessibile, è necessario un algoritmo iterativo di ottimizzazione per addestrare il modello. 
+Se si assume la regolarizzazione usata sia smooth (come ad esempio nel caso comune di regolarizzatore quadratico $\Omega(w) = \|w\|^2$), possiamo riusare alcuni metodi descritti nel capitolo 4, come **discesa del gradiente** o **metodo di Newton** sono opzioni valide. Tuttavia, l'algoritmo **L-BFGS** è generalmente considerato il metodo più efficiente per l'ottimizzazione non vincolata, sia nel caso convesso che in quello non convesso (quando non è richiesta l'ottimalità globale), anche per problemi di dimensioni considerevoli. Nel caso specifico di regolarizzatore quadratico abbiamo anche che la soluzione è unica e raggiungibile con un tasso di convergenza veloce. Per dataset di grandi dimensioni, può essere considerato anche un metodo di tipo **SGD**. La parte cruciale di questo problema è la corretta implementazione della loss, il suo gradiente e la sua funzione Hessiana.
 
+----
+
+**Esempio 6.3.1**
 Mostriamo ora come calcolare il **gradiente** e la **matrice Hessiana** per il problema della regressione logistica. Consideriamo una classificazione binaria con \(Y = \{-1,1\}\).
-La funzione di perdita ha la forma:
+La funzione di perdita ha la forma (si assume bias nulli o aggiunti al vettore dei pesi come costante):$$L(w; X, y) = \sum_{i=1}^{n} \log(1 + \exp(-y^{(i)} w^T x^{(i)}))$$
+Se definiamo $z = Xw$ (cioè $z_i = w^T x^{(i)}$ per ogni $i$), possiamo riscrivere la funzione di perdita come:$$L(w; X, y) = \varphi(z; y) = \sum_{i=1}^{n} \log(1 + \exp(-y^{(i)} z_i))$$	
+Vogliamo ora calcolare $\nabla_w L(w; X, y)$; applicando la *regola della catena multivariata*, otteniamo:$$\nabla_w L(w; X, y)^T = \nabla_z \varphi(Xw; y)^T \frac{\partial}{\partial w} (Xw)$$Osserviamo inoltre che:$$\frac{\partial}{\partial z_i} \varphi(z; y) = \frac{\partial}{\partial z_i} \left( \log(1 + \exp(-y^{(i)} z_i)) \right)$$
+Svolgendo il calcolo della derivata:$$\frac{1}{1 + \exp(-y^{(i)} z_i)} \cdot \exp(-y^{(i)} z_i) \cdot (-y^{(i)}) = -y^{(i)} \frac{1}{1 + \exp(y^{(i)} z_i)} = -y^{(i)} \sigma(-y^{(i)} z_i)$$
+dove $\sigma(\cdot)$ è la **funzione sigmoide**. Quindi, possiamo scrivere:$$\nabla_z \varphi(z; y) = (-y^{(1)} \sigma(-y^{(1)} z_1), \dots, -y^{(n)} \sigma(-y^{(n)} z_n))^T$$
+D'altra parte, abbiamo:$$\frac{\partial}{\partial w} (Xw) = X$$
+quindi otteniamo il gradiente della funzione di perdita:$$\nabla_w L(w; X, y) = (r^T X)^T = X^T r$$
+dove $r \in \mathbb{R}^n$ è definito come:$$r_i = -y^{(i)} \sigma(-y^{(i)} w^T x^{(i)}) \quad \text{per ogni } i = 1, \dots, n$$
+Con calcoli analoghi, possiamo ottenere la matrice Hessiana:	$$\nabla^2 L(w; X, y) = X^T D X$$
+dove \(D\) è una matrice diagonale con elementi:$$d_{ii} = \sigma(y^{(i)} w^T x^{(i)}) \cdot \sigma(-y^{(i)} w^T x^{(i)})$$
 
-	$L(w; X, y) = \sum_{i=1}^{n} \log(1 + \exp(-y^{(i)} w^T x^{(i)}))$
-##### Calcolo Gradiente ed Hessiana (da saltare senza problemi)
+---
 
-Se definiamo $z = Xw$ (cioè $z_i = w^T x^{(i)}$ per ogni $i$), possiamo riscrivere la funzione di perdita come:
+**Osservazione 6.3.1.** Dal punto di vista dell'ottimizzazione, questo contesto è concettualmente equivalente ad altri problemi di training con funzioni di perdita (convesse) lisce, come la regressione multinomiale (softmax) per **problemi di classificazione multiclasse**; molte classi di Modelli Lineari Generalizzati soddisfano infatti questa proprietà nella corrispondente funzione di perdita. Altri modelli vengono addestrati minimizzando funzioni lisce **non convesse**, che possono quindi essere affrontate in modo simile, anche se ==senza garanzie di ottimalità globale==. Questo è il caso, ad esempio, dei modelli ARMA nell'analisi delle serie temporali, adattati sulla base della minimizzazione non vincolata della funzione di log-verosimiglianza negativa differenziabile; inoltre, la stessa impostazione si incontra nell'addestramento di piccole **reti neurali**.
 
-	$L(w; X, y) = \varphi(z; y) = \sum_{i=1}^{n} \log(1 + \exp(-y^{(i)} z_i))$
-	
-Vogliamo ora calcolare $\nabla_w L(w; X, y)$; applicando la *regola della catena multivariata*, otteniamo:
+---
+**Esempio 6.3.2 (Regressione multinomiale).**
 
-	$\nabla_w L(w; X, y)^T = \nabla_z \varphi(Xw; y)^T \frac{\partial}{\partial w} (Xw)$
+Per il contesto multiclasse, dove abbiamo $Y = \{y_1, \ldots, y_K\}$, un modello di classificazione lineare può essere definito da $K$ funzioni lineari $w_k^T x + b_k$ (vedi Figura 6.4). Per un campione $x$, il classificatore fornisce $K$ valori chiamati logit $z_k = w_k^T x + b_k$; questi valori vengono trasformati in probabilità tramite l'operazione softmax: $$P(y = k \mid x) = \frac{e^{z_k}}{\sum_{k=1}^{K} e^{z_k}}$$Il classificatore assegna quindi $x$ alla classe con la **probabilità più alta**: $\hat{y} = y_{\bar{k}}$, dove $\bar{k} \in \arg\max_{k=1,\ldots,K} z_k$.
 
-Osserviamo inoltre che:
+La funzione di perdita per ottenere il modello di regressione multinomiale, che estende il modello logistico allo scenario multiclasse, è la funzione di entropia incrociata definita come$$
+L(W, b) = - \sum_{i=1}^{N} \sum_{k=1}^{K} y_{ik} \log\left( \frac{e^{w_k^T x_i + b_k}}{\sum_{t=1}^{K} e^{w_t^T x_i + b_t}} \right)$$dove $$y_{ik} = 
+\begin{cases} 
+1 & \text{se } y_i = k \\
+0 & \text{altrimenti}.
+\end{cases}$$
+La funzione di cui sopra è **convessa** e differenziabile nelle variabili $w_k$, $b_k$, $k = 1, \ldots, K$.
 
-	$\frac{\partial}{\partial z_i} \varphi(z; y) = \frac{\partial}{\partial z_i} \left( \log(1 + \exp(-y^{(i)} z_i)) \right)$
+![[Pasted image 20251230230328.png]]
 
-Svolgendo il calcolo della derivata:
-
-	$\frac{1}{1 + \exp(-y^{(i)} z_i)} \cdot \exp(-y^{(i)} z_i) \cdot (-y^{(i)}) = -y^{(i)} \frac{1}{1 + \exp(y^{(i)} z_i)} = -y^{(i)} \sigma(-y^{(i)} z_i)$
-
-dove $\sigma(\cdot)$ è la **funzione sigmoide**. Quindi, possiamo scrivere:
-
-	$\nabla_z \varphi(z; y) = (-y^{(1)} \sigma(-y^{(1)} z_1), \dots, -y^{(n)} \sigma(-y^{(n)} z_n))^T$
-
-D'altra parte, abbiamo:
-
-	$\frac{\partial}{\partial w} (Xw) = X$
-
-quindi otteniamo il gradiente della funzione di perdita:
-
-	$\nabla_w L(w; X, y) = (r^T X)^T = X^T r$
-
-dove $r \in \mathbb{R}^n$ è definito come:
-
-	$r_i = -y^{(i)} \sigma(-y^{(i)} w^T x^{(i)}) \quad \text{per ogni } i = 1, \dots, n$
-
-Con calcoli analoghi, possiamo ottenere la matrice Hessiana:
-
-	$\nabla^2 L(w; X, y) = X^T D X$
-
-dove \(D\) è una matrice diagonale con elementi:
-
-	$d_{ii} = \sigma(y^{(i)} w^T x^{(i)}) \cdot \sigma(-y^{(i)} w^T x^{(i)})$
-
+---
 ## 7. Support Vector Machines
 
-Un modello di **Support Vector Machine (SVM)** lineare è, in breve, un modello di classificazione ottenuto risolvendo il problema di minimizzazione del ==rischio empirico con la **hinge loss** e il regolarizzatore $\ell_2$==, ossia:
+Nella Sezione 6.3 abbiamo osservato come l'addestramento della maggior parte dei modelli di classificazione lineari si traduca in un problema di ottimizzazione non lineare non vincolata che può essere affrontato con **algoritmi standard**. C'è una grande eccezione a questo fatto: i modelli di (linear) *Support Vector Machine* (SVM).
 
-	$\min_{w,b} \frac{1}{2} \|w\|^2 + C \sum_{i=1}^{n} \max\{0, 1 - y^{(i)} (w^T x^{(i)} + b)\}$
+In breve, una SVM è un **modello di classificazione** ottenuto risolvendo il problema di *minimizzazione del rischio empirico* quando si utilizza la ***hinge loss*,** accoppiata con il regolarizzatore $\ell_2$. Il problema di addestramento risultante è quindi: $$\min_{w,b} \frac{1}{2} \|w\|^2 + C \sum_{i=1}^{n} \max\{0, 1 - y^{(i)} (w^T x^{(i)} + b)\} \tag{7.1}$$
+Questo problema, diversamente da, ad esempio, la **regressione logistica**, ==ha una funzione obiettivo non differenziabile==: la funzione $\max$ infatti non è differenziabile in $0$ e questa proprietà è poi ereditata dall'intera funzione obiettivo del problema. Di conseguenza, **non possiamo usare approcci basati sul gradiente** per trovare una soluzione ottimale - dobbiamo pensare a una soluzione alternativa.
 
-Si può notare che le soluzioni ottimali di questo problema di ottimizzazione **non liscio e non vincolato** sono anche soluzioni del seguente problema **liscio con vincoli lineari**:
+Ora, è facile rendersi conto che le soluzioni **ottimali** del problema di ottimizzazione non vincolata non differenziabile sono anche soluzioni del seguente problema **differenziabile** con vincoli lineari ottenuto **aggiungendo variabili** di "slack" $\xi$:	$$\min_{w,b,\xi} \frac{1}{2} \|w\|^2 + C \sum_{i=1}^{n} \xi^{(i)}\tag{7.2}$$$$\text{t.c} \quad y^{(i)} (w^T x^{(i)} + b) \geq 1 - \xi^{(i)}, \quad \xi^{(i)} \geq 0 \quad i = 1,\dots,N.$$
+Il risultato è formalizzato nella seguente proposizione.
 
-	$\min_{w,b,\xi} \frac{1}{2} \|w\|^2 + C \sum_{i=1}^{n} \xi^{(i)}$
-										(26)
-	$\text{t.c} \quad y^{(i)} (w^T x^{(i)} + b) \geq 1 - \xi^{(i)}, \quad \xi^{(i)} \geq 0$ 
+**Proposizione 7.0.1.** Una coppia $(w^*, b^*)$ è ottimale per il problema (7.1) se e solo se la tupla $(x^*, b^*, \xi^*)$, con $\xi^*_i = \max\{0, 1 - y^{(i)}((w^*)^T x^{(i)} + b^*)\}$, è **ottimale** per il problema (7.2).
 
-Si può dimostrare che, quando $C = \infty$, il problema corrisponde a trovare, tra gli ==iperpiani che separano **perfettamente** i dati di addestramento==, quello che **massimizza la distanza** dal punto più vicino di entrambe le classi (vedi Figure 10 e 11). 
+**Dimostrazione.** 
+Sia $(w^*, b^*)$ ottimale per (7.1), e sia $\xi^*_i = \max\{0, 1 - y^{(i)}((w^*)^T x^{(i)} + b^*)\}$ per tutti gli $i$. Osserviamo che, per ogni soluzione ammissibile di (7.2), deve valere $\xi_i \geq \max\{0, 1 - y^{(i)}(w^T x^{(i)} + b)\}$. Possiamo quindi scrivere per ogni **soluzione ammissibile** $(w, b, \xi)$:
+$$\frac{1}{2} \|w\|^2 + C \sum_{i=1}^{N} \xi_i \geq \frac{1}{2} \|w\|^2 + C \sum_{i=1}^{N} \max\{0, 1 - y^{(i)}(w^T x^{(i)} + b)\}$$$$\geq \frac{1}{2} \|w^*\|^2 + C \sum_{i=1}^{N} \max\{0, 1 - y^{(i)}((w^*)^T x^{(i)} + b^*)\}$$$$= \frac{1}{2} \|w^*\|^2 + C \sum_{i=1}^{N} \xi^*_i,$$
+dove la penultima disuguaglianza segue dall'ottimalità di $w^*, b^*$ per (7.1). Possiamo quindi concludere che $(w^*, b^*, \xi^*)$ è effettivamente ottimale per (7.2).
 
-![[Pasted image 20250201164438.png]]
-Figura 10: Classificazione tramite Iperpiani. Tutti gli iperpiani soddisfano correttamente il problema dell'addestramento dei dati. SVM sceglie fra questi quello che è equidistante fra le due classi(in verde).
+D'altra parte, sia $(w^*, b^*, \xi^*)$ ottimale per (7.2). Prima mostriamo che necessariamente abbiamo $\xi^*_i = \max\{0, 1 - y^{(i)}((w^*)^T x^{(i)} + b^*)\}$ per tutti gli $i$. Infatti, se avessimo $\xi^*_j > \max\{0, 1 - y^{(j)}((w^*)^T x^{(j)} + b^*)\}$ per qualche indice $j$, potremmo ottenere una **nuova soluzione ammissibile** $(w^*, b^*, \hat{\xi})$ con: $$\hat{\xi}_h = \begin{cases} 
+\xi^*_h & \text{se } h \neq j, \\
+\max\{0, 1 - y^{(h)}((w^*)^T x^{(h)} + b^*)\} < \xi^*_j & \text{se } h = j.
+\end{cases}$$
+Questo porterebbe a: $$ \frac{1}{2} \|w^*\|^2 + C \sum_{i=1}^{N} \hat{\xi}_i < \frac{1}{2} \|w^*\|^2 + C \sum_{i=1}^{N} \xi^*_i,$$
+il che sarebbe assurdo in quanto $(w^*, b^*, \hat{\xi})$ **migliorerebbe** il valore della funzione obiettivo di $(w^*, b^*, \xi^*)$, che è già ottimale. => sono alla ricerca del minimo...
 
-![[Pasted image 20250201164501.png]]
-Figura 11: Iperpiani di massimo margine. I punti cerchiati, che definiscono i margini di separazione sono chiamati _support vectors_.
+Ora, assumiamo per assurdo che $(w^*, b^*)$ non sia ottimale per (7.1), cioè che esista $(\bar{w}, \bar{b})$ tale che:$$\frac{1}{2} \|\bar{w}\|^2 + C \sum_{i=1}^{N} \max\{0, 1 - y^{(i)}(\bar{w}^T x^{(i)} + \bar{b})\}$$$$< \frac{1}{2} \|w^*\|^2 + C \sum_{i=1}^{N} \max\{0, 1 - y^{(i)}((w^*)^T x^{(i)} + b^*)\}$$ $$= \frac{1}{2} \|w^*\|^2 + C \sum_{i=1}^{N} \xi^*_i.$$
+Se definiamo $\bar{\xi}$ tale che $\bar{\xi}_i = \max\{0, 1 - y^{(i)}(\bar{w}^T x^{(i)} + \bar{b})\}$, vediamo facilmente che $(\bar{w}, \bar{b}, \bar{\xi})$ è ammissibile per (7.2) e che:$$
+\frac{1}{2} \|\bar{w}\|^2 + \sum_{i=1}^{N} \bar{\xi}_i < \frac{1}{2} \|w^*\|^2 + C \sum_{i=1}^{N} \xi^*_i,$$
+il che di nuovo contraddice il fatto che $(x^*, b^*, \xi^*)$ sia ottimale per (7.2). Ciò completa la dimostrazione. $\square$
 
-Tuttavia, se i dati non sono **linearmente separabili**, il problema non ha soluzioni ammissibili (Figura 12).
+---
 
-![[Pasted image 20250201163933.png]]
-Figura 12: Esempio di un dataset non separabile.
+Le SVM hanno una bella interpretazione geometrica nascosta dietro il problema di ottimizzazione. Consideriamo ad esempio il caso $C = \infty$; in questo caso particolare, ogni variabile di slack $\xi_i$ (cioè ogni **errore**) è penalizzata infinitamente e quindi **deve essere posta** a $0$; il problema è quindi:
+$$\begin{aligned}
+\min_{w,b,\xi} & \quad \frac{1}{2} \|w\|^2 \\
+\text{s.t.} & \quad y^{(i)}(w^T x^{(i)} + b) \geq 1, \quad i = 1, \ldots, N.
+\end{aligned}$$
 
-Pertanto, con una scelta finita di $C$, si accetta di ==**pagare un costo** per tutti i punti classificati **erroneamente**,== nonché per quelli classificati **correttamente ma con una confidenza insufficiente** (Figura 13). Questo non solo garantisce l'esistenza di una soluzione, ma aiuta anche ad **evitare problemi di overfitting**.
+Nota che, in questo caso, i vincoli impongono che ogni campione nel dataset sia classificato correttamente e quindi una soluzione esiste solo se i dati sono *linearmente separabili* (cioè siamo in una situazione come quella delle Figure 6.3 (a)-(c)).
+Infatti, i vincoli stanno imponendo qualcosa di più. Ogni scelta di $w$ e $b$ identifica implicitamente tre *iperpiani*: $w^T x + b = 0$, $w^T x + b = 1$ e $w^T x + b = -1$ (vedi Figura 7.1). Il vincolo nella configurazione SVM "hard" (rigida) chiede non solo di posizionare ogni campione dal lato corretto dell'iperpiano, ma anche di rimanere **al di fuori del *margine***, cioè del corridoio tra gli iperpiani $w^T x + b = 1$ e $w^T x + b = -1$. Il vincolo può essere soddisfatto da molte scelte di $w$ e $b$.
 
-![[Pasted image 20250201164411.png]]
-Figura 13: Classificatori SVM ottenuti lasciando liberi _slacks_ non nulli.
+![[Pasted image 20251231143753.png]]
 
-Il problema (26) è **quadratico convesso con vincoli lineari**, quindi è in teoria risolvibile tramite solutori standard per problemi vincolati, come l'**algoritmo di Frank-Wolfe**. Tuttavia, il numero di vincoli è **proporzionale al numero di punti di addestramento** e può crescere rapidamente. 
+Tra tutte le scelte ammissibili dell'iperpiano, le SVM (hard) cercano quella che minimizza la quantità $\|w\|^2$. Se ricordiamo che $\frac{1}{\|w\|}$ è la distanza tra l'iperpiano $w^T x + b = 0$ e $w^T x + b = \pm 1$ (vedi Figura 7.2a), ci rendiamo conto che stiamo essenzialmente **massimizzando il margine**. In altre parole, ==tra gli iperpiani che separano perfettamente i dati di training==, viene scelto quello che **massimizza la distanza** dal punto più vicino (di entrambe le classi).
+Per questo iperpiano a margine massimo, ci sarà sicuramente almeno un campione per classe ==che giace esattamente sul bordo del margine==; questi punti sono i *support vector* (vettori di supporto) per il classificatore (Figura 7.2b).
 
-Per questa ragione (e per altre che vedremo in seguito), si segue una strategia differente: l'analisi del **problema duale**.
+![[Pasted image 20251231143821.png]]
+
+Ovviamente, tuttavia, il problema non ha soluzione ammissibile in quel caso se i dati **non sono** linearmente separabili (vedi Figura 6.3 (d)). Per questo motivo (e anche per alleviare l'impatto degli *outlier* e migliorare la generalizzazione), possiamo impostare un valore finito per l'iperparametro $C$ e **accettare violazioni dei vincoli** a margine rigido. Accettiamo di "pagare un costo" per tutti i punti che **sono classificati in modo errato**, e anche per quelli classificati correttamente ma con una confidenza insufficiente (vedi Figure 7.3 e 7.4).
+
+![[Pasted image 20251231143901.png]]
+
+Dopo questa lunga premessa, possiamo ora passare allo studio del problema di ottimizzazione (7.2). Il problema è **quadratico convesso** con vincoli **lineari**, quindi in principio risolvibile con risolutori vincolati standard, e in particolare l'algoritmo di **Frank-Wolfe** potrebbe sembrare interessante a prima vista. Tuttavia, il numero di vincoli è proporzionale al **numero di punti di training**, e potrebbe crescere rapidamente. Per questo motivo (e anche per altri che affronteremo più avanti), si deve seguire un percorso diverso.
+
+![[Pasted image 20251231143938.png]]
+
 ### 7.1 Il Problema Duale
 
-Come accennato, il problema (26) è **convesso e quadratico con vincoli lineari**. Questo implica che le **condizioni di Karush-Kuhn-Tucker (KKT)** sono **necessarie e sufficienti** per l'ottimalità. 
-
+Come accennato, il problema (7.2) è **convesso e quadratico con vincoli lineari**. Questo implica che le **condizioni di Karush-Kuhn-Tucker (KKT)** sono **necessarie e sufficienti** per l'**ottimalità**. 
 Senza entrare nei dettagli di un argomento vasto e complesso, introduciamo un risultato dalla **teoria della dualità** per problemi convessi vincolati, che permetterà di riformulare il problema primale in una forma più trattabile.
 
 ---
-#### Proposizione 7.1 
+**Proposizione 7.1.1** 
 
-Consideriamo il seguente problema di ottimizzazione:
-
-	$\min_{x} f(x) \quad \text{soggetto a} \quad g(x) \leq 0$
-
-dove $f$ e $g$ sono funzioni continuamente differenziabili e convesse.  
-
-Sia $x^\star$ una soluzione ottimale del problema e supponiamo che esista un vettore di moltiplicatori $\mu^\star$ tale che $(x^\star, \mu^\star)$ soddisfi le **condizioni KKT**.  
-Allora, la coppia $(x^\star, \mu^\star)$ è una **soluzione ottimale** del **problema duale di Wolfe**:
-
-	$\max_{x, \mu} L(x, \mu) = f(x) + \mu^T g(x)$
-
-	$\text{t.c.} \quad \nabla_x L(x, \mu) = 0, \quad \mu \geq 0$
-
----
+Consideriamo il seguente problema di ottimizzazione:$$\min_{x} f(x) \quad \text{soggetto a} \quad g(x) \leq 0$$dove $f$ e $g$ sono funzioni continuamente **differenziabili** e **convesse**.  
+Sia $x^\star$ una soluzione **ottimale del problema** e supponiamo che esista un vettore di moltiplicatori $\mu^\star$ tale che $(x^\star, \mu^\star)$ soddisfi le **condizioni KKT**.  
+Allora, la coppia $(x^\star, \mu^\star)$ è una **soluzione ottimale** del **problema duale di Wolfe**:$$\max_{x, \mu} \mathcal L(x, \mu) = f(x) + \mu^T g(x)$$$$\text{t.c.} \quad \nabla_x \mathcal L(x, \mu) = 0, \quad \mu \geq 0$$
 **Dimostrazione**.  
 La coppia $(x^\star, \mu^\star)$ soddisfa le condizioni KKT, ossia:
-
-- $\nabla_x L(x^\star, \mu^\star) = 0$ (i),
+- $\nabla_x \mathcal L(x^\star, \mu^\star) = 0$ (i),
 - $\quad \mu^\star \geq 0$ (ii), 
 - $\quad g(x^\star) \leq 0$ (iii),
 - $\quad \mu^\star_i g_i(x^\star) = 0 \quad \forall i$ (iv)
 
 Di conseguenza, $(x^\star, \mu^\star)$ soddisfa i vincoli del problema duale di Wolfe (grazie a (i) e (ii)). 
+Inoltre, per la **condizione di complementarità** (iv), abbiamo:$$\mathcal L(x^\star, \mu^\star) = f(x^\star) + \sum_i \mu^\star_i g_i(x^\star) = f(x^\star)$$
+Ora, per una qualunque soluzione ammissibile $(x, \mu)$ del problema duale, poiché $\mu \geq 0$  e $g(x^\star) \leq 0$, si ha:$$\mathcal L(x^\star, \mu^\star) = f(x^\star) \geq f(x^\star) + \sum_i \mu_i g_i(x^\star) = \mathcal L(x^\star, \mu)$$ (i vincoli sono negativi...)
 
-Inoltre, per la condizione di complementarità (iv), abbiamo:
-	
-	$L(x^\star, \mu^\star) = f(x^\star) + \sum_i \mu^\star_i g_i(x^\star) = f(x^\star)$
-
-Ora, per una qualunque soluzione ammissibile $(x, \mu)$ del problema duale, poiché $\mu \geq 0$  e $g(x^\star) \leq 0$, si ha:
-
-	$L(x^\star, \mu^\star) = f(x^\star) \geq f(x^\star) + \sum_i \mu_i g_i(x^\star) = L(x^\star, \mu)$
-
-Dalla convessità di $L(x, \mu)$ rispetto a $x$ (essendo combinazione lineare positiva delle funzioni convesse $f, \space g_1, \dots, g_m$), possiamo scrivere:
-
-	$L(x^\star, \mu) \geq L(x, \mu) + \nabla_x L(x, \mu)^T (x^\star - x)$
-
-Unendo tutti i passaggi precedenti e ricordando che $\nabla_x L(x, \mu) = 0$ per $(x, \mu)$ ammissibile nel problema duale, otteniamo:
-
-	$L(x^\star, \mu^\star) \geq L(x^\star, \mu) \geq L(x, \mu)$
-
-Essendo $(x, \mu)$ una soluzione qualsiasi ammissibile del problema duale, si ottiene la tesi(richiediamo infatti che sia un max).
+Dalla **convessità** di $\mathcal L(x, \mu)$ rispetto a $x$ (essendo combinazione lineare positiva delle funzioni convesse $f, \space g_1, \dots, g_m$), possiamo scrivere:$$\mathcal L(x^\star, \mu) \geq \mathcal L(x, \mu) + \nabla_x \mathcal L(x, \mu)^T (x^\star - x)$$
+Unendo tutti i passaggi precedenti e ricordando che $\nabla_x \mathcal L(x, \mu) = 0$ per $(x, \mu)$ ammissibile nel problema duale, otteniamo:$$\mathcal L(x^\star, \mu^\star) \geq \mathcal L(x^\star, \mu) \geq \mathcal L(x, \mu)$$
+Essendo $(x, \mu)$ una soluzione **qualsiasi** ammissibile del problema duale, si ottiene la tesi(richiediamo infatti che sia un **max**).
 
 ---
 
-Torniamo ora al problema SVM (26).  
-Poiché le condizioni KKT sono **necessarie e sufficienti** per l'ottimalità globale, allora per una soluzione ottimale $(w^\star, b^\star, \xi^\star)$  devono esistere moltiplicatori  $(\alpha^\star, \mu^\star)$ tali che la **coppia** $(w^\star, b^\star, \xi^\star, \alpha^\star, \mu^\star)$ sia un punto KKT e, per la proposizione sopra, sia soluzione del **problema duale**:
+**Osservazione 7.1.1.** Per problemi quadratici convessi, come (7.2), si può dimostrare un’ulteriore proprietà che afferma che, se risolviamo il duale di Wolfe ottenendo $(\bar{x}, \mu^*)$, abbiamo la garanzia che i moltiplicatori ottenuti $\mu^*$ formino una coppia KKT con un vettore ammissibile $x^*$ (che è quindi ottimale poiché le condizioni KKT sono anche **sufficienti** per l’ottimalità in questo caso), anche se $x^*$ è possibilmente diverso da $\bar{x}$. Pertanto, per problemi di questa classe, possiamo risolvere il problema duale per trovare i moltiplicatori “ottimali” e poi **ricostruire la soluzione primale ottimale** ==imponendo che le condizioni KKT siano soddisfatte con quei moltiplicatori==.
 
-	$\max_{w, b, \xi, \alpha, \mu} L(w, b, \xi, \alpha, \mu) = f(x) + \mu^Tg(x)$
-			  $= \frac{1}{2} \|w\|^2 + C \sum_i \xi_i + \sum_i -\mu_i \xi_i + \sum_i \alpha_i (1 - y^{(i)} (w^T x^{(i)} + b) - \xi_i)$
-
-	$\text{t.c} \quad \alpha \geq 0, \quad \mu \geq 0$,
-
-	$\nabla_w L(w, b, \xi, \alpha, \mu) = 0, \quad \nabla_b L(w, b, \xi, \alpha, \mu) = 0, \quad \nabla_\xi L(w, b, \xi, \alpha, \mu) = 0$
-
+Torniamo ora al problema SVM (7.2)
+Dall'osservazione precedente, possiamo pensare a costruire una tupla KKT $(w^*,b^*, \xi^*, \alpha^*,\mu^*)$ (e dunque una soluzione ottimale) per il problema risolvendo il corrispettivo **problema duale**. Ricaviamo dunque il problema duale per (7.2). Applicando la definizione per il duale di Wolfe (7.2) otteniamo il problema:
+$$\max_{w, b, \xi, \alpha, \mu} \mathcal L(w, b, \xi, \alpha, \mu) = f(x) + \mu^Tg(x)$$$$= \frac{1}{2} \|w\|^2 + C \sum_i \xi_i + \sum_i -\mu_i \xi_i + \sum_i \alpha_i (1 - y^{(i)} (w^T x^{(i)} + b) - \xi_i)$$$$\text{t.c} \quad \alpha \geq 0, \quad \mu \geq 0$$$$\nabla_w \mathcal L(w, b, \xi, \alpha, \mu) = 0, \quad \nabla_b \mathcal L(w, b, \xi, \alpha, \mu) = 0, \quad \nabla_\xi \mathcal L(w, b, \xi, \alpha, \mu) = 0$$
 Osserviamo ora che dai vincoli sopra si ottengono le seguenti relazioni:
 
-	$0 = \nabla_w L(w, b, \xi, \alpha, \mu) = w - \sum_i \alpha_i y^{(i)} x^{(i)}, \quad \text{cioè} \quad w = \sum_i \alpha_i y^{(i)} x^{(i)}$
+	$0 = \nabla_w \mathcal L(w, b, \xi, \alpha, \mu) = w - \sum_i \alpha_i y^{(i)} x^{(i)}, \quad \text{cioè} \quad w = \sum_i \alpha_i y^{(i)} x^{(i)}$
 
-	$0 = \nabla_b L(w, b, \xi, \alpha, \mu) = -\sum_i \alpha_i y^{(i)}, \quad \text{cioè} \quad \alpha^T y = 0$
+	$0 = \nabla_b \mathcal L(w, b, \xi, \alpha, \mu) = -\sum_i \alpha_i y^{(i)}, \quad \text{cioè} \quad \alpha^T y = 0$
 	
-	$0 = \nabla_\xi L(w, b, \xi, \alpha, \mu) = C e - \sum_i \mu_i e_i - \sum_i \alpha_i e_i, \quad \text{cioè} \quad \alpha_i = C - \mu_i \leq C \quad \forall i$
+	$0 = \nabla_\xi \mathcal L(w, b, \xi, \alpha, \mu) = C e - \sum_i \mu_i e_i - \sum_i \alpha_i e_i, \quad \text{cioè} \quad \alpha_i = C - \mu_i \leq C \quad \forall i$
 	
-Manipolando la funzione obiettivo, possiamo prima ottenere:
+Manipolando la funzione obiettivo, possiamo prima ottenere:$$\frac{1}{2} w^T w + C \sum_{i} \xi_i + \sum_{i} -\mu_i \xi_i + \sum_{i} \alpha_i$$$$- \sum_{i} \alpha_i y^{(i)} w^T x^{(i)} - b \sum_{i} \alpha_i y^{(i)} - \sum_{i} \alpha_i \xi_i$$
+Ora, ricordiamo che $\sum_{i} \alpha_i y^{(i)} = 0$ per la seconda condizione vista sopra. Inoltre, usando la terza condizione possiamo scrivere:$$C \sum_{i} \xi_i - \sum_{i} \mu_i \xi_i = \sum_{i} \xi_i (C - \mu_i) = \sum_{i} \xi_i \alpha_i$$
+Otteniamo quindi:$$\frac{1}{2} w^T w + \sum_{i} \alpha_i \xi_i + \sum_{i} \alpha_i - \sum_{i} \alpha_i y^{(i)} w^T x^{(i)} - \sum_{i} \alpha_i \xi_i$$ossia:	$$w^T \left(\frac{1}{2} w - \sum_{i} \alpha_i y^{(i)} x^{(i)}\right) + \sum_{i} \alpha_i$$
+Ora possiamo sostituire $w = \sum_{i} \alpha_i y^{(i)} x^{(i)}$ per ottenere:$$\mathcal L(w, b, \xi, \alpha, \mu) = -\frac{1}{2} \sum_{i} \sum_{j} \alpha_i \alpha_j y^{(i)} y^{(j)} x^{(i)T} x^{(j)} + \sum_{i} \alpha_i$$ per ogni soluzione ammissibile del problea duale di Wolfe.
 
-	$\frac{1}{2} w^T w + C \sum_{i} \xi_i + \sum_{i} -\mu_i \xi_i + \sum_{i} \alpha_i - \sum_{i} \alpha_i y^{(i)} w^T x^{(i)} - b \sum_{i} \alpha_i y^{(i)} - \sum_{i} \alpha_i \xi_i$
-
-Ora, ricordiamo che $\sum_{i} \alpha_i y^{(i)} = 0$ per la seconda condizione vista sopra. Inoltre, usando la terza condizione possiamo scrivere:
-
-	$C \sum_{i} \xi_i - \sum_{i} \mu_i \xi_i = \sum_{i} \xi_i (C - \mu_i) = \sum_{i} \xi_i \alpha_i$
-
-Otteniamo quindi:
-
-	$\frac{1}{2} w^T w + \sum_{i} \alpha_i \xi_i + \sum_{i} \alpha_i - \sum_{i} \alpha_i y^{(i)} w^T x^{(i)} - \sum_{i} \alpha_i \xi_i$
-
-ossia:
-
-	$w^T \left(\frac{1}{2} w - \sum_{i} \alpha_i y^{(i)} x^{(i)}\right) + \sum_{i} \alpha_i$
-
-Ora possiamo sostituire $w = \sum_{i} \alpha_i y^{(i)} x^{(i)}$ per ottenere:
-
-	$L(w, b, \xi, \alpha, \mu) = -\frac{1}{2} \sum_{i} \sum_{j} \alpha_i \alpha_j y^{(i)} y^{(j)} x^{(i)T} x^{(j)} + \sum_{i} \alpha_i$
-
-Quindi, la funzione obiettivo dipende **solo dai moltiplicatori $\alpha$**, che sono vincolati da $y^T \alpha = 0$, $\alpha \geq 0$ e $\alpha \leq C$. Scambiando i segni e passando alla notazione matriciale, definiamo la matrice $Q$ tale che: $Q_{ij} = y^{(i)} y^{(j)} x^{(i)T} x^{(j)}$, ottenendo il problema duale (27):
+Quindi, la funzione obiettivo dipende **solo dai moltiplicatori $\alpha$**, che sono vincolati da $y^T \alpha = 0$, $\alpha \geq 0$ e $\alpha \leq C$. Scambiando i segni e passando alla notazione matriciale, definiamo la matrice $Q$ tale che: $Q_{ij} = y^{(i)} y^{(j)} x^{(i)T} x^{(j)}$, ottenendo il problema duale (7.3):
 
 	$\min_{\alpha} \frac{1}{2} \alpha^T Q \alpha - e^T \alpha$
 	$\text{t.c.} \quad \alpha^T y = 0, \quad 0 \leq \alpha_i \leq C \quad \forall i$
 
-(Notare si passa facilmente al min cambiando il segno della funzione obiettivo)
+(Notare si passa facilmente al **min** cambiando il segno della funzione obiettivo)
 
 ---
 
-Dopo aver risolto il problema duale (27), possiamo ottenere la soluzione $\alpha^\star$ e recuperare le altre variabili:
+Dopo aver risolto il problema duale (7.3), possiamo ottenere la soluzione $\alpha^\star$ e recuperare le altre variabili:
 - $w^\star = \sum_{i} \alpha^\star_i y^{(i)} x^{(i)}$,
 - $\mu^\star_i = C - \alpha^\star_i \quad \forall i$,
 - $b^\star = \frac{1}{y^{(i)}} - w^{\star T} x^{(i)} \quad \text{per ogni } i \text{ tale che } \alpha^\star_i \in (0, C)$,
 - $\xi^\star_i = \max\{0, 1 - y^{(i)} (w^{\star T} x^{(i)} + b^\star)\}$
 
-La terza equazione (per $b^\star$) segue dall'imposizione delle condizioni di complementarità delle KKT. (ovvero imponendo $\xi_i^* = 0 \space e \space \alpha_i^* \neq 0$ necessariamente avrò $1- y^{(i)}(w^{*T}x^{(i)}) + b^*=0$ dalla condizione $\mu^Tg_i(x) \leq 0$, anzi vedi sotto... )
+Dove la terza equazione (per $b^\star$) segue dall'imposizione delle **condizioni di complementarità** delle KKT. (ovvero imponendo $\xi_i^* = 0 \space e \space \alpha_i^* \neq 0$ necessariamente avrò $1- y^{(i)}(w^{*T}x^{(i)}) + b^*=0$ dalla condizione $\mu^Tg_i(x) \leq 0$, anzi vedi sotto... )
 
 ---
-##### Interpretazione Geometrica: Support Vectors
+**Osservazione 7.1.2**
 
-Dalle condizioni di complementarità segue che:
+Dalle **condizioni di complementarità** segue che:$$\alpha^\star_i (1 - y^{(i)} (w^{\star T} x^{(i)} + b^\star) - \xi^\star_i) = 0, \quad 0 = \mu^\star_i \xi^\star_i = (C - \alpha^\star_i) \xi^\star_i$$
+- Se $\alpha^\star_i \in (0, C)$, allora $\xi^\star_i = 0$  e il punto **soddisfa esattamente**  $y^{(i)} (w^{\star T} x^{(i)} + b^\star) = 1$, ovvero si trova **sul margine di separazione**.
+- Se $\alpha^\star_i = C$, allora $\xi^\star_i > 0$, (negativo non può essere per i vincoli del problema), indicando che il punto è un **errore di classificazione**(in quanto ha uno _slack_ non nullo). => campioni associati ai moltiplicatori => per questi paghiamo una **penalità** => punti **dentro il margine** oppure **misclassificati**.
 
-	$\alpha^\star_i (1 - y^{(i)} (w^{\star T} x^{(i)} + b^\star) - \xi^\star_i) = 0, \quad 0 = \mu^\star_i \xi^\star_i = (C - \alpha^\star_i) \xi^\star_i$
+---
+**Osservazione 7.1.3**
+Tutti i punti associati a **moltiplicatori non nulli** $\alpha^\star_i$ sono chiamati ***support vectors***, poiché:	$$w^\star = \sum_{i} \alpha^\star_i y^{(i)} x^{(i)}$$ovvero ==classificatore risultante dipende esclusivamente dai **support vectors**.== 
+Per classificare un nuovo punto $x$, calcoliamo:$$w^{\star T} x +b^*= \sum_{i} \alpha_i y^{(i)} x^T x^{(i)} + b^* \tag{7.4}$$In altre parole, il risultato della **funzione decisionale** (il margin) è una ==somma pesata sui dati di addestramento==, dove solo i **support vector** (ovvero quelli con moltiplicatore **non nullo**) ==vengono effettivamente considerati. ==
 
-- Se $\alpha^\star_i \in (0, C)$, allora $\xi^\star_i = 0$  e il punto soddisfa esattamente  $y^{(i)} (w^{\star T} x^{(i)} + b^\star) = 1$, ovvero si trova **sul margine di separazione**.
-- Se $\alpha^\star_i = C$, allora $\xi^\star_i > 0$, (negativo non può essere per i vincoli del problema), indicando che il punto è un errore di classificazione(in quanto ha uno _slack_ non nullo).
+Per ciascun support vector, viene calcolato il **prodotto scalare** con il punto da classificare: ==più alto è il prodotto scalare, maggiore è la somiglianza== tra $x^{(i)}$ e $x$, più grande sarà il **contributo** di quel support vector nell'assegnare la **classe** $y^{(i)}$ al nuovo punto dati.
 
-Tutti i punti associati a **moltiplicatori non nulli** $\alpha^\star_i$ sono chiamati **support vectors**, poiché:
+---
+**Osservazione 7.1.4**
 
-	$w^\star = \sum_{i} \alpha^\star_i y^{(i)} x^{(i)}$
-
-ovvero classificatore risultante dipende esclusivamente dai **support vectors**.
-
-Per classificare un nuovo punto $x$, calcoliamo:
-
-	$w^{\star T} x = \sum_{i} \alpha_i y^{(i)} x^T x^{(i)}$
-
-In altre parole, il risultato della funzione decisionale è una ==somma pesata sui dati di addestramento==, dove solo i **support vector** (ovvero quelli con moltiplicatore non nullo) vengono effettivamente considerati. 
-Per ciascun support vector, viene calcolato il **prodotto scalare** con il punto da classificare: ==più alto è il prodotto scalare, maggiore è la somiglianza== tra $x^{(i)}$ e $x$, più grande sarà il contributo di quel support vector nell'assegnare la classe $y^{(i)}$ al nuovo punto dati.
-
-Tuttavia, il prodotto scalare **non è l'unica misura di somiglianza** disponibile per confrontare due punti dati. Infatti, possiamo pensare di sostituire i termini $x^T x^{(i)}$ nella funzione decisionale con **funzioni di kernel**:  $k(\cdot, \cdot) : \mathbb{R}^p \times \mathbb{R}^p \to \mathbb{R}$. 
+Tuttavia, il prodotto scalare **non è l'unica misura di somiglianza** disponibile per **confrontare** due punti dati. Infatti, possiamo pensare di sostituire i termini $x^T x^{(i)}$ nella funzione decisionale (7.4) con **funzioni di kernel**:  $k(\cdot, \cdot) : \mathbb{R}^p \times \mathbb{R}^p \to \mathbb{R}$.  (vedi figura 7.5)
 
 ![[Pasted image 20250202130559.png]]
 
-In questo caso, gli elementi della matrice $Q$ nel problema duale (27) diventano:
-
-	$Q_{ij} = y^{(i)} y^{(j)} k(x^{(i)}, x^{(j)})$
-
+In questo caso, gli elementi della matrice $Q$ nel problema duale (7.3) diventano:	$$Q_{ij} = y^{(i)} y^{(j)} k(x^{(i)}, x^{(j)})$$
 Senza addentrarci nella teoria dei kernel, ricordiamo che una funzione $k$ può essere usata come kernel se e solo se:
-- La matrice $Q$ è **semidefinita positiva** per ogni possibile dataset $D$ (garantendo che il problema duale sia convesso).
-- La funzione kernel rappresenta un **prodotto scalare** tra i punti dati mappati in uno spazio di dimensione potenzialmente maggiore. => invece di usare come misura di similarità il prodotto scalare uso una funziona kernel! => il tutto di "nascosto" ovvero senza dover calcolare direttamenti prodotti scalari di funzioni a grosse dimensioni 
+- La matrice $Q$ è **semidefinita positiva** per ogni possibile dataset $D$ (garantendo che il problema duale sia **convesso**).
+- La funzione kernel rappresenta un **prodotto scalare** tra i punti dati mappati in uno spazio di dimensione potenzialmente maggiore. => invece di usare come misura di similarità il prodotto scalare *uso una funziona kernel*! => il tutto di "nascosto" ovvero senza dover calcolare direttamenti prodotti scalari di funzioni a grosse dimensioni 
 
-In questi casi, la funzione decisionale assume la forma:
+In questi casi, la funzione decisionale assume la forma:$$h(x) = \sum_{i} \alpha^\star_i y^{(i)} k(x, x^{(i)})$$che in generale **non è più una funzione lineare.** 
 
-	$h(x) = \sum_{i} \alpha^\star_i y^{(i)} k(x, x^{(i)})$
-
-che in generale **non è più una funzione lineare.** 
-
-Da un lato, non è più possibile esprimere il classificatore in termini di pesi $w$; 
-dall'altro, il classificatore diventa **non lineare**, consentendo di costruire modelli **più espressivi** e potenti.
+Da un lato, non è più possibile esprimere il classificatore in termini di pesi $w$; dall'altro, il classificatore diventa **non lineare**, consentendo di costruire modelli **più espressivi** e potenti.
 
 ![[Pasted image 20250202130901.png]]
 
 Per riassumere, le due principali ragioni per considerare il **problema duale** della SVM sono:
-1. **Kernel trick:** consente di ottenere **classificatori non lineari** senza esplicitamente trasformare i dati in uno spazio di dimensione più elevata.
-2. **Forma del problema:** il problema rimane **quadratico convesso con vincoli lineari**, come nella formulazione primale, ma con vincoli più semplici (l'unico vincolo complesso è $\alpha^T y = 0$, il resto sono vincoli di box).
+1. **Kernel trick:** consente di ottenere **classificatori non lineari** ==senza esplicitamente trasformare i dati in uno spazio di dimensione più elevata.==
+2. **Forma del problema:** il problema rimane **quadratico convesso con vincoli lineari**, come nella formulazione primale, ma con **vincoli più semplici** (l'unico vincolo complesso è $\alpha^T y = 0$, il resto sono vincoli di box).
 
 ### 7.2 Risolvendo il problema duale
 
@@ -2936,28 +2777,28 @@ Prima leggere capitolo 4.8
 
 Uno dei problemi di ottimizzazione più rilevanti oggi è l'**addestramento delle reti neurali artificiali (ANNs)**. Le ANNs rappresentano un potente modello di **apprendimento automatico** (machine learning), utilizzato con risultati impressionanti in numerose applicazioni.
 
-L'**ottimizzazione del rischio empirico** di una rete con pesi $w \in \mathbb{R}^n$, dato un dataset $(X, Y)$ di $N$ campioni, assume la forma del problema (21), ma presenta diverse caratteristiche peculiari rispetto ai classici problemi di ottimizzazione non vincolata. In particolare:
+L'**ottimizzazione del rischio empirico** di una rete con pesi $w \in \mathbb{R}^n$, dato un dataset $(X, Y)$ di $N$ campioni, assume la forma del problema (6.2), ma presenta diverse caratteristiche peculiari rispetto ai classici problemi di ottimizzazione non vincolata. In particolare:
 
-7. **Obiettivo dell'ottimizzazione e generalizzazione**  
+1. **Obiettivo dell'ottimizzazione e generalizzazione**  
    Come in altri problemi di machine learning, non si cerca **realmente** di minimizzare il **rischio empirico** (che è solo una funzione obiettivo surrogata), ma piuttosto di trovare un modello **efficace in termini di generalizzazione**.  
    Il problema di addestramento, altamente **non convesso**, presenta numerosi **punti stazionari subottimali**, molti dei quali con un valore di perdita molto vicino all’ottimo globale. Tuttavia, la **prestazione fuori campione** di queste soluzioni può variare drasticamente.  
    **Non ha quindi senso cercare l’ottimo globale**, ma piuttosto individuare soluzioni locali che garantiscano una buona generalizzazione, anche se raggiunte con solver a **bassa precisione**.
 
-8. **Efficienza del calcolo del gradiente tramite backpropagation**  
+2. **Efficienza del calcolo del gradiente tramite backpropagation**  
    Grazie all’**algoritmo di backpropagation**, i **gradienti della funzione di perdita** $\nabla L(w)$  possono essere calcolati in modo **estremamente efficiente**.  
    Il **costo computazionale** del calcolo dei gradienti è **soltanto il doppio** di quello della valutazione della funzione di perdita stessa.  
    Maggiori dettagli su backpropagation e differenziazione automatica sono riportati nella **Sezione 8.2**.
 
-9. **Costo computazionale elevato della valutazione della funzione obiettivo**  
+3. **Costo computazionale elevato della valutazione della funzione obiettivo**  
    Il calcolo del valore di **$L(w)$** è **computazionalmente oneroso**, poiché richiede l'uso dell'intero dataset per determinare tutti gli elementi della somma che definisce la funzione.
 
 L’**ottimizzazione stocastica**, e in particolare il **SGD (Stochastic Gradient Descent)**, è particolarmente adatta per l’addestramento delle ANNs per diversi motivi, che riassumiamo di seguito:
 
-10. **I dati sono spesso ridondanti**, quindi usare **tutte** le informazioni disponibili ad ogni iterazione risulta **inefficiente**.
+1. **I dati sono spesso ridondanti**, quindi usare **tutte** le informazioni disponibili ad ogni iterazione risulta **inefficiente**.
 
-11. L'esperienza computazionale accumulata dalla comunità del **machine learning** dimostra che, se si seleziona correttamente un **passo $\alpha$**, i metodi **stocastici** sono **molto più veloci** di quelli batch, **soprattutto nelle fasi iniziali** del processo di ottimizzazione.
+2. L'esperienza computazionale accumulata dalla comunità del **machine learning** dimostra che, se si seleziona correttamente un **passo $\alpha$**, i metodi **stocastici** sono **molto più veloci** di quelli batch, **soprattutto nelle fasi iniziali** del processo di ottimizzazione.
 
-12. **Il tasso di convergenza** di **SGD** verso una soluzione **$\epsilon$-ottimale** è **più lento** rispetto a quello del metodo **Gradient Descent** batch (cfr. **Tabella 3** in cap 4.8), ma **non dipende** dalla **dimensione del dataset di training**, che è solitamente **molto grande** nelle applicazioni pratiche.  
+3. **Il tasso di convergenza** di **SGD** verso una soluzione **$\epsilon$-ottimale** è **più lento** rispetto a quello del metodo **Gradient Descent** batch (cfr. **Tabella 3** in cap 4.8), ma **non dipende** dalla **dimensione del dataset di training**, che è solitamente **molto grande** nelle applicazioni pratiche.  
    Questo implica che il **costo asintotico inferiore** di **GD** rispetto a **SGD** diventa evidente **solo per valori molto bassi di $\epsilon$**.  
    Inoltre, recenti studi hanno mostrato che, in molti problemi di **deep learning**, la funzione di perdita soddisfa due proprietà fondamentali:
    - **Proprietà di interpolazione**:  
@@ -2969,14 +2810,15 @@ L’**ottimizzazione stocastica**, e in particolare il **SGD (Stochastic Gradien
      Se la funzione obiettivo soddisfa la seguente disuguaglianza  
 		 $L(w) - L^* \leq \frac{1}{2\mu} \|\nabla L(w)\|^2 \quad \forall w \in \mathbb{R}^n$
      allora **ogni punto stazionario è un ottimizzatore globale** del problema.  
-     **Sotto queste due ipotesi, è possibile dimostrare che SGD possiede un tasso di convergenza lineare, esattamente come il batch Gradient Descent.**
+     
+ **Sotto queste due ipotesi, è possibile dimostrare che SGD possiede un tasso di convergenza lineare, esattamente come il batch Gradient Descent.**
 
-13. **SGD evita i minimi locali "stretti"** (**sharp minima**) grazie alla natura **stocastica** dei suoi passi di discesa.  
+4. **SGD evita i minimi locali "stretti"** (**sharp minima**) grazie alla natura **stocastica** dei suoi passi di discesa.  
    - I **minimi stretti** si trovano in **valli molto profonde** con una **curvatura molto alta**, rendendo il modello molto sensibile a piccoli cambiamenti nei dati di input.
    - **SGD**, a causa della sua natura rumorosa, tende a **sfuggire** da questi minimi stretti e a trovare invece **minimi più "piatti"** (**flat minimizers**), che generalizzano meglio ai dati non visti. Questo effetto comporta **un'operazione di regolarizzazione intrinseca**, migliorando la capacità del modello di generalizzare. **(Figura 15 fornisce un’intuizione visiva di questo comportamento).**
 
 ![[Pasted image 20250204223801.png]]
-Figura 15: Facendo un confronto fra le due loss, i punti di minimo più stretti sono molto più sensibili rispetto a punti di minimo più piatti.
+Figura 8.1: Facendo un confronto fra le due loss, i punti di minimo più stretti sono molto più sensibili rispetto a punti di minimo più piatti.
 
 Tuttavia, i metodi **batch** possiedono alcuni **vantaggi intrinseci**, in particolare:
 
@@ -2999,25 +2841,17 @@ Negli ultimi anni, diverse modifiche all'algoritmo **SGD** si sono dimostrate **
 
 #### 8.1.1 Accelerazione
 
-I termini di **Momentum** o **Nesterov Acceleration**, discussi in **Sezione 4.4**, sono particolarmente efficaci nell'ottimizzazione **stocastica** delle reti neurali per due motivi principali:
-
-14. **Filtraggio delle oscillazioni casuali**  
-   - Il **momentum** accumula informazioni dai passi precedenti, attenuando le forti **oscillazioni stocastiche** delle direzioni di discesa.
-   - Ciò riduce il tipico **comportamento a zigzag** di **SGD**, rendendo l'ottimizzazione più **stabile** ed efficace.
-
-15. **Computazione efficiente**  
-   - Il calcolo della funzione obiettivo e del suo gradiente è **computazionalmente costoso** nelle reti profonde.
-   - Tuttavia, i termini $(x^k - x^{k-1})$ necessari per l'accelerazione sono **facilmente ottenibili**, permettendo di **migliorare l'efficacia di ogni iterazione senza costi aggiuntivi significativi**.
+I termini di **Momentum** o **Nesterov Acceleration**, discussi in **Sezione 4.4.1**, sono particolarmente efficaci nell'ottimizzazione **stocastica** delle reti neurali per due motivi principali:
+   - Il **momentum** accumula informazioni dai passi precedenti, attenuando le forti **oscillazioni stocastiche** delle direzioni di discesa. Ciò riduce il tipico **comportamento a zigzag** di **SGD**, rendendo l'ottimizzazione più **stabile** ed efficace.
+   - Il calcolo della funzione obiettivo e del suo gradiente è **computazionalmente costoso** nelle reti profonde. Tuttavia, i termini $(x^k - x^{k-1})$ necessari per l'accelerazione sono **facilmente ottenibili**, permettendo di **migliorare l'efficacia di ogni iterazione senza costi aggiuntivi significativi**.
 
 ---
 
 #### 8.1.2 Adattamento del passo di apprendimento (Learning Rate)
 
-Oltre a migliorare la **direzione di discesa**, un'altra strategia vincente per l'ottimizzazione **stocastica** è **adattare il learning rate** in base al **progresso dell’addestramento**.  
-Poiché i gradienti **si comportano in modo diverso a seconda del layer**, ogni variabile del modello può avere un **passo di apprendimento individuale**.
+Il **Momentum** e il **Nesterov AG** sfruttano le informazioni sulle iterazioni passate per modificare e migliorare la qualità delle direzioni di ricerca. L'altra strada che è stata seguita (con successo) negli ultimi anni per i problemi di deep learning nel campo dell'ottimizzazione stocastica non lineare non convessa è quella di utilizzare **learning rate adattativi**: il passo cambia ad ogni iterazione, in base all'andamento del processo; inoltre, poiché i gradienti dei pesi hanno dinamiche diverse a diversi livelli, ogni variabile è associata a un passo diverso.
 
-Negli ultimi anni, sono stati proposti diversi metodi per aggiornare il learning rate in modo **adattivo**.  
-Di seguito analizziamo le tecniche più rilevanti, utilizzando una **notazione batch** per semplicità, sebbene si tratti di **metodi stocastici**.
+Diverse strategie per aggiornare il learning rate sono state proposte; di seguito riportiamo le più rilevanti. Per semplicità, ignoreremo il fatto che nell'ottimizzazione stocastica i gradienti sono calcolati utilizzando solo una porzione della funzione obiettivo. Descriveremo i metodi successivi con la notazione "batch optimization", ma si tratta effettivamente di metodi stocastici.
 
 ---
 ##### **AdaGrad (Adaptive Gradient)**
@@ -3025,21 +2859,12 @@ Di seguito analizziamo le tecniche più rilevanti, utilizzando una **notazione b
 Uno dei primi algoritmi a introdurre un **learning rate adattivo** è **AdaGrad**.  
 L'idea alla base di **AdaGrad** è **accumulare l’informazione sui gradienti passati**, in modo da **scalare** il passo di aggiornamento in base alla geometria della funzione obiettivo.
 
-Il metodo prevede di memorizzare la **somma cumulativa** dei **quadrati** delle derivate direzionali:
+Il metodo prevede di memorizzare la **somma cumulativa** dei **quadrati** delle derivate direzionali:$$s^{k+1}_i = s^k_i + (\nabla_i f(x^k))^2$$
 
-	$s^{k+1}_i = s^k_i + (\nabla_i f(x^k))^2$
-
-Questa quantità viene utilizzata per **normalizzare il gradiente**, ottenendo il seguente **aggiornamento**:
-
-	$x^{k+1} = x^k - \alpha (\text{diag}(s^{k+1}) + \epsilon I)^{-1/2} \nabla f(x^k)$
-
+Questa quantità viene utilizzata per **normalizzare il gradiente**, ottenendo il seguente **aggiornamento**:	$$x^{k+1} = x^k - \alpha (\text{diag}(s^{k+1}) + \epsilon I)^{-1/2} \nabla f(x^k)$$
 Dove:
-
 - $\epsilon$ è un piccolo termine di **smorzamento** per evitare divisioni per zero.
-- L'aggiornamento può essere riscritto in **forma componente-wise** più intuitiva:
-
-	$x^{k+1}_i = x^k_i - \frac{\alpha}{\sqrt{s^{k+1}_i} + \epsilon} \nabla_i f(x^k)$
-
+- L'aggiornamento può essere riscritto in **forma componente-wise** più intuitiva:$$x^{k+1}_i = x^k_i - \frac{\alpha}{\sqrt{s^{k+1}_i} + \epsilon} \nabla_i f(x^k)$$
 **Caratteristiche principali di AdaGrad**:
 - **Pro:**  
   - Effettua passi **più grandi** per parametri con gradienti **piccoli**  
@@ -3053,35 +2878,22 @@ Un aspetto critico di **AdaGrad** è che i componenti di $s^k$ **crescono contin
 ---
 ##### **RMSprop (Root Mean Square Propagation)**
 
-**RMSprop** è una variante di AdaGrad che cerca di risolverne le limitazioni, sostituendo la **somma cumulativa** con una **media esponenzialmente pesata** dei gradienti passati:
-
-	$s^{k+1}_i = \rho s^k_i + (1 - \rho)(\nabla_i f(x^k))^2$
-
+**RMSprop** è una variante di AdaGrad che cerca di risolverne le limitazioni, sostituendo la **somma cumulativa** con una **media esponenzialmente pesata** dei gradienti passati:$$s^{k+1}_i = \rho s^k_i + (1 - \rho)(\nabla_i f(x^k))^2$$
 Dove:
 - $\rho$ determina il peso assegnato ai gradienti passati.
-- I parametri vengono aggiornati **esattamente come in AdaGrad**, utilizzando:
-
-	$x^{k+1} = x^k - \frac{\alpha}{\sqrt{s^{k+1}_i} + \epsilon} \nabla_i f(x^k)$
-
+- I parametri vengono aggiornati **esattamente come in AdaGrad**, utilizzando:$$x^{k+1} = x^k - \frac{\alpha}{\sqrt{s^{k+1}_i} + \epsilon} \nabla_i f(x^k)$$
 **Vantaggi di RMSprop**:
 - I **gradienti più recenti** hanno un impatto maggiore sull'aggiornamento.
 - $s^k$ **non cresce all'infinito**, migliorando la **stabilità numerica** rispetto ad AdaGrad.
 
 ---
-
 ##### **AdaDelta**
 
 **AdaDelta** è un'altra variante di AdaGrad che cerca di **ridurre l'aggressività della riduzione del learning rate**.  
 Sebbene sviluppato **indipendentemente** da **RMSprop**, può essere considerato un'estensione di quest'ultimo.
 
-L'algoritmo introduce una **media esponenziale dei quadrati degli spostamenti** ($r^k$):
-
-	$r^{k+1} = \gamma r^k + (1 - \gamma)(x^k - x^{k-1})^2$
-
-**Regola di aggiornamento**:
-
-	$x^{k+1}_i = x^k_i - \frac{\sqrt{r^{k+1}_i} + \epsilon}{\sqrt{s^{k+1}_i} + \epsilon} \nabla_i f(x^k)$
-
+L'algoritmo introduce una **media esponenziale dei quadrati degli spostamenti** ($r^k$):$$r^{k+1} = \gamma r^k + (1 - \gamma)(x^k - x^{k-1})^2$$
+**Regola di aggiornamento**:$$x^{k+1}_i = x^k_i - \frac{\sqrt{r^{k+1}_i} + \epsilon}{\sqrt{s^{k+1}_i} + \epsilon} \nabla_i f(x^k)$$
 **Vantaggi di AdaDelta**:
 - **Elimina la necessità di scegliere manualmente** un learning rate ($\alpha$).
 - Evita la **riduzione eccessiva** del learning rate osservata in AdaGrad.
@@ -3094,30 +2906,21 @@ L'**Adam** (**Adaptive Moment Estimation**) è oggi **l’algoritmo più utilizz
 Può essere visto come un'evoluzione di **RMSprop** e **AdaDelta**, combinando i **benefici del Momentum** con l'adattamento del learning rate.
 
 Adam mantiene due statistiche esponenzialmente pesate:
-16. **Media dei gradienti** (simile a Momentum):
+16. **Media dei gradienti** (simile a Momentum):	$$m^{k+1}_i = \beta_1 m^k_i + (1 - \beta_1) \nabla_i f(x^k)$$
 
-	$m^{k+1}_i = \beta_1 m^k_i + (1 - \beta_1) \nabla_i f(x^k)$
-
-17. **Varianza dei gradienti** (simile a RMSprop):
-
-    $v^{k+1}_i = \beta_2 v^k_i + (1 - \beta_2)(\nabla_i f(x^k))^2$
+17. **Varianza dei gradienti** (simile a RMSprop):$$v^{k+1}_i = \beta_2 v^k_i + (1 - \beta_2)(\nabla_i f(x^k))^2$$
 
 Questi vettori sono inizializzati a zero che è molto importante per le iterazioni iniziali dove i tassi di decadimento sono piccoli:
 ![[Pasted image 20250204231614.png]]
 
 L'algoritmo **Adam** presenta un bias iniziale dovuto alla modalità con cui vengono calcolate le stime dei momenti primo ($m^k$) e secondo ($v^k$).  
-Per correggere questo bias, si introducono le seguenti **stime corrette del bias**:
-
-	$\hat{m}^k = \frac{m^k}{1 - (\beta_1)^k}, \space \hat{v}^k = \frac{v^k}{1 - (\beta_2)^k}$
-
-Il nuovo aggiornamento delle variabili segue quindi la formula:
-
-	$x^{k+1}_i = x^k_i - \frac{\alpha \hat{m}^k_i}{\sqrt{\hat{v}^k_i} + \epsilon}$
+Per correggere questo bias, si introducono le seguenti **stime corrette del bias**:$$\hat{m}^k = \frac{m^k}{1 - (\beta_1)^k}, \space \hat{v}^k = \frac{v^k}{1 - (\beta_2)^k}$$
+Il nuovo aggiornamento delle variabili segue quindi la formula:$$x^{k+1}_i = x^k_i - \frac{\alpha \hat{m}^k_i}{\sqrt{\hat{v}^k_i} + \epsilon}$$
 
 ---
 
 Negli ultimi anni sono state proposte alcune **varianti** dell'algoritmo **Adam** per migliorarne stabilità ed efficienza:
-18. **AdaMax**  
+- **AdaMax**  
    - Proposto insieme ad Adam.  
    - Sostituisce la stima del secondo momento con una **norma infinita stabilizzata**:
    
@@ -3125,44 +2928,27 @@ Negli ultimi anni sono state proposte alcune **varianti** dell'algoritmo **Adam*
   
    - Questa modifica evita la necessità di correggere il bias iniziale e offre **migliore stabilità empirica**.
 
-19. **Nadam (Nesterov-accelerated Adam)**  
+- **Nadam (Nesterov-accelerated Adam)**  
    - Integra l’**accelerazione di Nesterov** nell’algoritmo Adam.  
    - Mira a **migliorare la velocità di convergenza** nei problemi di ottimizzazione profonda.
 
 ---
-
 ### 8.2 Differenziazione Automatica e Algoritmo di Backpropagation
 
-Uno dei problemi fondamentali nell’**addestramento delle reti neurali** è il **calcolo dei gradienti della funzione di perdita**.  
-L'ottimizzazione di una rete neurale comporta la **somma di funzioni di milioni di variabili**, ciascuna ottenuta dalla **composizione di operazioni elementari**.
+Uno dei problemi chiave che emergono nell'addestramento delle reti neurali riguarda il calcolo dei gradienti della funzione di loss. Infatti, l'obiettivo del problema di ottimizzazione è (ignorando il termine di regolarizzazione) la somma finita di funzioni di (tipicamente) milioni di variabili, ciascuna delle quali è la composizione a cascata di funzioni elementari. Pertanto, le tecniche di differenziazione numerica sono fuori questione: il costo è troppo alto (è richiesto un gran numero di valutazioni della funzione per ottenere un'approssimazione del gradiente) e soffrono anche di significativi errori di approssimazione; quindi, l'approssimazione alle differenze finite è generalmente usata solo per verificare la correttezza dell'implementazione dei gradienti, a bassa accuratezza.
 
-**Problemi delle tecniche di derivazione numerica**:
-- **Costo computazionale elevato**: richiedono molte valutazioni della funzione per ottenere un'approssimazione del gradiente.
-- **Errori di approssimazione significativi**: la differenziazione numerica tramite differenze finite introduce errori significativi.
+D'altra parte, derivare espressioni esplicite per i gradienti è troppo complesso; persino l'impiego di strumenti di differenziazione simbolica, cioè software per manipolare espressioni al fine di ottenere espressioni delle derivate, porta a formule molto lunghe e complicate e di conseguenza a calcoli massicci.
 
-**Alternative alla derivazione numerica**
-20. **Derivazione simbolica**  
-   - Utilizza strumenti software per manipolare espressioni matematiche ed estrarre le derivate.  
-   - Tuttavia, genera **formule enormi** e **calcoli eccessivamente costosi**.
+L'addestramento delle reti neurali è stato effettivamente reso possibile dallo sviluppo delle tecniche di **Differenziazione Automatica** (Automatic Differentiation, AD). Per differenziazione automatica, ci riferiamo a un insieme di approcci che sfruttano in modo intelligente la regola della catena multivariata:$$f = f(g(x)), \quad \frac{\partial f}{\partial x_j} = \sum_i \frac{\partial f}{\partial g_i} \frac{\partial g_i}{\partial x_j}$$
+Poiché valutare una funzione matematica, non importa quanto complicata, consiste nel calcolare una sequenza di operazioni e funzioni elementari (exp, log, sin, cos, ecc.), applicando ripetutamente la regola della catena a queste operazioni, le derivate parziali possono essere ottenute automaticamente.
 
-21. **Differenziazione Automatica (AD - Automatic Differentiation)**  
-   - Sfrutta **intelligentemente** la **regola della catena** per ottenere le derivate in modo **efficiente e preciso**:
+Nel contesto del deep learning, in particolare, l'algoritmo AD tipicamente impiegato è il famoso algoritmo di **backpropagation**, che è, in termini tecnici, differenziazione automatica in una cosiddetta **modalità inversa** (reverse mode). Non approfondiremo i dettagli tecnici dell'AD e dell'algoritmo di backpropagation. Ne avremo solo un'idea dei suoi meccanismi per mezzo di un semplice esempio, vedi Figura 8.2.
 
-		$\frac{\partial f}{\partial x_j} = \sum_i \frac{\partial f}{\partial g_i} \frac{\partial g_i}{\partial x_j}$
-	
-   - Qualsiasi funzione matematica può essere decomposta in **operazioni elementari** (es: exp, log, sin, cos, etc.).  
-   - Applicando la regola della catena a ciascuna operazione, è possibile ottenere automaticamente le derivate **senza espandere simbolicamente l’intera funzione**.
+Innanzitutto, tutte le operazioni elementari sono mappate in un **Grafo di Calcolo** (Computation Graph, Figura 8.2a), che è una struttura che permette di collegare quantità che dipendono l'una dall'altra. In questo modo, le quantità calcolate che saranno necessarie per calcolare altri termini possono essere memorizzate, evitando calcoli duplicati.
 
----
+Il calcolo effettivo procede prima alimentando gli input alla funzione e calcolando i prodotti intermedi fino all'output della funzione; poi, il grafo viene attraversato a ritroso, per calcolare tutte le derivate parziali. Si noti che, per calcolare i gradienti, otteniamo come prodotto intermedio il valore della funzione; quindi, in un'iterazione di gradient descent, possiamo ottenere il valore della funzione nel punto corrente, effettuando un **forward pass** attraverso il grafo di calcolo, e poi i gradienti, dopo un **backward pass** attraverso il grafo.
 
-Nel contesto del **deep learning**, l'algoritmo più utilizzato per l’AD è il **backpropagation**.  
-Tecnicamente, il backpropagation è **un'implementazione della differenziazione automatica in modalità inversa** (**reverse mode AD**).
-
-Il concetto chiave è:
-- **Propagazione avanti (forward pass):** calcola l'output della rete.
-- **Propagazione all'indietro (backward pass):** calcola i gradienti utilizzando la regola della catena.
-
-L’algoritmo di backpropagation consente il calcolo **efficiente dei gradienti** ed è il cuore di tutti i moderni algoritmi di addestramento delle **reti neurali profonde**.
+Come accennato in precedenza, alcuni termini compaiono più volte durante il calcolo; per evitare calcoli duplicati, possiamo memorizzare questi valori per riutilizzarli quando necessario; naturalmente, non è difficile immaginare che in reti profonde e complesse i termini si ripetono in modo molto più massiccio rispetto al semplice esempio considerato.
 
 ---
 
@@ -3172,13 +2958,3 @@ L’algoritmo di backpropagation consente il calcolo **efficiente dei gradienti*
 
 ![[Pasted image 20250204232851.png]][[Pasted image 20250204232851 1.png]
 
-Prima, tutte le operazioni elementari vengono mappate in un Computation Graph (Figura 16a), che è una struttura che permette di collegare quantità che dipendono l'una dall'altra. 
-In questo modo, le quantità calcolate che saranno necessarie per calcolare altri termini possono essere memorizzate in memoria, evitando calcoli duplicati.
-
-Il calcolo effettivo procede prima alimentando gli input alla funzione e calcolando i prodotti 
-intermedi fino all'output della funzione; poi, il grafo viene attraversato all'indietro, 
-per calcolare tutte le derivate parziali. 
-Si deve notare che, per calcolare i gradienti, otteniamo come prodotto intermedio il valore della funzione; quindi, in un'iterazione di discesa del gradiente, possiamo ottenere il valore della funzione nel punto attuale, effettuando un passaggio in avanti attraverso il grafo di calcolo, e poi i gradienti, dopo un passaggio all'indietro attraverso il grafo.
-
-Come accennato in precedenza, alcuni termini appaiono più volte durante il calcolo; 
-per evitare calcoli duplicati, possiamo memorizzare questi valori per riutilizzarli quando necessario; ovviamente, non sarà difficile immaginare che nelle reti profonde e complesse i termini si ripetano in modo molto più massiccio rispetto al semplice esempio in questione.
