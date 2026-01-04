@@ -13,12 +13,40 @@ In questa sezione riportiamo alcuni concetti preliminari, definizioni e propriet
 
 ### Notazione:
 
-- Indichiamo con $e \in \mathbb{R}^n$ il vettore di tutti uno nello spazio euclideo $n$-dimensionale.
-- Con $e_i \in \mathbb{R}^n$ indichiamo l’$i$-esimo elemento della base canonica, ovvero il vettore con tutte le componenti a zero eccetto la $i$-esima pari a 1.
+- Indichiamo con $e \in \mathbb{R}^n$ il **vettore di tutti uno** nello spazio euclideo $n$-dimensionale.
+- Con $e_i \in \mathbb{R}^n$ indichiamo l’$i$-esimo **elemento della base canonica**, ovvero il vettore con tutte le componenti a zero eccetto la $i$-esima pari a 1.
 - Dati due vettori $u, v \in \mathbb{R}^n$, la notazione $u^T v$ rappresenta il prodotto scalare tra $u$ e $v$, ovvero $u^T v = \sum_{i=1}^n u_i v_i$.
-- Indichiamo con $| \cdot |$ la funzione norma; se non specificato altrimenti, assumiamo implicitamente che sia considerata la norma euclidea (in tal caso $|x|_2 = x^T x$).
-- Denotiamo con $\mathcal{S}_n \subset \mathbb{R}^{n \times n}$ l’insieme delle matrici quadrate simmetriche di dimensione $n \times n$.
-- Data una matrice $A \in \mathcal{S}_n$ (di cui sappiamo che gli autovalori sono numeri reali), denotiamo con $\lambda_{\text{min}}(A)$ e $\lambda_{\text{max}}(A)$ rispettivamente il più piccolo e il più grande autovalore di $A$.
+- Indichiamo con $\| \cdot \|$ la **funzione norma**; se non specificato altrimenti, assumiamo implicitamente che sia considerata la **norma euclidea** (in tal caso $\|x\|^2 = x^T x$).
+- Con $B(x,\epsilon)$ denotiamo una **palla** di centro $x$ e raggio $\epsilon$, ovvero $B(x,\epsilon) = \{y\in \mathbb{R}^n \space|\space \|x-y\| < \epsilon\}$
+- Denotiamo con $\mathcal{S}_n \subset \mathbb{R}^{n \times n}$ l’insieme delle matrici **quadrate** **simmetriche** di dimensione $n \times n$.
+- Data una matrice $A \in \mathcal{S}_n$ (di cui sappiamo che gli autovalori sono numeri reali), denotiamo con $\lambda_{\text{min}}(A)$ e $\lambda_{\text{max}}(A)$ rispettivamente il **più piccolo** e il più **grande autovalore** di $A$.
+
+### 1.1 Spazi metrici
+
+![[norma]]
+
+![[chiuso e limitato]]![[compatto]]
+
+### 1.2 Algebra Lineare
+
+**Proposizione 1.2.1** *(Chaucy-Schwarz)*
+Siano $a,b \in \mathbb R^n$. Allora: $$-\|a\|\|b\|\leq a^Tb \leq \|a\|\|b\|$$
+![[definita positiva]]
+
+### 1.3 Analisi Matematica
+
+**Definizione 1.3.1**
+Una funzione $f:\mathbb R^n \to \mathbb R$ è **continua in un punto x**, se per ogni $\epsilon > 0$ esiste $\delta >0$ tale che $|f(y) - f(x)| < \epsilon$ per ogni $y \in B(x,\delta)$. Diremo che $f$ è una funzione continua se è continua per ogni punto di $\mathbb R^n$.
+![[coerciva]]![[differenziabile]]![[continuamente differenziabile]]
+![[matrice Jacobiana]]
+![[Lipschitz-continua]]
+![[L-smooth]]
+![[matrice Hessiana]] ![[due volte continuamente differenziabile]]
+![[teorema del valor medio]]
+![[sviluppo di Taylor]]
+
+![[insieme convesso]]
+![[funzione convessa]]
 
 ## 2. Introduzione ai Problemi di Ottimizzazione
 
@@ -28,18 +56,20 @@ L’Ottimizzazione Matematica (o Programmazione Matematica) è quindi un sottoin
 
 ![[Pasted image 20250108170907.png]]
 
-L’obiettivo di queste note e del corso da cui originano è fornire agli studenti una panoramica completa di alcuni argomenti fondamentali nella programmazione matematica. L’oggetto principale attorno a cui ruota tutta la discussione che segue è dunque il problema di ottimizzazione matematica. Formalmente, un problema di ottimizzazione è definito come:
+L’obiettivo di queste note e del corso da cui originano è fornire agli studenti una panoramica completa di alcuni argomenti fondamentali nella **programmazione matematica**. 
 
-![[Pasted image 20250108171128.png]]
+L’oggetto principale attorno a cui ruota tutta la discussione che segue è dunque il problema di ottimizzazione matematica. Formalmente, un problema di ottimizzazione è **definito** come:
+$$\begin{aligned} \min_x f(x) \\ \text{s.t} \space x\in S \end{aligned} \tag{2.1} $$
 dove:
-
 - $x$ è un vettore di variabili in uno spazio $n$-dimensionale; le variabili rappresentano le quantità che possiamo controllare nel compito reale e di cui dobbiamo decidere i valori da assegnare;
-    
-- $S$ è un sottoinsieme dello spazio delle variabili e viene chiamato *insieme ammissibile*, definito dai **vincoli**. Questo insieme identifica le scelte di valori per le variabili che sono considerate ammissibili da utilizzare nella pratica. ==Una scelta di valori delle variabili al di fuori dell’insieme ammissibile è quindi proibita;==
-    
-- $f$ è una *funzione obiettivo* che, data una soluzione, ne misura numericamente la qualità. Senza perdere di generalità, assumiamo che lavori più piccoli di $f$ sono associati a migliori soluzioni, vogliamo quindi _minimizzare_ la funzione. Questo non è restrittivo: se vogliamo massimizzare $f(x)$ potremmo ugualmente minimizzare $g(x) = -f(x)$
-    
+- $S$ è un sottoinsieme dello spazio delle variabili e viene chiamato ***insieme ammissibile***, definito dai **vincoli**. Questo insieme identifica le scelte di valori per le variabili che sono considerate ammissibili da utilizzare nella pratica. ==Una scelta di valori delle variabili al di fuori dell’insieme ammissibile è quindi proibita;==
+- $f$ è una ***funzione obiettivo*** che, data una soluzione, ne misura numericamente la **qualità**. Senza perdere di generalità, assumiamo che lavori più piccoli di $f$ sono associati a migliori soluzioni, vogliamo quindi **_minimizzare_** la funzione. Questo non è restrittivo: se vogliamo **massimizzare** $f(x)$ potremmo ugualmente minimizzare $g(x) = -f(x)$
+
+![[Pasted image 20260101165159.png]]
+
+---
 **Esempio 2.1 (Problema di Selezione di Portafoglio Ottimale):**  
+
 Uno dei problemi di ottimizzazione più famosi è quello di selezionare in modo ottimale come allocare risorse finanziarie. Indicativamente, supponiamo che esistano $n$ asset di mercato nei quali possiamo investire un'unità di capitale. Ogni asset $i$ è associato a un rendimento atteso $\mu_i$, ossia il guadagno previsto per unità di investimento. Inoltre, per ogni coppia di asset $i$ e $j$, esiste un coefficiente di covarianza $\sigma_{ij}$, che è alto se i rendimenti dei due asset sono positivamente correlati, negativo se sono negativamente correlati, e nullo se i rendimenti sono indipendenti. La quantità $\sigma_{ii}$ indica la varianza del rendimento dell’asset $i$.
 
 Il problema di selezione degli investimenti può essere modellato come un problema di ottimizzazione:
@@ -48,7 +78,7 @@ Il problema di selezione degli investimenti può essere modellato come un proble
 2. L’insieme ammissibile è definito dai seguenti vincoli:
     - Gli investimenti devono essere non negativi (non possiamo vendere quote di asset):  $$x_i \geq 0 \quad \forall i$$
     - Il capitale totale investito deve essere pari a 1, ossia la somma delle quantità investite in tutti gli asset deve risultare 1:  $$\sum_{i=1}^n x_i = 1 \quad (e^T x = 1)$$
-3. La funzione obiettivo più comune è quella di bilanciare il rendimento totale atteso dell’investimento e il rischio associato. Il rendimento atteso totale è dato dalla somma dei rendimenti attesi degli asset moltiplicati per il capitale investito in ciascun asset: $$\sum_{i=1}^n \mu_i x_i \quad (\mu^T x)$$  
+3. La **funzione obiettivo** più comune è quella di bilanciare il rendimento totale atteso dell’investimento e il rischio associato. Il rendimento atteso totale è dato dalla somma dei rendimenti attesi degli asset moltiplicati per il capitale investito in ciascun asset: $$\sum_{i=1}^n \mu_i x_i \quad (\mu^T x)$$  
     Il rischio è definito come segue:  $$\sum_{i=1}^n \sum_{j=1}^n \sigma_{ij} x_i x_j \quad (x^T \Sigma x, \sum_{ij})$$
     dove $\Sigma_{ij}$ (matrice delle *covarianze*) con:  $\sum_{ij} = \begin{cases} \frac{1}{2}\sigma_{ij}, & \text{se } i \neq j \\\\ \sigma_{ii}, & \text{se } i = j \end{cases}$​
 
@@ -57,32 +87,32 @@ Il problema di selezione degli investimenti può essere modellato come un proble
 **Scopo:** Minimizzare il rischio e massimizzare il rendimento. Nel contesto di un problema di minimizzazione, possiamo definire una funzione obiettivo che è una combinazione pesata del rischio e del negativo del rendimento atteso:	$$- \mu^T x + \lambda x^T \Sigma x$$
 dove $\lambda$ è un parametro che bilancia il compromesso tra rischio e rendimento.
 
-**Problema finale (in forma vettoriale):**
-	$\min_{x \in \mathbb{R}^n} -\mu^T x + \lambda x^T \Sigma x \quad$
-	$\text{s.t. } e^T x = 1$
-	$x \geq 0$
-	
+**Problema finale (in forma vettoriale):**$$\begin{aligned} \min_{x \in \mathbb{R}^n} -\mu^T x + \lambda x^T \Sigma x \\ \text{s.t. } \quad e^T x = 1 \\x \geq 0 \end{aligned}$$
+
 ---
 
-In queste note saremmo interessati negli aspetti della programmazione matematica della ricerca operativa. Ci focalizzeremo sulla caratterizzazione dei problemi, e sulle procedure algoritmiche per determinare le soluzioni a tali problemi.
+In queste note saremmo interessati negli aspetti della **programmazione matematica** della ricerca operativa. Ci focalizzeremo sulla caratterizzazione dei problemi, e sulle procedure algoritmiche per ==determinare le soluzioni a tali problemi==.
 
 ![[Pasted image 20250108174217.png]]
 
-Qui ci occuperemo di problemi non lineari e continui di ottimizzazione, sia **con che senza vincoli**, avendo accesso alle informazioni delle derivate.
+Qui ci occuperemo di problemi **non lineari** e **continui** di ottimizzazione, sia ==**con che senza vincoli**, ==avendo accesso alle informazioni delle **derivate**.
 
-- Esempio di approx di funzioni (*Empirical risk Minimization*):
+---
+
+- Esempio di approx di funzioni (***Empirical risk Minimization***):
 	- Esempio in cui vedo uso delle *loss*:
-		- *squared error*: $$e(y^i,\hat{y}^i) = (y^i-\hat{y}^i)^2 $$ (norma $\mathcal{l}_2$)
+		- *squared error*: $$e(y^i,\hat{y}^i) = (y^i-\hat{y}^i)^2 $$ ([[norma]] $\mathcal{l}_2$)
 		- *absolute error*: $$e(y^i,\hat{y}^i) = |y^i-\hat{y}^i| $$ (norma $\mathcal{l}_1$)
-	- Riassumendo il problema è della forma: $$\text{min}_{\mu \in \mathbb{R}^n}||E(\mu)||$$ dove $||.||$ dipende dalla scelta della loss... 
-	=> Notare è un problema di ottimizzazione non vincolato!
+	- Riassumendo il problema è della forma: $$\text{min}_{\mu \in \mathbb{R}^n}||E(\mu)||$$dove $$E(\mu) = (e(y^1, \hat h(x^1;\mu)),\dots, e(y^N, \hat h(x^N;\mu)))$$
+ dove $||\cdot||$ dipende dalla scelta della loss... 
+	=> Notare è un problema di ottimizzazione **non vincolato**!
  
 ## 3. Problemi di ottimizzazione: caratterizzazione delle soluzioni
 
 ### Definizione punto ammissibile
 
 In queste note, saremo interessati a trattare in modo appropriato problemi di ottimizzazione della forma: $$\min_{x\in S}\ f(x), \tag{3.1}$$
-dove $f:\mathbb{R}^{n}\to\mathbb{R}$ è una funzione che, per il momento, assumiamo solo essere **continua**, e $S\subseteq\mathbb{R}^{n}$ è l'insieme ammissibile.
+dove $f:\mathbb{R}^{n}\to\mathbb{R}$ è una funzione che, per il momento, assumiamo solo essere **continua**, e $S\subseteq\mathbb{R}^{n}$ è l'**insieme ammissibile**.
 
 Studiando questi problemi, la prima domanda che dobbiamo porci è: "cosa significa risolvere il problema (3.1)"? La risposta a questa domanda può essere trovata nella seguente definizione.
 
@@ -90,25 +120,26 @@ Studiando questi problemi, la prima domanda che dobbiamo porci è: "cosa signifi
 	Un **punto ammissibile** $x^{\star}\in S$ è un *punto di ottimo globale* (o minimizzatore globale) se $f(x^{\star})\leq f(x)$ per tutti gli $x\in S$.
 	Il valore $f^{\star}=f(x^{\star})$ è detto *valore ottimo globale* (o minimo globale).
 
-Fondamentalmente, un minimizzatore globale è una **soluzione ammissibile** in cui la funzione obiettivo è inferiore o uguale al valore raggiunto in qualsiasi **altra soluzione ammissibile**. In altre parole, nessuna soluzione migliore di $x^{\star}$ può essere trovata in $S$. 
+Fondamentalmente, un minimizzatore globale è una **soluzione ammissibile** in cui la funzione obiettivo è **inferiore** o **uguale** al valore raggiunto in qualsiasi **altra soluzione ammissibile**. In altre parole, nessuna soluzione migliore di $x^{\star}$ può essere trovata in $S$. 
 
-Trovare un ottimizzatore globale è, chiaramente, l'obiettivo finale nell'ottimizzazione. Risolvere il problema di ottimizzazione significa trovare tale punto. Sebbene possa sembrare banale a prima vista, la discussione sulle soluzioni ottimali richiede in realtà un trattamento attento. Esploreremo questo problema in dettaglio nelle prossime sezioni.
+Trovare un ottimizzatore globale è, chiaramente, l'obiettivo finale nell'ottimizzazione. Risolvere il problema di **ottimizzazione significa** trovare tale punto. Sebbene possa sembrare banale a prima vista, la discussione sulle soluzioni ottimali richiede in realtà un trattamento attento. Esploreremo questo problema in dettaglio nelle prossime sezioni.
 
 ### 3.1 Esistenza delle soluzioni ottimali
 
-Il concetto di soluzioni ottimali globali è abbastanza intuitivo; tuttavia, la sua semplicità può essere fuorviante, fino a trascurare una domanda cruciale: è garantito che esista un minimizzatore globale e, di conseguenza, che il problema (3.1) sia alla fine **ben definito**? 
+Il concetto di soluzioni ottimali globali è abbastanza intuitivo; tuttavia, la sua semplicità può essere fuorviante, fino a trascurare una domanda cruciale: è garantito ==che esista un minimizzatore globale== e, di conseguenza, che il problema (3.1) sia alla fine **ben definito**? 
 In realtà ci sono varie situazioni in cui non è così (vedi anche Figura 3.1):
 	
 ![[Pasted image 20251221180145.png]]
 
-* In primo luogo, l'intero problema potrebbe essere *inammissibile*: non esiste alcuna soluzione ammissibile - $S=\emptyset$ - e quindi non può esserci alcun minimizzatore globale.
+* In primo luogo, l'intero problema potrebbe essere *inammissibile*: non esiste alcuna soluzione ammissibile - $S=\emptyset$ - e quindi ==non può esserci alcun minimizzatore globale==.
 * L'altro caso estremo si verifica quando il problema è *illimitato*, cioè $f^{\star}=-\infty$.
 * Situazioni più sottili sono rappresentate da problemi in cui la funzione obiettivo è **limitata inferiormente** da un valore che è raggiungibile asintoticamente, ma nessuna soluzione finita lo raggiunge; pensa a $f(x)=e^{-x}$ su $\mathbb{R}$: l'obiettivo è limitato inferiormente da $0$, ma ogni soluzione $x$ può essere migliorata semplicemente aumentando leggermente il valore della variabile.
 
 ---
 
-Il primo argomento che ci interessa affrontare è quindi lo studio delle **condizioni di esistenza** di soluzioni ottimali nei problemi di ottimizzazione, in modo da poter discriminare tra istanze ben poste e mal poste di (3.1). Un primo risultato deriva da un classico teorema dell'analisi matematica.
+Il primo argomento che ci interessa affrontare è quindi lo studio delle **condizioni di esistenza** di soluzioni ottimali nei problemi di ottimizzazione, in modo da poter discriminare tra istanze ben poste e mal poste di (3.1). Un primo risultato deriva da un classico teorema dell'**analisi matematica.**
 
+---
 **Proposizione 3.1.1 (Teorema di Weierstrass).** 
 	Sia $f:S\subseteq\mathbb{R}^{n}\to\mathbb{R}$ una **funzione continua** su un **insieme [[compatto]]** $S$. Allora, $f$ ammette un **minimizzatore globale** su $S$.
 
@@ -124,8 +155,10 @@ Mettendo insieme le ultime due equazioni, otteniamo che $f(\bar{x})=L$: $\bar{x}
 
 ---
 
-Tra le ipotesi del teorema di Weierstrass, la continuità della funzione obiettivo è certamente ragionevole: trattare funzioni discontinue da ottimizzare sarebbe una sfida estrema.
-La **compattezza** dell'insieme ammissibile, d'altra parte, è tipica di vari problemi, quindi il risultato di cui sopra può spesso essere sfruttato per affermare che il problema di ottimizzazione è ben definito. Tuttavia, quello non è uno scenario onnipresente. Un caso importante in cui non possiamo fare affidamento direttamente sul teorema di Weierstrass a causa della non compattezza dell'insieme ammissibile è rappresentato dai problemi di ottimizzazione **non vincolati**.
+Tra le ipotesi del teorema di Weierstrass, la **continuità** della funzione obiettivo è certamente ragionevole: trattare funzioni discontinue da ottimizzare sarebbe una sfida estrema.
+La **compattezza** dell'insieme ammissibile, d'altra parte, è tipica di vari problemi, quindi il risultato di cui sopra può spesso essere sfruttato per affermare che il problema di ottimizzazione **è ben definito**. Tuttavia, quello non è uno scenario onnipresente. Un caso importante in cui non possiamo fare affidamento direttamente sul teorema di Weierstrass a causa della non compattezza dell'insieme ammissibile è rappresentato dai problemi di ottimizzazione **non vincolati**. => non sono chiusi!
+
+---
 
 Fortunatamente, il teorema di Weierstrass può essere utile in una gamma più ampia di situazioni di quanto suggerirebbe la sua formulazione. Ad esempio, possiamo iniziare dando il seguente utile risultato.
 
@@ -133,18 +166,18 @@ Fortunatamente, il teorema di Weierstrass può essere utile in una gamma più am
 	Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una **funzione continua**. Se $f$ ha un **insieme di livello** $\mathcal{L}_{\alpha}(f)=\{x\in\mathbb{R}^{n}\mid f(x)\leq\alpha\}$ che è **compatto**, allora $f$ ammette **minimo globale** su $\mathbb{R}^{n}$. => passo da minimo sull'insieme ammissibile S a l'intero insieme.
 
 *Dimostrazione.* 
-Sia $\mathcal{L}_{\alpha}(f)$ un insieme di livello compatto di $f$ e consideriamo il problema $$\min\limits_{x}f(x) \, \text{s.t. }x\in\mathcal{L}_{\alpha}(f).$$
-Poiché $f$ è continua e l'insieme ammissibile è compatto, sappiamo per il teorema di Weierstrass che il problema ammette un minimizzatore globale $\bar{x}\in\mathcal{L}_{\alpha}(f)$.
+Sia $\mathcal{L}_{\alpha}(f)$ un insieme di livello [[compatto]] di $f$ e consideriamo il problema $$\min\limits_{x}f(x) \, \text{s.t. }x\in\mathcal{L}_{\alpha}(f).$$
+Poiché $f$ è continua e l'insieme ammissibile è compatto, sappiamo per il teorema di *Weierstrass* che il problema ammette un minimizzatore globale $\bar{x}\in\mathcal{L}_{\alpha}(f)$.
 
 Ora, sia $z$ un punto qualsiasi in $\mathbb{R}^{n}$; ci sono due casi:
-	a. $z\in\mathcal{L}_{\alpha}(f)$: poiché $\bar{x}$ è un **minimizzatore** globale di $f$ sull'insieme $\mathcal{L}_{\alpha}(f)$, abbiamo $f(\bar{x})\leq f(z)$;
-	b. $z\notin\mathcal{L}_{\alpha}(f)$: allora, per la definizione di insieme di livello, $f(z)>\alpha\geq f(\bar{x})$, dove l'ultima disuguaglianza deriva da $\bar{x}\in\mathcal{L}_{\alpha}(f)$.
+	a.) $z\in\mathcal{L}_{\alpha}(f)$: poiché $\bar{x}$ è un **minimizzatore** globale di $f$ sull'insieme $\mathcal{L}_{\alpha}(f)$, abbiamo $f(\bar{x})\leq f(z)$;
+	b.) $z\notin\mathcal{L}_{\alpha}(f)$: allora, per la definizione di insieme di livello, $f(z)>\alpha\geq f(\bar{x})$, dove l'ultima disuguaglianza deriva da $\bar{x}\in\mathcal{L}_{\alpha}(f)$.
 	
 In entrambi i casi abbiamo quindi $f(\bar{x})\leq f(z)$; poiché $z$ è un punto arbitrario in $\mathbb{R}^{n}$, otteniamo che $\bar{x}$ è un minimizzatore globale di $f$ su $\mathbb{R}^{n}$.
 
 ---
 
-A prima vista, il risultato di cui sopra potrebbe sembrare un po' astratto, poiché non è chiaro come stabilire praticamente se una funzione ha o meno un insieme di livello compatto. Tuttavia, richiamando la proposizione 1.3.1, otteniamo immediatamente la seguente condizione sufficiente di esistenza di soluzioni.
+A prima vista, il risultato di cui sopra potrebbe sembrare un po' astratto, poiché non è chiaro come stabilire praticamente se una funzione ha o meno un insieme di **livello compatto**. Tuttavia, richiamando la proposizione 1.3.1 (sulla funzione [[coerciva]] => se f ha tutti gli insiemi di livello compatti => è coerciva ), otteniamo immediatamente la seguente condizione sufficiente di esistenza di soluzioni.
 
 **Proposizione 3.1.3.** 
 Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continua. 
@@ -158,27 +191,38 @@ Per avere un'intuizione della condizione sufficiente della Proposizione 3.1.3, v
 
 La coercività è nella maggior parte dei casi una proprietà facile da verificare, ed è soddisfatta dalla funzione obiettivo di molti interessanti problemi di ottimizzazione. Riportiamo qui sotto un paio di casi notevoli.
 
-**Esempio 3.1.1.** Sia $f$ una qualsiasi funzione continua limitata inferiormente da un valore finito $L$. Allora, se $\tau>0$, la funzione $f(x)+\tau\|x\|$ ammette sempre un **minimizzatore globale** su $\mathbb{R}^{n}$. 
+---
 
-Infatti, è facile mostrare che, per qualsiasi successione $\{x^{k}\}$ tale che $\|x^{k}\|\to\infty$, abbiamo $$
-\lim_{k\to\infty}f(x^{k})+\tau\|x^{k}\|\geq\lim_{k\to\infty}L+\tau_{k}\|x^{k}\|=+\infty$$il che significa che $f(x)+\tau\|x\|$ è coercitiva.
+**Esempio 3.1.1.** 
+Sia $f$ una qualsiasi funzione continua **limitata inferiormente** da un valore finito $L$.(tipo exp) Allora, se $\tau>0$, la funzione $f(x)+\tau\|x\|$ ammette sempre un **minimizzatore globale** su $\mathbb{R}^{n}$. 
 
-**Esempio 3.1.2.** Un'importante classe di problemi di ottimizzazione a cui faremo spesso riferimento è quella dei *problemi quadratici*, cioè problemi della forma $$
+Infatti, è facile mostrare che, per **qualsiasi successione** $\{x^{k}\}$ tale che $\|x^{k}\|\to\infty$, abbiamo $$
+\lim_{k\to\infty}f(x^{k})+\tau\|x^{k}\|\geq\lim_{k\to\infty}L+\tau_{k}\|x^{k}\|=+\infty$$il che significa che $f(x)+\tau\|x\|$ è *coercitiva*.
+
+---
+
+**Esempio 3.1.2.** 
+Un'importante classe di problemi di ottimizzazione a cui faremo spesso riferimento è quella dei *problemi quadratici*, cioè problemi della forma $$
 \min_{x\in\mathbb{R}^{n}}\ f(x)=\frac{1}{2}x^{T}Qx+c^{T}x$$
-dove $Q\in\mathcal{S}_{n}$ (ovvero appartiene al set di matrici quadratiche e simmetriche di dimensioni nxn) e $c\in\mathbb{R}^{n}$. Un'istanza di questa classe di problemi ammette una soluzione ottimale se $Q\succ 0$. (è definita positiva). In effetti, $f$ è coercitiva se $Q$ è [[definita positiva]].
+dove $Q\in\mathcal{S}_{n}$ (ovvero appartiene al set di **matrici quadratiche** e **simmetriche** di dimensioni nxn) e $c\in\mathbb{R}^{n}$. Un'istanza di questa classe di problemi ammette una soluzione ottimale se $Q\succ 0$. (è definita positiva). In effetti, $f$ è coercitiva se $Q$ è [[definita positiva]].
 
-Infatti, sia $Q\succ 0$ e sia $\{x^{k}\}$ una successione arbitraria tale che $\|x^{k}\|\to\infty$. Richiamando la Proposizione 1.2.3 e la ![[disuguaglianza di Cauchy-Schwarz]], per tutti i $k$, abbiamo$$f(x^{k})=(x^{k})^{T}Qx^{k}+c^{T}x^{k}\geq\lambda_{\min}(Q)\|x^{k}\|^{2}-\|c\|\|x^{k}\|=\|x^{k}\|(\lambda_{\min}(Q)\|x^{k}\|-\|c\|).
+Infatti, sia $Q\succ 0$ e sia $\{x^{k}\}$ una successione arbitraria tale che $\|x^{k}\|\to\infty$. Richiamando la Proposizione 1.2.3 e la [[disuguaglianza di Cauchy-Schwarz]], per tutti i $k$, abbiamo$$f(x^{k})=(x^{k})^{T}Qx^{k}+c^{T}x^{k}\geq\lambda_{\min}(Q)\|x^{k}\|^{2}-\|c\|\|x^{k}\|=\|x^{k}\|(\lambda_{\min}(Q)\|x^{k}\|-\|c\|).
 $$
 Prendendo i limiti per $k\to\infty$, otteniamo immediatamente che $f(x^{k})\to\infty$; essendo $\{x^{k}\}$ arbitraria, questo prova che $f$ è **coercitiva**.
 
-In realtà, una funzione quadratica è coercitiva solo se $Q\succ 0$. Assumiamo per contraddizione che $f$ sia coercitiva ma $Q\not\succ 0$. Per quest'ultima ipotesi, esiste $y\in\mathbb{R}^{n}$, $y\neq 0$, tale che $y^{T}Qy\leq 0$. Assumiamo, senza perdita di generalità, che $c^{T}y\leq 0$, e sia $\{x^{k}\}$ una successione definita come $x^{k}=ky$. Chiaramente, $\|x^{k}\|\to\infty$. Abbiamo anche $$f(x^{k})=k^{2}y^{T}Qy+kc^{T}y\leq 0$$
+In realtà, una funzione quadratica è **coercitiva** solo se $Q\succ 0$. 
+Assumiamo per contraddizione che $f$ sia coercitiva ma $Q\not\succ 0$. Per quest'ultima ipotesi, esiste $y\in\mathbb{R}^{n}$, $y\neq 0$, tale che $y^{T}Qy\leq 0$. Assumiamo, senza perdita di generalità, che $c^{T}y\leq 0$, e sia $\{x^{k}\}$ una successione definita come $x^{k}=ky$. Chiaramente, $\|x^{k}\|\to\infty$. Abbiamo anche $$f(x^{k})=k^{2}y^{T}Qy+kc^{T}y\leq 0$$
 Prendendo i limiti per $k\to\infty$ deve essere $\lim_{k\to\infty}f(x^{k})\leq 0$, il che è assurdo poiché $f$ è coercitiva.
+
+Riassumendo se Q è definita positiva allora f(x) definita come nel problema visto prima è coerciva.
+
+---
 
 ### 3.2 Condizioni di ottimalità
 
 Nella sezione precedente, abbiamo discusso ampiamente dell'esistenza di soluzioni ottimali e della buona posizione dei problemi di ottimizzazione. Questa discussione fondamentale ma preliminare, tuttavia, non si avvicina al nostro vero interesse: vogliamo trovare soluzioni ottimali e, a tal fine, dobbiamo caratterizzarle precisamente.
 
-Ora, la prima deludente verità di cui dobbiamo essere consapevoli è che risolvere, in termini stretti, problemi di ottimizzazione è difficile. In generale, trovare un **minimizzatore globale** è difficile. Certificare che una soluzione è un minimizzatore globale è praticamente impossibile, a meno che il problema non abbia caratteristiche piacevoli da sfruttare. Anche nel caso abbastanza favorevole di una funzione $L$-liscia su un insieme ammissibile compatto, ottenere un minimizzatore globale certificato è noto essere un **compito $\mathcal{NP}$-difficile**.
+Ora, la prima deludente verità di cui dobbiamo essere consapevoli è che risolvere, in termini stretti, problemi di ottimizzazione è difficile. In generale, trovare un **minimizzatore globale** è difficile. Certificare che una soluzione è un **minimizzatore globale** è praticamente impossibile, a meno che il problema non abbia caratteristiche piacevoli da sfruttare. Anche nel caso abbastanza favorevole di una funzione $L$-liscia su un insieme ammissibile compatto, ottenere un minimizzatore globale certificato è noto essere un **compito $\mathcal{NP}$-hard**.
 
 Nei problemi non vincolati, non abbiamo speranza. La ragione di ciò risiede nella stessa definizione di ottimalità globale: anche se raggiungessimo una soluzione molto buona, dovremmo essere sicuri che da nessuna parte, in uno spazio infinito, la funzione scenda al di sotto di quel valore, per poter affermare con certezza che il problema è stato risolto (Figura 3.3).
 
@@ -190,9 +234,9 @@ Un ramo importante della programmazione matematica, chiamato *ottimizzazione glo
 
 **Definizione 3.2.1.** Un punto ammissibile $\bar{x}\in S$ è un *punto di **ottimo locale*** (o minimizzatore locale) se esiste $\epsilon>0$ tale che $f(\bar{x})\leq f(x)$ per tutti gli $x\in S\cap B(\bar{x},\epsilon)$.
 
-In altre parole, un minimizzatore locale soddisfa la stessa condizione dell'ottimalità globale, m==a ristretta a un intorno (ammissibile) di punti==. L'ottimalità locale può essere vista come una *condizione necessaria di ottimalità globale*, poiché ovviamente qualsiasi minimizzatore globale è anche un minimizzatore locale. Ci rendiamo immediatamente conto che il concetto di ottimalità locale è molto più gestibile di quello globale, poiché non siamo tenuti ad **avere conoscenza** su punti arbitrariamente distanti.
+In altre parole, un minimizzatore locale soddisfa la stessa condizione dell'ottimalità globale, ==ma ristretta a un intorno (ammissibile) di punti==. L'ottimalità locale può essere vista come una *condizione necessaria di ottimalità globale*, poiché **ovviamente qualsiasi minimizzatore globale è anche un minimizzatore locale**. Ci rendiamo immediatamente conto che il concetto di ottimalità locale è molto più gestibile di quello globale, poiché non siamo tenuti ad **avere conoscenza** su punti arbitrariamente distanti.
 
-Nella presentazione degli algoritmi di ottimizzazione svolta nei capitoli successivi, stabiliremo come nostro obiettivo l'ottenimento di un punto di **ottimo locale**, e ne saremo soddisfatti. Poi, come accennato in precedenza, tali algoritmi locali potrebbero in linea di principio essere impiegati all'interno di framework di ottimizzazione globale; come semplice esempio, pensa di eseguire un metodo locale in modalità multi-start: raggiungeremmo diversi minimizzatori locali e potremmo infine scegliere il migliore tra di essi.
+Nella presentazione degli algoritmi di ottimizzazione svolta nei capitoli successivi, stabiliremo come nostro obiettivo l'ottenimento di un punto di **ottimo locale**, e ne saremo soddisfatti. Poi, come accennato in precedenza, tali algoritmi locali potrebbero in linea di principio essere impiegati all'interno di framework di ottimizzazione globale; come semplice esempio, pensa di eseguire un metodo locale in modalità multi-start: raggiungeremmo diversi minimizzatori locali e potremmo infine scegliere **il migliore tra di essi**.
 
 Un altro aspetto abbastanza ovvio è che non tutti gli ottimizzatori locali saranno uguali; con riferimento alla Figura 3.3, finire nel minimizzatore locale nell'angolo in alto a destra dell'immagine non è la stessa cosa che arrivare ai minimizzatori in basso a sinistra. Il primo punto è infatti molto peggiore di molte soluzioni "non localmente ottimali", mentre le seconde sono tutte molto vicine in valore obiettivo al **presunto minimizzatore globale**.
 
@@ -217,7 +261,9 @@ da cui otteniamo $\lambda f(\bar{x})\leq\lambda f(y)$ e infine $f(\bar{x})\leq f
 
 ---
 
-La Proposizione 3.2.1 ci fornisce un risultato tremendamente forte e utile: sotto ipotesi di **convessità**, ==minimizzatori locali e globali coincidono==. In un problema convesso (vincolato), se siamo in grado di raggiungere una soluzione localmente ottimale abbiamo finito: siamo garantiti di aver raggiunto una soluzione **globalmente ottimale**. Siamo quindi particolarmente felici quando qualche compito del mondo reale può essere modellato come un problema di ottimizzazione **convesso**, poiché sappiamo che possiamo davvero ottenere la soluzione migliore possibile. Nei capitoli successivi vedremo altri motivi che rendono la convessità una proprietà molto desiderabile.
+La Proposizione 3.2.1 ci fornisce un risultato tremendamente forte e utile: sotto ipotesi di **convessità**, ==minimizzatori locali e globali coincidono==. In un problema **convesso** (vincolato), se siamo in grado di raggiungere una soluzione localmente ottimale abbiamo finito: siamo garantiti di aver raggiunto una soluzione **globalmente ottimale**. Siamo quindi particolarmente felici quando qualche compito del mondo reale può essere modellato come un problema di ottimizzazione **convesso**, poiché sappiamo che possiamo davvero ottenere la soluzione migliore possibile. Nei capitoli successivi vedremo altri motivi che rendono la convessità una proprietà molto desiderabile.
+
+---
 
 Un'ulteriore bella proprietà può essere affermata sotto ipotesi leggermente più forti.
 
@@ -232,15 +278,16 @@ il che è assurdo, poiché il valore di $f$ nel punto ammissibile $z$ non può e
 
 ---
 
-Richiamando le Proposizioni 1.3.7 (sulle funzioni fortemente convesse) e 3.1.3 (funzioni coercive ammettono minimo), otteniamo immediatamente un ultimo risultato per **funzioni fortemente convesse.**
+Richiamando le Proposizioni 1.3.7 (sulle funzioni **fortemente** convesse) e 3.1.3 (funzioni coercive ammettono minimo), otteniamo immediatamente un ultimo risultato per **funzioni fortemente convesse.**
 
-**Proposizione 3.2.3.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione fortemente convessa. Allora, $f$ ammette un unico minimizzatore globale su $\mathbb{R}^{n}$. => funzioni fortemente convesse => coercive e strettamente convesse => ammettono minimo e questo è unico!
+**Proposizione 3.2.3.** 
+Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una [[funzione convessa]] **fortemente**. Allora, $f$ ammette un **unico minimizzatore** globale su $\mathbb{R}^{n}$. => funzioni fortemente convesse => coercive e strettamente convesse => ammettono minimo e questo è unico!
 
-A questo punto, dobbiamo evidenziare un problema pratico associato all'ottimalità locale: ancora non sappiamo ==come controllare concretamente se una soluzione è un ottimizzatore locale== o meno. La definizione non ci aiuta, non è chiaro quale sarebbe il raggio $\epsilon$ dell'intorno e, soprattutto, non c'è modo di controllare il valore obiettivo in ciascuno degli infiniti punti dell'intorno. Abbiamo quindi bisogno di arrivare a qualche condizione di ottimalità che sia verificabile per mezzo di operazioni numeriche. Questo sarà il nostro obiettivo per le prossime sezioni.
+A questo punto, dobbiamo evidenziare un problema pratico associato all'ottimalità **locale**: ancora non sappiamo ==come controllare concretamente se una soluzione è un ottimizzatore locale== o meno. La definizione non ci aiuta, non è chiaro quale sarebbe il raggio $\epsilon$ dell'intorno e, soprattutto, non c'è modo di controllare il valore obiettivo in ciascuno degli infiniti punti dell'intorno. Abbiamo quindi bisogno di arrivare a qualche condizione di ottimalità che sia verificabile per mezzo di operazioni numeriche. Questo sarà il nostro obiettivo per le prossime sezioni.
 
 #### 3.2.1 Il caso non vincolato
 
-In questa sezione, affrontiamo specificamente il caso $S=\mathbb{R}^{n}$, cioè analizziamo problemi non vincolati. Per sviluppare ulteriormente la nostra discussione, dobbiamo introdurre un concetto che costituirà un ingranaggio chiave sia nell'analisi delle soluzioni che nella progettazione di algoritmi nell'ottimizzazione non lineare.
+In questa sezione, affrontiamo specificamente il caso $S=\mathbb{R}^{n}$, cioè analizziamo **problemi non vincolati**. Per sviluppare ulteriormente la nostra discussione, dobbiamo introdurre un concetto che costituirà un ingranaggio chiave sia nell'analisi delle soluzioni che nella progettazione di algoritmi nell'ottimizzazione non lineare.
 
 **Definizione 3.2.2.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ e $x\in\mathbb{R}^{n}$. Diciamo che una direzione $d\in\mathbb{R}^{n}$ è una ***direzione di discesa*** per $f$ nel punto $x$ se esiste $\bar{t}>0$ tale che $f(x+td)<f(x)$ per tutti i $t\in(0,\bar{t})$.
 
@@ -252,20 +299,25 @@ In parole povere, se ci muoviamo da $x$ con **un passo sufficientemente piccolo*
 
 Ci aspettiamo naturalmente che tale operazione ==non sia possibile in un minimizzatore locale== $\bar{x}$: in quel caso abbiamo infatti $f(\bar{x})\leq f(x)$ per tutti gli $x$ in un intorno, e quindi per qualsiasi punto ottenuto come $\bar{x}+td$ per qualsiasi direzione e per $t$ sufficientemente piccolo.
 
-Possiamo quindi enunciare la seguente condizione di ottimalità.
+Possiamo quindi enunciare la seguente condizione di **ottimalità**.
 
 **Proposizione 3.2.4.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ e sia $\bar{x}$ un **minimizzatore locale** di $f$; allora, ==non esiste alcuna direzione di discesa== per $f$ in $\bar{x}$.
 
-Alla prima impressione, la condizione di cui sopra è spesso immaginata essere una condizione necessaria e sufficiente per l'ottimalità locale. In realtà, è *solo necessaria*. Il seguente esempio aiuta a persuadere che **non è sufficiente**.
+Alla prima impressione, la condizione di cui sopra è spesso immaginata essere una condizione **necessaria e sufficiente** per l'ottimalità locale. In realtà, è *solo necessaria*. Il seguente esempio aiuta a persuadere che **non è sufficiente**.
+
+---
 
 **Esempio 3.2.1.** Facendo riferimento anche alla Figura 3.5, considera la funzione
 $$f(x)=\begin{cases}x\sin(\frac{1}{x})&\text{se }x\neq 0,\\
 0&\text{se }x=0,\end{cases}$$
 
-che è continua ovunque ($\lim_{x\to 0}f(x)=0=f(0)$). Il punto $\bar{x}=0$ non è un minimizzatore locale. Infatti, per qualsiasi $\epsilon>0$, è possibile trovare un valore $a_{\epsilon}\in(0,\epsilon)$ tale che $f(a_{\epsilon})=a_{\epsilon}\sin(\frac{1}{a_{\epsilon}})<0$. 
-D'altra parte, possiamo fare un ragionamento simile per vedere che **non c'è direzione di discesa**: lungo entrambe le direzioni $d=1$ e $d=-1$, per qualsiasi $\bar{t}>0$ possiamo sempre trovare un valore di $t\in(0,\bar{t})$ tale che $f(\bar{x}+td)=t\sin(\frac{1}{t})>0=f(\bar{x})$. => la non presenza di direzioni di discesa non ci assicura sul fatto che x sia minimo locale/globale
+che è continua ovunque ($\lim_{x\to 0}f(x)=0=f(0)$). Il punto $\bar{x}=0$ **non è un minimizzatore locale**. Infatti, per qualsiasi $\epsilon>0$, è possibile trovare un valore $a_{\epsilon}\in(0,\epsilon)$ tale che $f(a_{\epsilon})=a_{\epsilon}\sin(\frac{1}{a_{\epsilon}})<0$. 
+
+D'altra parte, possiamo fare un ragionamento simile per vedere che **non c'è direzione di discesa**: lungo entrambe le direzioni $d=1$ e $d=-1$, per qualsiasi $\bar{t}>0$ possiamo sempre trovare un valore di $t\in(0,\bar{t})$ tale che $f(\bar{x}+td)=t\sin(\frac{1}{t})>0=f(\bar{x})$. => la **non presenza** di direzioni di discesa non ci assicura sul fatto che x sia minimo locale/globale
 
 ![[Pasted image 20251222232408.png]]
+
+---
 
 Mentre la Proposizione 3.2.4 ci fornisce una bella condizione **necessaria** per l'ottimalità locale (e quindi anche per quella globale), non abbiamo ancora uno strumento per verificarla praticamente: non abbiamo idea di quale dovrebbe essere il valore $\bar{t}$ dalla definizione di direzione di discesa, né possiamo ragionevolmente verificare l'andamento non discendente della funzione lungo **tutte le infinite possibili direzioni**.
 
@@ -276,16 +328,18 @@ Gli strumenti computazionali che ci permettono di trattare concretamente le solu
 **Proposizione 3.2.5.** Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione [[continuamente differenziabile]], $\bar{x}\in\mathbb{R}^{n}$ e sia $d\in\mathbb{R}^{n}$ una direzione. Se $\nabla f(\bar{x})^{T}d<0$, allora $d$ è una **direzione di discesa** per $f$ in $\bar{x}$.
 
 *Dimostrazione.* 
-Per la [[differenziabilità]] di $f$, abbiamo che $$
+Per la [[differenziabile]] di $f$, abbiamo che $$
 0>\nabla f(\bar{x})^{T}d=\mathcal{D}_{f}(\bar{x},d)=\lim_{t\to 0^{+}}\frac{f(\bar{x}+td)-f(\bar{x})}{t}$$
 e quindi $\lim_{t\to 0^{+}}f(\bar{x}+td)-f(\bar{x})<0.$ Allora, per $t>0$ sufficientemente piccolo abbiamo certamente $$f(\bar{x}+td)<f(\bar{x})$$
 il che completa la dimostrazione.
 
-La Proposizione 3.2.5 introduce una condizione sufficiente di discesa con funzioni lisce: se la derivata direzionale in un punto lungo una direzione è negativa, allora quella direzione è di discesa in quel punto. Questa condizione è molto utile in pratica poiché, contrariamente a tutte le condizioni che abbiamo visto finora, è verificabile numericamente; dobbiamo solo calcolare il gradiente ed eseguire un prodotto scalare per verificare se una direzione è di discesa. Nota che la condizione è solo sufficiente; infatti, abbiamo tre scenari:
+---
+
+La Proposizione 3.2.5 introduce una condizione **sufficiente** di discesa con funzioni *lisce*: se la *derivata direzionale* in un punto lungo una direzione è negativa, allora quella direzione è di discesa in quel punto. Questa condizione è molto utile in pratica poiché, contrariamente a tutte le condizioni che abbiamo visto finora, è **verificabile numericamente**; dobbiamo solo calcolare il gradiente ed eseguire un prodotto scalare per verificare se una direzione è di discesa. Nota che la condizione è solo **sufficiente**; infatti, abbiamo tre scenari:
 
 * se $\nabla f(\bar{x})^{T}d<0$ allora la direzione è di **discesa**;
 * se $\nabla f(\bar{x})^{T}d>0$ allora la direzione è di **salita**;
-* se $\nabla f(\bar{x})^{T}d=0$ allora la direzione potrebbe essere di salita, discesa o nessuna delle due.
+* se $\nabla f(\bar{x})^{T}d=0$ allora la direzione potrebbe essere di salita, discesa o **nessuna delle due**.
 
 Le diverse situazioni sono illustrate nella Figura 3.6.
 
@@ -300,25 +354,29 @@ Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione [[continuamente differenziabile
 
 ---
 
-La proposizione di cui sopra ancora non risolve esplicitamente il problema della verificabilità, poiché in principio ci chiederebbe di verificare una condizione per **tutte** le possibili direzioni. 
+La proposizione di cui sopra ancora **non risolve esplicitamente** il problema della verificabilità, poiché in principio ci chiederebbe di verificare una condizione per **tutte** le possibili direzioni. 
 Fortunatamente, tuttavia, possiamo sfruttare quel risultato per ottenere una condizione pratica da verificare.
 
 **Proposizione 3.2.7 (Condizione necessaria di ottimalità del primo ordine).** 
-Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile e sia $\bar{x}\in\mathbb{R}^{n}$ un minimizzatore locale. Allora, $\nabla f(\bar{x})=0$.
+Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione **continuamente differenziabile** e sia $\bar{x}\in\mathbb{R}^{n}$ un minimizzatore locale. Allora, $\nabla f(\bar{x})=0$.
 
 *Dimostrazione.*
 Assumiamo per contraddizione che $\nabla f(\bar{x})\neq 0$, cioè $\|\nabla f(\bar{x})\|>0$. Allora possiamo scegliere la direzione $d=-\nabla f(x^{k})$: otteniamo immediatamente $$\nabla f(\bar{x})^{T}d=-\nabla f(\bar{x})^{T}\nabla f(\bar{x})=-\|\nabla f(\bar{x})\|^{2}<0$$
 Per la Proposizione 3.2.6 questo è assurdo, poiché $\bar{x}$ è un **minimizzatore locale**. 
+
+---
 
 Abbiamo finalmente identificato una condizione di ottimalità facilmente verificabile (**necessaria**) che possiamo fissare come nostro obiettivo quando progettiamo algoritmi; sappiamo che, se siamo interessati a trovare minimizzatori locali o globali, ==possiamo restringere la nostra ricerca tra punti dove il gradiente è nullo==. Diamo un nome ai punti che soddisfano questa proprietà.
 
 **Definizione 3.2.3.** 
 Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione continuamente differenziabile. Diciamo che $\bar{x}\in\mathbb{R}^{n}$ è un ***punto stazionario*** per $f$ se $\nabla f(\bar{x})=0$.
 
-Un'interessante prospettiva sulla condizione di **stazionarietà**, interpretata in termini di direzioni di discesa, è che in un punto stazionario la direzione di *discesa più ripida* è nulla. Il gradiente negativo $-\nabla f(x)$ identifica infatti la direzione di discesa più ripida. ù
+---
+
+Un'interessante prospettiva sulla condizione di **stazionarietà**, interpretata in termini di direzioni di discesa, è che in un **punto stazionario** la direzione di *discesa più ripida* è nulla. Il gradiente negativo $-\nabla f(x)$ identifica infatti la direzione di discesa più ripida. 
 
 Per vederlo, consideriamo il problema $$\min_{d:\|d\|=1}\ \nabla f(x)^{T}d$$
-cioè il problema di trovare la **direzione** con la derivata direzionale negativamente più grande tra quelle con norma unitaria. Per le proprietà del prodotto scalare, abbiamo $$\nabla f(x)^{T}d=\|d\|\|\nabla f(x)\|\cos(\theta(d,\nabla f(x)))$$
+cioè il problema di trovare la **direzione** con la ==derivata direzionale negativamente più grande== tra quelle con **norma unitaria**. Per le proprietà del prodotto scalare, abbiamo $$\nabla f(x)^{T}d=\|d\|\|\nabla f(x)\|\cos(\theta(d,\nabla f(x)))$$
 dove $\theta(d,\nabla f(x))$ denota l'angolo tra i vettori $d$ e $\nabla f(x)$; poiché $\|d\|=1$ e $\|\nabla f(x)\|$ è costante rispetto a $x$, il minimo nel problema è raggiunto quando $\cos(\theta(d,\nabla f(x)))$ è **minimo**, cioè $\cos(\theta(d,\nabla f(x)))=-1$; ciò si verifica quando $d$ è allineato con $\nabla f(x)$ ma con **orientamento opposto**. La soluzione del problema è quindi la direzione del **gradiente negativo** (normalizzata), cioè $$d=-\frac{\nabla f(x)}{\|\nabla f(x)\|}$$
 
 ---
@@ -327,41 +385,44 @@ Ancora una volta, le cose diventano più belle sotto ipotesi di **convessità**:
 
 **Proposizione 3.2.8.** 
 Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una [[funzione convessa]] e [[continuamente differenziabile]] e $\bar{x}\in\mathbb{R}^{n}$.
-La direzione $d\in\mathbb{R}^{n}$ è una direzione di discesa per $f$ in $\bar{x}$ **se e solo se** $\nabla f(\bar{x})^{T}d<0$.
+La direzione $d\in\mathbb{R}^{n}$ è una **direzione di discesa** per $f$ in $\bar{x}$ **se e solo se** $\nabla f(\bar{x})^{T}d<0$.
 
 *Dimostrazione.*
 L'implicazione $\nabla f(\bar{x})^{T}d<0\implies d$ di discesa deriva dalla Proposizione 3.2.5. (f deve essere cont. differenziabile)
 
 Assumiamo quindi che $d$ **sia di discesa**; allora, $f(\bar{x}+td)<f(\bar{x})$ per $t>0$ sufficientemente piccolo (def di direnzione di discesa).
-Per la **convessità** di $f$, abbiamo anche che $f(\bar{x}+td)\geq f(\bar{x})+t\nabla f(\bar{x})^{T}d$. (Proposizione 1.3.8) 
+Per la **convessità** di $f$, abbiamo anche che $f(\bar{x}+td)\geq f(\bar{x})+t\nabla f(\bar{x})^{T}d$. (Proposizione 1.3.8 su [[funzione convessa]]) 
 
 Combinando le due disuguaglianze otteniamo per $t>0$ sufficientemente piccolo che $$
 f(\bar{x})>f(\bar{x})+t\nabla f(\bar{x})^{T}d$$
 il che implica $\nabla f(\bar{x})^{T}d<0$. $\square$
 
-La condizione che collega le direzioni di discesa e le derivate direzionali è ==quindi necessaria e sufficiente nel caso convesso==; in altre parole, questo risultato risolve l'incertezza sulle direzioni di discesa quando la derivata direzionale è zero.
+La condizione che collega le direzioni di discesa e le derivate direzionali è ==quindi necessaria e sufficiente nel caso **convesso**==; in altre parole, questo risultato risolve l'incertezza sulle direzioni di discesa quando la **derivata direzionale è zero**.
 
 ---
 
 Possiamo ora passare a un risultato ancora più interessante.
 
 **Proposizione 3.2.9 (Condizione necessaria e sufficiente del primo ordine per l'ottimalità globale per problemi convessi).** 
-Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione [[continuamente differenziabile]]. Un punto $\bar{x}\in\mathbb{R}^{n}$ è un *minimizzatore globale* **se e solo se** $\nabla f(\bar{x})=0$.
+Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione [[continuamente differenziabile]] (e convessa). Un punto $\bar{x}\in\mathbb{R}^{n}$ è un *minimizzatore globale* **se e solo se** $\nabla f(\bar{x})=0$.
 
 *Dimostrazione.* 
-Ancora una volta, la condizione necessaria deriva dal caso generale. Assumiamo ora che $f$ sia **convessa** e che $\bar{x}$ sia un **punto stazionario**, cioè $\nabla f(\bar{x})=0$. Per le proprietà delle funzioni convesse differenziabili (in C1), possiamo scrivere **per un arbitrario** $x\in\mathbb{R}^{n}$ (notare x qualsiasi):
+Ancora una volta, la condizione **necessaria** deriva dal caso generale. Assumiamo ora che $f$ sia **convessa** e che $\bar{x}$ sia un **punto stazionario**, cioè $\nabla f(\bar{x})=0$. Per le proprietà delle funzioni convesse differenziabili (in C1), possiamo scrivere **per un arbitrario** $x\in\mathbb{R}^{n}$ (notare x qualsiasi):
 $$f(x)\geq f(\bar{x})+\nabla f(\bar{x})^{T}(x-\bar{x})=f(\bar{x})+0^{T}(x-\bar{x})=f(\bar{x})$$
 
 Abbiamo quindi $f(\bar{x})\leq f(x)$ per tutti gli $x\in\mathbb{R}^{n}$, il che completa la dimostrazione. $\square$
 
-Dalla proposizione precedente, vediamo che la ==stazionarietà è equivalente all'ottimalità globale nel caso **convesso**==. Questo risultato è enorme, non solo perché in questo scenario abbiamo accesso a uno strumento numerico per **verificare l'ottimalità globale**, ma anche perché algoritmi progettati per trovare punti stazionari ci condurrebbero effettivamente verso **soluzioni ottimali** di problemi convessi.
+Dalla proposizione precedente, vediamo che la ==stazionarietà è equivalente all'ottimalità globale nel caso **convesso**==. Questo risultato è enorme, non solo perché in questo scenario abbiamo accesso a uno strumento numerico per **verificare l'ottimalità globale**, ma anche perché algoritmi progettati per trovare punti stazionari ci condurrebbero effettivamente verso **soluzioni ottimali** di problemi **convessi**.
 
 ---
 
 Per dire qualcosa di più sulle soluzioni ottimali nel caso non convesso, dobbiamo ricorrere a informazioni di **ordine superiore**. Nella parte conclusiva di questa sezione, assumiamo quindi che $f$ sia [[due volte continuamente differenziabile]]. Possiamo introdurre un'ulteriore caratterizzazione delle direzioni.
 
 **Definizione 3.2.4.** 
-Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione due volte continuamente differenziabile. Una direzione $d\in\mathbb{R}^{n}$ è una *direzione di curvatura negativa* in un punto $x\in\mathbb{R}^{n}$ se $$d^{T}\nabla^{2}f(x)d<0$$
+Sia $f:\mathbb{R}^{n}\to\mathbb{R}$ una funzione **due volte continuamente differenziabile**.(hessiana ben definita => esiste per ogni $x \in \mathbb R^n$ e continua) Una direzione $d\in\mathbb{R}^{n}$ è una *direzione di curvatura negativa* in un punto $x\in\mathbb{R}^{n}$ se 
+$$d^{T}\nabla^{2}f(x)d<0$$
+---
+
 L'informazione sulla curvatura permette di superare alcuni dei casi di indecisione dove $\nabla f(x)^{T}d=0$.
 
 **Proposizione 3.2.10.** 
@@ -390,6 +451,8 @@ Sia $f:\mathbb{R}^{n}\rightarrow\mathbb{R}$ una funzione [[due volte continuamen
 Sappiamo per la condizione di ottimalità del **primo ordine** che $\nabla f(\bar{a})=0$; ora, **assumiamo per contraddizione** che $\nabla^{2}f(\bar{x})\not \succeq 0$. 
 Allora, esiste $y\in\mathbb{R}^{n}$ con $y\neq 0$ tale che $y^{T}\nabla^{2}f(\bar{x})y<0$; ma $\nabla f(\bar{x})^{T}y=0$, quindi abbiamo una direzione di curvatura negativa con derivata direzionale zero ==in un minimizzatore locale;== per la Proposizione 3.2.10, ma questo è un assurdo. (ho una direzione di discesa in un minimo locale => assurdo!) $\square$
 
+---
+
 La condizione di cui sopra è certamente interessante; dobbiamo notare, tuttavia, che non lavoreremo sempre con funzioni obiettivo **due volte differenziabili**; inoltre, vorremmo ricorrere il meno frequentemente possibile nella pratica a informazioni del secondo ordine, poiché il calcolo della matrice hessiana è un'operazione costosa. D'altra parte, le informazioni del secondo ordine sono abbastanza potenti da fornirci una condizione di ottimalità (locale) sufficiente.
 
 **Proposizione 3.2.12 (Condizione sufficiente di ottimalità locale del secondo ordine).** 
@@ -399,23 +462,26 @@ Se una delle seguenti condizioni vale:
 * esiste $\epsilon>0$ tale che $\nabla f^{2}(x)\succeq 0$ per tutti gli $x\in B(\bar{x},\epsilon)$,
 => allora $\bar{x}$ è un **minimizzatore locale** di $f$ su $\mathbb{R}^{n}$.
 
-(Qui ho il caso opposto => parto da un punto stazionario => vedo se ho minimizzatore... se invece ho minimizzatore necessariamente grad nullo e hessiana semidefinita positiva)
+(Qui ho il caso opposto => parto da un punto stazionario => vedo se ho minimizzatore... => devo avere o [[matrice hessiana]]  def positiva o semidefinita positiva in un intorno del punto stazionario, dall'altra parte se invece ho minimizzatore necessariamente grad nullo e hessiana **semidefinita** positiva)
 
-**Esempio 3.2.2.** Analizziamo ancora una volta il caso specifico dei problemi quadratici della forma $$\min_{x\in\mathbb{R}^{n}}\ f(x)=\frac{1}{2}x^{T}Qx+c^{T}x$$
+---
+
+**Esempio 3.2.2.** 
+Analizziamo ancora una volta il caso specifico dei problemi quadratici della forma $$\min_{x\in\mathbb{R}^{n}}\ f(x)=\frac{1}{2}x^{T}Qx+c^{T}x$$
 dove $Q\in\mathcal{S}_{n}$ e $c\in\mathbb{R}^{n}$. 
-Le seguenti affermazioni sulle soluzioni ottimali di questi problemi sono vere:
-(a) $f$ ammette un minimizzatore **globale** se e solo se esiste $\bar{x}$ tale che $Q\bar{x}+c=0$ e $Q\succeq 0$;
-(b) se $Q\succeq 0$, ogni $\bar{x}$ tale che $Q\bar{x}+c=0$ è un **minimizzatore globale**;
-(c) il minimizzatore globale è **unico** se e solo se $Q\succ 0$.
+Le seguenti affermazioni sulle **soluzioni ottimali** di questi problemi sono vere:
+(a) $f$ ammette un minimizzatore **globale** se e solo se esiste $\bar{x}$ tale che $Q\bar{x}+c=0$ e $Q\succeq 0$; (ho gradiente nullo e hessiana semidef positiva)
+(b) se $Q\succeq 0$, ogni $\bar{x}$ tale che $Q\bar{x}+c=0$ è un **minimizzatore globale**; (prop 3.2.12)
+(c) il minimizzatore globale è **unico** se e solo se $Q\succ 0$.  (f è strettamente positiva => minimo globale unico)
 
 Le affermazioni possono essere facilmente provate con i risultati che abbiamo raccolto finora:
 * (a, $\implies$) segue direttamente dalla Proposizione 3.2.11, ricordando che $\nabla f(x)=Qx+c$ e $\nabla^{2}f(x)=Q$;
 * (a, $\Longleftarrow$) segue dal fatto che $\bar{x}$ è stazionario e $f$ è **convessa** (per $Q\succeq 0$);
 * (b) come sopra, segue dal fatto che $\bar{x}$ è un punto stazionario e $f$ è convessa (poiché $Q\succeq 0$);
 * (c, $\Longleftarrow$) segue da $Q\succ 0$, il che significa che $f$ è **strettamente convessa**;
-* (c, $\implies$) può essere mostrato per contraddizione; assumiamo che il minimizzatore globale $\bar{x}$ sia unico e $Q\not\succ 0$; per il punto (a), $Q\succeq 0$, quindi $\det(Q)=0$ e $\operatorname{rank}(Q)<n$. Poiché $\bar{x}$ è un minimizzatore globale, sappiamo che $\nabla f(\bar{x})=Q\bar{x}+c=0$. Il sistema lineare $Qx=-c$ ammette quindi almeno una soluzione. Poiché $\operatorname{rank}(Q)<n$, ha allora infinite soluzioni, cioè esistono infiniti punti tali che $Qx=-c$; per il punto (b), ==tutti questi punti sono minimizzatori globali==, il che contraddice il fatto che $\bar{x}$ sia unico.
+* (c, $\implies$) può essere mostrato per contraddizione; assumiamo che il minimizzatore globale $\bar{x}$ sia unico e $Q\not\succ 0$; per il punto (a), $Q\succeq 0$, quindi $\det(Q)=0$ e $\operatorname{rank}(Q)<n$. Poiché $\bar{x}$ è un minimizzatore globale, sappiamo che $\nabla f(\bar{x})=Q\bar{x}+c=0$. Il sistema lineare $Qx=-c$ ammette quindi almeno una soluzione. Poiché $\operatorname{rank}(Q)<n$, ha allora infinite soluzioni, cioè esistono infiniti punti tali che $Qx=-c$; per il punto (b), ==tutti questi punti sono minimizzatori globali==, il che contraddice il fatto che $\bar{x}$ sia unico. => riassumendo se hessiana non definita positiva può capitare che abbia non rango massimo e quindi diversi minimi globali!
 
-Nota come il punto (c) in particolare ci dia qualcosa in più rispetto a quanto avevamo visto finora: per funzioni quadratiche, il minimizzatore sarà unico solo con ipotesi di **stretta convessità** - mentre nel caso generale la stretta convessità è solo una condizione sufficiente di unicità (pensa a $f(x)=x^{4}-8x^{2}+4x$).
+Nota come il punto (c) in particolare ci dia qualcosa in più rispetto a quanto avevamo visto finora: per funzioni quadratiche, il minimizzatore sarà unico solo con ipotesi di **stretta convessità** - mentre nel caso generale la stretta convessità è solo una **condizione sufficiente** di unicità (pensa a $f(x)=x^{4}-8x^{2}+4x$).
 
 #### 3.2.2 Il caso vincolato
  Spostato al capitolo 5
@@ -429,7 +495,7 @@ Nota come il punto (c) in particolare ci dia qualcosa in più rispetto a quanto 
 Quando affrontiamo problemi di ottimizzazione **non vincolata** e **non lineare** della forma:$$\min_{x \in \mathbb{R}^n} f(x)$$
 dove $f : \mathbb{R}^n \to \mathbb{R}$ è una funzione continuamente differenziabile, nella pratica si cerca di trovare soluzioni candidate ottimali che soddisfano la condizione di stazionarietà $\nabla f(x) = 0$. In **rari e fortunati casi**, gli zeri dei gradienti possono essere trovati analiticamente, ==risolvendo il problema in forma chiusa==.
 
-In generale, tuttavia, non avremo accesso a formule esatte per risolvere il problema. Dobbiamo quindi affidarci ad algoritmi che costruiscono una soluzione attraverso un **processo iterativo**, cioè metodi che producono una sequenza di soluzioni $\{x^k\}$ che si avvicinano progressivamente a un punto stazionario.
+In generale, tuttavia, non avremo accesso a formule esatte per risolvere il problema. Dobbiamo quindi affidarci ad algoritmi che costruiscono una soluzione attraverso un **processo iterativo**, cioè metodi che producono una sequenza di soluzioni $\{x^k\}$ che si avvicinano **progressivamente** a un punto stazionario.
 
 Gli algoritmi di ottimizzazione iterativa sono generalmente caratterizzati da una regola di aggiornamento della forma:	$$\mathbf{x}^{k+1} = \mathbf{x}^k + \mathbf{s}_k$$cioè il **nuovo punto** viene ottenuto ==partendo dalla soluzione corrente e spostandosi di un vettore di aggiornamento== $\mathbf{s}_k$.
 
@@ -437,56 +503,59 @@ L'algoritmo si arresta non appena ==la condizione di stazionarietà viene soddis
 
 ![[Pasted image 20250122224259.png]]
 
-1. **Algoritmi basati sulla ricerca in direzione** (_Line search_): il vettore di aggiornamento è strutturato come $\mathbf{s}_k = \alpha_k \mathbf{d}_k$, dove $\mathbf{d}_k \in \mathbb{R}^n$ è una direzione nello spazio euclideo e $\alpha_k \in \mathbb{R}^+$ è uno **scalare** denominato passo (*stepsize*). In questi algoritmi, viene prima identificata una direzione di ricerca $\mathbf{d}_k$, e successivamente scelto un passo appropriato per stabilire la grandezza dello spostamento **lungo quella direzione**.
+1. **Algoritmi basati sulla ricerca in direzione** (_Line search_): il vettore di aggiornamento è strutturato come $\mathbf{s}_k = \alpha_k \mathbf{d}_k$, dove $\mathbf{d}_k \in \mathbb{R}^n$ è una direzione nello spazio euclideo e $\alpha_k \in \mathbb{R}^+$ è uno **scalare** denominato passo (*stepsize*). In questi algoritmi, viene prima identificata una **direzione di ricerca** $\mathbf{d}_k$, e successivamente scelto un **passo** appropriato per stabilire la grandezza dello spostamento **lungo quella direzione**.
     
 2. **Algoritmi basati sulla regione di fiducia**: il vettore di aggiornamento è definito come ==il miglior aggiornamento possibile== per un'approssimazione (modello) della funzione obiettivo **in una vicinanza della soluzione corrente**: $$\mathbf{s}_k \in \arg\min_{x \in \Delta_k} m_k(x), \quad m_k(x) \approx f(x) \; \forall x \in \Delta_k, \; m_k(\mathbf{x}_k) = f(\mathbf{x}_k).$$
 	L'accettazione dell'aggiornamento e la variazione del raggio $\rho_k$ della regione di fiducia $\Delta_k$ dipendono dal **miglioramento della funzione obiettivo reale**:
-		- Se $f(\mathbf{x}_{k+1}) - f(\mathbf{x}_k) \ll 0$, allora $\mathbf{x}_{k+1} = \mathbf{x}_k + \mathbf{s}_k$, e $\rho_{k+1} > \rho_k$.
-		- Se $f(\mathbf{x}_{k+1}) - f(\mathbf{x}_k) < 0$, allora $\mathbf{x}_{k+1} = \mathbf{x}_k + \mathbf{s}_k$, e $\rho_{k+1} = \rho_k$.
-		- Se $f(\mathbf{x}_{k+1}) - f(\mathbf{x}_k) \geq 0$, allora $\mathbf{x}_{k+1} = \mathbf{x}_k$, e $\rho_{k+1} < \rho_k$.
+		- Se $f(\mathbf{x}^{k+1}) - f(\mathbf{x}^k) \ll 0$, allora $\mathbf{x}^{k+1} = \mathbf{x}^k + \mathbf{s}_k$, e $\rho_{k+1} > \rho_k$.
+		- Se $f(\mathbf{x}^{k+1}) - f(\mathbf{x}^k) < 0$, allora $\mathbf{x}_{k+1} = \mathbf{x}_k + \mathbf{s}_k$, e $\rho_{k+1} = \rho_k$.
+		- Se $f(\mathbf{x}^{k+1}) - f(\mathbf{x}^k) \geq 0$, allora $\mathbf{x}_{k+1} = \mathbf{x}_k$, e $\rho_{k+1} < \rho_k$.
 
-3. **Algoritmi di ricerca per schemi (pattern search)**: il vettore di aggiornamento ==è il migliore tra un insieme predefinito di soluzioni da verificare==:$$\mathbf{s}_k \in \arg \min_{\mathbf{s}_{i,k}, i=1,\dots,N_k}\ f(\mathbf{x}_k + \mathbf{s}_{i,k})$$
+3. **Algoritmi di ricerca per schemi (pattern search)**: il **vettore di aggiornamento** ==è il migliore tra un insieme predefinito di soluzioni da verificare==:$$\mathbf{s}_k \in \arg \min_{\mathbf{s}_{i,k}, i=1,\dots,N_k}\ f(\mathbf{x}^k + \mathbf{s}_{i,k})$$
+---
+
 I metodi di ricerca per schemi vengono spesso considerati quando non si ha accesso **alle derivate** della funzione obiettivo. In questi casi, si parla di **metodi senza derivata** (o di ordine zero).
-Al contrario, i metodi di ricerca in direzione e quelli basati sulla regione di fiducia utilizzano solitamente ==informazioni di primo ordine (gradienti, $\nabla f$) e secondo ordine (Hessiane==, $\nabla^2 f$), e in questa prospettiva si parla rispettivamente di metodi **di primo ordine e di secondo ordine**.
+Al contrario, i metodi di ricerca in direzione e quelli basati sulla r**egione di fiducia** utilizzano solitamente ==informazioni di primo ordine (gradienti, $\nabla f$) e secondo ordine (Hessiane==, $\nabla^2 f$), e in questa prospettiva si parla rispettivamente di metodi **di primo ordine e di secondo ordine**.
 
 Entreremo successivamente nei dettagli dei metodi basati su *line search*, nel mentre discuteremo le proprietà che vorremmo che la sequenza $\{x^k\}$ e le sequenze corrispondenti $\{f(x^k)\}$  e $\{\nabla f(x^k)\}$ abbiano, senza guardare il tipo di aggiornamento.
 
-**In uno scenario ideale,** un algoritmo finisce in un **punto stazionario** dopo un numero finito di iterazioni, in altre parole per qualche $\bar k$ tale che $\nabla f(x^{\bar k}) = 0$ e la procedura finisce.
+**In uno scenario ideale,** un algoritmo finisce in un **punto stazionario** dopo un **numero finito di iterazioni**, in altre parole per qualche $\bar k$ tale che $\nabla f(x^{\bar k}) = 0$ e la procedura finisce.
 Quando un metodo è garantito che si comporta in questo modo, diremo che possiede **proprietà di convergenza finita**. Sfortunatamente, questa proprietà è ottenuta solo per pochi algoritmi di alcune classi di problemi. Le sequenze in generale **sono infinite**. Siamo quindi interessati a **proprietà di convergenza** su sequenze **infinite**. 
 
 #### 4.1.1 Esistenza di Punti di Accumulazione
 
 La prima proprietà fondamentale che un algoritmo deve garantire è che la sequenza che produce, o **almeno una parte di essa**, abbia una direzione precisa. In altre parole, **non** vorremmo che la sequenza $\{x^k\}$ divergesse completamente, ovvero che $\|x^k\| \to \infty$. Infatti, siamo interessati a ottenere una soluzione con valori **finiti** e **definiti**, da utilizzare in un sistema reale.
 
-Questo requisito si traduce formalmente ==nella presenza di punti di accumulazione per la sequenza==Ricordiamo che un **punto di accumulazione** di una sequenza è un punto limite di una *sotto-sequenza*, cioè $\bar{x}$ è un punto di accumulazione per $\{x^k\}$ se esiste una sotto-sequenza $K \subseteq \{0, 1, \dots\}$ tale che $x^k \to \bar{x}$ per $k \in K, \, k \to \infty$.
+Questo requisito si traduce formalmente ==nella presenza di punti di accumulazione per la sequenza==. Ricordiamo che un **punto di accumulazione** di una sequenza è un punto limite di una *sotto-sequenza*, cioè $\bar{x}$ è un punto di accumulazione per $\{x^k\}$ se esiste una sotto-sequenza $K \subseteq \{0, 1, \dots\}$ tale che $x^k \to \bar{x}$ per $k \in K, \, k \to \infty$.
 
 Garantire l’esistenza di **almeno** un punto di accumulazione è piuttosto semplice dal punto di vista algoritmico, con ipotesi molto deboli sul problema considerato, come affermato nella seguente proposizione.
 
 ---
-**Proposizione 4.1.1**  
-Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione **continua**. Sia $x_0 \in \mathbb{R}^n$ e sia il **sottoinsieme di livello** $L_0 = \{x \in \mathbb{R}^n \, | \, f(x) \leq f(x^0)\}$ [[compatto]]. Supponiamo che la sequenza $\{x^k\}$, iniziando da $x^0$, sia tale che **per ogni k**, $f(x^{k+1}) \leq f(x^k)$. (ovvero monotona decrescente) 
-Allora, la sequenza $\{x^k\}$ **ammette punti di accumulazione**, ognuno appartenente a $L_0$, e la sequenza $\{f(x^k)\}$ converge a un valore $\bar{f}$.
+
+**Proposizione 4.1.1.**
+Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione **continua**. Sia $x^0 \in \mathbb{R}^n$ e sia il **sottoinsieme di livello** $\mathcal L_0 = \{x \in \mathbb{R}^n \, | \, f(x) \leq f(x^0)\}$ [[compatto]]. Supponiamo che la sequenza $\{x^k\}$, iniziando da $x^0$, sia tale che **per ogni k**, $f(x^{k+1}) \leq f(x^k)$. (ovvero monotona decrescente) 
+Allora, la sequenza $\{x^k\}$ **ammette punti di accumulazione**, ognuno appartenente a $\mathcal L_0$, e la sequenza $\{f(x^k)\}$ converge a un valore $\bar{f}$ (finito).
 
 **Dimostrazione.**  
-In base alle ipotesi, $f(x^{k+1}) \leq f(x^k)$ per ogni $k$. ==Per induzione==, abbiamo che $f(x^k) \leq f(x^0)$ per ogni $k = 0, 1, \dots,$ il che implica che l’intera sequenza $\{x^k\}$ è contenuta nel sottoinsieme di livello $L_0$. Dalla **compattezza** di $L_0$, segue che $\{x_k\}$ ha punti di accumulazione, **tutti appartenenti** a $L_0$.
+In base alle ipotesi, $f(x^{k+1}) \leq f(x^k)$ per ogni $k$. ==Per induzione==, abbiamo che $f(x^k) \leq f(x^0)$ per ogni $k = 0, 1, \dots,$ il che implica che l’intera sequenza $\{x^k\}$ è contenuta nel sottoinsieme di livello $\mathcal L_0$. Dalla **compattezza** di $\mathcal L_0$, segue che $\{x_k\}$ ha punti di accumulazione, **tutti appartenenti** a $L_0$.
 
-Inoltre, la sequenza $\{f(x^k)\}$ è *monotona decrescente* e quindi **ammette un limite** $\bar{f}$. Grazie alla **limitatezza** di $\{x^k\} \subseteq L_0$ (insieme di livello compatto) e alla **continuità** di $f$, il valore di $\bar{f}$ è **finito**.
+Inoltre, la sequenza $\{f(x^k)\}$ è *monotona decrescente* e quindi **ammette un limite** $\bar{f}$. Grazie alla **limitatezza** di $\{x^k\} \subseteq \mathcal L_0$ (insieme di livello compatto) e alla **continuità** di $f$, il valore di $\bar{f}$ è **finito**.
 
 ---
 
-La condizione di compattezza sul sottoinsieme di livello iniziale è soddisfatta, ad esempio, se la *funzione obiettivo* è [[coerciva]] (vedi proposizione).
+La condizione di compattezza sul sottoinsieme di livello iniziale è soddisfatta, ad esempio, se la *funzione obiettivo* è [[coerciva]] (vedi proposizione => f coerciva se tutti insiemi di livello sono compatti).
 D’altra parte, imporre la *monotonicità* della sequenza dei valori della funzione obiettivo è relativamente semplice dal punto di vista algoritmico: ci concentreremo su questo aspetto nelle sezioni successive.
 
 Un risultato interessante della proposizione è che la sequenza dei valori di $f$ converge completamente; di conseguenza, abbiamo $f(\bar{x}) = \bar{f}$ ​ **per qualsiasi punto di accumulazione** $\bar{x}$ (cioè,==tutti i punti di accumulazione sono equivalenti in termini di valore della funzione obiettivo==). In realtà, questa proprietà si verifica immediatamente ogni volta che garantiamo un comportamento **monotono** con una funzione **limitata** inferiormente.
 
-Tuttavia, mentre l’esistenza di punti di accumulazione è un requisito minimo essenziale, non abbiamo garanzie che uno qualsiasi di questi punti **sia effettivamente significativo** (ovvero un punto stazionario) per il problema che stiamo cercando di risolvere. Questo è l’aspetto su cui ci concentreremo nella prossima sezione.
+Tuttavia, mentre l’esistenza di **punti di accumulazione** è un requisito minimo essenziale, non abbiamo garanzie che uno qualsiasi di questi punti **sia effettivamente significativo** (ovvero un punto stazionario) per il problema che stiamo cercando di risolvere. Questo è l’aspetto su cui ci concentreremo nella prossima sezione.
 #### 4.1.2 Convergenza verso la stazionarietà
 
 Ragionevolmente, vorremmo che le (sotto)sequenze convergenti discusse nella sezione precedente raggiungano asintoticamente **la condizione di stazionarietà**. Sebbene questo aspetto sia concettualmente semplice, la sua caratterizzazione formale richiede attenzione. In particolare, la proprietà di stazionarietà può essere raggiunta in modi diversi, elencati e descritti di seguito in ordine decrescente di forza:
 
 1. $\lim_{k \to \infty} x^k = \bar{x}$  con $\nabla f(\bar{x}) = 0$: **l'intera sequenza** converge a un punto limite che **è un punto stazionario**.
-2. $\lim_{k \to \infty} \|\nabla f(x^k)\| = 0$ : l'**intera** sequenza dei **gradienti** tende a zero; per continuità della norma e di $\nabla f$, **tutti i punti di accumulazione** della sequenza $\{x^k\}$ **sono punti stazionari**.
-3. $\lim \inf_{k \to \infty} \|\nabla f(x^k)\| = 0$ : i gradienti **tendono a zero** almeno **lungo una sottosequenza**; se $\{x^k\}$ non ha sottosequenze divergenti, **almeno un punto** di accumulazione è stazionario.
+2. $\lim_{k \to \infty} \|\nabla f(x^k)\| = 0$ : l'**intera** sequenza dei **gradienti** tende a zero; per **continuità** della norma e di $\nabla f$, **tutti i punti di accumulazione** della sequenza $\{x^k\}$ **sono punti stazionari**.
+3. $\lim \inf_{k \to \infty} \|\nabla f(x^k)\| = 0$ : i gradienti **tendono a zero** almeno **lungo una sottosequenza**; se $\{x^k\}$ non ha sottosequenze divergenti, **almeno un punto** di accumulazione è **stazionario**.
 
 Il significato di queste tre situazioni può essere meglio compreso attraverso il seguente esempio.
 
@@ -498,27 +567,28 @@ Consideriamo la funzione di una variabile $f(x)$ con derivata (gradiente) data d
 2. **Caso 2:** La sequenza dei valori  $$\{x^k\} = \{0.9, 2.1, 0.99, 2.01, 0.999, 2.001, 0.9999, 2.0001, 0.99999, 2.00001, \dots\}$$corrisponde alla sequenza dei gradienti:
 		$\{\nabla f(x^k)\} = \{0.11, 0.11, 0.0101, 0.0101, 0.001001,$ $0.001001, 0.00010001, 0.00010001, 0.0000100001, 0.0000100001, \dots\}$ 
 
-	che chiaramente converge a zero. 
+	che chiaramente **converge a zero**. 
 	I due punti di accumulazione di $\{x_k\}$, 1 e 2, sono entrambi punti stazionari.
     
 3. **Caso 3:** La sequenza dei valori  $$\{x_k\} = \{0.9, 3.1, 0.99, 3.01, 0.999, 3.001, 0.9999, 3.0001, 0.99999, 3.00001, \dots\}$$   che corrisponde alla sequenza dei gradienti: 
 		$\{\nabla f(x_k)\} = \{0.11, 2.31, 0.0101, 2.0301, 0.001001,$
 		$2.003001, 0.00010001, 2.00030001, 0.0000100001, 2.0000300001, \dots\}$
 
-	In questo caso, la sequenza $\{|\nabla f(x_k)|\}$ presenta due sotto-sequenze convergenti: una con limite 0 e l'altra con limite 2. **Il limite inferiore** della norma del gradiente è dunque 0, e esiste una sotto-sequenza di $\{x_k\}$ (quella che converge a 1) che **tende a un punto stazionario**.
+	In questo caso, la sequenza $\{|\nabla f(x_k)|\}$ presenta **due sotto-sequenze convergenti**: una con limite 0 e l'altra con limite 2. **Il limite inferiore** della norma del gradiente è dunque 0, e esiste una sotto-sequenza di $\{x_k\}$ (quella che converge a 1) che **tende a un punto stazionario**.
 
 ---
 
-Nella pratica, garantire la terza condizione  ($\lim \inf_{k \to \infty} \|\nabla f(x_k)\| = 0$) è sufficiente per scopi computazionali. Infatti, grazie alla continuità del gradiente, sappiamo che se $\lim \inf_{k \to \infty} \|\nabla f(x_k)\| = 0$, allora, per ogni $\epsilon > 0$, esiste un $k$ sufficientemente grande tale che $\|\nabla f(x_k)\| \leq \epsilon$. Questo è importante perché garantisce che, se utilizziamo una condizione di arresto basata su una **soglia** per la norma del gradiente, l'algoritmo si fermerà certamente in tempo finito, fornendoci una soluzione con il **livello di accuratezza desiderato**.
+Nella pratica, garantire la terza condizione  ($\lim \inf_{k \to \infty} \|\nabla f(x_k)\| = 0$) è **sufficiente per scopi computazionali**. Infatti, grazie alla continuità del gradiente, sappiamo che se $\lim \inf_{k \to \infty} \|\nabla f(x_k)\| = 0$, allora, per ogni $\epsilon > 0$, ==esiste un $k$ sufficientemente grande== tale che $\|\nabla f(x_k)\| \leq \epsilon$. 
+Questo è importante perché garantisce che, se utilizziamo una condizione di arresto basata su una **soglia** per la norma del gradiente, l'algoritmo si fermerà certamente in tempo finito, fornendoci una soluzione con il **livello di accuratezza desiderato**.
 
 ![[Pasted image 20251224200111.png]]
 
-Garantire questo tipo di convergenza per la sequenza di soluzioni non è affatto banale; ad esempio, ==la semplice decrescita della funzione obiettivo non è sufficiente per garantire la convergenza ai punti stazionari==, nemmeno nel caso **convesso**, come dimostra il seguente esempio.
+Garantire questo tipo di convergenza per la sequenza di soluzioni non è affatto banale; ad esempio, ==la semplice decrescita della funzione obiettivo non è sufficiente per garantire la convergenza ai **punti stazionari**==, nemmeno nel caso **convesso**, come dimostra il seguente esempio.
 
 ---
 **Esempio 4.1.2** 
 Consideriamo il problema:	$$\min_{x \in \mathbb{R}} f(x) = \frac{1}{2}x^2$$
-dove la funzione obiettivo è continua e **strettamente convessa**, raggiungendo il valore minimo $f^\star = 0$ nell'unico ottimizzatore globale $x^\star = 0$.
+dove la funzione obiettivo è **continua** e **strettamente convessa**, raggiungendo il valore minimo $f^\star = 0$ nell'unico ottimizzatore globale $x^\star = 0$.
 
 Supponiamo ora di considerare il processo iterativo che parte da $x^0 = 2$ e segue la regola di aggiornamento:	$$x^{k+1} = x^k - \alpha_k f'(x^k) = x^k - \alpha_k x^k$$
 dove il passo $\alpha_k$ è definito come: $$\alpha_k = \frac{x^k - 1}{2x^k}$$
@@ -528,7 +598,7 @@ cioè $x^{k+1}$ appartiene all'intervallo $(1, 2]$, e inoltre:$$x^{k+1} = \frac{
 Ricordando che $x^0 = 2$, per induzione abbiamo che $x^{k+1} < x^k$​ vale per l'intera sequenza $\{x^k\}$.
 
 Pertanto, possiamo osservare che:	$$f(x^{k+1}) = \frac{1}{2}(x^{k+1})^2 < \frac{1}{2}(x^k)^2 = f(x^k)$$
-Abbiamo così definito una sequenza **strettamente decrescente** su una funzione fortemente **convessa**; tuttavia, l'intera sequenza è contenuta nell'intervallo $(1, 2]$ e quindi **non può convergere** all'unico punto stazionario 0: in realtà, converge a 1.
+Abbiamo così definito una sequenza **strettamente decrescente** su una funzione fortemente **convessa**; tuttavia, ==l'intera sequenza è contenuta nell'intervallo $(1, 2]$== e quindi **non può convergere** all'unico punto stazionario 0: in realtà, converge a 1.
 
 ![[Pasted image 20251224201702.png]]
 	
@@ -544,7 +614,7 @@ Tuttavia, i risultati di convergenza locale sono talvolta di interesse, poiché 
 
 #### 4.1.3 Efficienza dei Solver di Ottimizzazione
 
-Nello studio degli algoritmi di ottimizzazione, l'interesse principale risiede nell'analisi delle proprietà di convergenza locale e globale verso i punti stazionari: è fondamentale garantire che producano effettivamente soluzioni candidate ottimali. Tuttavia, anche ==l'efficienza degli algoritmi è cruciale==, specialmente nei contesti su larga scala, dove i tempi di calcolo possono essere molto lunghi.
+Nello studio degli algoritmi di ottimizzazione, l'interesse principale risiede nell'analisi delle **proprietà di convergenza** locale e globale verso i punti stazionari: è fondamentale garantire che producano effettivamente soluzioni candidate ottimali. Tuttavia, anche ==l'efficienza degli algoritmi è cruciale==, specialmente nei contesti su *larga scala*, dove i tempi di calcolo possono essere molto lunghi.
 
 L'efficienza degli algoritmi di ottimizzazione è solitamente studiata in termini di due concetti principali: **tasso di convergenza** e **complessità**.
 
@@ -584,21 +654,23 @@ Date due funzioni $\phi$ e $g$, diciamo che $\phi(n) = O(g(n))$ se esistono una 
 ![[Pasted image 20251225212045.png]]
 **Da un certo punto** in poi la funzione starà **sotto** una certa funzione.
 
+---
+
 Focalizzandoci sul numero di iterazioni come metrica di costo, possiamo definire quanto segue.
 
 **Definizione 4.1.3** 
-Sia $\{x^k\}$ la sequenza generata da un metodo iterativo, con $f(x^k) \to f^\star$ Diciamo che l'algoritmo ha un *errore di iterazione* di $O(h(k))$ se:$$f(x^k) - f^\star = O(h(k))$$
-**equivalentemente**, dato un livello di accuratezza $\epsilon$, l'algoritmo ha una ***complessità di iterazione*** di $O(q(\epsilon))$ se: $$\min \{k \, | \, f(x^k) - f^\star \leq \epsilon\} =  \mathcal{O}(q(\epsilon))$$
+Sia $\{x^k\}$ la sequenza generata da un metodo iterativo, con $f(x^k) \to f^\star$ Diciamo che l'algoritmo ha un *errore di iterazione* di $\mathcal O(h(k))$ se:$$f(x^k) - f^\star = \mathcal O(h(k))$$
+**equivalentemente**, dato un livello di accuratezza $\epsilon$, l'algoritmo ha una ***complessità di iterazione*** di $\mathcal O(q(\epsilon))$ se: $$\min \{k \, | \, f(x^k) - f^\star \leq \epsilon\} =  \mathcal{O}(q(\epsilon))$$
 => minimo $k$ per cui sto sotto ad una determinata soglia...
 
 Invece di considerare il divario $f(x^k) - f^\star$, possiamo utilizzare la quantità $\|\nabla f(x^k)\|$, cioè la **distanza dalla stazionarietà**. Questa scelta è particolarmente utile per analizzare algoritmi in contesti non convessi, dove il gradiente viene spesso utilizzato come **criterio di arresto**.
 
 **Il caso peggiore** sull'errore di iterazione ci fornisce una misura della dimensione dell'**errore** che possiamo aspettarci dopo ==un dato numero di iterazioni.==
-D'altro canto, il *bound* sulla complessità di iterazione ci offre **una stima del tempo necessario** affinché l'algoritmo produca **una soluzione accettabile** nel caso peggiore.
+D'altro canto, il *bound* sulla **complessità di iterazione** ci offre **una stima del tempo necessario** affinché l'algoritmo produca **una soluzione accettabile** nel caso peggiore.
 
 ---
 
-Esiste una corrispondenza fra *errore di iterazione* e *complessità d'iterazione*: se un algoritmo ha un **errore di iterazione** $O(\frac{1}{k})$ e vogliamo ottenere una soluzione accurata **entro** $\epsilon$, cioè $f(x^k) - f^\star \leq \epsilon$
+Esiste una corrispondenza fra *errore di iterazione* e *complessità d'iterazione*: se un algoritmo ha un **errore di iterazione** $\mathcal O(\frac{1}{k})$ e vogliamo ottenere una soluzione accurata **entro** $\epsilon$, cioè $f(x^k) - f^\star \leq \epsilon$
 nel **caso peggiore** abbiamo: $$f(x^k) - f^\star \leq \frac{C}{k}$$
 Quindi, $\frac{C}{k} \leq \epsilon$, garantiamo che la soluzione è accettabile per ogni $$k \geq \frac{C}{\epsilon}$$Concludiamo che il **primo** $k$ tale che $f(x^k) - f^\star \leq \epsilon$ è $\mathcal{O}(\frac{1}{\epsilon})$, cioè la **complessità di iterazione** è: $$ \mathcal{O}\left(\frac{1}{\epsilon}\right)$$
 In modo analogo, se l'**errore di iterazione** è $\mathcal{O}(\frac{1}{k^2})$, la **complessità di iterazione** diventa $\mathcal{O}\left(\frac{1}{\sqrt{\epsilon}}\right)$.
@@ -612,7 +684,7 @@ Possiamo interpretare $\log\left(\frac{1}{\epsilon}\right)$ come il numero di ci
 Questo può essere messo in relazione con la **velocità di convergenza** (tasso di convergenza):
 - Per una **complessità di iterazione** di $\mathcal{O}(\frac{1}{\epsilon})$ corrisponde un **Errore di Iterazione** $\mathcal{O}(\frac{1}{k})$,  che può essere sostituito nella definizione di tasso di convergenza(prendo i due errori di iterazione **prima e dopo**): $$\lim_{k \to \infty} \frac{f(x^{k+1}) - f^\star}{f(x^k) - f^\star} = \lim_{k \to \infty} \mathcal{O} ( \frac{k}{k+1}) = 1$$equivale a un tasso di convergenza **sublineare**! (occhio ai denominatori che salgono)
 
-- **Errore di Iterazione** $\mathcal{O}(\rho^k)$ con $\rho < 1$: Questo porta a un **tasso di convergenza lineare** e una **complessità di iterazione** di $\mathcal{O}(\log\left(\frac{1}{\epsilon}\right))$. In questo caso, il costo per aggiungere una nuova cifra di accuratezza cresce in modo **polinomiale**, risultando molto più favorevole rispetto al caso sublineare.
+- **Errore di Iterazione** $\mathcal{O}(\rho^k)$ con $\rho < 1$: Questo porta a un **tasso di convergenza lineare** e una **complessità di iterazione** di $\mathcal{O}(\log\left(\frac{1}{\epsilon}\right))$. In questo caso, il costo per aggiungere una nuova cifra di accuratezza cresce in modo **polinomiale**, risultando molto più favorevole rispetto al caso *sublineare*.
 
 - Un errore del tipo $\mathcal{O}(\rho^2)$, con $\rho < 1,$ porta a un tasso di convergenza **superlineare** e a una complessità di iterazione di $\mathcal{O}(\log(\log(\frac{1}{\epsilon})))$. In questo caso, ==il costo per aggiungere una nuova cifra di accuratezza è **costante**==, il che rappresenta una proprietà **altamente desiderabile**.
 
@@ -648,12 +720,12 @@ La classe principale di algoritmi di interesse è quella dei metodi basati su **
 
 Per algoritmi di questo tipo, ==è fondamentale scegliere con attenzione sia la direzione $d_k$ che il passo $\alpha_k$== per garantire le **proprietà di convergenza**.
 
-Consideriamo ancora l'Esempio 4.1.2 In quel caso specifico, la sequenza $\{x^k\}$ è definita secondo una regola della forma: $x^{k+1} = x^k - \alpha_k \nabla f(x_k)$, dove la **direzione di ricerca,** $-\nabla f(x^k)$, è l'unica direzione di **discesa** in $x^k$. Il fallimento della convergenza è quindi attribuibile a una **scelta errata** del passo $\alpha_k$.(e dal punto iniziale scelto)
+Consideriamo ancora l'Esempio 4.1.2 In quel caso specifico, la sequenza $\{x^k\}$ è definita secondo una regola della forma: $x^{k+1} = x^k - \alpha_k \nabla f(x_k)$, dove la **direzione di ricerca,** $-\nabla f(x^k)$, è l'unica direzione di **discesa** in $x^k$. Il fallimento della convergenza è quindi attribuibile a una **scelta errata** del passo $\alpha_k$.(o del punto iniziale scelto)
 
 Vediamo ora un esempio in cui i problemi di convergenza sono chiaramente legati **alla scelta della direzione.**
 
 ---
-**Esempio 4.3.**
+**Esempio 4.2.1.** (skipped)
 Consideriamo il seguente problema di ottimizzazione:$$\min f(x, y, z) = \frac{1}{2}x^2 + \frac{1}{2}y^2 - xy + \frac{1}{2}z^2$$
 partendo dal punto iniziale $(x^0,y^0,z^0)=(1,1,1)$.
 Supponiamo che le direzioni di ricerca $d_k$ siano definite come segue:$$d_k = \begin{cases} (-\nabla_x f(x^k, y^k, z^k), 0, 0)^T = (-x^k + \frac{1}{2}y^k, 0, 0)^T & \text{se } k \text{ è pari}, \\ (0, -\nabla_y f(x^k, y^k, z^k), 0)^T = (0, -y^k + \frac{1}{2}x^k, 0)^T & \text{se } k \text{ è dispari}. \end{cases}$$
@@ -694,42 +766,43 @@ Data una direzione di discesa $d_k$, ovvero una direzione che soddisfa:	$\nabla 
 Il nostro obiettivo è trovare un **passo** $\alpha_k$ lungo questa direzione da utilizzare nella regola di aggiornamento: $x^{k+1} = x^k + \alpha_k d_k$, in modo tale ==che la funzione obiettivo **decresca** in modo appropriato.==
 ##### Line search esatta
 
-Un'idea potrebbe essere quella di scegliere il **miglior passo possibile lungo la direzione**, cioè quello che porta al **minimo valore** di f (sempre lungo la direzione scelta). In questo caso, stiamo eseguendo una *line search esatta* lungo $d_k$, formalmente caratterizzata come segue:$$\alpha_k \in \arg\min_{\alpha > 0} \phi(\alpha) = f(x^k + \alpha d_k)$$
-dove la funzione $\phi$ della variabile scalare $\alpha$ descrive l'*evoluzione della funzione obiettivo* lungo la **direzione di ricerca**. Questa operazione è stata eseguita, ad esempio, nell'Esempio 4.2.1 ed è rappresentata nella Figura 4a.
+Un'idea potrebbe essere quella di scegliere il **miglior passo possibile lungo la direzione**, cioè quello che porta al **minimo valore** di f (sempre lungo la direzione scelta). In questo caso, stiamo eseguendo una *line search esatta* lungo $d_k$, formalmente caratterizzata come segue:$$\alpha_k \in \arg\min_{\alpha > 0} \varphi(\alpha) = f(x^k + \alpha d_k)$$
+dove la funzione $\varphi$ della variabile scalare $\alpha$ descrive l'*evoluzione della funzione obiettivo* lungo la **direzione di ricerca**. Questa operazione è stata eseguita, ad esempio, nell'Esempio 4.2.1 ed è rappresentata nella Figura 4a.
 
 ![[Pasted image 20250209161303.png]]
 
 Questa strategia è "generalmente fattibile" per problemi di **ottimizzazione quadratica** strettamente convessi della forma(4.2): $$\min_x f(x) = \frac{1}{2}x^T Qx + c^T x, \quad Q \succ 0$$
-Utilizzando lo [[sviluppo di Taylor]] di secondo ordine per $f(x_k + \alpha d_k)$ (che è esatto per funzioni quadratiche) e ricordando che $\nabla^2 f(x_k) = Q$, otteniamo:$$\phi(\alpha) = f(x^k + \alpha d_k) = f(x^k) + \alpha \nabla f(x^k)^T d_k + \frac{\alpha^2}{2} d_k^T Q d_k$$
+Utilizzando lo [[sviluppo di Taylor]] di **secondo ordine** per $f(x_k + \alpha d_k)$ (che è esatto per funzioni quadratiche) e ricordando che $\nabla^2 f(x_k) = Q$, otteniamo:$$\varphi(\alpha) = f(x^k + \alpha d_k) = f(x^k) + \alpha \nabla f(x^k)^T d_k + \frac{\alpha^2}{2} d_k^T Q d_k$$
 Questa è una **parabola convessa** (il coefficiente quadratico $d_k^T Q d_k$ è positivo grazie alla definitezza positiva di Q). 
 
-Il passo ottimale può essere calcolato **annullando la derivata prima**:$$0 = \phi'(\alpha) = \nabla f(x^k)^T d_k + \alpha d_k^T Q d_k$$
-che si risolve con: $$\alpha_k = -\frac{\nabla f(x^k)^T d_k}{d_k^T Q d_k}$$
+Il passo ottimale può essere calcolato **annullando la derivata prima**:$$0 = \varphi'(\alpha) = \nabla f(x^k)^T d_k + \alpha d_k^T Q d_k$$
+che si risolve con: 
+$$\alpha_k = -\frac{\nabla f(x^k)^T d_k}{d_k^T Q d_k}$$
 
 ---
 
 Tuttavia, eccetto per casi molto particolari come questo, le line search esatte devono essere evitate per due motivi principali:
 
-1. **Costo computazionale:** Per una funzione generica f, il **minimizzatore** di $\phi(\alpha)$ potrebbe **non essere disponibile** in forma chiusa, e trovarlo potrebbe richiedere l'uso di un risolutore, ==con un costo computazionale non trascurabile==. Inoltre, la direzione $d_k$ potrebbe **non essere sufficientemente buona** da giustificare un'esplorazione così precisa.
+1. **Costo computazionale:** Per una funzione generica f, il **minimizzatore** di $\varphi(\alpha)$ potrebbe **non essere disponibile** in forma chiusa, e trovarlo potrebbe richiedere l'**uso di un risolutore**, ==con un costo computazionale non trascurabile==. Inoltre, la direzione $d_k$ potrebbe **non essere sufficientemente buona** da giustificare un'esplorazione così precisa.
     
-2. **Caso non convesso:** Nel caso **non convesso**, non possiamo nemmeno verificare se un passo sia **globalmente ottimale** per la direzione di ricerca. (In quanto non sappiamo nemmeno se il passo ottenuto sia il migliore globalmente )
+2. **Caso non convesso:** Nel caso **non convesso**, non possiamo nemmeno verificare se un passo sia **globalmente ottimale** per la direzione di ricerca. (In quanto non sappiamo nemmeno se il passo ottenuto sia il migliore globalmente)
     
 ##### Line Search Approssimata
 
 Queste considerazioni motivano l'interesse per le tecniche di **line search approssimate**. 
 Questa classe di metodi per la selezione del passo si pone l'obiettivo di identificare un valore $\alpha_k$ che garantisca una ==diminuzione della funzione obiettivo==, ovvero un **decremento significativo** rispetto allo stato attuale **della soluzione**: $f(x^k + \alpha_k d_k) < f(x^k)$
 
-La condizione di sufficiente decremento più utilizzata è la **Condizione di *Armijo***(4.3), che richiede:$$f(x^k + \alpha_k d_k) \leq f(x^k) + \gamma \alpha_k \nabla f(x^k)^T d_k, \space \text{con} \space \gamma \in (0, 1)$$
+La condizione di sufficiente decremento più utilizzata è la **Condizione di *Armijo***, che richiede:$$f(x^k + \alpha_k d_k) \leq f(x^k) + \gamma \alpha_k \nabla f(x^k)^T d_k, \space \text{con} \space \gamma \in (0, 1)\tag{4.3}$$
 In pratica, questa condizione chiede di selezionare un passo $\alpha_k$ in modo che la funzione obiettivo decresca ==almeno quanto un modello lineare== con una pendenza più "dolce" rispetto al modello tangente (vedi Figura 4b).
 
 Analizzando i termini:
-- Il termine a sinistra $\phi(\alpha)$ rappresenta ==la funzione obiettivo lungo la direzione di ricerca== $d_k$.
+- Il termine a sinistra $\varphi(\alpha)$ rappresenta ==la funzione obiettivo lungo la direzione di ricerca== $d_k$.
 - Il termine $f(x^k) = \phi(0)$ è il *valore corrente* della **funzione obiettivo**.
-- Il termine $\nabla f(x^k)^T d_k$, se guardiamo bene è la derivata di $\phi(\alpha)$, per $\alpha = 0$, per la regola della catena abbiamo $$\phi'(\alpha) = \nabla f(x^k + \alpha d_k)^T d_k, \space \phi'(0) = \nabla f(x^k)^Td_k$$
-Dunque, per $\gamma = 1$, la parte destra rappresenta **la retta tangente al grafico** di $\phi(\alpha)$ in $\alpha = 0$ Più in generale possiamo scrivere la condizione come: $$\phi(\alpha) \leq \phi(0) + \gamma \phi'(0)\alpha$$che, per **direzioni di discesa**, rappresenta una ==linea con un trend iniziale di discesa==.
+- Il termine $\nabla f(x^k)^T d_k$, se guardiamo bene è la derivata di $\varphi(\alpha)$, per $\alpha = 0$, per la regola della catena abbiamo $$\varphi'(\alpha) = \nabla f(x^k + \alpha d_k)^T d_k, \space \varphi'(0) = \nabla f(x^k)^Td_k$$
+Dunque, per $\gamma = 1$, la parte destra rappresenta **la retta tangente al grafico** di $\varphi(\alpha)$ in $\alpha = 0$ Più in generale possiamo scrivere la condizione come: $$\varphi(\alpha) \leq \varphi(0) + \gamma \varphi'(0)\alpha$$che, per **direzioni di discesa**, rappresenta una ==linea con un trend iniziale di discesa==.
 
-Per valori di $\gamma \in (0, 1)$, otteniamo rette che passano per $(0, \phi(0) = f(x^k))$ con una pendenza **più dolce** rispetto alla tangente.
-Quindi la condizione di Armijo ci chiede di trovare **un passo** tale che la **funzione** $\phi(\alpha)$(lungo la direzione scelta) ==si trovi sotto la linea risultante== (vedi figura 4b)
+Per valori di $\gamma \in (0, 1)$, otteniamo rette che passano per $(0, \varphi(0) = f(x^k))$ con una pendenza **più dolce** rispetto alla tangente.
+Quindi la condizione di Armijo ci chiede di trovare **un passo** tale che la **funzione** $\varphi(\alpha)$(lungo la direzione scelta) ==si trovi sotto la linea risultante== (vedi figura 4b)
 
 ---
 
@@ -741,13 +814,13 @@ L'idea è intuitiva:
 3. Se la condizione è **soddisfatta**, il passo viene **accettato**.
 4. Altrimenti, **si riduce il valore** del passo moltiplicandolo per un **fattore** $\delta \in (0, 1)$ (*passo di backtrack*) e si ripete il controllo.
 
-Possiamo caratterizzare questa procedura da un semplice pseudocodice (algoritmo 1) oppure riassumere con la seguente formula:$$\alpha_k = \max_{j=0,1,...} \{\delta^j\Delta_0 \space | \space \phi(\delta^j\Delta_0) \leq \phi(0) + \gamma \delta^j\Delta_0\phi'(0)\}$$con $\delta \in (0,1)$ e $\Delta_0 > 0$ 
+Possiamo caratterizzare questa procedura da un semplice pseudocodice (algoritmo 1) oppure riassumere con la seguente formula:$$\alpha_k = \max_{j=0,1,...} \{\delta^j\Delta_0 \space | \space \varphi(\delta^j\Delta_0) \leq \varphi(0) + \gamma \delta^j\Delta_0\varphi'(0)\}$$con $\delta \in (0,1)$ e $\Delta_0 > 0$ 
 
 ---
 **Algoritmo 1: Line search di Armijo:**
 
 **Input:**
-- $x_k \in \mathbb{R}^n, d_k \in \mathbb{R}^n \space \text{tc} \space \nabla f(x_k)^T d_k < 0$,
+- $x^k \in \mathbb{R}^n, d_k \in \mathbb{R}^n \space \text{tc} \space \nabla f(x^k)^T d_k < 0$,
 - $\Delta_0 > 0, \gamma \in (0, 1), \delta \in (0, 1)$.
 
 **Procedura:**
@@ -798,7 +871,6 @@ Per evitare questo tipo di comportamento, richiediamo che la direzione di ricerc
 **Definizione 4.2.1: Direzioni Correlate al Gradiente**
 
 Sia $\{x^k, d_k\}$ la sequenza generata da un **algoritmo iterativo** della forma: $x^{k+1} = x^k + \alpha_k d_k$.
-
 Diciamo che la sequenza $\{d_k\}$ delle direzioni è ***correlata al gradiente*** rispetto a $\{x^k\}$ se esistono **due costanti** $c_1, c_2 > 0$ tali che, per ogni k=0,1,… valgano le seguenti condizioni:
 - Prima:$$\|d_k\| \leq c_1 \|\nabla f(x^k)\|$$
 - Seconda:$$\nabla f(x^k)^T d_k \leq -c_2 \|\nabla f(x^k)\|^2$$
@@ -810,7 +882,7 @@ Interpretiamo ora le due condizioni:
 
 ---
 
-Denotiamo con $\theta(v_1, v_2)$ **l'angolo tra due vettori** $v_1$ e $v_2$. Combinando le due condizioni della Definizione 4.2.1, otteniamo:$$\cos \theta(d_k, -\nabla f(x_k)) = \frac{-\nabla f(x_k)^T d_k}{\|d_k\| \|\nabla f(x_k)\|} \geq \frac{c_2 \|\nabla f(x^k)\|^2}{c_1 \|\nabla f(x_k)\|\|\nabla f(x_k)\|} = \frac{c_2}{c_1} > 0$$
+Denotiamo con $\theta(v_1, v_2)$ **l'angolo tra due vettori** $v_1$ e $v_2$. Combinando le due condizioni della Definizione 4.2.1, otteniamo:$$\cos \theta(d_k, -\nabla f(x^k)) = \frac{-\nabla f(x^k)^T d_k}{\|d_k\| \|\nabla f(x^k)\|} \geq \frac{c_2 \|\nabla f(x^k)\|^2}{c_1 \|\nabla f(x^k)\|\|\nabla f(x^k)\|} = \frac{c_2}{c_1} > 0$$
 Questa relazione garantisce che l'**angolo** tra la **direzione di ricerca e il gradiente negativo** **rimanga inferiore** o **uguale** a $90^\circ$ e sia sempre **maggiore di zero**. In questo modo, evitiamo che ==le due direzioni diventino asintoticamente ortogonali==, come osservato nell'Esempio 4.2.1
 
 Quali sono quindi le direzioni *gradient related*?
@@ -821,22 +893,22 @@ Un esempio ovvio di direzione correlata al gradiente è il **gradiente negativo 
 Un'altra _classe_ di *direzioni correlate al gradiente* è data da: $d_k = -H_k \nabla f(x^k)$,
 dove $H_k$ è una **matrice simmetrica** con opportune proprietà. In particolare, $d_k$ è certamente una *direzione di discesa* se $H_k$ è **definita positiva**, poiché: $$\nabla f(x^k)^T d_k = -\nabla f(x^k)^T H_k \nabla f(x^k) < 0$$
 Tuttavia, la sola definitezza positiva di $H_k$ non è sufficiente a garantire la correlazione al gradiente. La proprietà può essere assicurata se imponiamo che la sequenza $\{H_k\}$ soddisfi la condizione di **autovalori limitati**, cioè esistano **costanti** $c_1, c_2$ con $0 < c_2 < c_1 < \infty$ (infatti per grad related le costanti devono essere positive) tali che, per ogni $k = 0, 1, \dots$ : 	$$c_2 \leq \lambda_{\text{min}}(H_k) \leq \lambda_{\text{max}}(H_k) \leq c_1$$
-Sotto questa assunzione, possiamo dimostrare che per ogni k (Ricorda Prop 1.2.3 di [[definita positiva]] ):$$\|d_k\| = \|H_k \nabla f(x_k)\| \leq \lambda_{\text{max}}(H_k) \|\nabla f(x_k)\| \leq c_1 \|\nabla f(x_k)\|$$e $$\nabla f(x_k)^T d_k = -\nabla f(x_k)^T H_k \nabla f(x_k) \leq -\lambda_{\text{min}}(H_k) \|\nabla f(x_k)\|^2 \leq -c_2 \|\nabla f(x_k)\|^2$$
-
+Sotto questa assunzione, possiamo dimostrare che per ogni k (Ricorda Prop 1.2.3 di [[definita positiva]] ):$$\|d_k\| = \|H_k \nabla f(x^k)\| \leq \lambda_{\text{max}}(H_k) \|\nabla f(x^k)\| \leq c_1 \|\nabla f(x_k)\|$$e 
+$$\nabla f(x^k)^T d_k = -\nabla f(x^k)^T H_k \nabla f(x^k) \leq -\lambda_{\text{min}}(H_k) \|\nabla f(x^k)\|^2 \leq -c_2 \|\nabla f(x^k)\|^2$$
 ---
 
-Questa condizione (gradient related) sarà particolarmente utile nella discussione di alcune classi importanti di algoritmi, dove la correlazione tra direzione e gradiente è fondamentale per garantire proprietà di convergenza e stabilità.
+Questa condizione (gradient related) sarà particolarmente utile nella discussione di alcune classi importanti di algoritmi, dove la **correlazione tra direzione e gradiente** è fondamentale per garantire proprietà di convergenza e stabilità.
 #### 4.2.3 Risultati di Convergenza
 
 In questa sezione forniamo i risultati generali di convergenza per i metodi di discesa basati su **line search**. Cominciamo con il risultato di **convergenza globale**. (level hard)
 
 ---
-##### **Proposizione 4.2.2: Convergenza Globale**
+##### Proposizione 4.2.2: Convergenza Globale
 
 Sia $f$ una funzione [[continuamente differenziabile]], e sia $\{x^k, d_k\}$ la sequenza generata da un algoritmo iterativo della forma: $x^{k+1} = x^k + \alpha_k d_k$, supponendo che:
 - il passo $\alpha_k$ sia ottenuto tramite **l'algoritmo di Armijo** (Algoritmo 1) per ogni $k$,
-- la sequenza delle direzioni $\{d_k\}$ sia **correlata al gradiente** rispetto a $\{x_k\}$. 
-- Inoltre, supponiamo che l'insieme di livello: $L_0 = \{x \in \mathbb{R}^n \, | \, f(x) \leq f(x^0)\}$ sia [[compatto]]. 
+- la sequenza delle direzioni $\{d_k\}$ sia **correlata al gradiente** rispetto a $\{x^k\}$. 
+- Inoltre, supponiamo che l'insieme di livello: $\mathcal L_0 = \{x \in \mathbb{R}^n \, | \, f(x) \leq f(x^0)\}$ sia [[compatto]]. 
 
 Allora, la sequenza $\{x^k\}$ ammette **punti di accumulazione**, e ==ogni punto di accumulazione $\bar{x}$ è un punto stazionario==, cioè: $\nabla f(\bar{x}) = 0$. 
 
@@ -844,7 +916,7 @@ Allora, la sequenza $\{x^k\}$ ammette **punti di accumulazione**, e ==ogni punto
 **Dimostrazione**
 
 Per ogni $k = 0, 1, \dots$, poiché la *condizione di Armijo* è **soddisfatta** e ricordando la condizione di *correlazione al gradiente*, abbiamo:$$f(x^{k+1}) = f(x^k + \alpha_k d_k) \leq f(x^k) + \gamma \alpha_k \nabla f(x^k)^T d_k \leq f(x^k) - \gamma c_2 \alpha_k \|\nabla f(x^k)\|^2 < f(x^k). \tag{5}$$ 
-La sequenza $\{f(x^k)\}$ è quindi **monotona decrescente** (tolgo infatti una **quantità positiva**) e, grazie alla compattezza di $L_0$ e alla Proposizione 4.1.1 (quella sui punti di acc. in un insieme di livello compatto), la sequenza $\{x^k\}$ ammette **punti limite**, tutti appartenenti a $L_0$. Inoltre, $\{f(x^k)\}$ **converge a un valore finito** $f^*$, e abbiamo: $$\lim_{k \to \infty} f(x^{k+1}) - f(x^k) = 0. \tag{6}$$
+La sequenza $\{f(x^k)\}$ è quindi **monotona decrescente** (tolgo infatti una **quantità positiva**) e, grazie alla compattezza di $\mathcal L_0$ e alla Proposizione 4.1.1 (quella sui punti di acc. in un insieme di livello compatto), la sequenza $\{x^k\}$ ammette **punti limite**, tutti appartenenti a $\mathcal L_0$. Inoltre, $\{f(x^k)\}$ **converge a un valore finito** $f^*$, e abbiamo: $$\lim_{k \to \infty} f(x^{k+1}) - f(x^k) = 0. \tag{6}$$
 Sia $\bar{x}$ uno di questi *punti limite*, cioè esiste $K \subseteq \{0, 1, \dots\}$ tale che:$$\lim_{k \in K, \, k \to \infty} x^k = \bar{x}$$
 **Supponiamo per assurdo** che $\bar{x}$ **non sia un punto stazionario**, cioè che $\|\nabla f(\bar{x})\| = \nu > 0$. Riscrivendo l'equazione (5), otteniamo: $$f(x^{k+1}) - f(x^k) \leq \gamma \alpha_k \nabla f(x^k)^T d_k \leq - \gamma c_2 \alpha_k ||\nabla f(x^k)||^2 \leq 0$$
 Prendendo il limite per $k \in K, \, k \to \infty$ e ricordando (6), abbiamo: $$0 \leq \lim_{k \in K, \, k \to \infty} - \gamma c_2 \alpha_k ||\nabla f(x^k)||^2\leq 0$$
@@ -871,12 +943,10 @@ Questa è una contraddizione, completando la dimostrazione.
 Successivamente, forniamo ulteriori informazioni sulla condizione di Armijo e sull'algoritmo di ricerca della linea di *backtracking*, nel caso speciale in cui viene utilizzato in combinazione con le direzioni relative al gradiente e la funzione obiettivo ha *gradienti continui di Lipschitz*. Il primo risultato identifica un intervallo completo di stepsize sufficientemente piccolo che ==soddisfano la condizione di Armijo **in tutte le iterazioni**==
 
 ---
-##### **Proposizione 4.2.3: Intervallo dei Passi Sufficientemente Piccoli**
+##### Proposizione 4.2.3: Intervallo dei Passi Sufficientemente Piccoli
 
-Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione [[L-smooth]]. Sia $\{x^k\}$ la sequenza generata da un algoritmo iterativo della forma: $x^{k+1} = x^k + \alpha_k d_k$, supponendo che la sequenza delle direzioni di ricerca $\{d_k\}$ sia _gradient related_.
-Allora, per ogni $k$, la condizione di Armijo  è soddisfatta per ogni passo $\alpha \in [0, \Delta_{\text{low}}]$, con:$$\Delta_{\text{low}} = \frac{2 c_2 (1 - \gamma)}{L c_1^2}$$
-
----
+Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione [[L-smooth]]. Sia $\{x^k\}$ la sequenza generata da un algoritmo iterativo della forma: $x^{k+1} = x^k + \alpha_k d_k$, supponendo che la sequenza delle **direzioni di ricerca** $\{d_k\}$ sia _gradient related_.
+Allora, per ogni $k$, la condizione di Armijo  è soddisfatta per ogni passo $\alpha \in [0, \Delta_{\text{low}}]$, con:$$\Delta_{\text{low}} = \frac{2 c_2 (1 - \gamma)}{ c_1^2 L}$$
 **Dimostrazione.**
 Supponiamo che un passo $\alpha$ **non soddisfi la condizione di Armijo**, cioè:$$f(x^k + \alpha d_k) > f(x^k) + \gamma \alpha \nabla f(x^k)^T d_k$$
 Dalla _[[L-smooth]]ness_ di $f$ (vedi proposizione), sappiamo anche che: $$f(x^k + \alpha d_k) \leq f(x^k) + \alpha \nabla f(x^k)^T d_k + \frac{L \alpha^2}{2} \|d_k\|^2$$
@@ -890,16 +960,15 @@ Questo conclude la dimostrazione.
 Possiamo ora sfruttare il risultato di sopra per **settare un bound sul numero di passi** di backtrack necessari ad ogni iterazione per ottenere uno stepsize corretto.
 
 ---
-##### **Proposizione 4.2.4: Numero Massimo di Backtrack**
+##### Proposizione 4.2.4: Numero Massimo di Backtrack
 
 Sotto le stesse ipotesi della Proposizione 4.2.3, supponiamo inoltre che, **per ogni** $k$, il passo $\alpha_k$ venga ottenuto utilizzando l'**algoritmo di Armijo** con un passo iniziale $\Delta_0 > 0$. Allora, a ogni iterazione $k$, il **numero di passi di backtracking** $j_k$ è limitato superiormente da: $$j_k \leq j^* = \max(0, \left\lceil \log_{1/\delta} \frac{\Delta_0}{\Delta_{\text{low}}}\right \rceil)$$ dove $\Delta_{\text{low}} = \frac{2c_2(1 - \gamma)}{L c_1^2}$
 
- Inoltre, il **passo** $\alpha_k$ è **limitato** da:	$$\alpha_k \geq \min\{\Delta_0, \delta \Delta_{\text{low}}\}$$
+ Inoltre, il **passo** $\alpha_k$ è **limitato** da:
+$$\alpha_k \geq \min\{\Delta_0, \delta \Delta_{\text{low}}\}$$
 
----
 **Dimostrazione.**
 Sia $j^*$ il **più piccolo intero** positivo tale che	$$\delta^{j^*} \Delta_0 \leq \Delta_{\text{low}}$$
-
 Secondo la Proposizione 4.2.3, il passo $\delta^{j^*}\Delta_0$ soddisfa la condizione di Armijo per ogni $k$. Quindi, dall'algoritmo di Armijo, abbiamo $j_k \leq j^*$.  Per la definizione di $j^*$, vale anche:$$\delta^{j^*} \leq  \frac{\Delta_{\text{low}}}{\Delta_0 }$$
 e prendendo il logaritmo (in base $\delta$):	$$j^* \geq \log_{\delta} \frac{\Delta_{\text{low}}}{\Delta_0} = \log_{1/\delta} \frac{\Delta_0}{\Delta_{\text{low}}}$$
 quindi, essendo $j^*$ **il più piccolo intero** che soddisfa la disequazione di sopra vale:$$j^* = \max(0, \left \lceil \log_{1/\delta} \frac{\Delta_0}{\Delta_{\text{low}}} \right \rceil)$$
@@ -911,39 +980,30 @@ Ora consideriamo i due casi:
 
 Un'interessante conseguenza dei risultati precedenti è che, se conoscessimo le quantità $L$, $c_1$, e $c_2$, e quindi $\Delta_{\text{low}}$, **potremmo impostare direttamente il passo** $\alpha_k = \Delta_{\text{low}}$. Questo garantirebbe sempre la **soddisfazione della condizione di Armijo**, oltre alla convergenza globale descritta nella Proposizione 4.2.2, **senza necessità di effettuare backtracking**. Inoltre, il risultato di complessità successivo sarebbe anch'esso garantito.
 
-Questo giustifica il fatto che ==talvolta gli algoritmi di discesa utilizzano un passo costante==: se il valore scelto è inferiore a $\Delta_{\text{low}}$, si ottiene convergenza globale. Tuttavia, passi troppo piccoli **riducono l'efficienza** pratica degli algoritmi, dunque usare le line search è in pratica più conveniente, poiché consentono di provare **passi più aggressivi** senza compromettere le garanzie di **convergenza**.
+Questo giustifica il fatto che ==talvolta gli algoritmi di discesa utilizzano un passo costante==: se il valore scelto è inferiore a $\Delta_{\text{low}}$, si ottiene **convergenza globale**. Tuttavia, passi troppo piccoli **riducono l'efficienza** pratica degli algoritmi, dunque usare le line search è in pratica più conveniente, poiché consentono di provare **passi più *aggressivi*** senza compromettere le garanzie di **convergenza**.
 
 ---
 
 Siamo pronti a dare l'ultimo risultato di questa sezione, osservando il bound di complessità peggiore nel caso non convesso.
 
 ---
-##### **Proposizione 4.2.5: Complessità nel Caso Non Convesso**
+##### Proposizione 4.2.5: Complessità nel Caso Non Convesso
 
 Sia $f: \mathbb{R}^n \to \mathbb{R}$ una funzione [[L-smooth]]. Sia $\{x^k\}$ la sequenza generata da un algoritmo iterativo della forma: 	$x^{k+1} = x^k + \alpha_k d_k$, supponendo che la sequenza delle direzioni di ricerca $\{d_k\}$ sia _gradient related_ e che il passo $\alpha_k$ venga calcolato tramite l'**algoritmo di Armijo** con un passo iniziale $\Delta_0 > \delta \Delta_{\text{low}}$. Inoltre, supponiamo che $f$ sia **limitata inferiormente** da un valore $f^*$. 
-Allora, per ogni $\epsilon > 0$, sono necessarie al **massimo $k_{\text{max}}$ iterazioni** per produrre un iterata $x^k$ tale che: $\|\nabla f(x_k)\| \leq \epsilon$, dove:	$$k_{\text{max}} \leq \frac{f(x^0) - f^*}{\gamma c_2 \delta \Delta_{\text{low}} \epsilon^2} = O(\epsilon^{-2})$$
+Allora, per ogni $\epsilon > 0$, sono necessarie al **massimo $k_{\text{max}}$ iterazioni** per produrre un iterata $x^k$ tale che: $\|\nabla f(x^k)\| \leq \epsilon$, dove:	$$k_{\text{max}} \leq \frac{f(x^0) - f^*}{\gamma c_2 \delta \Delta_{\text{low}} \epsilon^2} = \mathcal O(\epsilon^{-2})$$
 
 Lo stesso limite di complessità $O(\epsilon^{-2})$ ==vale anche per il numero di valutazioni di funzione e gradiente==.
 
 ---
 **Dimostrazione.**
 
-Poiché la condizione di Armijo è soddisfatta a ogni iterazione e grazie alla condizione di gradient related, abbiamo per ogni $k$:	
-					$f(x^{k+1}) - f(x^k) = f(x^k + \alpha_k d_k) - f(x^k)$
-							$\leq \gamma \alpha_k \nabla f(x_k)^T d_k$
-							$\leq -\gamma c_2 \alpha_k \|\nabla f(x_k)\|^2$
-							$\leq -\gamma c_2 \delta \Delta_{\text{low}} \|\nabla f(x_k)\|^2$
-
+Poiché la condizione di Armijo è soddisfatta a ogni iterazione e grazie alla condizione di gradient related, abbiamo per ogni $k$:	$$\begin{aligned} f(x^{k+1}) - f(x^k) = f(x^k + \alpha_k d_k) - f(x^k) \\ \leq \gamma \alpha_k \nabla f(x^k)^T d_k \\ \leq -\gamma c_2 \alpha_k \|\nabla f(x^k)\|^2 \\ \leq -\gamma c_2 \delta \Delta_{\text{low}} \|\nabla f(x^k)\|^2 \end{aligned}$$
 L'ultima disuguaglianza deriva dalla Proposizione 4.2.4.
 
-Supponiamo ora che, per le prime $k_\epsilon$ iterazioni, valga $\|\nabla f(x_k)\| > \epsilon$. Poiché $f$ è limitata inferiormente da $f^*$, possiamo scrivere:
-						$f^* - f(x^0) \leq f(x^{k_\epsilon}) - f(x^0)$
-						$= \sum_{k=0}^{k^\epsilon - 1} \big(f(x^{k+1}) - f(x^k)\big)$
-						$\leq \sum_{k=0}^{k_\epsilon - 1} -\gamma c_2 \delta \Delta_{\text{low}} \|\nabla f(x^k)\|^2$.
-
+Supponiamo ora che, per le prime $k_\epsilon$ iterazioni, valga $\|\nabla f(x_k)\| > \epsilon$. Poiché $f$ è limitata inferiormente da $f^*$, possiamo scrivere:$$ \begin{aligned} f^* - f(x^0) \leq f(x^{k_\epsilon}) - f(x^0) \\ = \sum_{k=0}^{k^\epsilon - 1} \big(f(x^{k+1}) - f(x^k)\big) \\ \leq \sum_{k=0}^{k_\epsilon - 1} -\gamma c_2 \delta \Delta_{\text{low}} \|\nabla f(x^k)\|^2 \end{aligned}$$
 Sostituendo il limite inferiore $\|\nabla f(x_k)\|^2 > \epsilon^2$ (per le prime $k_\epsilon$ iterazioni):$$f^* - f(x^0) \leq -k_\epsilon \gamma c_2 \delta \Delta_{\text{low}} \epsilon^2$$
 Riordinando i termini, otteniamo:	$$k_\epsilon \leq \frac{f(x^0) - f^*}{\gamma c_2 \delta \Delta_{\text{low}} \epsilon^2}$$
-Dato che ==il gradiente viene valutato **una volta per iterazione**== e che, dalla Proposizione 4.2.4, il numero massimo di backtracking è **costante** a ogni iterazione, lo stesso limite $O(\epsilon^{-2})$ ==si applica al numero di valutazioni della funzione e del gradiente.==
+Dato che ==il gradiente viene valutato **una volta per iterazione**== e che, dalla Proposizione 4.2.4, il numero massimo di backtracking è **costante** a ogni iterazione, lo stesso limite $\mathcal O(\epsilon^{-2})$ ==si applica al numero di valutazioni della funzione e del gradiente.==
 
 ---
 
@@ -983,13 +1043,13 @@ Ora è semplice introdurre l'algoritmo archetipo per l'ottimizzazione non linear
 
 Poiché l'algoritmo soddisfa **tutti i criteri** analizzati nelle sezioni 4.2.1 e 4.2.2, possiamo applicare direttamente le proposizioni appena viste per affermare:
 - **Convergenza globale:** L'algoritmo **converge** verso un **punto stazionario** in contesti **non convessi**. (Proposizione 4.2.2)
-- **Complessità iterativa:** La complessità iterativa nel **caso peggiore** è $O\left(\frac{1}{\epsilon^2}\right)$, ==ottimale per i metodi di primo ordine==.(Proposizione 4.2.5)
-- **Valutazioni del gradiente e della funzione:** Poiché **ogni iterazione** richiede ==una sola valutazione del gradiente== e il **numero di passi** di *backtracking* è ==limitato da una quantità costante== (Proposizione 4.2.4), la **complessità** (nel caso peggiore) per le **valutazioni della funzione** è anch'essa $O\left(\frac{1}{\epsilon^2}\right)$.
+- **Complessità iterativa:** La complessità iterativa nel **caso peggiore** è $\mathcal O\left(\frac{1}{\epsilon^2}\right)$, ==ottimale per i metodi di primo ordine==.(Proposizione 4.2.5)
+- **Valutazioni del gradiente e della funzione:** Poiché **ogni iterazione** richiede ==una sola valutazione del gradiente== e il **numero di passi** di *backtracking* è ==limitato da una quantità costante== (Proposizione 4.2.4), la **complessità** (nel caso peggiore) per le **valutazioni della funzione** è anch'essa $\mathcal O\left(\frac{1}{\epsilon^2}\right)$.
 
-Analizziamo ora il **caso convesso** assumendo un passo costante $\alpha_k = \frac{1}{L}$ a ogni iterazione. Sappiamo, dalla Proposizione 4.4 (con $\gamma = 0.5$), che questo passo ==soddisfa sempre la condizione di Armijo== e sempre per Armijo conduce a risultati di convergenza globale.
+Analizziamo ora il **caso convesso** assumendo un passo costante $\alpha_k = \frac{1}{L}$ a ogni iterazione. Sappiamo, dalla Proposizione 4.2.3 (con $\gamma = 0.5$), che questo passo ==soddisfa sempre la condizione di Armijo== e sempre per Armijo conduce a risultati di convergenza globale.
 
 ---
-#### **Proposizione 4.3.1: Convergenza nel Caso Convesso**
+**Proposizione 4.3.1: Convergenza nel Caso Convesso**
 
 Sia $f$ una [[funzione convessa]] e  [[L-smooth]], e sia $\{x^k\}$ la sequenza generata dall'algoritmo di *discesa del gradiente* con **passo costante** $\alpha_k = \frac{1}{L}$.
 Supponiamo che $f^*$ sia il valore ottimale di $f$ e che $x^*$ sia un minimizzatore di $f$, cioè $f(x^*) = f^*$. Allora:$$f(x^k) - f^* \leq \frac{L \|x_0 - x^*\|^2}{2k}$$
@@ -1017,7 +1077,7 @@ Dividendo per $(k+1)$, otteniamo:	$$f(x^{k+1}) - f(x^*) \leq \frac{L}{2(k+1)} \|
 Questo rappresenta un miglioramento significativo rispetto al caso non convesso, dove la complessità è $O\left(\frac{1}{\epsilon^2}\right)$. La dipendenza lineare da $k$ o $\frac{1}{\epsilon}$ è una caratteristica fondamentale dei metodi di primo ordine ==applicati a funzioni **convesse** *lisce*==. Anche se questo rate **non è ottimale**, infatti **sublineare**, per i metodi del primo ordine nel caso convesso. Discuteremo questo aspetto successivamente.
 
 ---
-#### **Proposizione 4.3.2: Convergenza nel caso fortemente convesso**
+**Proposizione 4.3.2: Convergenza nel caso fortemente convesso**
 
 Sia $f$ una funzione [[L-smooth]] e **_fortemente convessa_** (aggiungo coercività alla convessità). Per ogni $x^0 \in \mathbb{R}^n$, l'intera sequenza $\{x^k\}$ prodotta dal metodo **di discesa del gradiente** con $\alpha_k = \frac{1}{L}$ per ogni $k$, converge al'**unico punto** di minimo globale $x^*$ di $f$ con un ==tasso di convergenza lineare== 
 (complessità di $O(log{\frac{1}{\epsilon}})$ a cui corrisponde una *iteration error* di $O(\frac{1}{2})^k)$)

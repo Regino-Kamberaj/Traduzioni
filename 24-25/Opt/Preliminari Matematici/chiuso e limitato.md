@@ -1,5 +1,8 @@
+**Definizione 1.1.3**
+Un insieme  $S \subseteq \mathcal{U}$ è aperto se, per ogni $x \in S$, esiste $\epsilon > 0$ tale che $B(x,\epsilon)$ è interamente contenuta in $S$, ovvero $B(x,\epsilon) \subseteq S$
+
 **Definizione 1.1.4**
-Un insieme $S \subseteq \mathcal{U}$ è **chiuso** se il suo complementare $\bar{S} = \mathcal{U} / S$ è un insieme *aperto*. Dove per **aperto**, si intende un insieme  $S \subseteq \mathcal{U}$ che per ogni $x \in S$, esiste $\epsilon > 0$ tale che $B(x,\epsilon)$ è interamente contenuta in $S$, ovvero $B(x,\epsilon) \subseteq S$
+Un insieme $S \subseteq \mathcal{U}$ è **chiuso** se il suo complementare $\bar{S} = \mathcal{U} / S$ è un insieme *aperto*. 
 
 **Definizione 1.1.5**
 Un insieme $S \subseteq \mathcal{U}$ è **limitato** se esiste $M > 0$ tale che, per ogni $x \in S$, $||x|| \leq M$

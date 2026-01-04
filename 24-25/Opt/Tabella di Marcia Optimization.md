@@ -300,45 +300,45 @@
 - [ ] **Revisione Finale** Completata: [  ]
 
 **Dimostrazioni da sapere:**
-- [ ] 3.0 Definizione punto ammissibile
-- [ ] 3.1 Esistenza soluzioni ottimali
-	- [ ] Proposizione 3.1.1 => Teorema di Weierstrass
-	- [ ] Proposizione 3.1.2 => Insiemi di livello compatti ammettono minimi globali
-	- [ ] Proposizione 3.1.3 => funzioni coercive ammettono punti di minimo
-- [ ] 3.2 Condizioni di ottimalità
-	- [ ] 3.2.1 Definizione ottimo locale
-	- [ ] Proposizione 3.2.1 => funzione convessa su insieme convessa => minimi locali sono anche globali
-	- [ ] Proposizione 3.2.2 => su funzioni strettamente convesse minimo globale **unico**
-	- [ ] Proposizione 3.2.3 => su funzioni fortemente convesse minimo globale unico su tutto $\mathbb{R}^n$
-	- [ ] 3.2.2 Definizione direzione di discesa
-	- [ ] Proposizione 3.2.4 => in minimo locale ? non esistono direzioni di discesa
-	- [ ] Proposizione 3.2.5 => definizione direzione di discesa per funzioni continuamente differenziabili
-	- [ ] Proposizione 3.2.6 => per funzioni cont. diff non esistono direzioni di discesa in minimizzatori locali
-	- [ ] Proposizione 3.2.7 => condizione necessaria di ottimalità prim ordine (minimizzatori locali hanno gradiente nullo) + definzione 3.2.3 punto stazionario
-	- [ ] Proposizione 3.2.8 => se funzione convessa oltre a cont. diff, direzione di discesa neccesariamente (e suff) ha derivata direzionale negativa
-	- [ ] Proposizione 3.2.9 => Condizione necessaria e sufficiente del prim ordine per problemi convessi => minimizzatori globali a gradiente nullo
-	- [ ] Definizione 3.2.4 => direzione di curvatura negativa
-	- [ ] Proposizione 3.2.10 => direzioni di discesa hanno curvature negative
-	- [ ] Proposizione 3.2.11 => Condizione necessaria ottimalità secondo ordine => minimi locali hanno gradiente nullo e hessiana definita semipositiva
-	- [ ] Proposizione 3.2.12 => Condizione sufficiente di ottimalità locale del secondo ordine => punti stazionari se hanno hessiana definita pos o hessiana semidefinita positiva (in un intorno del punto), allora sono anche minimi locali
-- [ ] 4.1 Metodi iterativi di ottimizzazione
-	- [ ] regole aggiornamento
-	- [ ] Proposizione 4.1.1 => sequenze definite su insiemi di livello compatti hanno punti di accumulazione e la sequenza (se definita monotona decrescente) converge ad un valore finito
-	- [ ] Convergenza globale vs convergenza locale => esempi su convergenza => non sempre si converge a punti stazionari
-	- [ ] Definizione 4.1.1 => tasso di convergenza (sub vs linear vs super)
-	- [ ] Definizione 4.1.2 => notazione o grande
-	- [ ] Definizione 4.1.3 => errore di iterazione/complessità d'iterazione
-- [ ] 4.2 Metodi di discesa basati su line search
-	- [ ] Occhio a scelta direzione e passo => servono condizioni più forti su direzioni di discesa
-	- [ ] esempio line search esatta
-	- [ ] Algoritmo 1 => line search di armijo per ricerca passo ottimale (condizione di armijo)
-	- [ ] Proposizione 4.2.1 => line search termina in un numero di iterazioni
-	- [ ] Definizione 4.2.1 => direzioni gradient related 
-	- [ ] Proposizione 4.2.2 => convergenza globale a punti stazionari con passo scelto tramite armijo e direzioni gradient related ( e sequenza su insieme di livello compatto)
-	- [ ] Proposizione 4.2.3 => per funzioni l-smooth, passi ottenuti da armijo sono limitati da valore fisso
-	- [ ] Proposizione 4.2.4 => numero massimo di backtrack
-	- [ ] Proposizione 4.2.5 => complessità nel caso non convesso => sublineare $O(\epsilon^{-2})$ (valido anche per valutazione funzioni)
-	- [ ] Proposizione 4.2.6 => limite per metodi del primo ordine
+- [x] 3.0 Definizione punto di ottimo
+- [x] 3.1 Esistenza soluzioni ottimali
+	- [x] Proposizione 3.1.1 => Teorema di Weierstrass
+	- [x] Proposizione 3.1.2 => Insiemi di livello compatti ammettono minimi globali
+	- [x] Proposizione 3.1.3 => funzioni coercive ammettono punti di minimo
+- [x] 3.2 Condizioni di ottimalità
+	- [x] 3.2.1 Definizione ottimo locale
+	- [x] Proposizione 3.2.1 => funzione convessa su insieme convessa => minimi locali sono anche globali
+	- [x] Proposizione 3.2.2 => su funzioni strettamente convesse minimo globale **unico**
+	- [x] Proposizione 3.2.3 => su funzioni fortemente convesse minimo globale unico su tutto $\mathbb{R}^n$
+	- [x] 3.2.2 Definizione direzione di discesa
+	- [x] Proposizione 3.2.4 => in minimo locale ? non esistono direzioni di discesa
+	- [x] Proposizione 3.2.5 => definizione direzione di discesa per funzioni continuamente differenziabili
+	- [x] Proposizione 3.2.6 => per funzioni cont. diff non esistono direzioni di discesa in minimizzatori locali
+	- [x] Proposizione 3.2.7 => condizione necessaria di ottimalità prim ordine (minimizzatori locali hanno gradiente nullo) + definzione 3.2.3 punto stazionario
+	- [x] Proposizione 3.2.8 => se funzione convessa oltre a cont. diff, direzione di discesa neccesariamente (e suff) ha derivata direzionale negativa
+	- [x] Proposizione 3.2.9 => Condizione necessaria e sufficiente del prim ordine per problemi convessi => minimizzatori globali a gradiente nullo
+	- [x] Definizione 3.2.4 => direzione di curvatura negativa
+	- [x] Proposizione 3.2.10 => direzioni di discesa hanno curvature negative
+	- [x] Proposizione 3.2.11 => Condizione **necessaria** ottimalità secondo ordine => minimi locali hanno gradiente nullo e hessiana semidefinita positiva
+	- [x] Proposizione 3.2.12 => Condizione **sufficiente** di ottimalità locale del secondo ordine => punti stazionari se hanno hessiana definita pos o hessiana semidefinita positiva (in un intorno del punto), allora sono anche minimi locali
+- [x] 4.1 Metodi iterativi di ottimizzazione
+	- [x] regole aggiornamento
+	- [x] Proposizione 4.1.1 => sequenze definite su insiemi di livello compatti hanno punti di accumulazione e la sequenza (se definita monotona decrescente) converge ad un valore finito
+	- [x] Convergenza globale vs convergenza locale => esempi su convergenza => non sempre si converge a punti stazionari
+	- [x] Definizione 4.1.1 => tasso di convergenza (sub vs linear vs super)
+	- [x] Definizione 4.1.2 => notazione o grande
+	- [x] Definizione 4.1.3 => errore di iterazione/complessità d'iterazione
+- [x] 4.2 Metodi di discesa basati su line search
+	- [x] Occhio a scelta direzione e passo => servono condizioni più forti su direzioni di discesa
+	- [x] esempio line search esatta
+	- [x] Algoritmo 1 => line search di armijo per ricerca passo ottimale (condizione di armijo)
+	- [x] Proposizione 4.2.1 => line search termina in un numero di iterazioni
+	- [x] Definizione 4.2.1 => direzioni gradient related 
+	- [x] Proposizione 4.2.2 => convergenza globale a punti stazionari con passo scelto tramite armijo e direzioni gradient related ( e sequenza su insieme di livello compatto)
+	- [x] Proposizione 4.2.3 => per funzioni l-smooth, passi ottenuti da armijo sono limitati da valore fisso
+	- [x] Proposizione 4.2.4 => numero massimo di backtrack
+	- [x] Proposizione 4.2.5 => complessità nel caso non convesso => sublineare $O(\epsilon^{-2})$ (valido anche per valutazione funzioni)
+	- [x] Proposizione 4.2.6 => limite per metodi del primo ordine
 - [ ] 4.3 Metodo di discesa del gradiente 
 	- [ ] algoritmo 2 => line search con direzione antigrad e passo con algoritmo 1 => riottengo stesse proprietà viste prima => convergenza globale - complessità ottimale per metodi non convessi (sublineare) - num passi backtrack limitato => complessità per valutazione funzione rimane la stessa
 	- [ ] Proposizione 4.3.1 => nel caso convesso (e con passo costante), ottengo complessità migliore (ma non ottimale => ancora sublineare) $O(\frac{1}{\epsilon})$ 
