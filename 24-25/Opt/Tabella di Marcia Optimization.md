@@ -340,13 +340,12 @@
 	- [x] Proposizione 4.2.5 => complessità nel caso non convesso => sublineare $O(\epsilon^{-2})$ (valido anche per valutazione funzioni)
 	- [x] Proposizione 4.2.6 => limite per metodi del primo ordine
 - [ ] 4.3 Metodo di discesa del gradiente 
-	- [ ] algoritmo 2 => line search con direzione antigrad e passo con algoritmo 1 => riottengo stesse proprietà viste prima => convergenza globale - complessità ottimale per metodi non convessi (sublineare) - num passi backtrack limitato => complessità per valutazione funzione rimane la stessa
-	- [ ] Proposizione 4.3.1 => nel caso convesso (e con passo costante), ottengo complessità migliore (ma non ottimale => ancora sublineare) $O(\frac{1}{\epsilon})$ 
-
-	- [ ] Proposizione 4.3.2 => nel caso fortemente convesso (e con passo costante), ottengo complessità  ancora migliore (stavolta lineare) $O(log{\frac{1}{\epsilon}})$ => convergo ad un unico punto di minimo globale 
+	- [x] algoritmo 2 => line search con direzione antigrad e passo con algoritmo 1 => riottengo stesse proprietà viste prima => convergenza globale - complessità ottimale per metodi non convessi (sublineare) - num passi backtrack limitato => complessità per valutazione funzione rimane la stessa
+	- [x] Proposizione 4.3.1 => nel caso convesso (e con passo costante), ottengo complessità migliore (ma non ottimale => ancora sublineare) $O(\frac{1}{\epsilon})$ 
+	- [x] Proposizione 4.3.2 => nel caso fortemente convesso (e con passo costante), ottengo complessità  ancora migliore (stavolta lineare) $O(log{\frac{1}{\epsilon}})$ => convergo ad un **unico punto** di minimo globale 
 - [ ] 4.4 Metodi del gradiente con momento
-	- [ ] 4.4.1 Heavy ball (metodo locale) => tasso di conv lineare ma locale (e convesso)
-	- [ ] Metodo del gradiente accelerato di nesterov => proposizione 4.4.1 => bound su funzioni convesse del primo ordine $O\left(\frac{1}{\sqrt{\epsilon}}\right)$  (meglio di grad descent) => ovvero solo con info dei gradienti
+	- [x] 4.4.1 Heavy ball (metodo locale) => tasso di conv lineare ma locale (e convesso)
+	- [x] Metodo del gradiente accelerato di nesterov => proposizione 4.4.1 => bound su funzioni convesse del primo ordine $O\left(\frac{1}{\sqrt{\epsilon}}\right)$  (meglio di grad descent) => ovvero solo con info dei gradienti
 	- [ ] 4.4.2 gradiente coniugato => perdo direzioni grad related e quindi garanzie di convergenza => metodi per recuperare garanzie di conv. => salvaguardie e restart => torno a conv globale e complessità di grad descent
 	- [ ] Line search di wolfe => condizione più forte di armijo => wolfe deboli vs wolfe forti => limito passo andando a guardare dove derivata direzionale soddisfa condizioni => aumentano costi computazionali => ma garantisco direzioni di discesa e convergenza globale
 	- [ ] Caso quadrato + definzioni direzioni mutuamente coniugate

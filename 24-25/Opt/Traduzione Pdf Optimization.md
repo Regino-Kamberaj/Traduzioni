@@ -1058,17 +1058,16 @@ Ovvero, l'algoritmo ha un **errore d'iterazione** di $O(\frac{1}{k})$ e una **co
 ---
 **Dimostrazione.**
 
-Dalla **_continuità Lipschitziana_** (Proposizione 1.8 di [[L-smooth]]) del gradiente $\nabla f(x)$ e considerando $x^{k+1} = x^k + \alpha_k d_k$, abbiamo che: $$f(x^{k+1}) \leq f(x^k) + \alpha_k \nabla f(x^k)^T d_k + \frac{\alpha_k^2 L}{2} \|d_k\|^2$$
+Dalla **_continuità Lipschitziana_** (Proposizione 1.3.6 di [[L-smooth]]) del gradiente $\nabla f(x)$ e considerando $x^{k+1} = x^k + \alpha_k d_k$, abbiamo che: $$f(x^{k+1}) \leq f(x^k) + \alpha_k \nabla f(x^k)^T d_k + \frac{\alpha_k^2 L}{2} \|d_k\|^2$$
 Sostituendo $d_k = -\nabla f(x^k)$ e $\alpha_k = \frac{1}{L}$:$$f(x^{k+1}) \leq f(x^k) - \frac{1}{L} \|\nabla f(x^k)\|^2 + \frac{1}{2L^2} L \|\nabla f(x^k)\|^2$$
 Semplificando:	$$f(x^{k+1}) \leq f(x^k) - \frac{1}{2L} \|\nabla f(x^k)\|^2. \tag{9}$$
-Dalla **convessità** di $f$ (Proposizione 1.3.8 delle [[funzione convessa]]), possiamo scrivere:$$f(x^*) \geq f(x^k) + \nabla f(x^k)^T (x^* - x^k)$$
-Riordinando:	$$f(x^k) \leq f(x^*) + \nabla f(x^k)^T (x^k - x^*)$$
+Dalla **convessità** di $f$ (Proposizione 1.3.8 delle [[funzione convessa]]), possiamo scrivere:$$f(x^*) \geq f(x^k) + \nabla f(x^k)^T (x^* - x^k)$$Riordinando:	$$f(x^k) \leq f(x^*) + \nabla f(x^k)^T (x^k - x^*)$$
 Combinando la relazione sopra con l'equazione (9): $$f(x^{k+1}) \leq f(x^*) + \nabla f(x^k)^T (x^k - x^*) - \frac{1}{2L} \|\nabla f(x^k)\|^2$$
 Da questa, possiamo ottenere (da qui in poi iniziano le magie):	$$f(x^{k+1}) - f(x^*) \leq \frac{L}{2} (\frac{2}{L} \nabla f(x^k)^T (x^k - x^*) - \frac{1}{L^2} \|\nabla f(x^k)\|^2)$$$$= \frac{L}{2} (\frac{2}{L} \nabla f(x^k)^T (x^k - x^*) - \frac{1}{L^2} \|\nabla f(x^k)\|^2 + \|(x^k - x^*)\|^2 - \|(x^k - x^*)\|^2)$$
 Utilizziamo **l'identità vettoriale** $\|a\|^2 + \|b\|^2 - 2a^T b = \|a - b\|^2$, per riscrivere:	$$\frac{1}{L^2} \|\nabla f(x^k)\|^2 - \frac{2}{L} \nabla f(x^k)^T (x^k - x^*) + \|x^k - x^*\|^2 = \|(x^k - x^*) - \frac{1}{L}\nabla f(x^k)\|^2$$
 Pertanto, abbiamo:	$$f(x^{k+1}) - f(x^*) \leq \frac{L}{2}( - \|x^{k} - x^* - \frac{1}{L}\nabla f(x^k) \|^2 + \|x^k - x^*\|^2)$$$$= \frac{L}{2}( - \|x^{k+1} - x^*\|^2 + \|x^k - x^*\|^2)= \frac{L}{2}(\|x^k - x^*\|^2 - \|x^{k+1} - x^*\|^2)$$ dove "si è sostituito" per il passo e la direzione ipotizzati nella regola di aggiornamento
 
-**Sommiamo entrambi i membri su** $t = 0, \dots, k$ (e con un po' di passaggi risulta): $$\sum_{t=0}^k \big(f(x^{t+1}) - f(x^*)\big) \leq \frac{L}{2} \big(\|x^0 - x^*\|^2 - \|x^{k+1} - x^*\|^2\big) \leq \frac{L}{2} \|x^0-x^*\|^2$$
+**Sommiamo entrambi i membri su** $t = 0, \dots, k$ (e con un po' di passaggi risulta): $$\begin{aligned}\sum_{t=0}^k \big(f(x^{t+1}) - f(x^*)\big) \leq \sum_{t=0}^k \frac{L}{2} \big(\|x^t - x^*\|^2 - \|x^{t+1} - x^*\|^2\big) \\ =  \frac{L}{2} \big(\|x^0 - x^*\|^2 - \|x^{k+1} - x^*\|^2\big) \leq \frac{L}{2} \|x^0-x^*\|^2 \end{aligned}$$
 Poiché $\{f(x^k)\}$ è decrescente (tolgo una quantità negativa), vale $f(x^{t+1}) \geq f(x^{k+1})$ per ogni $t = 0, \dots, k$, e quindi:$$(k+1) \big(f(x^{k+1}) - f(x^*)\big) \leq \frac{L}{2} \|x^0 - x^*\|^2$$
 Dividendo per $(k+1)$, otteniamo:	$$f(x^{k+1}) - f(x^*) \leq \frac{L}{2(k+1)} \|x^0 - x^*\|^2$$
 
@@ -1088,11 +1087,11 @@ Possiamo vedere che c'è una differenza significativa di performance quando andi
 
 ### 4.4 Metodi del Gradiente con Momento
 
-Il semplice metodo di discesa del gradiente non è particolarmente efficiente in teoria (tasso di convergenza comunque **sublineare**) e, in pratica, risulta spesso **poco performante**. Per questo motivo, si studiano approcci che mirano a migliorare la **velocità** del metodo di discesa del gradiente.
+Il semplice metodo di discesa del gradiente non è particolarmente efficiente in teoria (tasso di convergenza comunque **sublineare** => anche nel caso convesso...) e, in pratica, risulta spesso **poco performante**. Per questo motivo, si studiano approcci che mirano a migliorare la **velocità** del metodo di discesa del gradiente.
 
 Iniziamo con metodi di primo ordine che sfruttano ==informazioni dalle iterazioni precedenti== per determinare la **direzione di ricerca** $d_k$ e **il passo** $\alpha_k$ nell'iterazione corrente.
 
-Questi metodi, noti come **metodi del gradiente con momento**, sono descritti dalla seguente regola di aggiornamento generica:	$$x^{k+1} = x^k - \alpha_k \nabla f(x^k) + \beta_k (x^k - x^{k-1}) \tag{10}$$
+Questi metodi, noti come **metodi del gradiente *con momento***, sono descritti dalla seguente regola di aggiornamento generica:	$$x^{k+1} = x^k - \alpha_k \nabla f(x^k) + \beta_k (x^k - x^{k-1}) \tag{10}$$
 dove: 
 - $\alpha_k > 0$ è il **passo**,
 - $\beta_k > 0$ è il ***peso del momento***.
@@ -1123,7 +1122,7 @@ In linea di principio, i valori dei parametri dovrebbero essere scelti in base a
 Per il metodo della *palla pesante*, i risultati di **convergenza locale** sono stati dimostrati **nel caso convesso**. In particolare, nel caso di **funzioni quadratiche strettamente convesse**, i valori ottimali dei parametri $\alpha_k$ e $\beta_k$ possono essere calcolati in **forma chiusa**.
 Con questa scelta ottimale dei parametri, si ottiene un *tasso di convergenza* **lineare locale** ==con costanti migliori rispetto al metodo di discesa del gradiente **standard**== (occhio però è locale!!). Questo risultato può essere generalizzato sotto ipotesi di doppia continuità e differenziabilità, gradiente _lipschitz-continuo_ e convessità forte.
 
-Sebbene il **metodo della palla pesante** abbia dimostrato buone proprietà di **accelerazione** in diversi contesti, è stato mostrato con diversi esempi che il metodo ==potrebbe **non convergere** anche sotto forti assunzioni di regolarità==. Inoltre la convergenza del metodo **nel caso non convesso** rimane un problema aperto, in parte perché la struttura dell'algoritmo non rientra nel quadro analizzato nella Sezione 4.2.2 (ovvero $d_k$ **non è una direzione gradient-related**).
+Sebbene il **metodo della palla pesante** abbia dimostrato buone proprietà di **accelerazione** in diversi contesti, è stato mostrato con diversi esempi che il metodo ==potrebbe **non convergere** anche sotto forti assunzioni di **regolarità**==. Inoltre la convergenza del metodo **nel caso non convesso** rimane un problema aperto, in parte perché la struttura dell'algoritmo non rientra nel quadro analizzato nella Sezione 4.2.2 (ovvero $d_k$ **non è una direzione gradient-related**).
 
 ---
 
@@ -1138,9 +1137,10 @@ Qui:
 - Il movimento è quindi effettuato in base alla **velocità calcolata nella posizione corrente**.
 
 ---
+![[Pasted image 20250210215505.png]]
 ##### Metodo del Gradiente Accelerato di Nesterov
 
-Il **metodo di Nesterov Accelerated Gradient (NAG)** può essere visto come una ==variante del metodo della palla pesante==. La regola di aggiornamento dell'algoritmo di Nesterov è data da: $$\begin{cases}v^{k+1} = \beta_k v^k - \alpha_k \nabla f(x^k + \beta_k v^k), \\ x^{k+1} = x^k + v^{k+1} \end{cases}$$
+Il **metodo di Nesterov Accelerated Gradient (NAG)** può essere visto come una ==variante del metodo della palla pesante==. La regola di aggiornamento dell'algoritmo di *Nesterov* è data da: $$\begin{cases}v^{k+1} = \beta_k v^k - \alpha_k \nabla f(x^k + \beta_k v^k), \\ x^{k+1} = x^k + v^{k+1} \end{cases}$$
 L'unica differenza rispetto al metodo della palla pesante risiede nel fatto che:
 - Il **gradiente** è calcolato ==nel punto che sarebbe ottenuto ripetendo l'ultimo movimento== ($x_k + \beta_k v_k$), **piuttosto che nel punto corrente** $x_k$.
 
@@ -1152,22 +1152,20 @@ La regola di aggiornamento può essere riscritta in forma equivalente come: $$\b
 - Il passo $\alpha_k$ può essere calcolato tramite una **line search di Armijo**.
 - Il parametro del momento $\beta_k$ segue uno schema definito a priori.
 
-![[Pasted image 20250210215505.png]]
-
 ---
 **Proposizione 4.4.1**
 
-Sia $f$ una funzione _L-smooth_ e **convessa** e sia $\{x^k\}$ la sequenza prodotta con il **metodo del gradiente accelerato di Nesterov**. Supponiamo che $f^*$ sia il valore ottimale di $f$. Allora: $$f(x_k) - f^* = O\left(\frac{1}{k^2}\right)$$
-ovvero, l'algoritmo ha un **errore iterativo** di $O\left(\frac{1}{k^2}\right)$ e una **complessità iterativa** di $O\left(\frac{1}{\sqrt{\epsilon}}\right)$ Questi bound **sono stretti** per il caso di metodi del primo ordine su *funzioni convesse*. (l'ultimo caso visto prima era per funzioni fortemente convesse)
+Sia $f$ una funzione _L-smooth_ e **convessa** e sia $\{x^k\}$ la sequenza prodotta con il **metodo del gradiente accelerato di Nesterov**. Supponiamo che $f^*$ sia il valore ottimale di $f$. Allora: $$f(x^k) - f^* = \mathcal O\left(\frac{1}{k^2}\right)$$
+ovvero, l'algoritmo ha un **errore iterativo** di $\mathcal O\left(\frac{1}{k^2}\right)$ e una **complessità iterativa** di $\mathcal O\left(\frac{1}{\sqrt{\epsilon}}\right)$ Questi bound **sono stretti** per il caso di metodi del primo ordine su *funzioni convesse*. (l'ultimo caso visto prima era per funzioni fortemente convesse)
 
 ---
 
-Questo risultato è significativo poiché il limite di complessità $O\left(\frac{1}{\sqrt{\epsilon}}\right)$ è stato dimostrato essere **ottimale** per i metodi di primo ordine: ==utilizzando solo informazioni sui gradienti, non è possibile ottenere complessità migliori==.
+Questo risultato è significativo poiché il limite di complessità $\mathcal O\left(\frac{1}{\sqrt{\epsilon}}\right)$ è stato dimostrato essere **ottimale** per i metodi di primo ordine: ==utilizzando solo informazioni sui gradienti, non è possibile ottenere complessità migliori==.
 Tuttavia, il tasso di convergenza rimane **sub-lineare**, anche se significativamente **più veloce** rispetto al metodo di discesa del gradiente standard.
 
-Nel caso di funzioni **fortemente convesse**, il metodo del **gradiente accelerato** ottiene la ==stessa complessità iterativa e tasso di convergenza del metodo di discesa del gradiente==, cioè $O(\rho^k)$. Tuttavia, il valore di $\rho$ è **più piccolo** rispetto a quello della discesa del gradiente, indicando un tasso di **convergenza lineare più rapido**.
+Nel caso di funzioni **fortemente convesse**, il metodo del **gradiente accelerato** ottiene la ==stessa complessità iterativa e tasso di convergenza del metodo di discesa del gradiente==, cioè $\mathcal O(\rho^k)$. Tuttavia, il valore di $\rho$ è **più piccolo** rispetto a quello della discesa del gradiente, indicando un tasso di **convergenza lineare più rapido**.
 
-#### 4.4.2 Metodi del Gradiente Coniugato
+#### 4.4.2 Metodi del Gradiente Coniugato (skipped)
 
 I **metodi del gradiente coniugato** sono descritti dalle seguenti regole di aggiornamento: $$x^{k+1} = x^k + \alpha_k d_k, \space\space   d_{k+1} = -\nabla f(x^{k+1}) + \beta_{k+1} d_k \tag{12}$$
 dove:
@@ -1186,8 +1184,8 @@ L'aggiornamento nei metodi del gradiente coniugato può essere riscritto come:$$
 che equivale a:$$x^{k+1} = x^k - \alpha_k \left( \nabla f(x^k) + \beta_k \frac{x^k - x^{k-1}}{\alpha_{k-1}}\right)$$
 Questo è esattamente un **metodo del gradiente con momento**, secondo la definizione:$$x^{k+1} = x^k - \alpha_k \nabla f(x^k) + \beta_k^* (x^k - x^{k-1})$$
 dove: $$\beta_k^* = \frac{\alpha_k}{\alpha_{k-1}}\beta_k$$
-Quindi può essere visto come un *metodo del gradiente con momentum* secondo la definizione (10).
-Sebbene, diversamente da heavy-ball,, il metodo del gradiente coniugato segua la regola di aggiornamento di line search $x^{k+1} = x^k + \alpha_k d_k$, dove $\alpha_k$ è calcolato tramite una **line search** lungo la direzione $d_k$.
+Quindi può essere visto come un *metodo del gradiente con momento* secondo la definizione (10).
+Sebbene, diversamente da heavy-ball, il metodo del gradiente coniugato segua la regola di aggiornamento di line search $x^{k+1} = x^k + \alpha_k d_k$, dove $\alpha_k$ è calcolato tramite una **line search** lungo la direzione $d_k$.
 Non possiamo garantire in generale che $d_k$ sia nè una **direzione di discesa**, né una **direzione correlata al gradiente**.
 Di conseguenza, i risultati di convergenza descritti nella Sezione 4.2.2 **non sono immediatamente applicabili.**
 
@@ -1196,28 +1194,27 @@ Per recuperare le **garanzie di convergenza**, una strategia semplice consiste n
 1. **Verifica delle condizioni correlate al gradiente (ad ogni iterazione):** Date le due costanti $c_1$ e $c_2$ se la direzione $d_k$ soddisfa le condizioni correlate al gradiente, il metodo del gradiente coniugato può procedere normalmente con una **line search di Armijo**.
 2. **Restart:** In caso contrario, l'algoritmo viene "riavviato" utilizzando una pura iterazione di **discesa del gradiente**.
 
-Questa modifica permette di applicare immediatamente i risultati di convergenza e complessità delle Proposizioni 4.2.2 e 4.2.5 => ovvero **convergenza globale** a punti stazionari e complessità di $\epsilon^{-2}$
+Questa modifica permette di applicare immediatamente i risultati di convergenza e complessità delle Proposizioni 4.2.2 e 4.2.5 => ovvero **convergenza globale** a *punti stazionari* e complessità di $\epsilon^{-2}$
 
 ---
 ##### Line Search di Wolfe per Garantire Direzioni di Discesa
 
 Un'alternativa alla strategia di salvaguardia è l'uso di una **line search più forte** di quella di Armijo, come la **line search di Wolfe**, per garantire che $d_k$ sia una **direzione di discesa**.
 
-Per assicurarsi che la direzione $d_{k+1} = - \nabla f(x^{k+1}) + \beta_{k+1}\nabla f(x^k)$ sia di discesa, la condizione:$$d_{k+1}^T \nabla f(x^{k+1}) = - \|\nabla f(x^{x+1})\|^2 + \beta_{k+1} d_k^T \nabla f(x^{k+1}) < 0$$
-deve essere soddisfatta.  
+Per assicurarsi che la direzione $d_{k+1} = - \nabla f(x^{k+1}) + \beta_{k+1}\nabla f(x^k)$ sia di discesa, la **condizione**:$$d_{k+1}^T \nabla f(x^{k+1}) = - \|\nabla f(x^{x+1})\|^2 + \beta_{k+1} d_k^T \nabla f(x^{k+1}) < 0$$deve essere soddisfatta.  
 
 Notare che sia $\nabla f(x^{k+1}) = \nabla f(x^k + \alpha_k d_k)$ che, (ad esempio, nel metodo di **Fletcher-Reeves**), $\beta_{k+1} = \frac{\|\nabla f(x_k+\alpha_kd_k)\|^2}{\|\nabla f(x_k)\|^2}$ sono funzioni di $\alpha_k$ e dunque possono essere controllate tramite una **line search.**
 
 La *line search di Wolfe* quindi punta a trovare un passo che soddisfa:
 
-1. **Condizioni di Wolfe Deboli:**$$f(x^k + \alpha_k d_k) \leq f(x^k) + \gamma \alpha_k \nabla f(x^k)^T d_k, \space \nabla f(x^k + \alpha_k d_k)^T d^k \geq \sigma \nabla f(x^k)^T d_k$$	  
+1. **Condizioni di Wolfe Deboli:**$$f(x^k + \alpha_k d_k) \leq f(x^k) + \gamma \alpha_k \nabla f(x^k)^T d_k, \space \nabla f(x^k + \alpha_k d_k)^T d_k \geq \sigma \nabla f(x^k)^T d_k$$	  
 2. **Condizioni di Wolfe Forti:** $$f(x^k + \alpha_k d_k) \leq f(x^k) + \gamma \alpha_k \nabla f(x^k)^T d_k, \space \nabla f(x^k + \alpha_k d_k)^T d_k \leq |\sigma \nabla f(x^k)^T d_k|$$
 Dove:
-- $\gamma \in (0, 1)$ controlla la **riduzione sufficiente della funzione**,
+- $\gamma \in (0, 1)$ controlla la ==riduzione sufficiente **della funzione**==,(stesso di armijo)
 - $\sigma \in (\gamma, 1)$ garantisce che la **derivata direzionale diminuisca** adeguatamente.
 
  Entrambe le condizioni richiedono che la **condizione di Armijo** sia soddisfatta (riduzione **sufficiente** della funzione obiettivo). 
- Richiedono inoltre ==che la derivata direzionale corrente sia significativamente **ridotta** al passo successivo==, assicurando che la **direzione corrente** sia stata ==**sfruttata** al massimo==, così che non sia necessario fare un secondo passo di discesa su una direzione sostanzialmente inalterata. Questo restringe l'intervallo dei passi $\alpha_k$ a valori che sono **approssimativamente stazionari** per $\phi(\alpha)$.
+ Richiedono inoltre ==che la derivata direzionale corrente sia significativamente **ridotta** al passo successivo==, assicurando che la **direzione corrente** sia stata ==**sfruttata** al massimo==, così che **non** sia necessario fare un secondo passo di discesa su una direzione sostanzialmente inalterata. Questo **restringe l'intervallo dei passi** $\alpha_k$ a valori che sono **approssimativamente stazionari** per $\varphi(\alpha)$.
 
 ![[Pasted image 20250123161650.png]]
 
@@ -1231,14 +1228,14 @@ Un passo che soddisfa le condizioni deboli o forti di Wolfe, può essere trovato
 Dal punto di vista computazionale l'uso della line search di Wolfe richiede il calcolo **sia della funzione obiettivo** sia del **gradiente** per ogni passo di prova, ==**aumentando** il costo computazionale rispetto alla sola condizione di Armijo.==
 
 Nel metodo del gradiente coniugato (ad esempio, con la regola di Fletcher-Reeves), l'uso della line search di Wolfe garantisce che la **direzione successiva** $d_{k+1}$ sia una **direzione di discesa**:$$\nabla f(x^k + \alpha_k d_k)^T d_{k+1} < 0$$Questo assicura proprietà di **convergenza globale**, rendendo i metodi del gradiente coniugato efficaci sia nei casi convessi **sia non convessi**, anche se i risultati di complessità **non sono ancora ben definiti**.
-La riduzione delle iterazioni in generale compensa l'aumento delle valutazioni del gradiente, fino a che i **parametri** della line search sono fissati in **modo corretto** e il **passo** di prova è frequentemente accettato dalla line search.
+**La riduzione delle iterazioni** in generale compensa l'aumento delle valutazioni del gradiente, fino a che i **parametri** della line search sono fissati in **modo corretto** e il **passo** di prova è **frequentemente accettato** dalla line search.
 
-Riassumendo... vuoi **convergenza globale** per gradiente coniugato usi condizioni di wolfe, arrivi globalmente allo soluzione ma ci ==spendi ancora più tempo==!
+Riassumendo... vuoi **convergenza globale** per gradiente coniugato usi condizioni di wolfe, arrivi globalmente allo soluzione ma ci ==spendi ancora più tempo==! => spendi più tempo nel calcolare passi che speri possano essere sfruttati meglio per ogni iterazione!
 
 ---
 ###### **Il caso quadratico**
 
-Infine i metodi del *gradiente coniugato* sono particolarmente efficaci per problemi di ottimizzazione **quadratici strettamente convessi** (o equivalentemente sistemi di equazione lineare). In questo caso tutte le regole definite per $\beta_k$ collassano alla stessa quantità, per qui parleremo di **un solo metodo del gradiente con gradiente coniugato**.
+Infine i metodi del *gradiente coniugato* sono particolarmente efficaci per problemi di ottimizzazione **quadratici strettamente convessi** (o equivalentemente sistemi di equazione lineare). In questo caso tutte le **regole** definite per $\beta_k$ **collassano alla stessa quantità**, per cui parleremo di **un solo metodo del gradiente con gradiente coniugato**.
 
 Il nome di *gradiente coniugato* deriva da **una proprietà delle direzioni** nei problemi quadratici della forma $\frac{1}{2} x^TQx+c^Tx$ con $Q > 0$ (matrice simmetrica definita positiva)
 
@@ -1249,16 +1246,16 @@ Un insieme di direzioni $d_0, d_1, \dots, d_{m-1} \in \mathbb{R}^n$ è detto *mu
 
 ---
 
-Essere **mutuamente coniugati** può essere dimostrato essere più forte della condizione di indipendenza lineare; dal punto di vista dell'ottimizzazione, vorremmo avere un insieme di n direzioni coniugate rispetto a Q, come detto nella seguente Proposizione:
+Essere **mutuamente coniugati** può essere dimostrato essere più forte della **condizione di indipendenza lineare**; dal punto di vista dell'ottimizzazione, vorremmo avere un insieme di n direzioni coniugate rispetto a Q, come detto nella seguente Proposizione:
 
 ---
 
 **Proposizione 4.4.2: Convergenza Finita del metodo del gradiente coniugato nel caso Quadratico**:
-Se $d_0, \dots, d_{n-1}$ sono **mutuamente coniugate** rispetto a $Q$, allora sia $x^0 \in \mathbb{R}^n$ e $x^{k+1} = x^k + \alpha_k d_k$, con $\alpha_k = -\frac{\nabla f{x_k}^Td_k}{d_k^TQd_k}$. Allora esiste $m < n -1$ tale che $x^{m+1} = x^*$  tale che $Qx^* + c = 0$ ovvero $x^*$ è il **minimo globale**.
+Se $d_0, \dots, d_{n-1}$ sono **mutuamente coniugate** rispetto a $Q$, allora sia $x^0 \in \mathbb{R}^n$ e $x^{k+1} = x^k + \alpha_k d_k$, con $\alpha_k = -\frac{\nabla f(x^k)^Td_k}{d_k^TQd_k}$. Allora esiste $m < n -1$ tale che $x^{m+1} = x^*$  tale che $Qx^* + c = 0$ ovvero $x^*$ è il **minimo globale**.
 
 ---
 
-==Per problemi quadratici, con una ricerca **esatta lungo direzioni mutuamente coniugate**, il **metodo converge** **esattamente** al minimo globale in un numero finito di passi!==
+==Per problemi quadratici, con una ricerca **esatta lungo direzioni mutuamente coniugate**, il **metodo converge** **esattamente** al minimo globale in un **numero finito di passi**!==
 
 Ora, il problema dell'algoritmo con il **metodo di direzioni coniugate** è appunto trovare **l'insieme di direzioni**. Ci dà una mano il metodo del gradiente coniugato, sia $g_k = \nabla f(x^k)$; sia $d_0 = -g_0$ allora: $$\alpha_k = \frac{-g_k^T d_k}{d_k^TQd_k} = \frac{\|g_k\|^2}{d_k^TQd_k}, \space \beta_{k+1} = \frac{\|g_{k+1}\|^2}{\|g_k\|^2}, \space d_{k+1} = -g_{k+1} + \beta_{k+1}d_k$$
 Può essere mostrato che, ad ogni iterazione la nuova iterazione $d_{k+1}$ è **mutualmente coniugata** rispetto a $d_0, ... , d_k$ 
@@ -1281,7 +1278,7 @@ Può essere mostrato che, ad ogni iterazione la nuova iterazione $d_{k+1}$ è **
 
 ---
 
-Per problemi quadratici, il metodo è ==esatto e raggiunge il minimo globale in $n$ iterazioni==.(grazie alla proposizione di sopra)
+Per problemi quadratici, il metodo è ==**esatto** e raggiunge il minimo globale in $n$ iterazioni==.(grazie alla proposizione di sopra)
 **In casi ad alta dimensione**, si introduce un criterio di arresto basato su $\|g_k\| \leq \epsilon$, rendendo il metodo iterativo. Soluzioni altamente accurate vengono spesso ottenute in **poche iterazioni**.
 
 ### 4.5 Metodo di Newton
@@ -1909,7 +1906,8 @@ La proiezione può essere caratterizzata in modo interessante secondo i seguenti
 
 *Dimostrazione.* 
 ==Per definizione, $\hat{x}=P_{S}(x)$ è la **soluzione ottimale** del problema convesso (==3.2). Per la condizione necessaria e sufficiente di ottimalità, ponendo $r(y)=\frac{1}{2}\|y-x\|^{2}$, questo equivale a affermare $$\nabla r(\hat{x})^{T}(y-\hat{x})=(\hat{x}-x)^{T}(y-\hat{x})\geq 0\text{ per tutti gli }y\in S$$
-Riorganizzando, otteniamo immediatamente $$(x-\hat{x})^{T}(y-\hat{x})\leq 0\text{ per tutti gli }y\in S. \quad \square$$
+Riorganizzando, otteniamo immediatamente 
+$$(x-\hat{x})^{T}(y-\hat{x})\leq 0\text{ per tutti gli }y\in S. \quad \square$$
 
 ---
 **Proposizione 3.2.20**
@@ -1926,7 +1924,7 @@ Sia $S\subseteq\mathbb{R}^{n}$ un **insieme convesso** chiuso e $f:\mathbb{R}^{n
 *Dimostrazione.* 
 Sia $\bar{x}$ tale che $P_{S}(\bar{x}-\nabla f(\bar{x}))=\bar{x}$. Per la **Proposizione 3.2.19** questo vale se e solo se $$
 ((\bar{x}-\nabla f(\bar{x}))-P_{S}(\bar{x}-\nabla f(\bar{x})))^{T}(y-P_{S}(\bar{x}-\nabla f(\bar{x})))\leq 0\text{ per tutti gli }y\in S$$cioè $$0\geq((\bar{x}-\nabla f(\bar{x}))-\bar{x})^{T}(y-\bar{x})=-\nabla f(\bar{x})^{T}(y-\bar{x})\text{ per tutti gli }y\in S$$
-Riorganizzando, abbiamo $$\nabla f(\bar{x})^{T}(y-\bar{x})\geq 0\text{ per tutti gli }y\in S. \quad \square$$ => vale condizione necessaria della proposizione 3.2.17 => $\bar x$ è un minimizzatore locale 
+Riorganizzando, abbiamo $$\nabla f(\bar{x})^{T}(y-\bar{x})\geq 0\text{ per tutti gli }y\in S. \quad \square$$ => vale condizione necessaria della proposizione 3.2.17-18 => $\bar x$ è un minimizzatore locale 
 
 ---
 
@@ -1939,7 +1937,7 @@ I risultati di cui sopra forniscono fondamentalmente una definizione equivalente
 
 ![[Pasted image 20251229224934.png]]
 
-Quest'ultimo modo di caratterizzare i punti stazionari è estremamente importante da un punto di vista pratico. Infatti, possiamo ora verificare direttamente la stazionarietà mediante operazioni computazionali, piuttosto che verificare che qualche proprietà valga "per tutte le $d$". Questo sarà particolarmente conveniente per tutti quegli insiemi dove l'operazione di proiezione può essere eseguita con un **piccolo costo computazionale**.
+Quest'ultimo modo di caratterizzare i punti stazionari è estremamente importante da un punto di vista pratico. Infatti, possiamo ora verificare direttamente la stazionarietà ==mediante operazioni computazionali==, piuttosto che verificare che qualche proprietà valga "per tutte le $d$". Questo sarà particolarmente conveniente per tutti quegli insiemi dove l'operazione di proiezione può essere eseguita con un **piccolo costo computazionale**.
 
 ---
 
@@ -1982,7 +1980,7 @@ Il framework algoritmico del metodo del gradiente proiettato è descritto nell'A
 1. Input: $x^0 \in S$
 2. $k=0$
 3. while $\| x^k - P_S(x^k-\nabla f(x^k))\| \not = 0$ 
-	1. calcola $\hat x^k =P_S(x^k-\nabla f(x^k)$
+	1. calcola $\hat x^k =P_S(x^k-\nabla f(x^k))$
 	2. setta $d_k = \hat x^k -x^k$
 	3. calcola $\alpha_k \in (0,1]$ lungo $d_k$ da una line search di Armijo
 	4. $x^{k+1} = x^k + \alpha_k d_k$
@@ -2013,7 +2011,7 @@ Dato il risultato di cui sopra, concludiamo che il metodo del gradiente proietta
 
 ### 5.2 Metodo di Frank-Wolfe
 
-L'algoritmo di Frank-Wolfe rappresenta un'alternativa al metodo del gradiente proiettato per generalizzare il metodo del gradiente al caso vincolato, senza ricorrere all'operatore di **proiezione** In questo caso, il punto $\hat{x}^{k}$ che definisce la direzione di ricerca è scelto come **una soluzione** (potrebbero essercene molte) del sottoproblema $$\min_{x\in S}\nabla f(x^{k})^{T}(x-x^{k})$$
+L'algoritmo di Frank-Wolfe rappresenta un'alternativa al metodo del gradiente proiettato per generalizzare il metodo del gradiente al caso vincolato, senza ricorrere all'operatore di **proiezione** In questo caso, il punto $\hat{x}^{k}$ che definisce la direzione di ricerca è scelto come **una soluzione** (potrebbero essercene molte) del sottoproblema $$\arg \min_{x\in S}\nabla f(x^{k})^{T}(x-x^{k})$$
 nel problema di cui sopra stiamo minimizzando **l'approssimazione lineare** di $f$ intorno a $x^{k}$ su tutto l'insieme ammissibile; infatti, l'approssimazione di Taylor del primo ordine della funzione obiettivo è $f(x^{k})+\nabla f(x^{k})^{T}(x-x^{k})$, con il termine $f(x^{k})$ **costante**. 
 
 Dobbiamo ora sottolineare due aspetti importanti:
@@ -2060,34 +2058,32 @@ Siccome $y$ è stato scelto in modo arbitrario dal insieme ammissibile, otteniam
 ### Condizioni di ottimalità con vincoli in forma analitica
 
 Fino a questo punto, abbiamo parlato di **insiemi ammissibili** come oggetti geometrici con una struttura nota che ci permette di trarre conclusioni sull'ammissibilità delle direzioni e sull'ottimalità dei punti, possibilmente per mezzo di operazioni ad hoc come la *proiezione*. In molti casi, tuttavia, l'insieme ammissibile $S$ è descritto da un sistema di **uguaglianze** e **disuguaglianze** (possibilmente non lineari); questo può valere sia per oggetti geometrici semplici (la sfera può essere definita come l'insieme di punti tali che $\|x\|^{2}\leq\rho$) sia per insiemi complicati che non siamo in grado di identificare altrimenti. 
-È quindi utile introdurre alcuni strumenti per gestire analiticamente i vincoli senza la necessità di "visualizzare" l'insieme ammissibile. Consideriamo quindi problemi della forma $$\begin{split}
+È quindi utile introdurre alcuni strumenti per gestire analiticamente i vincoli senza la necessità di "visualizzare" l'insieme ammissibile. Consideriamo quindi problemi della forma $$\begin{aligned}
 \min_{x\in\mathbb{R}^{n}}& f(x)\\
 \text{s.t. }& g_{i}(x)\leq 0,\quad i=1,\ldots,m\\
 & h_{i}(x)=0,\quad i=1,\ldots,p,
-\end{split} \tag{3.3}$$
-dove assumiamo che $f:\mathbb{R}^{n}\to\mathbb{R}$, $g:\mathbb{R}^{n}\to\mathbb{R}^{m}$ e $h:\mathbb{R}^{n}\to\mathbb{R}^{p}$, cioè la **funzione obiettivo** e tutte le funzioni che definiscono i **vincoli** siano continuamente differenziabili.
+\end{aligned} \tag{3.3}$$dove assumiamo che $f:\mathbb{R}^{n}\to\mathbb{R}$, $g:\mathbb{R}^{n}\to\mathbb{R}^{m}$ e $h:\mathbb{R}^{n}\to\mathbb{R}^{p}$, cioè la **funzione obiettivo** e tutte le funzioni che definiscono i **vincoli** siano continuamente differenziabili.
 
 ---
 
 Il seguente risultato ci fornisce un primo insieme di condizioni di ottimalità per problemi di questa forma.
 
 **Proposizione 3.2.23 (Condizioni di ottimalità di Fritz-John).** 
-Sia $x^{*}\in\mathbb{R}^{n}$ una **soluzione ottimale** per il problema (3.3). Allora, esistono ***moltiplicatori*** $\lambda_{0}\in\mathbb{R}$, $\lambda\in\mathbb{R}^{p}$ e $\mu\in\mathbb{R}^{m}$ tali che: $$g_{i}(x^{*})\leq 0,\quad i=1,\ldots,m, \quad\text{(ammissibilità)}$$$$h_{i}(x^{*})=0,\quad i=1,\ldots,p, \quad\text{(ammissibilità)}$$$$\mu_{i}\geq 0,\quad i=1,\ldots,m, \quad\text{(ammissibilità duale)}$$$$\lambda_{0}\geq 0 \quad\text{(ammissibilità duale)}$$$$(\lambda_{0},\lambda,\mu)\neq 0 \quad\text{(ammissibilità duale)}$$$$\mu_{i}g_{i}(x^{*})=0,\quad i=1,\ldots,m, \quad\text{(complementarità)}$$
-$$\lambda_{0}\nabla f(x^{*})+\sum_{i=1}^{m}\mu_{i}\nabla g_{i}(x^{*})+\sum_{i=1}^{p}\lambda_{i}\nabla h_{i}(x^{*})=0, \quad\text{(gradiente nullo del Lagrangiano)}$$
-
+Sia $x^{*}\in\mathbb{R}^{n}$ una **soluzione ottimale** per il problema (3.3). Allora, esistono ***moltiplicatori*** $\lambda_{0}\in\mathbb{R}$, $\lambda\in\mathbb{R}^{p}$ e $\mu\in\mathbb{R}^{m}$ tali che: $$\begin{aligned} g_{i}(x^{*})\leq 0,\quad i=1,\ldots,m, \quad\text{(ammissibilità)}\\ h_{i}(x^{*})=0,\quad i=1,\ldots,p, \quad\text{(ammissibilità)} \\ \mu_{i}\geq 0,\quad i=1,\ldots,m, \quad\text{(ammissibilità duale)}\\\lambda_{0}\geq 0 \quad\text{(ammissibilità duale)} \\ (\lambda_{0},\lambda,\mu)\neq 0 \quad\text{(ammissibilità duale)}\\ \mu_{i}g_{i}(x^{*})=0,\quad i=1,\ldots,m, \quad\text{(complementarità)}\end{aligned}$$$$\lambda_{0}\nabla f(x^{*})+\sum_{i=1}^{m}\mu_{i}\nabla g_{i}(x^{*})+\sum_{i=1}^{p}\lambda_{i}\nabla h_{i}(x^{*})=0, \quad\text{(gradiente nullo del Lagrangiano)}$$
 Le prime due condizioni di cui sopra affermano banalmente che una soluzione ottimale deve essere **ammissibile per il problema**. Le tre condizioni successive riguardano i valori dei moltiplicatori; questi sono quantità ciascuna associata a una specifica funzione: in effetti, abbiamo:
-- tanti moltiplicatori $\lambda$ quanti sono i **vincoli di uguaglianza** => p moltiplicatori
+- tanti **moltiplicatori** $\lambda$ quanti sono i **vincoli di uguaglianza** => p moltiplicatori
 - tanti $\mu$ quanti i **vincoli di disuguaglianza** => m moltiplicatori
 - un **unico** moltiplicatore $\lambda_{0}$ per la **funzione obiettivo**; 
 il significato intrinseco dei moltiplicatori sarà più chiaro tra poco.
-La *condizione di complementarità* afferma che il valore dei moltiplicatori associati ai vincoli di disuguaglianza **deve essere zero** se il vincolo **non è attivo** (ovvero non è di uguaglianza). L'ultima condizione è probabilmente la più significativa e complessa.
+La *condizione di complementarità* afferma che il valore dei moltiplicatori associati ai vincoli di disuguaglianza **deve essere zero** se il vincolo **non è attivo** (ovvero **non è di uguaglianza**). L'ultima condizione è probabilmente la più significativa e complessa.
 
-La *funzione Lagrangiana* associata a un problema di ottimizzazione vincolato della forma (3.3) è definita come$$\mathcal{L}(x,\lambda_{0},\lambda,\mu)=\lambda_{0}f(x)+\sum_{i=1}^{m}\mu_{i}g_{i}(x)+\sum_{i=1}^{p}\lambda_{i}h_{i}(x)$$
+La *funzione Lagrangiana* associata a un problema di ottimizzazione vincolato della forma (3.3) è definita come
+$$\mathcal{L}(x,\lambda_{0},\lambda,\mu)=\lambda_{0}f(x)+\sum_{i=1}^{m}\mu_{i}g_{i}(x)+\sum_{i=1}^{p}\lambda_{i}h_{i}(x)$$
 Questa funzione cattura in qualche modo l'intera essenza del problema, combinando **l'obiettivo con i vincoli**; se i moltiplicatori assumono valori adeguati, i termini $\mu_{i}g_{i}(x)$ e $\lambda_{i}h_{i}(x)$ rappresentano *penalità* per la **violazione dei vincoli**; ad esempio, assumiamo che $\mu_{i}\geq 0$; allora una violazione del vincolo $g_{i}(x)\leq 0$ si traduce in un **aumento del valore** di $\mathcal{L}$; in altre parole, $\mathcal{L}$ cerca di riassumere **quanto è buona una soluzione** bilanciando la **qualità** del valore obiettivo e le **violazioni** dei vincoli.
 
-Ora, l'ultima delle condizioni di **Fritz-John** richiede che il **gradiente di questa funzione** sia zero; ma poiché al vettore dei moltiplicatori **non è permesso essere tutto zero** (altra condizione di ammissibilità), ciò significa che i gradienti di tutte le funzioni coinvolte nel problema sono **linearmente dipendenti** all'ottimo, con l'ulteriore requisito che il coefficiente per i vincoli di disuguaglianza sia sempre **non negativo** e **esattamente zero se il vincolo non è attivo**.
+Ora, l'ultima delle condizioni di **Fritz-John** richiede che il **gradiente di questa funzione** sia zero; ma poiché al vettore dei moltiplicatori **non è permesso essere tutto zero** (altra condizione di ammissibilità), ciò significa che i gradienti di tutte le funzioni coinvolte nel problema sono **linearmente dipendenti** all'ottimo, con l'ulteriore requisito che il coefficiente per i vincoli di **disuguaglianza** sia sempre **non negativo** e **esattamente zero se il vincolo non è attivo**.
 
-Le condizioni di Fritz-John possono essere convenientemente riscritte in forma vettoriale come segue:$$g(x^{*})\leq 0,\quad h(x^{*})=0,$$$$\mu\geq 0,\quad\lambda_{0}\geq 0,\quad(\lambda_{0},\lambda,\mu)\neq 0,$$$$\mu_{i}g_{i}(x^{*})=0,\quad i=1,\ldots,m,$$$$\nabla\mathcal{L}(x^{*},\lambda_{0},\lambda,\mu)=\lambda_{0}\nabla f(x^{*})+\mu^{T}J_{g}(x^{*})+\lambda^{T}J_{h}(x^{*})=0.$$
+Le condizioni di Fritz-John possono essere convenientemente riscritte in forma vettoriale come segue:$$\begin{aligned} g(x^{*})\leq 0,\quad h(x^{*})=0,\\ \mu\geq 0,\quad\lambda_{0}\geq 0,\quad(\lambda_{0},\lambda,\mu)\neq 0, \\ \mu_{i}g_{i}(x^{*})=0,\quad i=1,\ldots,m,\end{aligned}$$$$\nabla\mathcal{L}(x^{*},\lambda_{0},\lambda,\mu)=\lambda_{0}\nabla f(x^{*})+\mu^{T}J_{g}(x^{*})+\lambda^{T}J_{h}(x^{*})=0.$$
 A questo punto, sfortunatamente dobbiamo evidenziare una grave debolezza della condizione di Fritz-John, che è messa in luce nel seguente esempio.
 
 ---
@@ -2097,6 +2093,8 @@ Consideriamo il problema$$\min_{x,y} f(x,y)\quad \text{s.t. } y^{2}=0$$
 Le condizioni di **Fritz-John** per questo problema affermano che, per una **soluzione ottimale** $(\bar{x},\bar{y})$ esiste un moltiplicatore $\lambda$ associato al **vincolo di uguaglianza** e un moltiplicatore $\lambda_{0}$ associato alla **funzione obiettivo** (non ho vincoli di disuguaglianza) tali che $$\bar{y}^{2}=0,\quad\lambda_{0}\geq 0,\quad(\lambda_{0},\lambda)\neq(0,0),$$$$\lambda_{0}\nabla f(\bar{x},\bar{y})+\lambda\left(\begin{array}{c}0\\ 2\bar{y}\end{array}\right)=0$$
 Ora, per la condizione di ammissibilità deve essere $\bar{y}=0$; abbiamo quindi $$\lambda_{0}\nabla f(\bar{x},\bar{y})=0$$
 che è soddisfatta **ponendo** $\lambda_{0}=0$. Scegliendo qualsiasi valore non nullo per $\lambda$, otteniamo che $(\bar{x},\bar{y})=(x,0)$, $\lambda_{0}=0$ e $\lambda\neq 0$ costituisce una tupla **di Fritz-John per il problema**, per **qualsiasi** valore di $x$.
+
+---
 
 La conclusione è quindi che qualsiasi punto della forma $(x,0)$ soddisfa la condizione necessaria di ottimalità. Tuttavia, se guardiamo attentamente, ci rendiamo conto che $(x,0)$ ==sono tutti punti ammissibili per il problema==. Quindi, le condizioni di Fritz-John in questo caso **non offrono alcun filtro aggiuntivo** nella ricerca della soluzione ottimale rispetto al banale suggerimento "cerca tra i punti ammissibili".
 
@@ -2109,11 +2107,13 @@ L'inganno nell'esempio di cui sopra risiede nel fatto che le condizioni FJ posso
 L'insieme di condizioni introdotto nella seguente proposizione supera precisamente questa limitazione, fornendo una caratterizzazione in cui $\lambda_{0}$ è garantito essere **diverso da zero**.
 
 **Proposizione 3.2.24 (Condizioni di ottimalità di Karush-Khun-Tucker (KKT)).**
-Sia $x^{*}\in\mathbb{R}^{n}$ una soluzione ottimale per il problema (3.3) e assumiamo che qualche condizione di regolarità valga per l'insieme ammissibile nel punto $x^{*}$. Allora, esistono moltiplicatori $\lambda\in\mathbb{R}^{p}$ e $\mu\in\mathbb{R}^{m}$ tali che:$$g_{i}(x^{*})\leq 0,\quad i=1,\ldots,m, \qquad\text{(ammissibilità)}$$$$h_{i}(x^{*})=0,\quad i=1,\ldots,p, \qquad\text{(ammissibilità)}$$$$\mu_{i}\geq 0,\quad i=1,\ldots,m, \qquad\text{(ammissibilità duale)}$$$$\mu_{i}g_{i}(x^{*})=0,\quad i=1,\ldots,m, \qquad\text{(complementarità)}$$$$\nabla f(x^{*})+\sum_{i=1}^{m}\mu_{i}\nabla g_{i}(x^{*})+\sum_{i=1}^{p}\lambda_{i}\nabla h_{i}(x^{*})=0, \qquad\text{(gradiente nullo del Lagrangiano)}$$
-Le *condizioni KKT* sono esattamente le condizioni di *Fritz-John* con la garanzia che $\lambda_{0}\neq 0$. La proposizione precedente ci fornisce una nuova condizione necessaria di ottimalità più significativa, che dice che un **punto ottimale** deve soddisfare le condizioni KKT *se l'insieme dei vincoli è localmente **regolare***; formalizzeremo brevemente questo requisito di regolarità. Il takeaway, tuttavia, è che dovremmo cercare soluzioni ottimali tra tutti i punti KKT e tutti i punti in cui l'insieme ammissibile ha un comportamento irregolare.
+Sia $x^{*}\in\mathbb{R}^{n}$ una soluzione ottimale per il problema (3.3) e assumiamo che qualche condizione di regolarità valga per l'insieme ammissibile nel punto $x^{*}$. Allora, esistono moltiplicatori $\lambda\in\mathbb{R}^{p}$ e $\mu\in\mathbb{R}^{m}$ tali che:$$\begin{aligned} g_{i}(x^{*})\leq 0,\quad i=1,\ldots,m, \quad\text{(ammissibilità)}\\ h_{i}(x^{*})=0,\quad i=1,\ldots,p, \quad\text{(ammissibilità)} \\ \mu_{i}\geq 0,\quad i=1,\ldots,m, \quad\text{(ammissibilità duale)} \\ \mu_{i}g_{i}(x^{*})=0,\quad i=1,\ldots,m, \quad\text{(complementarità)}\end{aligned}$$$$\nabla f(x^{*})+\sum_{i=1}^{m}\mu_{i}\nabla g_{i}(x^{*})+\sum_{i=1}^{p}\lambda_{i}\nabla h_{i}(x^{*})=0, \quad\text{(gradiente nullo del Lagrangiano)}$$
+Le *condizioni KKT* sono esattamente le condizioni di *Fritz-John* con la garanzia che $\lambda_{0}\neq 0$ (non ho più le condizioni di ammissibilità duale sui valori dei moltiplicatori associati alla funzione obbiettivo). La proposizione precedente ci fornisce una nuova condizione necessaria di **ottimalità** più significativa, che dice che un **punto ottimale** deve soddisfare le condizioni KKT *se l'insieme dei vincoli è localmente **regolare***; formalizzeremo brevemente questo requisito di regolarità. Il takeaway, tuttavia, è che dovremmo ==cercare soluzioni ottimali tra tutti i punti KKT== e tutti i punti in cui l'insieme ammissibile ha un comportamento irregolare.
+
+---
 
 Dobbiamo ora formalizzare cosa intendiamo per "condizione di regolarità". In termini tecnici, diciamo che i vincoli soddisfano (globalmente o localmente) una *qualificazione dei vincoli* (CQ - costrain qualification). 
-Esistono molte qualificazioni dei vincoli, alcune più forti di altre, che implicano che le KKT siano una condizione **necessaria di ottimalità** in una soluzione. Elenchiamo qui di seguito alcune delle CQ più famose e utili:
+Esistono molte *qualificazioni dei vincoli*, alcune più forti di altre, che implicano che le KKT siano una **condizione necessaria di ottimalità** in una soluzione. Elenchiamo qui di seguito alcune delle CQ più famose e utili: 
 * *Qualificazione dei vincoli lineari (LCQ)*: tutti i vincoli sono funzioni **lineari** e affini. Questa CQ, quando vale, è verificata **su tutto l'insieme ammissibile**. Nella Figura 3.16 troviamo un'intuizione del significato delle KKT in questo scenario.
 * *Qualificazione dei vincoli di indipendenza lineare (LICQ)*: questa qualificazione dei **vincoli** vale in un punto ammissibile $x$ se i **gradienti dei vincoli di uguaglianza** $\nabla h_{i}(x)$, per $i=1,\ldots,p$, e i **gradienti dei vincoli di disuguaglianza** **attivi** $\nabla g_{i}(x)$, per $i\in I(x)$, sono tutti **linearmente indipendenti**. Nota che questa condizione è relativa al **punto corrente** e non è una proprietà globale dell'insieme ammissibile.
 * *Qualificazione dei vincoli di Mangasarian-Fromowitz (MFCQ)*: questa qualificazione dei vincoli vale in un **punto ammissibile** $x$ se i gradienti dei **vincoli di uguaglianza** $\nabla h_{i}(x)$, per $i=1,\ldots,p$, sono **linearmente indipendenti** e esiste una direzione $d\in\mathbb{R}^{n}$ tale che $\nabla h_{i}(x)^{T}d=0$ per tutti gli $i=1,\ldots,p$ e $\nabla g_{i}(x)^{T}d<0$ per tutti gli $i\in I(x)$. Anche questa è chiaramente una proprietà che vale in punti individuali.
@@ -2180,13 +2180,14 @@ Tuttavia, l’*ottimizzazione matematica* è un elemento centrale per questa tec
 
 Per questa ragione, è estremamente importante per gli esperti e gli ingegneri di machine learning conoscere in dettaglio i meccanismi di questi processi; questo è particolarmente vero per essere in grado di interpretare comportamenti anomali e correggere i problemi che frequentemente si verificano nella progettazione e implementazione dei sistemi di apprendimento.
 
-Nel corso di questo capitolo, ci concentreremo sugli algoritmi di ottimizzazione più rilevanti impiegati nei compiti di **apprendimento supervisionato**. In questo tipo di problemi, affrontiamo una legge nascosta $h: \mathcal{X}\to \mathcal{Y}$ che mappa in qualche spazio di input a qualche valore di output.
+Nel corso di questo capitolo, ci concentreremo sugli algoritmi di ottimizzazione più rilevanti impiegati nei compiti di **apprendimento supervisionato**. In questo tipo di problemi, affrontiamo una **legge nascosta** $h: \mathcal{X}\to \mathcal{Y}$ che mappa in qualche spazio di input a qualche valore di output.
 
-Possiamo in generale assumere che $\mathcal X \subseteq \mathbb{R}^p$, allora gli input sono caratterizzati da valori numerici. Dall'altra parte $\mathcal{Y}$ è o l'insieme dei numeri reali  $\mathbb{R}$, in tal caso si parla di compiti di *regressione*, oppure un insieme finito come {-1;1}, in tal caso parliamo di compiti di *classificazione binaria*.
+Possiamo in generale assumere che $\mathcal X \subseteq \mathbb{R}^p$, allora gli input sono caratterizzati da valori **numerici**. Dall'altra parte $\mathcal{Y}$ è o l'insieme dei numeri reali  $\mathbb{R}$, in tal caso si parla di compiti di *regressione*, oppure un insieme finito come {-1;1}, in tal caso parliamo di compiti di *classificazione binaria*.
 
-In modo simile all'esempio visto nel capitolo 2, vogliamo costruire una funzione $\hat h$ che approssimo in modo migliore possibile il vero meccanismo di $h$ di interesse, ovvero che **catturi *l’essenza*** di $h$ e di essere in in grado di portare (nuovi) valori di $y$ dato qualsiasi input $x$. Il modello $\hat h$ apparitene alla classe $\mathcal H$ di funzioni, scelte inizialmente dall'umano e parametrizzati tramite un set di parametri, o *pesi* $w$ . In altre parole la particolare funzione $\hat h(. ; w)$ è definita in $\mathcal H$ dai valori di $w$.
+In modo simile all'esempio visto nel capitolo 2, vogliamo costruire una funzione $\hat h$ che approssima in modo migliore possibile il vero meccanismo di $h$ di interesse, ovvero che **catturi *l’essenza*** di $h$ e di essere in grado di portare (nuovi) valori di $y$, dato qualsiasi input $x$. Il modello $\hat h$ appartiene alla classe $\mathcal H$ di funzioni, scelte inizialmente dall'umano e parametrizzati tramite un set di parametri, o *pesi* $w$ . In altre parole la particolare funzione $\hat h(. ; w)$ è definita in $\mathcal H$ dai valori di $w$.
 
-Ovviamente, vorremo che l'errore commesso dal modello nello stimare l'output corretto $y$ di vettore $x$ sia piccolo. Chiaramente, è necessaria qualche metrica per misurare quantitativamente gli errori. In questo contesto, le funzioni di errore sono chiamate solitamente *loss function* $\ell : \mathbb R \text{ x } \mathcal Y \to \mathbb R$. Le loss function più comunemente usate in machine learning sono:
+Ovviamente, vorremo che l'errore commesso dal modello nello stimare l'output corretto $y$ dal vettore $x$ sia piccolo. Chiaramente, è necessaria qualche metrica per misurare quantitativamente gli errori. 
+In questo contesto, le *funzioni di errore* sono chiamate solitamente ***loss function*** $\ell : \mathbb R \text{ x } \mathcal Y \to \mathbb R$. Le loss function più comunemente usate in machine learning sono:
 - Per task di *regressione:*
 	- **Loss quadratica:** $\ell(u, y) = (u - y)^2$;
 	- **Loss assoluta $\ell_1$:** $\ell(u, y) = |u - y|$;
@@ -2199,13 +2200,12 @@ Come possiamo osservare nella figura 6.1, la log loss e la hinge loss, possono e
 
 ![[Pasted image 20251230180357.png]]
 
-Ora in principio, vorremo determinare un modello da distribuire per la nostra applicazione come il miglior modello per il fenomeno con cui abbiamo a che fare, a seconda della loss function scelta. In altre parole vorremo essere in grado di risolvere il problema di *expected risk minimization*: $$\min_{w} \mathbb E_{\mathcal X}\left [ \ell (\hat h(x;w),h(x))\right] = \int_{x\in\mathcal X} \ell(\hat h(x;w), h(x)) p(x) dx$$
-In questo modo procedere è evidentemente utopico. In pratica, non sappiamo mai come i possibili input $x$ siano distribuiti nello spazio $\mathcal X$ e come "similmente" ogni $x$ sarà al momento del test. In più non abbiamo alcuna conoscenza  sul valore di $h(x)$ per ogni $x$, altrimenti il problema sarebbe stato risolto semplicemente dall'inizio. Dunque dobbiamo spostarci verso un altro soluzione: andremo a campionare dati, dunque costruire un dataset: $$\mathcal D = \left\{ (x^{(i)}, y^{(i)}) \mid x^{(i)} \in \mathcal X, y^{(i)} \in \mathcal Y, y^{(i)} = h(x^{(i)}), i = 1, \dots, n \right\}$$
-Quello che possiamo fare è quindi, sfrutta la conoscenza di $\mathcal D$ per approssimare la vera funzione di rischio da un *rischio empirico*, ovvero facendo la media di tutti errori commessi fra i campioni del dataset. Il risultante problema di ottimizzazione è dunque chiamato *empirical risk minimization* ed è dato da $$\min_{w} L(w) = \frac{1}{n} \sum_{i=1}^{n} \ell(\hat h(x^{(i)};w), y^{(i)})\tag{6.1}$$
-Ora, essere in grado di risolvere efficacemente il problema di ottimizzazione (6.1) non è sufficiente per garantire che il modello risultante funzioni bene su dati fuori campione; si verificano spesso due situazioni sfortunate:
-
+Ora in principio, vorremo determinare un ==modello da distribuire per la nostra applicazione== come il miglior modello per il fenomeno con cui abbiamo a che fare, a seconda della loss function scelta. In altre parole vorremo essere in grado di risolvere il problema di ***expected** risk minimization*: $$\min_{w} \mathbb E_{\mathcal X}\left [ \ell (\hat h(x;w),h(x))\right] = \int_{x\in\mathcal X} \ell(\hat h(x;w), h(x)) p(x) dx$$
+In questo modo procedere è evidentemente utopico. In pratica, non sappiamo mai come i possibili input $x$ **siano distribuiti nello spazio** $\mathcal X$ (i nostri p(x)) e come "similmente" ogni $x$ sarà al momento del test. In più **non abbiamo alcuna conoscenza  sul valore** di $h(x)$ per ogni $x$, altrimenti il problema sarebbe stato risolto semplicemente dall'inizio. Dunque dobbiamo spostarci verso un altra soluzione: ==andremo a campionare dati, dunque costruire un dataset==: $$\mathcal D = \left\{ (x^{(i)}, y^{(i)}) \mid x^{(i)} \in \mathcal X, y^{(i)} \in \mathcal Y, y^{(i)} = h(x^{(i)}), i = 1, \dots, n \right\}$$
+Quello che possiamo fare è quindi, sfruttare la conoscenza di $\mathcal D$ per approssimare la vera funzione di rischio da un *rischio empirico*, ovvero ==facendo la media di tutti errori commessi fra i campioni del dataset==. Il risultante problema di ottimizzazione è dunque chiamato *empirical risk minimization* ed è dato da $$\min_{w} L(w) = \frac{1}{n} \sum_{i=1}^{n} \ell(\hat h(x^{(i)};w), y^{(i)})\tag{6.1}$$
+Ora, essere in grado di risolvere efficacemente il problema di ottimizzazione (6.1) non è sufficiente per garantire che il modello risultante funzioni bene su **dati fuori campione**; si verificano spesso due situazioni sfortunate:
 - Se la qualità dei dati è **scarsa**, o se il modello è **troppo semplice** rispetto alla distribuzione dei dati, non è possibile identificare una **buona approssimazione** della “vera” $f$, anche se il problema di ottimizzazione è risolto accuratamente; questo problema è noto come ***underfitting*** e non può essere affrontato con i soli strumenti di ottimizzazione matematica; tipo dati migliori oppure classi di modelli più forti possono essere usati per risolvere il task.
-- Il secondo problema è in qualche modo l’opposto del primo e si verifica quando il problema di ottimizzazione è risolto “troppo bene”; infatti, nel problema (6.1) viene utilizzata una funzione obiettivo "surrogata": si minimizza l’errore sul **set di addestramento,** mentre si vorrebbe minimizzare l’errore ==su tutta la distribuzione dei dati==, inclusi quelli non visti. Se il modello di apprendimento è sufficientemente espressivo (come spesso accade con i modelli parametrici di grandi dimensioni), si potrebbe ottenere una funzione di previsione molto complessa, perfettamente adattata ai dati in $\mathcal D$, ma assolutamente scorretta per i dati non visti. Questo problema è noto come ***overfitting***.
+- Il secondo problema è in qualche modo l’opposto del primo e si verifica quando il problema di ottimizzazione **è risolto “troppo bene”**; infatti, nel problema (6.1) viene utilizzata una funzione obiettivo "surrogata": si **minimizza** l’errore sul **set di addestramento,** mentre si vorrebbe minimizzare l’errore ==su tutta la distribuzione dei dati==, inclusi **quelli non visti**. Se il modello di apprendimento è sufficientemente *espressivo* (come spesso accade con i modelli parametrici di grandi dimensioni), si potrebbe ottenere una funzione di previsione molto complessa, perfettamente adattata ai dati in $\mathcal D$, ma assolutamente **scorretta** per i dati non visti. Questo problema è noto come ***overfitting***.
 
 Per mitigare parzialmente questo problema, solitamente si introduce un termine di **regolarizzazione** nel problema di addestramento per migliorare ==la capacità di generalizzazione== del modello di apprendimento. 
 Il problema di ottimizzazione risultante è:$$\min_{w} L(w) + \Omega(w) \tag{6.2}$$
@@ -2215,11 +2215,11 @@ dove il termine di regolarizzazione $\Omega(w)$ è solitamente scelto tra:
 - $\Omega(w) = \|w\|_1$ (regolarizzazione $\ell_1$);
 - $\Omega(w) = \|w\|_0$ (regolarizzazione $\ell_0$, con $\|w\|_0 = |\{i : w_i \neq 0\}|$).
 
-La **regolarizzazione quadratica** è la più utilizzata per la sua semplicità e le sue proprietà di **regolarità**. I regolarizzatori $\ell_1$ e $\ell_0$ inducono **sparsità**, con il primo che ha proprietà di regolarità molto più forti rispetto al secondo. La **sparsità** è spesso una caratteristica desiderabile nei modelli predittivi.
+La **regolarizzazione quadratica** è la più utilizzata per la sua **semplicità** e le sue proprietà di **regolarità**. I regolarizzatori $\ell_1$ e $\ell_0$ inducono **sparsità**, con il primo che ha **proprietà di regolarità** molto più forti rispetto al secondo. La **sparsità** è spesso una caratteristica desiderabile nei modelli predittivi.
 
 D’ora in avanti, non ci concentreremo sugli aspetti statistici dei modelli di apprendimento, ma considereremo solo il punto di vista della pura **ottimizzazione matematica**.
 
-Infatti, si noti che l’**aggiunta di un termine di regolarizzazione quadratico** nel problema di ottimizzazione non solo ha un valore statistico, migliorando le proprietà di generalizzazione del modello addestrato, ==ma trasforma anche funzioni obiettivo convesse in funzioni **fortemente convesse**. ==Tenendo conto della discussione sulla complessità computazionale degli algoritmi di ottimizzazione nella Sezione 4.2.3, possiamo sottolineare che la regolarizzazione dovrebbe anche **accelerare significativamente** il processo di ottimizzazione. Inoltre, il termine di regolarizzazione rende qualsiasi funzione di perdita limitata **coerciva** (anche in assenza di proprietà di convessità), ==garantendo l’esistenza di soluzioni== per il problema di ottimizzazione sottostante.
+Infatti, si noti che l’**aggiunta di un termine di regolarizzazione quadratico** nel problema di ottimizzazione non solo ha un valore statistico, migliorando le proprietà di generalizzazione del modello addestrato, ==ma trasforma anche **funzioni obiettivo convesse** in funzioni **fortemente convesse**. ==Tenendo conto della discussione sulla complessità computazionale degli algoritmi di ottimizzazione nella Sezione 4.2.3, possiamo sottolineare che la regolarizzazione dovrebbe anche **accelerare significativamente** il processo di ottimizzazione. Inoltre, il termine di regolarizzazione rende qualsiasi funzione di perdita limitata **coerciva** (anche in assenza di proprietà di convessità), ==garantendo l’**esistenza di soluzioni**== per il problema di ottimizzazione sottostante.
 
 ---
 
@@ -2229,32 +2229,32 @@ Il modello più semplice per i tasks di regressione è la **regressione lineare*
 
 ![[Pasted image 20251230215015.png]]
 
-I regressori lineari sono solitamente ottenuti risolvendo un problema di minimi quadrati **regolarizzato**: $$\min_{w \in \mathbb{R}^p} \|Aw - b\|^2 + \lambda\|w\|^2 \tag{6.3}$$
-dove $A \in \mathbb{R}^{n \times p}$ e $b \in \mathbb{R}^{n}$. Il problema è **convesso** e può essere risolto trovando una soluzione con **gradiente nullo**.
+I regressori lineari sono **solitamente ottenuti** risolvendo un problema di **minimi quadrati** + **regolarizzato**: $$\min_{w \in \mathbb{R}^p} \|Aw - b\|^2 + \lambda\|w\|^2 \tag{6.3}$$dove $A \in \mathbb{R}^{n \times p}$ e $b \in \mathbb{R}^{n}$. Il problema è **convesso** e può essere risolto trovando una soluzione con **gradiente nullo**.
+
 Definendo: $$f(w) = \|Aw - b\|^2 + \lambda\|w\|^2 = w^T A^T A w - 2w^T A^T b + \|b\|^2 + \lambda w^T w$$
-e calcolando il gradiente(rispetto ai pesi):	$$\nabla f(w) = 2A^T A w - 2A^T b + 2\lambda w$$
+e calcolando il gradiente(rispetto ai **pesi**):	$$\nabla f(w) = 2A^T A w - 2A^T b + 2\lambda w$$
 il problema si riduce alla risoluzione del seguente sistema lineare, noto come **equazione normale**:$$(A^T A + \lambda I)w = A^T b \tag{6.4}$$
 
 ---
 
 **Proposizione 6.2.1** 
-Il Problema 6.3 ammette soluzione ottimale **unica**. => vedo se hessiana definita positiva => f sarà strettamente convessa
+Il Problema 6.3 ammette **soluzione ottimale** **unica**. => vedo se hessiana **definita positiva** => f sarà **strettamente convessa**
 
 Dimostrazione.
 La **funzione obiettivo** è [[coerciva]]:$$\lim_{\|w\| \to \infty} \|Aw - b\|^2 + \lambda\|w\|^2 \geq \lim_{\|w\| \to \infty} \lambda\|w\|^2 = +\infty$$
-Per cui, dal teorema di Weierstrass, il problema ammette soluzione (proposizione 3.1.3 => f coerciva => ammette punto di minimo)
+Per cui, dal teorema di Weierstrass, il problema **ammette soluzione** (proposizione 3.1.3 => f coerciva => ammette punto di minimo)
 
-La **matrice Hessiana** della funzione obiettivo è data da:$$\nabla^2 f(w) = 2A^T A + 2\lambda I$$
+La [[matrice Hessiana]] della funzione obiettivo è data da:$$\nabla^2 f(w) = 2A^T A + 2\lambda I$$
 che è **definita positiva**, infatti per ogni $w \neq 0$ abbiamo:$$2w^TA^T A w + 2w^T(\lambda I)w = 2\|Aw\|^2 + 2\lambda \|w\|^2 \geq \lambda \|w\|^2 > 0$$
-Dunque $f(w)$ è **strettamente convessa** è il minimo (globale) **è unico**.
+Dunque $f(w)$ è **strettamente convessa** (proposizione 1.3.8 di [[funzione convessa]])è il minimo (globale) **è unico**. 
 
 ---
 
 Il sistema di equazioni (6.4) ha soluzione unica, che può essere calcolata:
-- In forma chiusa, tramite una matrice inversa $w^* = (A^TA + \lambda I)^{-1}A^Tb$. Questo approccio può essere usato se $p$ è relativamente piccolo (il costo della matrice inversa è $O(p^3)$) e se A non è mal condizionata
-- Usando un metodo iterativo, come il metodo di discesa del gradiente o quello di Newton; nei fatti il metodo del *gradiente coniugato* è spesso usato nei sistemi lineari.
+- In **forma chiusa**, tramite una matrice inversa $w^* = (A^TA + \lambda I)^{-1}A^Tb$. Questo approccio può essere usato se $p$ è relativamente piccolo (il costo della matrice inversa è $O(p^3)$) e se A non è mal condizionata
+- Usando un **metodo iterativo**, come il metodo di discesa del gradiente o quello di Newton; nei fatti il metodo del *gradiente coniugato* è spesso usato nei sistemi lineari.
 
-#### 6.2.1 Casi senza Regolarizzatore
+#### 6.2.1 Casi senza Regolarizzatore (skip)
 
 Il problema:	$$min_{w \in \mathbb{R}^p}\|Aw-b\|^2 \tag{6.5}$$
 Ha proprietà simili alla sua controparte regolarizzata $\ell_2$  e può essere risolto similmente, ma far vedere che la soluzione del problema **sempre esiste** è un po' più complicato; inoltre la soluzione **non sempre è unica**, se il **rango** della matrice **non è il massimo**, la matrice Hessiana $A^TA$ ==non è strettamente definita positiva== e $f$ non è necessariamente **coerciva** nè **strettamente convessa**.
@@ -2265,7 +2265,7 @@ Il problema (6.5) ammette sempre soluzione.
 Dimostrazione.
 Consideriamo il problema:	$$\min_z \frac{1}{2}\|b-z\|^2 \quad \text{t.c.} \quad A^Tz=0$$
 La  funzione obiettiva del problema è *coerciva* e l'insieme ammissibile è chiuso, dunque il problema ammette una soluzione.
-Siccome inoltre la funzione obiettivo è quadratica e i **vincoli sono lineari**, le KKT sono condizioni necessarie e sufficienti per l'ottimalità: $\exists \mu^* \in \mathbb{R}^p$ tale che: $$\nabla_z L(z^*,\mu^*) = -(b-z^*) + A\mu^* = 0 \quad \text{con} \quad A^Tz^* = 0$$
+Siccome inoltre la funzione obiettivo è quadratica e i **vincoli sono lineari**, le KKT sono condizioni necessarie e sufficienti per l'ottimalità: $\exists \mu^* \in \mathbb{R}^p$ tale che: $$\nabla_z \mathcal L(z^*,\mu^*) = -(b-z^*) + A\mu^* = 0 \quad \text{con} \quad A^Tz^* = 0$$
 Dunque, $b = z^* + A\mu^*$, con $z^* \space : \space A^Tz^*=0 \quad e \quad \mu^*\in \mathbb{R}^p$ Abbiamo ottenuto un risultato base della geometria: $b = b_R+b_N$ tale che:$$b_R = A\mu^* \in Im(A) \quad (\exists:Ay =b_R), \quad b_N = z^* \in Ker(A^T) \quad (A^Tb_N = 0)$$
 Ora, possiamo osservare che:	$$A^Tb = (A^Tz^*+A^TA\mu^*) = A^TA\mu^*$$
 ovvero $b_R = A\mu^*$ è la **soluzione** dell'equazione normale.
@@ -2273,25 +2273,25 @@ ovvero $b_R = A\mu^*$ è la **soluzione** dell'equazione normale.
 ---
 ### 6.3 Classificatori Lineari e Regressione Logistica
 
-In questa sezione, descriviamo il problema di fittare un modello di classificazione lineare, ovvero una funzione che fornisce un output in base al valore di uno o più funzioni lineari.
-Per semplicità ci focalizziamo su problemi di classificazione binaria, dunque il dataset ha la forma:$$\mathcal D = \left\{ (x^{(i)}, y^{(i)}) \mid x^{(i)} \in \mathbb R^p, y^{(i)} \in {-1,1}, i = 1, \dots, n \right\}$$e vogliamo ottenere un insieme di pesi $w$ e bias $b$ tali che una stima affidabile $\hat y^{(i)}$ di $y^{(i)}$ può essere ottenuta per tutti gli i (e anche per dati fuori dal campione) secondo: $\hat y^{(i)} = sign(w^Tx+b)$ (vedi figura 6.3)
+In questa sezione, descriviamo il problema di fittare un modello di **classificazione lineare**, ovvero una funzione che fornisce **un output** in base al valore di **uno** o **più funzioni lineari**.
+Per semplicità ci focalizziamo su problemi di classificazione **binaria**, dunque il dataset ha la forma:$$\mathcal D = \left\{ (x^{(i)}, y^{(i)}) \mid x^{(i)} \in \mathbb R^p, y^{(i)} \in {-1,1}, i = 1, \dots, n \right\}$$e vogliamo ottenere un insieme di pesi $w$ e bias $b$ tali che una **stima affidabile** $\hat y^{(i)}$ di $y^{(i)}$ può essere ottenuta per tutti gli i (e anche per dati fuori dal campione) secondo: $$\hat y^{(i)} = sign(w^Tx+b)$$ (vedi figura 6.3)
 
 ![[Pasted image 20251230222532.png]]
-=> la scelta finale dell'iperpiano separatore è guidato da problema di minimizzazione del rischio empirico (6.6)
+=> la scelta finale dell'iperpiano separatore è guidato da **problema di *minimizzazione del rischio empirico*** (6.6)
 
-Un modello lineare può essere identificato risolvendo il problema di rischio empirico regolarizzato $$\min_{w \in \mathbb{R}^p, b \in \mathbb R} L(w,b) + \lambda \Omega(w) \tag{6.6}$$
+Un **modello lineare** può essere identificato risolvendo il problema di rischio empirico *regolarizzato* $$\min_{w \in \mathbb{R}^p, b \in \mathbb R} \mathcal L(w,b) + \lambda \Omega(w) \tag{6.6}$$
 dove $L(w)$ è la funzione di perdita che misura gli errori del modello parametrizzato da $w$ e $b$ sul dataset, e $\Omega(w)$ è il regolarizzatore.
-Quando decidiamo di usare la log-loss per addestrare il modello lineare, la loss function risultante è data da: $$\mathcal L(w,b,X,y) = \frac{1}{N}\sum_{i=1}^N \log(1+\exp(-y^{(i)}(w^Tx^{(i)}+b)))$$ e alla fine quello che si ottiene è il modello di regressione logistica; questa scelta ha diverse valide motivazioni:
-- Se si assume che i dati assumino una distribuzione di Bernoulli, la funzione $\mathcal L$ allora rappresenta la *negative log-likelihood* del modello; che cosa otteniamo risolvendo il problema è dunque il modello statisticamente più probabile a spiegare i dati.
+Quando decidiamo di usare la *log-loss* per addestrare il modello lineare, la loss function risultante è data da: $$\mathcal L(w,b,X,y) = \frac{1}{N}\sum_{i=1}^N \log(1+\exp(-y^{(i)}(w^Tx^{(i)}+b)))$$ e alla fine quello che si ottiene è il modello di **regressione logistica**; questa scelta ha diverse valide motivazioni:
+- Se si assume che i dati assumino una distribuzione di Bernoulli, la funzione $\mathcal L$ allora rappresenta la *negative log-likelihood* del modello; che cosa otteniamo risolvendo il problema è dunque il modello statisticamente più probabile a *spiegare* i dati.
 - Il modello è "calibrato" per costruzione, la probabilità che un campione $x$ appartenga alla classe positiva $y=1$ è stimata da $$\mathbb P(y=1|x) = \frac{1}{1+\exp(-w^Tx-b)}$$
-- La cosa più importanti dalla nostra prospettiva di ottimizzazione: la funzione di loss è convessa e (doppiamente) continuamente differenziabile
+- La cosa più importanti dalla nostra prospettiva di ottimizzazione: la funzione di loss è **convessa** e (doppiamente) **continuamente differenziabile**
 
-Per risolvere problemi di questa forma, una soluzione in forma chiusa non è accessibile, è necessario un algoritmo iterativo di ottimizzazione per addestrare il modello. 
-Se si assume la regolarizzazione usata sia smooth (come ad esempio nel caso comune di regolarizzatore quadratico $\Omega(w) = \|w\|^2$), possiamo riusare alcuni metodi descritti nel capitolo 4, come **discesa del gradiente** o **metodo di Newton** sono opzioni valide. Tuttavia, l'algoritmo **L-BFGS** è generalmente considerato il metodo più efficiente per l'ottimizzazione non vincolata, sia nel caso convesso che in quello non convesso (quando non è richiesta l'ottimalità globale), anche per problemi di dimensioni considerevoli. Nel caso specifico di regolarizzatore quadratico abbiamo anche che la soluzione è unica e raggiungibile con un tasso di convergenza veloce. Per dataset di grandi dimensioni, può essere considerato anche un metodo di tipo **SGD**. La parte cruciale di questo problema è la corretta implementazione della loss, il suo gradiente e la sua funzione Hessiana.
+Per risolvere problemi di questa forma, ==una soluzione in forma chiusa non è accessibile==, è necessario un algoritmo iterativo di ottimizzazione per addestrare il modello. 
+Se si assume la regolarizzazione usata sia smooth (come ad esempio nel caso comune di regolarizzatore quadratico $\Omega(w) = \|w\|^2$), possiamo riusare alcuni metodi descritti nel capitolo 4, come **discesa del gradiente** o **metodo di Newton** sono opzioni valide. Tuttavia, l'algoritmo **L-BFGS** è generalmente considerato il metodo più efficiente per l'ottimizzazione non vincolata, sia nel caso **convesso** che in quello **non convesso** (quando non è richiesta l'ottimalità globale), anche per problemi di dimensioni considerevoli. Nel caso specifico di **regolarizzatore quadratico** abbiamo anche che la soluzione è unica e raggiungibile con un tasso di convergenza veloce. Per dataset **di grandi dimensioni**, può essere considerato anche un metodo di tipo **SGD** La parte cruciale di questo problema è la corretta implementazione della **loss**, il suo gradiente e la sua funzione Hessiana.
 
 ----
 
-**Esempio 6.3.1**
+**Esempio 6.3.1** (skip)
 Mostriamo ora come calcolare il **gradiente** e la **matrice Hessiana** per il problema della regressione logistica. Consideriamo una classificazione binaria con \(Y = \{-1,1\}\).
 La funzione di perdita ha la forma (si assume bias nulli o aggiunti al vettore dei pesi come costante):$$L(w; X, y) = \sum_{i=1}^{n} \log(1 + \exp(-y^{(i)} w^T x^{(i)}))$$
 Se definiamo $z = Xw$ (cioè $z_i = w^T x^{(i)}$ per ogni $i$), possiamo riscrivere la funzione di perdita come:$$L(w; X, y) = \varphi(z; y) = \sum_{i=1}^{n} \log(1 + \exp(-y^{(i)} z_i))$$	
@@ -2306,14 +2306,14 @@ dove \(D\) è una matrice diagonale con elementi:$$d_{ii} = \sigma(y^{(i)} w^T x
 
 ---
 
-**Osservazione 6.3.1.** Dal punto di vista dell'ottimizzazione, questo contesto è concettualmente equivalente ad altri problemi di training con funzioni di perdita (convesse) lisce, come la regressione multinomiale (softmax) per **problemi di classificazione multiclasse**; molte classi di Modelli Lineari Generalizzati soddisfano infatti questa proprietà nella corrispondente funzione di perdita. Altri modelli vengono addestrati minimizzando funzioni lisce **non convesse**, che possono quindi essere affrontate in modo simile, anche se ==senza garanzie di ottimalità globale==. Questo è il caso, ad esempio, dei modelli ARMA nell'analisi delle serie temporali, adattati sulla base della minimizzazione non vincolata della funzione di log-verosimiglianza negativa differenziabile; inoltre, la stessa impostazione si incontra nell'addestramento di piccole **reti neurali**.
+**Osservazione 6.3.1.** Dal punto di vista dell'ottimizzazione, questo contesto è concettualmente equivalente ad altri problemi di training con funzioni di perdita (convesse) lisce, come la regressione *multinomiale* (softmax) per **problemi di classificazione multiclasse**; molte classi di Modelli Lineari Generalizzati soddisfano infatti questa proprietà nella corrispondente funzione di perdita. Altri modelli vengono addestrati minimizzando funzioni lisce **non convesse**, che possono quindi essere affrontate in modo simile, anche se ==senza garanzie di ottimalità globale==. Questo è il caso, ad esempio, dei modelli ARMA nell'analisi delle serie temporali, adattati sulla base della minimizzazione non vincolata della funzione di log-verosimiglianza negativa differenziabile; inoltre, la stessa impostazione si incontra nell'addestramento di piccole **reti neurali**.
 
 ---
-**Esempio 6.3.2 (Regressione multinomiale).**
+**Esempio 6.3.2 (Regressione multinomiale).** (also skip)
 
 Per il contesto multiclasse, dove abbiamo $Y = \{y_1, \ldots, y_K\}$, un modello di classificazione lineare può essere definito da $K$ funzioni lineari $w_k^T x + b_k$ (vedi Figura 6.4). Per un campione $x$, il classificatore fornisce $K$ valori chiamati logit $z_k = w_k^T x + b_k$; questi valori vengono trasformati in probabilità tramite l'operazione softmax: $$P(y = k \mid x) = \frac{e^{z_k}}{\sum_{k=1}^{K} e^{z_k}}$$Il classificatore assegna quindi $x$ alla classe con la **probabilità più alta**: $\hat{y} = y_{\bar{k}}$, dove $\bar{k} \in \arg\max_{k=1,\ldots,K} z_k$.
 
-La funzione di perdita per ottenere il modello di regressione multinomiale, che estende il modello logistico allo scenario multiclasse, è la funzione di entropia incrociata definita come$$
+La funzione di perdita per ottenere il modello di regressione multinomiale, che estende il modello logistico allo scenario multiclasse, è la funzione di *entropia incrociata* definita come$$
 L(W, b) = - \sum_{i=1}^{N} \sum_{k=1}^{K} y_{ik} \log\left( \frac{e^{w_k^T x_i + b_k}}{\sum_{t=1}^{K} e^{w_t^T x_i + b_t}} \right)$$dove $$y_{ik} = 
 \begin{cases} 
 1 & \text{se } y_i = k \\
