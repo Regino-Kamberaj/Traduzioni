@@ -300,6 +300,7 @@
 - [ ] **Revisione Finale** Completata: [  ]
 
 **Dimostrazioni da sapere:**
+<<<<<<< HEAD
 - [ ] 3 Problemi di ottimizzazione
 	- [ ] 3.0.1 Definizione punto di ottimo
 	- [ ] 3.1 Esistenza soluzioni ottimali
@@ -390,6 +391,65 @@
 		- [ ] Constrain qualifications => LCQ vs LICQ => la prima valida per l'intero insieme ammissibile l'altra per un punto ammissibile (gradienti dei vincoli uguaglianza e dei vincoli attivi di disuaglianza linearmente indipendenti)
 		- [ ] Esempio 3.2.9 => se soddisfo LICQ => punto ottimale che soddisfa LICQ => necessariamente KKT soddisfatte (FJ con $\lambda_0 \neq 0$)
 		- [ ] Proposizione 3.2.25 => se funzioni f e vincoli disuguaglinanza convesse e vincoli uguaglianza affini (lineari) => se punto soddisfa KKT è ottimo globale del problema + se f strett convessa x* è unico
+=======
+- [x] 3.0 Definizione punto di ottimo
+- [x] 3.1 Esistenza soluzioni ottimali
+	- [x] Proposizione 3.1.1 => Teorema di Weierstrass
+	- [x] Proposizione 3.1.2 => Insiemi di livello compatti ammettono minimi globali
+	- [x] Proposizione 3.1.3 => funzioni coercive ammettono punti di minimo
+- [x] 3.2 Condizioni di ottimalità
+	- [x] 3.2.1 Definizione ottimo locale
+	- [x] Proposizione 3.2.1 => funzione convessa su insieme convessa => minimi locali sono anche globali
+	- [x] Proposizione 3.2.2 => su funzioni strettamente convesse minimo globale **unico**
+	- [x] Proposizione 3.2.3 => su funzioni fortemente convesse minimo globale unico su tutto $\mathbb{R}^n$
+	- [x] 3.2.2 Definizione direzione di discesa
+	- [x] Proposizione 3.2.4 => in minimo locale ? non esistono direzioni di discesa
+	- [x] Proposizione 3.2.5 => definizione direzione di discesa per funzioni continuamente differenziabili
+	- [x] Proposizione 3.2.6 => per funzioni cont. diff non esistono direzioni di discesa in minimizzatori locali
+	- [x] Proposizione 3.2.7 => condizione necessaria di ottimalità prim ordine (minimizzatori locali hanno gradiente nullo) + definzione 3.2.3 punto stazionario
+	- [x] Proposizione 3.2.8 => se funzione convessa oltre a cont. diff, direzione di discesa neccesariamente (e suff) ha derivata direzionale negativa
+	- [x] Proposizione 3.2.9 => Condizione necessaria e sufficiente del prim ordine per problemi convessi => minimizzatori globali a gradiente nullo
+	- [x] Definizione 3.2.4 => direzione di curvatura negativa
+	- [x] Proposizione 3.2.10 => direzioni di discesa hanno curvature negative
+	- [x] Proposizione 3.2.11 => Condizione **necessaria** ottimalità secondo ordine => minimi locali hanno gradiente nullo e hessiana semidefinita positiva
+	- [x] Proposizione 3.2.12 => Condizione **sufficiente** di ottimalità locale del secondo ordine => punti stazionari se hanno hessiana definita pos o hessiana semidefinita positiva (in un intorno del punto), allora sono anche minimi locali
+- [x] 4.1 Metodi iterativi di ottimizzazione
+	- [x] regole aggiornamento
+	- [x] Proposizione 4.1.1 => sequenze definite su insiemi di livello compatti hanno punti di accumulazione e la sequenza (se definita monotona decrescente) converge ad un valore finito
+	- [x] Convergenza globale vs convergenza locale => esempi su convergenza => non sempre si converge a punti stazionari
+	- [x] Definizione 4.1.1 => tasso di convergenza (sub vs linear vs super)
+	- [x] Definizione 4.1.2 => notazione o grande
+	- [x] Definizione 4.1.3 => errore di iterazione/complessità d'iterazione
+- [x] 4.2 Metodi di discesa basati su line search
+	- [x] Occhio a scelta direzione e passo => servono condizioni più forti su direzioni di discesa
+	- [x] esempio line search esatta
+	- [x] Algoritmo 1 => line search di armijo per ricerca passo ottimale (condizione di armijo)
+	- [x] Proposizione 4.2.1 => line search termina in un numero di iterazioni
+	- [x] Definizione 4.2.1 => direzioni gradient related 
+	- [x] Proposizione 4.2.2 => convergenza globale a punti stazionari con passo scelto tramite armijo e direzioni gradient related ( e sequenza su insieme di livello compatto)
+	- [x] Proposizione 4.2.3 => per funzioni l-smooth, passi ottenuti da armijo sono limitati da valore fisso
+	- [x] Proposizione 4.2.4 => numero massimo di backtrack
+	- [x] Proposizione 4.2.5 => complessità nel caso non convesso => sublineare $O(\epsilon^{-2})$ (valido anche per valutazione funzioni)
+	- [x] Proposizione 4.2.6 => limite per metodi del primo ordine
+- [ ] 4.3 Metodo di discesa del gradiente 
+	- [x] algoritmo 2 => line search con direzione antigrad e passo con algoritmo 1 => riottengo stesse proprietà viste prima => convergenza globale - complessità ottimale per metodi non convessi (sublineare) - num passi backtrack limitato => complessità per valutazione funzione rimane la stessa
+	- [x] Proposizione 4.3.1 => nel caso convesso (e con passo costante), ottengo complessità migliore (ma non ottimale => ancora sublineare) $O(\frac{1}{\epsilon})$ 
+	- [x] Proposizione 4.3.2 => nel caso fortemente convesso (e con passo costante), ottengo complessità  ancora migliore (stavolta lineare) $O(log{\frac{1}{\epsilon}})$ => convergo ad un **unico punto** di minimo globale 
+- [ ] 4.4 Metodi del gradiente con momento
+	- [x] 4.4.1 Heavy ball (metodo locale) => tasso di conv lineare ma locale (e convesso)
+	- [x] Metodo del gradiente accelerato di nesterov => proposizione 4.4.1 => bound su funzioni convesse del primo ordine $O\left(\frac{1}{\sqrt{\epsilon}}\right)$  (meglio di grad descent) => ovvero solo con info dei gradienti
+	- [ ] 4.4.2 gradiente coniugato => perdo direzioni grad related e quindi garanzie di convergenza => metodi per recuperare garanzie di conv. => salvaguardie e restart => torno a conv globale e complessità di grad descent
+	- [ ] Line search di wolfe => condizione più forte di armijo => wolfe deboli vs wolfe forti => limito passo andando a guardare dove derivata direzionale soddisfa condizioni => aumentano costi computazionali => ma garantisco direzioni di discesa e convergenza globale
+	- [ ] Caso quadrato + definzioni direzioni mutuamente coniugate
+	- [ ] Proposizione 4.4.2 => convergenza finita del meodo del gradiente coniugato nel caso quadratico => raggiungo minimo globale in n iterazioni
+- [ ] 4.5 Metodo di newton => convergenza dipende fortemente dal punto di partenza ma molto veloce
+	- [ ] Proposizione 4.5.1 Proprietà metodo di newton => preso punto a gradiente nullo e hessiana non singolare => allora sequenza definita a partire da quel punto è ben definita e rimane **nell'intorno** - metodo converge con tasso superlineare => tasso = 0
+	- [ ] metodo di discesa line search con newton => ottengo conv globale e veloce 
+- [ ] 4.6 Metodi quasi newton => approx delle hessiane 
+	- [ ] Algoritmo 4
+	- [ ] Algoritmo bfgs => proposizione 4.6.1 => matrice di approx definita positiva sotto det condizioni => tipo wolfe => riottengo convergenza globale e tasso superlineare senza info del secondo ordine
+	- [ ] low-bfgs => bfgs con approx interrotta... diminuiscono costi computazionali ma perdo proprietà teoriche => conv globale garantita con salvaguardie 
+>>>>>>> 90fed6a8e47593f0d3312ce9eb559cd5c28e4a7c
 
 **Note e Punti Deboli da Ripassare:**
 1.
