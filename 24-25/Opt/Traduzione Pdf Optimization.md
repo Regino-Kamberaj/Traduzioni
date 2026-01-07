@@ -1286,10 +1286,10 @@ Per problemi quadratici, il metodo è ==esatto e raggiunge il minimo globale in 
 
 ### 4.5 Metodo di Newton
 
-Abbiamo visto che con i metodi di discesa del gradiente e algoritmi del primo ordine in generale ci sono dei limiti che speriamo di ottenere di migliorare in termini di velocità di convergenza nei casi **non convesso**, convesso e fortemente convesso.
+Abbiamo visto che con i metodi di discesa del gradiente e algoritmi del primo ordine in generale ci sono dei limiti che speriamo di ottenere di migliorare in termini di velocità di convergenza nei casi **non convesso**, **convesso** e **fortemente convesso**.
 Siamo quindi curiosi di osservare, quando la funzione obiettivo lo permette, l'**informazione di secondo ordine**, e guardiamo se possiamo ottenere qualcosa di meglio.
 
-Assumiamo di avere $f \in C^2(\mathbb{R}^n)$ e ora usiamo l'informazione fornita da $\nabla^2 f(x)$ per costruire un metodo del **secondo ordine**. Assumiamo che siamo ad una qualche soluzione $x^k$ e sia anche $\nabla^2 f(x^k)$ una matrice definita positiva. Possiamo quindi costruire lo [[sviluppo di Taylor]] di $f$ al secondo ordine ottenendo $$m_k(x) = f(x^k) + \nabla f(x^k)^T (x - x^k) + \frac{1}{2} (x - x^k)^T \nabla^2 f(x^k) (x - x^k)$$
+Assumiamo di avere $f \in C^2(\mathbb{R}^n)$ e ora usiamo l'informazione fornita da $\nabla^2 f(x)$ per costruire un metodo del **secondo ordine**. Assumiamo che siamo ad una qualche soluzione $x^k$ e sia anche $\nabla^2 f(x^k)$ una **matrice definita positiva**. Possiamo quindi costruire lo [[sviluppo di Taylor]] di $f$ al secondo ordine ottenendo $$m_k(x) = f(x^k) + \nabla f(x^k)^T (x - x^k) + \frac{1}{2} (x - x^k)^T \nabla^2 f(x^k) (x - x^k)$$
 L'approssimazione ottenuta della funzione obiettivo è una **funzione quadratica strettamente convessa** (nel caso in cui la [[matrice Hessiana]] sia definita positiva ), possiamo quindi trovare il **minimizzatore globale** di $m_k(x)$ annullandone il gradiente:$$\begin{aligned} \nabla m_k(x) &= \nabla f(x^k) + \nabla^2 f(x^k)(x - x^k) = 0, \\ x &= x^k - [\nabla^2 f(x^k)]^{-1} \nabla f(x^k). \end{aligned}$$
 L'idea del _Metodo di Newton_, è quella di definire uno schema **iterativo** dove la nuova iterata è ottenuta prendendo il **minimo** del modello quadratico costruito intorno alla soluzione corrente, ovvero usando la formula di aggiornamento:	$$x^{k+1} = x^k - [\nabla^2 f(x^k)]^{-1} \nabla f(x^k)$$
 Questo tipo di regola di aggiornamento, può essere intesa, come la regola di aggiornamento del metodo di discesa della forma $x^{k+1} = x^k + \alpha_k d_k$ dove $d_k = - [\nabla^2 f(x^k)]^{-1} \nabla f(x^k)$ e $\alpha_k$ è posto costantemente a 1 per **l'intero processo**.
@@ -1299,7 +1299,7 @@ Osserviamo nel prossimo esempio che può succedere adottando questo tipo di sche
 ---
 **Esempio 4.5.1: Iterazioni del Metodo di Newton**
 $$\min_{x \in \mathbb{R}} f(x) = \sqrt{1 + x^2}$$
-Problema che ha una funzione obiettivo abbastanza **regolare**: è infatti strettamente convessa, **coerciva**, doppiamente continua e **differenziabile** con:	$$f'(x) = \frac{x}{\sqrt{1 + x^2}}, \quad f''(x) = \frac{1}{(1 + x^2)^{3/2}}$$
+Problema che ha una funzione obiettivo abbastanza **regolare**: è infatti **strettamente convessa**, **coerciva**, **doppiamente continua** e **differenziabile** con:	$$f'(x) = \frac{x}{\sqrt{1 + x^2}}, \quad f''(x) = \frac{1}{(1 + x^2)^{3/2}}$$
 Le **Iterazioni** del metodo di newton applicate a questo problema prendono la forma:$$x^{k+1} = x^k - \frac{f'(x^k)}{f''(x^k)} = x^k - \frac{x^k}{(1 + (x^k)^2)^{\frac{1}{2}}}(1 + (x^k)^2)^{\frac{3}{2}} = x^k - x^k(1+(x^k)^2) = -(x^k)^3$$
 - Se $x^0 = \pm 1$, la sequenza oscilla tra 1 e -1, **senza convergenza**.
 - Se $|x_0| > 1$, la sequenza **diverge**.
@@ -1309,7 +1309,7 @@ Possiamo comunque vedere che osservando il metodo di Newton **non converge globa
 
 ![[Pasted image 20251228163315.png]]
 
-L'esempio ci dice tutta la storia sul metodo di Newton nella sua forma pura: non siamo sicuri che converga, ma se lo fa, lo fa molto velocemente. In termini formali, l'algoritmo ==non possiede garanzie di convergenza globali== (peggio addirittura dei metodi del primo ordine), ma ha una garanzia su una **velocità di convergenza locale**.
+L'esempio ci dice tutta la storia sul metodo di Newton nella sua forma pura: non siamo sicuri che **converga**, ma se lo fa, **lo fa molto velocemente**. In termini formali, l'algoritmo ==non possiede garanzie di convergenza **globali**== (peggio addirittura dei metodi del primo ordine), ma ha una garanzia su una **velocità di convergenza locale**.
 
 Nella prossima proposizione sono descritte queste proprietà.
 
@@ -1321,7 +1321,7 @@ Sia $f : \mathbb{R}^n \to \mathbb{R}$ una funzione [[due volte continuamente dif
 - $\nabla^2 f(x^*) \, \text{è non singolare}$.
 
 Allora esiste $\epsilon > 0$ tale che, per ogni $x^0 \in B(x^*, \epsilon)$ (metodo locale):
-1. La sequenza $\{x^k\}$ è ben definita e **rimane** in $B(x^*, \epsilon)$. => ${x^k} \subseteq \mathcal{B}(x^*,\epsilon)$
+1. La sequenza $\{x^k\}$ è **ben definita** e **rimane** in $B(x^*, \epsilon)$. => ${x^k} \subseteq \mathcal{B}(x^*,\epsilon)$
 2. Il metodo converge => $\lim_{k \to \infty} x^k = x^*$.
 3. Il tasso di convergenza è **superlineare**.
 
