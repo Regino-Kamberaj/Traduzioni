@@ -1507,103 +1507,7 @@ Un'estensione chiamata **L-BFGS-B** è stata progettata per affrontare problemi 
 ---
 ### 4.7 Metodi di Decomposizione
 
-Esistono varie situazioni dove i problemi di ottimizzazione sono molto complicati e difficili da affrontare interamente. In alcuni di questi casi è possibile affrontare efficacemente il problema dividendolo in parti più piccole o semplici. 
-I casi dove i *metodi di decomposizione* sono utili includono quelle situazioni dove uno o più dei seguenti aspetti ricorrono:
-- Il numero $n$ di variabili è grande ( $∼ 10^4$)  e le informazioni sulle variabili oppure sulla funzione obiettivo non possono essere interamente memorizzate.
-- Fissato il valore per alcune variabili, otteniamo un sottoproblema che può essere diviso in parti indipendenti risolte con metodi di computazione parallela.
-- Fissato il valore per alcune variabili, il sottoproblema rimanente è facile da risolvere o possiede proprietà di regolarità superiori rispetto all'originale.
-
----
-
-**Esempio 4.5**
-Di seguito, elenchiamo alcuni esempi di problemi in cui le strategie di decomposizione 
-possono essere utili:
-
-- $f (x) = g(x_1 ) + \sum_{i=2}^{n} h_i (x_1 )s_i (x_i )$
-  La funzione sopra diventa più semplice da gestire se il valore della variabile $x_1$ 
-  è fissato, poiché in tal caso rimangono $n - 1$ termini separabili, ognuno dipendente solo da una singola variabile $x_i$, che possono essere minimizzati in parallelo. Possiamo quindi alternare tra un passo di ottimizzazione univariata su $x_1$ e un'ottimizzazione parallela di tutte le altre variabili.
-
-- $f (x, y) = \| \Phi(y)x - b \|^2$
-  Il problema di minimi quadrati non lineare sopra diventa un semplice problema 
-  di minimi quadrati lineari se il valore delle variabili $y$ è fissato.
-
-- $f (x, y) = x^2 y^2 + 10xy + x^2 + y^2$
-  La funzione sopra è non convessa; tuttavia, è una parabola convessa rispetto a $x$ 
-  per ogni valore di $y$, e lo stesso vale rispetto a $y$ per ogni valore di $x$. Pertanto, minimizzare rispetto a una sola delle due variabili alla volta equivale a risolvere un problema di ottimizzazione convessa più semplice, che può essere risolto fino a ottenere l'ottimo globale.
-
----
-
-Supponiamo ora di avere un problema generico della forma:
-
-	$\min_{x \in X} f (x)$
-
-dove $f : \mathbb{R}^n \to \mathbb{R}$ e $X \subseteq \mathbb{R}^n$  
-Il problema può essere riscritto in una forma decomposta come:
-
-	$\min_{x_1 \in X_1 ,...,x_m \in X_m} f (x_1 , \dots , x_m )$
-
-dove $f : \mathbb{R}^{n_1} \times \dots \times \mathbb{R}^{n_m} \to \mathbb{R}, X_1 \subseteq \mathbb{R}^{n_1} , \dots , X_m \subseteq \mathbb{R}^{n_m}$ e $\sum_{i=1}^{m} n_i = n$.  
-
-In altre parole, il vettore delle variabili è stato **suddiviso in blocchi separati** 
-di variabili che possono essere gestiti in modo indipendente.
-
-Esistono diversi metodi per identificare un modo di dividere le variabili in blocchi e sfruttare questa suddivisione tramite algoritmi. Tali approcci possono essere classificati in due categorie principali: **metodi sequenziali** e **metodi paralleli**. In entrambi i casi i sottoproblemi sono definiti rispetto ai singoli blocchi di variabili, tenendo il valore delle variabili negli altri blocchi fermo.
-
----
-##### **Metodi di Decomposizione Sequenziale**
-
-Nei metodi sequenziali, i sottoproblemi vengono ==risolti uno alla volta==, aggiornando le variabili di ciascun blocco ad ogni passo.
-
-![[Pasted image 20250203083017.png]]
-
-Un esempio classico è l'**algoritmo di Gauss-Seidel**, definito dalla seguente *regola di aggiornamento*:
-
-	$x_{i}^{k+1} = \arg\min_{\xi_i \in X_i} f(x_{1}^{k+1}, \dots, x_{i-1}^{k+1}, \xi_i, x_{i+1}^k, \dots, x_m^k)$.
-
-L'algoritmo risolve ciclicamente i sottoproblemi ottenuti fissando il valore di tutte le variabili, tranne quelle di un blocco. La soluzione trovata per il sottoproblema viene immediatamente utilizzata per aggiornare il valore delle variabili del blocco corrente.
-
-Notare che l'algoritmo richiede di calcolare un ottimizzatore **globale** per ogni sottoproblema: questo è una richiesta forte, che può essere soddisfatta solo se i sottoproblemi sono abbastanza semplici.
-
-La convergenza globale verso punti stazionari può essere garantita per il metodo di Gauss-Seidel sotto assunzioni di compattezza sull'insieme di livello e in aggiunte le seguenti condizioni:
-
--  f è convessità.
-- f è strettamente convessa per blocchi ovvero la funzione obiettivo di tutti i sottoproblemi è sempre strettamente convessa.
-- $m=2$ con solo due blocchi di variabili la convessità della funzione obiettivo non è necessaria.
-
----
-##### **Metodi di Decomposizione Parallela**
-
-Nei metodi paralleli, i sottoproblemi associati ai diversi blocchi vengono risolti **in modo indipendente e simultaneo**. Successivamente, la soluzione migliore tra questi sottoproblemi viene utilizzata per aggiornare le variabili, ovvero ==ad ogni iterazione si aggiorna un solo blocco==.
-
-![[Pasted image 20250203091825.png]]
-
-Un esempio è l'**algoritmo di *Jacobi***, descritto dalle seguenti *regole di aggiornamento*:
-	
-	$\hat{x}_{i}^{k+1} \in \arg\min_{x_i} f(x_1^k, \dots, x_i, \dots, x_m^k)$,
-
-	$x^{k+1} \in \arg\min_{(x_1^k, \dots, \hat{x}_{i}^{k+1}, \dots, x_m^k)} f(x_1^k, \dots, \hat{x}_{i}^{k+1}, \dots, x_m^k)$
-
----
-
-#### 4.7.1 Metodi di Decomposizione con Sovrapposizione dei Blocchi
-
-Fino a questo punto, abbiamo considerato approcci di decomposizione dove $x \in \mathbb{R}^n$ è diviso in $m$ blocchi che non cambiano con l'iterazione $x^k=(x_1^k, ..., x_m^k)$
-
-Un'estensione più flessibile permette di lavorare con ==insiemi variabili di blocchi==, chiamati **insiemi di lavoro** ($W_k ⊂ \{1, ..., n\}$).Il sottoproblema considerato in ogni iterazione diventa:
-
-	$\min_{x_{W_k}} f(x_{W_k}, x_{\overline{W}^k})$
-
-dove $\overline{W}^k$ è il **complemento** di $W_k$. La regola di aggiornamento è:
-
-	$x_i^{k+1} = \begin{cases} x_i^\star & \text{se } i \in W_k, \\ x_i^k & \text{altrimenti.} \end{cases}$
-
-La convergenza globale di questo schema dipende dal _working set selection rule_ ovvero la scelta delle variabili per ogni iterazione.
-Possibili regole di scelta che assicurano convergenza a punti stazionari includono:
-- *Regola ciclica*: $\exists M > 0 \space \text{t.c.} \space \forall i \in \{1,..., n\}, \forall k \space \exists \ell(k) \leq M  \space \text{t.c.} \space  i \in W^{k+\ell(k)}$ . Questa regola richiede che ogni variabile appare nel set di lavoro almeno ogni $M$ iterazioni; in questo modo, si previene che variabili importanti da ottimizzare vengano dimenticate.
-- *Regola di Gauss-Southwell*: $\forall k, \exists i(k) \in W_k \space \text{t.c.} \space | \nabla_{i(k)} f(x^k)| \geq | \nabla_i f(x^k)| \space \forall i \in \{1, ... , n\}$. Questa regola richiede di includere nella selezione delle variabili ad ogni iterazione, la variabile più "promettente" (che è quella associata alla derivata parziale più grande). Questa strategia permette al limite, di portare a zero la più grande derivata parziale, ovvero portare a **zero l'intero gradiente**.
-
----
-
+Spostato al capitolo 7.2
 ### 4.8 Metodo del Gradiente Stocastico per Problemi con Somma Finita
 
 Una classe particolarmente rilevante di problemi di ottimizzazione non lineare non vincolata è quella dei **problemi a somma finita**, cioè:$$\min_{x \in \mathbb{R}^n} f(x) = \frac{1}{N} \sum_{i=1}^N f_i(x)$$
@@ -2326,6 +2230,8 @@ La funzione di cui sopra è **convessa** e differenziabile nelle variabili $w_k$
 ---
 ## 7. Support Vector Machines
 
+### Introduzione alle SVM
+
 Nella Sezione 6.3 abbiamo osservato come l'addestramento della maggior parte dei modelli di classificazione lineari si traduca in un problema di ottimizzazione non lineare non vincolata che può essere affrontato con **algoritmi standard**. C'è una grande eccezione a questo fatto: i modelli di (linear) *Support Vector Machine* (SVM).
 
 In breve, una SVM è un **modello di classificazione** ottenuto risolvendo il problema di *minimizzazione del rischio empirico* quando si utilizza la ***hinge loss*,** accoppiata con il regolarizzatore $\ell_2$. Il problema di addestramento risultante è quindi: $$\min_{w,b} \frac{1}{2} \|w\|^2 + C \sum_{i=1}^{n} \max\{0, 1 - y^{(i)} (w^T x^{(i)} + b)\} \tag{7.1}$$
@@ -2355,23 +2261,23 @@ il che di nuovo contraddice il fatto che $(x^*, b^*, \xi^*)$ sia ottimale per (7
 
 ---
 
-Le SVM hanno una bella interpretazione geometrica nascosta dietro il problema di ottimizzazione. Consideriamo ad esempio il caso $C = \infty$; in questo caso particolare, ogni variabile di slack $\xi_i$ (cioè ogni **errore**) è penalizzata infinitamente e quindi **deve essere posta** a $0$; il problema è quindi:
+Le SVM hanno una bella interpretazione geometrica nascosta dietro il problema di ottimizzazione. Consideriamo ad esempio il caso $C = \infty$; in questo caso particolare, ogni variabile di slack $\xi_i$ (cioè ogni **errore**) è ==penalizzata infinitamente== e quindi **deve essere posta** a $0$; il problema è quindi:
 $$\begin{aligned}
 \min_{w,b,\xi} & \quad \frac{1}{2} \|w\|^2 \\
 \text{s.t.} & \quad y^{(i)}(w^T x^{(i)} + b) \geq 1, \quad i = 1, \ldots, N.
 \end{aligned}$$
 
-Nota che, in questo caso, i vincoli impongono che ogni campione nel dataset sia classificato correttamente e quindi una soluzione esiste solo se i dati sono *linearmente separabili* (cioè siamo in una situazione come quella delle Figure 6.3 (a)-(c)).
-Infatti, i vincoli stanno imponendo qualcosa di più. Ogni scelta di $w$ e $b$ identifica implicitamente tre *iperpiani*: $w^T x + b = 0$, $w^T x + b = 1$ e $w^T x + b = -1$ (vedi Figura 7.1). Il vincolo nella configurazione SVM "hard" (rigida) chiede non solo di posizionare ogni campione dal lato corretto dell'iperpiano, ma anche di rimanere **al di fuori del *margine***, cioè del corridoio tra gli iperpiani $w^T x + b = 1$ e $w^T x + b = -1$. Il vincolo può essere soddisfatto da molte scelte di $w$ e $b$.
+Nota che, in questo caso, i vincoli impongono che ogni campione nel dataset sia **classificato correttamente** e quindi una soluzione esiste solo se i dati sono *linearmente separabili* (cioè siamo in una situazione come quella delle Figure 6.3 (a)-(c)).
+Infatti, i vincoli stanno imponendo qualcosa di più. Ogni scelta di $w$ e $b$ identifica implicitamente tre *iperpiani*: $w^T x + b = 0$, $w^T x + b = 1$ e $w^T x + b = -1$ (vedi Figura 7.1). Il vincolo nella configurazione SVM "hard" (rigida) chiede non solo di posizionare ogni campione **dal lato corretto dell'iperpiano**, ma anche di rimanere **al di fuori del *margine***, cioè del corridoio tra gli iperpiani $w^T x + b = 1$ e $w^T x + b = -1$. Il vincolo può essere soddisfatto da molte scelte di $w$ e $b$.
 
 ![[Pasted image 20251231143753.png]]
 
-Tra tutte le scelte ammissibili dell'iperpiano, le SVM (hard) cercano quella che minimizza la quantità $\|w\|^2$. Se ricordiamo che $\frac{1}{\|w\|}$ è la distanza tra l'iperpiano $w^T x + b = 0$ e $w^T x + b = \pm 1$ (vedi Figura 7.2a), ci rendiamo conto che stiamo essenzialmente **massimizzando il margine**. In altre parole, ==tra gli iperpiani che separano perfettamente i dati di training==, viene scelto quello che **massimizza la distanza** dal punto più vicino (di entrambe le classi).
-Per questo iperpiano a margine massimo, ci sarà sicuramente almeno un campione per classe ==che giace esattamente sul bordo del margine==; questi punti sono i *support vector* (vettori di supporto) per il classificatore (Figura 7.2b).
+Tra tutte le scelte ammissibili dell'iperpiano, le SVM (hard) cercano quella che minimizza la quantità $\|w\|^2$. Se ricordiamo che $\frac{1}{\|w\|}$ è la distanza tra l'iperpiano $w^T x + b = 0$ e $w^T x + b = \pm 1$ (vedi Figura 7.2a), ci rendiamo conto che stiamo essenzialmente **massimizzando il margine**. In altre parole, ==tra gli iperpiani che separano perfettamente i dati di training==, viene scelto quello che **massimizza la distanza** dal punto **più vicino** (di entrambe le classi).
+Per questo iperpiano a margine massimo, ci sarà sicuramente almeno un campione per classe ==che giace esattamente sul **bordo** del margine==; questi punti sono i *support vector* (vettori di supporto) per il classificatore (Figura 7.2b).
 
 ![[Pasted image 20251231143821.png]]
 
-Ovviamente, tuttavia, il problema non ha soluzione ammissibile in quel caso se i dati **non sono** linearmente separabili (vedi Figura 6.3 (d)). Per questo motivo (e anche per alleviare l'impatto degli *outlier* e migliorare la generalizzazione), possiamo impostare un valore finito per l'iperparametro $C$ e **accettare violazioni dei vincoli** a margine rigido. Accettiamo di "pagare un costo" per tutti i punti che **sono classificati in modo errato**, e anche per quelli classificati correttamente ma con una confidenza insufficiente (vedi Figure 7.3 e 7.4).
+Ovviamente, tuttavia, il problema non ha soluzione ammissibile in quel caso se i dati **non sono** linearmente separabili (vedi Figura 6.3 (d)). Per questo motivo (e anche per alleviare l'impatto degli *outlier* e migliorare la generalizzazione), possiamo impostare **un valore finito** per l'iperparametro $C$ e **accettare violazioni dei vincoli** a margine rigido. Accettiamo di "pagare un costo" per tutti i punti che **sono classificati in modo errato**, e anche per quelli classificati correttamente ma con una confidenza insufficiente (vedi Figure 7.3 e 7.4).
 
 ![[Pasted image 20251231143901.png]]
 
@@ -2407,7 +2313,9 @@ Essendo $(x, \mu)$ una soluzione **qualsiasi** ammissibile del problema duale, s
 
 ---
 
-**Osservazione 7.1.1.** Per problemi quadratici convessi, come (7.2), si può dimostrare un’ulteriore proprietà che afferma che, se risolviamo il duale di Wolfe ottenendo $(\bar{x}, \mu^*)$, abbiamo la garanzia che i moltiplicatori ottenuti $\mu^*$ formino una coppia KKT con un vettore ammissibile $x^*$ (che è quindi ottimale poiché le condizioni KKT sono anche **sufficienti** per l’ottimalità in questo caso), anche se $x^*$ è possibilmente diverso da $\bar{x}$. Pertanto, per problemi di questa classe, possiamo risolvere il problema duale per trovare i moltiplicatori “ottimali” e poi **ricostruire la soluzione primale ottimale** ==imponendo che le condizioni KKT siano soddisfatte con quei moltiplicatori==.
+**Osservazione 7.1.1.** Per problemi quadratici convessi, come (7.2 => è SVM con gli slacks), si può dimostrare un’ulteriore proprietà che afferma che, se risolviamo il duale di Wolfe ottenendo $(\bar{x}, \mu^*)$, abbiamo la garanzia che i moltiplicatori ottenuti $\mu^*$ formino una coppia KKT con un vettore ammissibile $x^*$ (che è quindi ottimale poiché le condizioni KKT sono anche **sufficienti** per l’ottimalità in questo caso), anche se $x^*$ è possibilmente diverso da $\bar{x}$. Pertanto, per problemi di questa classe, possiamo risolvere il problema duale per trovare i moltiplicatori “ottimali” e poi **ricostruire la soluzione primale ottimale** ==imponendo che le condizioni KKT siano soddisfatte con quei moltiplicatori==.
+
+---
 
 Torniamo ora al problema SVM (7.2)
 Dall'osservazione precedente, possiamo pensare a costruire una tupla KKT $(w^*,b^*, \xi^*, \alpha^*,\mu^*)$ (e dunque una soluzione ottimale) per il problema risolvendo il corrispettivo **problema duale**. Ricaviamo dunque il problema duale per (7.2). Applicando la definizione per il duale di Wolfe (7.2) otteniamo il problema:
@@ -2480,21 +2388,111 @@ Per riassumere, le due principali ragioni per considerare il **problema duale** 
 
 ### 7.2 Risolvendo il problema duale
 
-**Prima di riprendere il problema duale riguardare tecniche di decomposizione (capitolo 4.7)**
+#### 4.7 Metodi di Decomposizione
+
+Esistono varie situazioni dove i problemi di ottimizzazione sono molto complicati e difficili da affrontare interamente. In alcuni di questi casi è possibile affrontare efficacemente il problema dividendolo in parti più piccole o semplici. 
+I casi dove i *metodi di decomposizione* sono utili includono quelle situazioni dove uno o più dei seguenti aspetti ricorrono:
+- Il numero $n$ di variabili è grande ( $∼ 10^4$)  e le informazioni sulle variabili oppure sulla funzione obiettivo non possono essere interamente memorizzate.
+- Fissato il valore per alcune variabili, otteniamo un sottoproblema che può essere diviso in parti indipendenti risolte con metodi di computazione parallela.
+- Fissato il valore per alcune variabili, il sottoproblema rimanente è facile da risolvere o possiede proprietà di regolarità superiori rispetto all'originale.
+
+---
+
+**Esempio 4.5**
+Di seguito, elenchiamo alcuni esempi di problemi in cui le strategie di decomposizione 
+possono essere utili:
+
+- $f (x) = g(x_1 ) + \sum_{i=2}^{n} h_i (x_1 )s_i (x_i )$
+  La funzione sopra diventa più semplice da gestire se il valore della variabile $x_1$ 
+  è fissato, poiché in tal caso rimangono $n - 1$ termini separabili, ognuno dipendente solo da una singola variabile $x_i$, che possono essere minimizzati in parallelo. Possiamo quindi alternare tra un passo di ottimizzazione univariata su $x_1$ e un'ottimizzazione parallela di tutte le altre variabili.
+
+- $f (x, y) = \| \Phi(y)x - b \|^2$
+  Il problema di minimi quadrati non lineare sopra diventa un semplice problema 
+  di minimi quadrati lineari se il valore delle variabili $y$ è fissato.
+
+- $f (x, y) = x^2 y^2 + 10xy + x^2 + y^2$
+  La funzione sopra è non convessa; tuttavia, è una parabola convessa rispetto a $x$ 
+  per ogni valore di $y$, e lo stesso vale rispetto a $y$ per ogni valore di $x$. Pertanto, minimizzare rispetto a una sola delle due variabili alla volta equivale a risolvere un problema di ottimizzazione convessa più semplice, che può essere risolto fino a ottenere l'ottimo globale.
+
+---
+
+Supponiamo ora di avere un problema generico della forma:
+
+	$\min_{x \in X} f (x)$
+
+dove $f : \mathbb{R}^n \to \mathbb{R}$ e $X \subseteq \mathbb{R}^n$  
+Il problema può essere riscritto in una forma decomposta come:
+
+	$\min_{x_1 \in X_1 ,...,x_m \in X_m} f (x_1 , \dots , x_m )$
+
+dove $f : \mathbb{R}^{n_1} \times \dots \times \mathbb{R}^{n_m} \to \mathbb{R}, X_1 \subseteq \mathbb{R}^{n_1} , \dots , X_m \subseteq \mathbb{R}^{n_m}$ e $\sum_{i=1}^{m} n_i = n$.  
+
+In altre parole, il vettore delle variabili è stato **suddiviso in blocchi separati** 
+di variabili che possono essere gestiti in modo indipendente.
+
+Esistono diversi metodi per identificare un modo di dividere le variabili in blocchi e sfruttare questa suddivisione tramite algoritmi. Tali approcci possono essere classificati in due categorie principali: **metodi sequenziali** e **metodi paralleli**. In entrambi i casi i sottoproblemi sono definiti rispetto ai singoli blocchi di variabili, tenendo il valore delle variabili negli altri blocchi fermo.
+
+---
+##### **Metodi di Decomposizione Sequenziale**
+
+Nei metodi sequenziali, i sottoproblemi vengono ==risolti uno alla volta==, aggiornando le variabili di ciascun blocco ad ogni passo.
+
+![[Pasted image 20250203083017.png]]
+
+Un esempio classico è l'**algoritmo di Gauss-Seidel**, definito dalla seguente *regola di aggiornamento*:
+
+	$x_{i}^{k+1} = \arg\min_{\xi_i \in X_i} f(x_{1}^{k+1}, \dots, x_{i-1}^{k+1}, \xi_i, x_{i+1}^k, \dots, x_m^k)$.
+
+L'algoritmo risolve ciclicamente i sottoproblemi ottenuti fissando il valore di tutte le variabili, tranne quelle di un blocco. La soluzione trovata per il sottoproblema viene immediatamente utilizzata per aggiornare il valore delle variabili del blocco corrente.
+
+Notare che l'algoritmo richiede di calcolare un ottimizzatore **globale** per ogni sottoproblema: questo è una richiesta forte, che può essere soddisfatta solo se i sottoproblemi sono abbastanza semplici.
+
+La convergenza globale verso punti stazionari può essere garantita per il metodo di Gauss-Seidel sotto assunzioni di compattezza sull'insieme di livello e in aggiunte le seguenti condizioni:
+
+-  f è convessità.
+- f è strettamente convessa per blocchi ovvero la funzione obiettivo di tutti i sottoproblemi è sempre strettamente convessa.
+- $m=2$ con solo due blocchi di variabili la convessità della funzione obiettivo non è necessaria.
+
+---
+##### **Metodi di Decomposizione Parallela**
+
+Nei metodi paralleli, i sottoproblemi associati ai diversi blocchi vengono risolti **in modo indipendente e simultaneo**. Successivamente, la soluzione migliore tra questi sottoproblemi viene utilizzata per aggiornare le variabili, ovvero ==ad ogni iterazione si aggiorna un solo blocco==.
+
+![[Pasted image 20250203091825.png]]
+
+Un esempio è l'**algoritmo di *Jacobi***, descritto dalle seguenti *regole di aggiornamento*:
+	
+	$\hat{x}_{i}^{k+1} \in \arg\min_{x_i} f(x_1^k, \dots, x_i, \dots, x_m^k)$,
+
+	$x^{k+1} \in \arg\min_{(x_1^k, \dots, \hat{x}_{i}^{k+1}, \dots, x_m^k)} f(x_1^k, \dots, \hat{x}_{i}^{k+1}, \dots, x_m^k)$
+
+---
+
+##### 4.7.1 Metodi di Decomposizione con Sovrapposizione dei Blocchi
+
+Fino a questo punto, abbiamo considerato approcci di decomposizione dove $x \in \mathbb{R}^n$ è diviso in $m$ blocchi che non cambiano con l'iterazione $x^k=(x_1^k, ..., x_m^k)$
+
+Un'estensione più flessibile permette di lavorare con ==insiemi variabili di blocchi==, chiamati **insiemi di lavoro** ($W_k ⊂ \{1, ..., n\}$).Il sottoproblema considerato in ogni iterazione diventa:
+
+	$\min_{x_{W_k}} f(x_{W_k}, x_{\overline{W}^k})$
+
+dove $\overline{W}^k$ è il **complemento** di $W_k$. La regola di aggiornamento è:
+
+	$x_i^{k+1} = \begin{cases} x_i^\star & \text{se } i \in W_k, \\ x_i^k & \text{altrimenti.} \end{cases}$
+
+La convergenza globale di questo schema dipende dal _working set selection rule_ ovvero la scelta delle variabili per ogni iterazione.
+Possibili regole di scelta che assicurano convergenza a punti stazionari includono:
+- *Regola ciclica*: $\exists M > 0 \space \text{t.c.} \space \forall i \in \{1,..., n\}, \forall k \space \exists \ell(k) \leq M  \space \text{t.c.} \space  i \in W^{k+\ell(k)}$ . Questa regola richiede che ogni variabile appare nel set di lavoro almeno ogni $M$ iterazioni; in questo modo, si previene che variabili importanti da ottimizzare vengano dimenticate.
+- *Regola di Gauss-Southwell*: $\forall k, \exists i(k) \in W_k \space \text{t.c.} \space | \nabla_{i(k)} f(x^k)| \geq | \nabla_i f(x^k)| \space \forall i \in \{1, ... , n\}$. Questa regola richiede di includere nella selezione delle variabili ad ogni iterazione, la variabile più "promettente" (che è quella associata alla derivata parziale più grande). Questa strategia permette al limite, di portare a zero la più grande derivata parziale, ovvero portare a **zero l'intero gradiente**.
+
+---
 
 (breve recup)
 Questo nel caso in cui l'informazione legata all'intero insieme di variabili non è gestibile. Oppure se fissando il valore di uno o più blocchi di variabili, il problema risultante può essere risolto in modo efficente (eventualmente tramite parallelizzazione) => del tipo l'ottimizazzione rispetto ad alcune variabili (nel caso di più variabili) => porta a casi efficienti da risolvere => tipo funzione non convessa in partenza diventa convessa.
 
-+Esempio di algoritmo di decomposizione sequenziale => Gauss-Seidel:
-$$x_i^{k+1} \in argmin_{x_i \in \mathbb{R}} f (x_i^{n+1}, ... , x_{i-1}^{n+1}, x_i, x_{i+1}^n, ..., x_m^k)$$
-Il Quale converge a punti stazionari se:
-- f è convessa 
-- f è strettamente convessa rispetto a ogni blocco
-- m = 2
-
 I problemi principali avvengono quando nella scelta  di una variabile i risultati affligono le altre variabili. => oppure può capitare di rimbalzare e tornare allo stesso punto precedente per la discesa del gradiente.
 
-Altro esempio è il caso di decomposizione parallela: dove considero i diversi sottoproblemi fissando un blocco di variabili e vedo in parallelo quale mi porta alla soluzione migliore => caso di Jacobi: $$\xi_i^{k} \in argmin_{\xi_i \in \mathbb{R}^n} f (x_i^{n}, ... , x_{i-1}^{n}, \xi_i, x_{i+1}^n, ..., x_m^k)$$ dove $$x^{k+1} \in argmin f(x)$$
+#### Introduzione al SMO
 In questa sezione mostriamo come il problema duale per l'addestramento di un SVM **non lineare** può essere risolto in modo efficiente. 
 
 Richiamiamo prima la formulazione con alcune modifiche nella notazione per renderla più chiara dal punto di vista dell'ottimizzazione (28):
