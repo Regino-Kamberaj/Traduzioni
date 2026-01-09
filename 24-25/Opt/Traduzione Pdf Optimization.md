@@ -1510,130 +1510,7 @@ Un'estensione chiamata **L-BFGS-B** è stata progettata per affrontare problemi 
 Spostato al capitolo 7.2
 ### 4.8 Metodo del Gradiente Stocastico per Problemi con Somma Finita
 
-Una classe particolarmente rilevante di problemi di ottimizzazione non lineare non vincolata è quella dei **problemi a somma finita**, cioè:$$\min_{x \in \mathbb{R}^n} f(x) = \frac{1}{N} \sum_{i=1}^N f_i(x)$$
-Quando il numero $N$ di termini nella somma che definisce la funzione obiettivo è grande, affrontare questo problema con metodi di discesa standard potrebbe essere proibitivo. Gestire l'intera funzione obiettivo $f$ in una volta potrebbe infatti diventare costoso in termini di memoria o tempo computazionale.
-
-Lo **Stochastic Gradient Descent (SGD)** è il prototipo dei metodi di ottimizzazione stocastica, risalente agli anni '50, progettato per affrontare questa classe di problemi in modo specializzato. L'idea principale dell'ottimizzazione stocastica di problemi a somma finita è aggiornare le variabili ad ogni iterazione con passi di discesa, approssimando il vero gradiente della funzione $\nabla f(x)$ con la direzione$$d_k = -\nabla f_{i_k}(x^k),$$
-dove $i_k$ è un indice estratto casualmente da $\{1, \ldots, N\}$ all'iterazione $k$. L'approssimazione in qualche modo allevia l'onere del calcolo delle derivate, poiché dobbiamo solo calcolare un gradiente $\nabla f_i$ ad ogni iterazione invece degli $N$ termini necessari per valutare il vero $\nabla f$.
-
-Abbiamo quindi aggiornamenti della forma:$$x^{k+1} = x^k - \alpha_k \nabla f_{i_k}(x^k), \tag{4.19}$$
-dove il passo $\alpha_k$ è solitamente impostato a un valore costante, o al massimo segue una sequenza predefinita di valori. Le line search classiche invece non sono generalmente adatte in questo caso, poiché la funzione obiettivo cambia ad ogni iterazione: da un lato, non possiamo garantire una diminuzione sufficiente del vero $f$; dall'altro, forzare una diminuzione sufficiente sull'approssimazione corrente potrebbe non fornirci benefici effettivi.
-La ragione di questa scelta stocastica della direzione di ricerca è che, se osserviamo il valore atteso di questa quantità, ricordando che per una distribuzione uniforme sugli $N$ valori $\{1, \ldots, N\}$ abbiamo $p_i = \frac{1}{N}$, otteniamo: $$E[\nabla f_i(x^k)] = \sum_{i=1}^N p_i \nabla f_i(x^k) = \sum_{i=1}^N \frac{1}{N} \nabla f_i(x^k) = \frac{1}{N} \sum_{i=1}^N \nabla f_i(x^k)= \nabla f(x^k)$$
-In altre parole, ==in media ci si aspetta di ottenere il gradiente reale==. 
-
-Formalmente, diciamo che una direzione $d_k$ tale che $\mathbb{E}[d_k] = -\nabla f(x^k)$ è uno **stimatore non distorto** del vero gradiente $\nabla f(x^k)$. In linea di principio, vorremmo impiegare una direzione di ricerca, tra i molti stimatori non distorti di $-\nabla f(x^k)$, uno con varianza piccola. Infatti, ridurre la varianza implicherebbe una minore probabilità di commettere grandi errori nella stima della direzione del gradiente.
-
-trategie di **riduzione della varianza** sono state proposte per SGD, portando a miglioramenti teorici nel tasso di convergenza dell'algoritmo; tuttavia, questi approcci richiedono grandi requisiti di memoria o di calcolare il vero gradiente in alcune iterazioni; per questo motivo, questi metodi possono essere utilizzati solo per problemi particolarmente strutturati.
-
-Il modo più comune impiegato in pratica per indurre un effetto di riduzione della varianza con basso costo e buone prestazioni è stimare i gradienti non basandosi su un singolo termine della somma, ma piuttosto su un sottoinsieme di termini $B_k \subset \{1, \ldots, N\}$, con $|B_k| = M \ll N$:$$d_k = -\frac{1}{|B_k|} \sum_{i \in B_k} \nabla f_i(x^k)$$
-**Osservazione 4.8.1** Nel contesto del **machine learning** e dell'apprendimento statistico:
-- Ogni termine $f_i$ corrisponde alla **perdita associata a un campione**.
-- Un sottoinsieme $B_k$ di esempi è detto _mini-batch_, in contrasto con il *full batch*, che include l'intero dataset.
-Nel contesto del **deep learning**, il passo $\alpha_k$ è comunemente noto come **learning rate**.
-
-Le tecniche di mini-batching e le strategie stocastiche sono spesso combinate con un *rimescolamento casuale*: Invece di scegliere gli indici in $B_k$ completamente a caso a ogni iterazione, si effettuano **macro-iterazioni** (chiamate *epoche*), in cui ==tutti i termini della somma sono usati esattamente una volta==.
-
-La struttura di un algoritmo di **mini-batch SGD con random reshuffling** è mostrata in _Algorithm 5_.
-Sostanzialmente, all'interno di ogni epoca (indicizzata da $k$), vengono eseguite $\frac{N}{M}$ iterazioni (indicizzate da $t$) di Minibatch GD; ogni volta, viene considerato un minibatch diverso di funzioni, in modo che non ci sia sovrapposizione e all'interno di un'epoca ogni termine sia considerato una e una sola volta. Si noti che la suddivisione casuale in minibatch è diversa per ogni epoca.
-
-#### 4.8.1 Analisi Teorica del SGD
-
-In questa sezione, riportiamo l'analisi di convergenza per l'analisi di un metodo SGD base, in cui ad ogni iterazione viene selezionato un singolo campione casuale per approssimare il gradiente; in altre parole, l'algoritmo che andremo ad analizzare esegue passi della forma (4.19).
-
----
-**Algoritmo 5: Mini-batch Discesa del Gradiente con Rimescolamento randomico**
-
-18. Input: $f_1, ... , f_n, \space x^0, \space \{\alpha_k\}$
-19. $k=0$
-20. **while** un criterio di arresto non è soddisfato fai
-	- Dividi randomicamente l'insieme di indici {1,...,N} in $\frac{N}{M}$ mini-batches $B_0^k, B_{\frac{N}{M} -1}$ di dimensione M
-	- $x_0^k = x_k$
-	- **for** $t = 0, ..., \frac{N}{M}$ fai
-		- $x_{t+1}^k = x_t^k - \alpha \frac{1}{M} \sum_{i \in B_{t^k}} \nabla f_i(x_t^k)$ 
-	- $x^{k+1} = x_{\frac{N}{M}}^k$
-21. Output: $x^k$
-
----
-
-Diversamente dall'algoritmo di discesa del gradiente, SGD non necessariamente abbassa il valore della funzione obiettivo ad ogni passo. 
-
- Per studiare rigorosamente l'algoritmo, abbiamo prima bisogno di un nuovo assunto che caratterizza quanto i campioni di gradiente possano essere lontani dal vero gradiente. Assumiamo che $f$ sia limitata inferiormente e che, per qualche costante $G > 0$, la magnitudine dei campioni di gradiente sia limitata, per tutti $x \in \mathbb{R}^n$, da:$\|\nabla f_i(x)\| \leq G$. Assumeremo anche che la funzione obiettivo sia $L$-smooth.
-
----
-**Proposizione 4.8.1**
-
-Sia $\{x^k\}$ la sequenza generata dall'algoritmo SGD con una sequenza di passi $\{\alpha_k\}$ tale che:
-- $\sum_{k=0}^\infty \alpha_k = \infty$,
-- $\sum_{k=0}^\infty \alpha_k^2 < \infty$.
-
-Assumiamo inoltre che, ad ogni iterazione $k$, l'algoritmo restituisca casualmente $z^k = x^\tau$ con probabilità:$$\mathbb{P}(\tau = t) = \frac{\alpha_t}{\sum_{i=0}^{k-1} \alpha_i} \quad \text{per } t = 0, \ldots, k-1.$$Allora:$$\lim_{k \to \infty} \mathbb{E}\left[\|\nabla f(z^k)\|^2\right] = 0.$$
-
----
-
-**Dimostrazione.**
-Sia $k$ una qualsiasi iterazione. Dalla Proposizione 1.3.6 e ricordando l'ipotesi di limitatezza sulle funzioni $\nabla f_i$, otteniamo che:
-
-$$\begin{aligned}
-f(x^{k+1}) &= f(x^k - \alpha_k \nabla f_{i_k}(x^k)) \\
-&\leq f(x^k) - \alpha_k \nabla f_{i_k}(x^k)^T \nabla f(x^k) + \frac{\alpha_k^2 L}{2} \|\nabla f_{i_k}(x^k)\|^2 \\
-&\leq f(x^k) - \alpha_k \nabla f_{i_k}(x^k)^T \nabla f(x^k) + \frac{\alpha_k^2 L G^2}{2}.
-\end{aligned}$$
-
-Ora, il termine $\alpha_k \nabla f_{i_k}(x^k)^T \nabla f(x^k)$ non è necessariamente non negativo, quindi non stiamo necessariamente facendo progressi nella funzione obiettivo. Vediamo quindi cosa succede in valore atteso: $$\begin{aligned}
-\mathbb{E}\left[f(x^{k+1})\right] &\leq \mathbb{E}\left[f(x^k) - \alpha_k \nabla f_{i_k}(x^k)^T \nabla f(x^k) + \frac{\alpha_k^2 L G^2}{2}\right] \\
-&= \mathbb{E}\left[f(x^k)\right] - \alpha_k \mathbb{E}\left[\nabla f_{i_k}(x^k)^T \nabla f(x^k)\right] + \frac{\alpha_k^2 L G^2}{2}.
-\end{aligned}$$
-
-Ora, il valore atteso di $\nabla f_{i_k}(x^k)$ dato $x^k$ è:$$\mathbb{E}\left[\nabla f_{i_k}(x^k) \mid x^k\right] = \sum_{i=1}^{N} \nabla f_i(x^k) \cdot \mathbb{P}(i_k = i \mid x^k) = \sum_{i=1}^{N} \nabla f_i(x^k) \cdot \frac{1}{N} = \nabla f(x^k),$$
-quindi⁶:$$\mathbb{E}\left[f(x^{k+1})\right] \leq \mathbb{E}\left[f(x^k)\right] - \alpha_k \mathbb{E}\left[\|\nabla f(x^k)\|^2\right] + \frac{\alpha_k^2 L G^2}{2}.$$
-Applicando ricorsivamente la disuguaglianza e notando che $\mathbb{E}[f(x^0)] = f(x^0)$, otteniamo:$$
-\mathbb{E}\left[f(x^{k+1})\right] - f(x^0) \leq -\sum_{t=0}^{k} \alpha_t \mathbb{E}\left[\|\nabla f(x^t)\|^2\right] + \frac{L G^2}{2} \sum_{t=0}^{k} \alpha_t^2,$$
-cioè:$$\sum_{t=0}^{k} \alpha_t \mathbb{E}\left[\|\nabla f(x^t)\|^2\right] \leq f(x^0) - \mathbb{E}\left[f(x^{k+1})\right] + \frac{L G^2}{2} \sum_{t=0}^{k} \alpha_t^2 \leq f(x^0) - f^* + \frac{L G^2}{2} \sum_{t=0}^{k} \alpha_t^2,$$dove $f^*$ è l'ottimo globale (finito) di $f$. Ora, consideriamo il valore atteso del gradiente alla soluzione di "output" $z^{k+1}$:$$\begin{aligned}
-\mathbb{E}\left[\|\nabla f(z^{k+1})\|^2\right] &= \sum_{t=0}^{k} \mathbb{E}\left[\|\nabla f(x^t)\|^2\right] \cdot \mathbb{P}(z^{k+1} = x^t) \\
-&= \sum_{t=0}^{k} \mathbb{E}\left[\|\nabla f(x^t)\|^2\right] \cdot \frac{\alpha_t}{\sum_{i=0}^{k} \alpha_i} \\
-&= \frac{1}{\sum_{i=0}^{k} \alpha_i} \sum_{t=0}^{k} \alpha_t \mathbb{E}\left[\|\nabla f(x^t)\|^2\right].
-\end{aligned}$$
-Abbiamo quindi:$$
-\mathbb{E}\left[\|\nabla f(z^{k+1})\|^2\right] \leq \frac{1}{\sum_{i=0}^{k} \alpha_i} \left(f(x^0) - f^* + \frac{L G^2}{2} \sum_{t=0}^{k} \alpha_t^2\right).$$
-Prendendo i limiti per $k \to \infty$, ricordando che $\sum \alpha_t = \infty$ e $\sum \alpha_t^2 < \infty$, otteniamo:$$\lim_{k \to \infty} \mathbb{E}\left[\|\nabla f(z^{k+1})\|^2\right] = 0.
-\quad \square$$
----
-
-**Proposizione 4..8.2**
-
-Sia $\{x^k\}$ la sequenza generata dall'algoritmo SGD con una sequenza di passi $\{\alpha_k\}$ tale che:
-
-- $\sum_{k=0}^\infty \alpha_k = \infty$,
-- $\sum_{k=0}^\infty \alpha_k^2 < \infty$.
-
-Allora:$$\liminf_{k \to \infty} \|\nabla f(x^k)\| = 0$$
-
----
-
-La proposizione sopra ci dice che, se valgono le stesse ipotesi sui passi richieste per la Proposizione 4.8.1, possiamo ottenere un risultato di convergenza alla stazionarietà, in valore atteso, per la sequenza $\{x^k\}$.
-
-Una regola sui passi che garantisce la convergenza in valore atteso ai punti stazionari per l'algoritmo SGD è, ad esempio: $$\alpha_k = \frac{\alpha_0}{k + 1}$$
-In pratica, i passi ==devono tendere a zero per garantire la convergenza, ma devono farlo "abbastanza **lentamente**"== da consentire all'algoritmo di raggiungere un punto stazionario.
-
-Per quanto riguarda la complessità dell'algoritmo, la velocità di convergenza è inferiore a quella dei metodi full-batch, come possiamo osservare nella Tabella 4.3. Il limite di complessità nel caso peggiore è peggiore per SGD rispetto a GD nei casi non convesso, convesso e fortemente convesso. In particolare, nel caso fortemente convesso abbiamo tassi di convergenza lineari vs. sublineari per i due algoritmi.
-
-|         | **$f$ non convessa**                           | **$f$ convessa**                               | **$f$ fortemente convessa**                                   |
-| ------- | ---------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------- |
-| **GD**  | $\mathcal{O}\left(\frac{1}{\epsilon^2}\right)$ | $\mathcal{O}\left(\frac{1}{\epsilon}\right)$   | $\mathcal{O}\left(\log\left(\frac{1}{\epsilon}\right)\right)$ |
-| **SGD** | $\mathcal{O}\left(\frac{1}{\epsilon^4}\right)$ | $\mathcal{O}\left(\frac{1}{\epsilon^2}\right)$ | $\mathcal{O}\left(\frac{1}{\epsilon}\right)$                  |
-
-**Tabella 4.3:** Esempi di tipi di complessità. I valori nella tabella dovrebbero aiutare a visualizzare le tendenze; tuttavia, si ricordi che i limiti valgono asintoticamente, cioè sono più accurati per valori piccoli di $\epsilon$.
-
----
-
-**Osservazioni sul comportamento**
-- L'accelerazione non migliora il tasso di convergenza per SGD.
-- Però a differenza del batch GD, l'SGD non nasconde nelle costanti della complessità temporale il numero N dei termini sommati nella funzione obiettivo (ovvero il costo per-iterazione è molto più piccolo di quello del batch GD).
-
-L'**efficienza del GD rispetto all'SGD** si osserva solo per valori molto piccoli di $\epsilon$, cioè ==quando è richiesta un'elevata accuratezza nella soluzione== (vedi Figura sotto). Questo è uno dei motivi principali per cui il **minibatch GD** ($1 < |B| = M \ll N$), rappresentando una via di mezzo tra batch e stochastic GD, è nella pratica l'approccio più efficace nelle applicazioni.
-
-![[Pasted image 20250204183712.png]]
-
+Spostato al capitolo 8
 ## 5. Algoritmi di ottimizzazione vincolata
 ### 3.2.2 Condizioni di ottimalità nel caso vincolato 
 
@@ -2386,7 +2263,7 @@ Per riassumere, le due principali ragioni per considerare il **problema duale** 
 1. **Kernel trick:** consente di ottenere **classificatori non lineari** ==senza esplicitamente trasformare i dati in uno spazio di dimensione più elevata.==
 2. **Forma del problema:** il problema rimane **quadratico convesso con vincoli lineari**, come nella formulazione primale, ma con **vincoli più semplici** (l'unico vincolo complesso è $\alpha^T y = 0$, il resto sono vincoli di box).
 
-### 7.2 Risolvendo il problema duale
+### 7.2 Risolvendo il problema duale (skipped)
 
 #### 4.7 Metodi di Decomposizione
 
@@ -2831,68 +2708,168 @@ Uguale a 7.2.3 :D
 
 ## 8. Ottimizzazioni su larga scala per Deep Models
 
-Prima leggere capitolo 4.8
+### 4.8 Metodo del Gradiente Stocastico per Problemi con Somma Finita
+
+Una classe particolarmente rilevante di problemi di ottimizzazione non lineare non vincolata è quella dei **problemi a somma finita**, cioè:$$\min_{x \in \mathbb{R}^n} f(x) = \frac{1}{N} \sum_{i=1}^N f_i(x)$$
+Quando il numero $N$ di **termini** nella somma che definisce la funzione obiettivo è grande, affrontare questo problema con metodi di discesa standard potrebbe essere proibitivo. Gestire **l'intera funzione obiettivo** $f$ in una volta potrebbe infatti diventare **costoso** in termini di memoria o tempo computazionale.
+
+Lo **Stochastic Gradient Descent (SGD)** è il *prototipo* dei metodi di ottimizzazione stocastica, risalente agli anni '50, progettato per affrontare questa classe di problemi in modo specializzato. L'idea principale dell'ottimizzazione stocastica di problemi a somma finita è **aggiornare le variabili** ad ogni iterazione con passi di discesa, ==approssimando il vero gradiente della funzione== $\nabla f(x)$ con la direzione$$d_k = -\nabla f_{i_k}(x^k),$$dove $i_k$ è un **indice** **estratto casualmente** da $\{1, \ldots, N\}$ all'iterazione $k$. 
+L'approssimazione in qualche modo allevia l'onere del calcolo delle derivate, **poiché dobbiamo solo calcolare un gradiente** $\nabla f_i$ ad ogni iterazione invece degli $N$ termini necessari per valutare il vero $\nabla f$.
+
+Abbiamo quindi aggiornamenti della forma:$$x^{k+1} = x^k - \alpha_k \nabla f_{i_k}(x^k), \tag{4.19}$$dove il passo $\alpha_k$ è solitamente impostato a un valore costante, o al massimo segue una sequenza predefinita di valori.
+
+Le **line search** classiche invece ==non sono generalmente adatte in questo caso==, poiché **la funzione obiettivo cambia ad ogni iterazione**: da un lato, **non possiamo garantire una diminuzione sufficiente** del vero $f$; dall'altro, forzare ==una diminuzione sufficiente sull'approssimazione corrente potrebbe non fornirci benefici effettivi==.
+
+La ragione di questa scelta stocastica della direzione di ricerca è che, se osserviamo il **valore atteso** di questa quantità, ricordando che per una **distribuzione uniforme** sugli $N$ valori $\{1, \ldots, N\}$ abbiamo $p_i = \frac{1}{N}$, otteniamo: $$E[\nabla f_i(x^k)] = \sum_{i=1}^N p_i \nabla f_i(x^k) = \sum_{i=1}^N \frac{1}{N} \nabla f_i(x^k) = \frac{1}{N} \sum_{i=1}^N \nabla f_i(x^k)= \nabla f(x^k)$$
+In altre parole, ==in media ci si aspetta di ottenere il gradiente reale==. 
+
+Formalmente, diciamo che una direzione $d_k$ tale che $\mathbb{E}[d_k] = \mathbb{E}[-\nabla f_{i_k}(x^k) ]=-\nabla f(x^k)$ è uno **stimatore non distorto** del vero gradiente $\nabla f(x^k)$. 
+In linea di principio, vorremmo impiegare una direzione di ricerca, **tra i molti stimatori** non distorti di $-\nabla f(x^k)$, **uno con varianza piccola**. Infatti, ridurre la varianza implicherebbe una **minore probabilità di commettere grandi errori** nella **stima della direzione** del gradiente.
+
+Strategie di **riduzione della varianza** sono state proposte per SGD, portando a miglioramenti teorici nel **tasso di convergenza** dell'algoritmo; tuttavia, questi approcci richiedono grandi requisiti di memoria o di calcolare il vero gradiente in alcune iterazioni; per questo motivo, questi metodi possono essere utilizzati solo per problemi particolarmente strutturati.
+
+---
+
+Il modo più comune impiegato in pratica per indurre un effetto di riduzione della varianza con basso costo e buone prestazioni è ==stimare i gradienti non basandosi su un singolo termine== della somma,==ma piuttosto su un sottoinsieme di termini== $B_k \subset \{1, \ldots, N\}$, con $|B_k| = M \ll N$:$$d_k = -\frac{1}{|B_k|} \sum_{i \in B_k} \nabla f_i(x^k)$$
+**Osservazione 4.8.1** Nel contesto del **machine learning** e dell'apprendimento statistico:
+- Ogni termine $f_i$ corrisponde alla **perdita associata a un campione**.
+- Un sottoinsieme $B_k$ di esempi è detto _mini-batch_, in contrasto con il *full batch*, che include **l'intero dataset.**
+Nel contesto del **deep learning**, il passo $\alpha_k$ è comunemente noto come **learning rate**.
+
+Le tecniche di mini-batching e le strategie stocastiche sono spesso combinate con un *rimescolamento casuale*: Invece di scegliere gli indici in $B_k$ **completamente a caso** a ogni iterazione, si effettuano **macro-iterazioni** (chiamate *epoche*), in cui ==**tutti i termini** della somma sono usati esattamente una volta==.
+
+La struttura di un algoritmo di **mini-batch SGD con random reshuffling** è mostrata in _Algorithm 5_
+Sostanzialmente, all'interno di ogni epoca (indicizzata da $k$), vengono eseguite $\frac{N}{M}$ iterazioni (indicizzate da $t$) di **Minibatch** GD; ogni volta, viene considerato un *minibatch* diverso di funzioni, in modo che **non ci sia sovrapposizione** e ==all'interno di un'epoca ogni termine sia considerato una e una sola volta==. Si noti che la suddivisione casuale in minibatch è **diversa** per ogni epoca.
+
+---
+**Algoritmo 5: $\texttt{Mini-batch Discesa del Gradiente con Random shuffling}$**
+
+18. Input: $f_1, ... , f_n, \space x^0, \space \{\alpha_k\}$
+19. $k=0$
+20. **while** un criterio di arresto non è soddisfato fai
+	- Dividi ==**randomicamente** l'insieme di indici== {1,...,N} in $\frac{N}{M}$ mini-batches $B_0^k, B_{\frac{N}{M} -1}$ di dimensione M => N/M mini batches
+	- $x_0^k = x^k$
+	- **for** $t = 0, ..., \frac{N}{M}$ fai
+		- $x_{t+1}^k = x_t^k - \alpha \frac{1}{M} \sum_{i \in B_{t^k}} \nabla f_i(x_t^k)$ 
+	- $x^{k+1} = x_{\frac{N}{M}}^k$
+21. Output: $x^k$
+
+---
+#### 4.8.1 Analisi Teorica del SGD
+
+In questa sezione, riportiamo l'analisi di convergenza per l'analisi di un **metodo SGD base**, in cui ad ogni **iterazione** viene selezionato **un singolo campione casuale** per **approssimare** il **gradiente**; in altre parole, l'algoritmo che andremo ad analizzare esegue passi della forma (4.19) => ovvero line search con $d_k$ scelta come visto.
+
+Diversamente dall'algoritmo di **discesa del gradiente**, SGD ==non necessariamente **abbassa** il valore della funzione obiettivo ad ogni passo==. 
+
+ Per studiare rigorosamente l'algoritmo, abbiamo prima bisogno di un nuovo assunto che caratterizza quanto i campioni di gradiente **possano essere lontani** dal vero gradiente. Assumiamo che $f$ sia **limitata inferiormente** e che, per qualche costante $G > 0$, la *magnitudine* dei campioni di gradiente sia limitata, per tutti $x \in \mathbb{R}^n$, da:$\|\nabla f_i(x)\| \leq G$. Assumeremo anche che la funzione obiettivo sia [[L-smooth]].
+
+---
+**Proposizione 4.8.1**
+
+Sia $\{x^k\}$ la sequenza generata dall'algoritmo SGD con una sequenza di passi $\{\alpha_k\}$ tale che:
+- $\sum_{k=0}^\infty \alpha_k = \infty$, => all'infinito va all'infinito
+- $\sum_{k=0}^\infty \alpha_k^2 < \infty$. => va all'infinito ma non troppo velocemente
+
+Assumiamo inoltre che, ad ogni iterazione $k$, l'algoritmo **restituisca casualmente** $z^k = x^\tau$ con probabilità:$$\mathbb{P}(\tau = t) = \frac{\alpha_t}{\sum_{i=0}^{k-1} \alpha_i} \quad \text{per } t = 0, \ldots, k-1.$$Allora:
+$$\lim_{k \to \infty} \mathbb{E}\left[\|\nabla f(z^k)\|^2\right] = 0.$$
+---
+
+**Dimostrazione.**
+Sia $k$ una qualsiasi iterazione. Dalla Proposizione 1.3.6 (da funzione [[L-smooth]])e ricordando l'ipotesi di limitatezza sulle funzioni $\nabla f_i$, otteniamo che:$$\begin{aligned}
+f(x^{k+1}) &= f(x^k - \alpha_k \nabla f_{i_k}(x^k)) \\
+&\leq f(x^k) - \alpha_k \nabla f_{i_k}(x^k)^T \nabla f(x^k) + \frac{\alpha_k^2 L}{2} \|\nabla f_{i_k}(x^k)\|^2 \\
+&\leq f(x^k) - \alpha_k \nabla f_{i_k}(x^k)^T \nabla f(x^k) + \frac{\alpha_k^2 L G^2}{2}.\end{aligned}$$
+Ora, il termine $\alpha_k \nabla f_{i_k}(x^k)^T \nabla f(x^k)$ non è necessariamente **non negativo**, quindi non stiamo necessariamente facendo progressi nella funzione obiettivo. Vediamo quindi cosa succede in valore atteso: $$\begin{aligned}
+\mathbb{E}\left[f(x^{k+1})\right] &\leq \mathbb{E}\left[f(x^k) - \alpha_k \nabla f_{i_k}(x^k)^T \nabla f(x^k) + \frac{\alpha_k^2 L G^2}{2}\right] \\
+&= \mathbb{E}\left[f(x^k)\right] - \alpha_k \mathbb{E}\left[\nabla f_{i_k}(x^k)^T \nabla f(x^k)\right] + \frac{\alpha_k^2 L G^2}{2}.
+\end{aligned}$$
+Ora, il valore atteso di $\nabla f_{i_k}(x^k)$ dato $x^k$ è:$$\mathbb{E}\left[\nabla f_{i_k}(x^k) \mid x^k\right] = \sum_{i=1}^{N} \nabla f_i(x^k) \cdot \mathbb{P}(i_k = i \mid x^k) = \sum_{i=1}^{N} \nabla f_i(x^k) \cdot \frac{1}{N} = \nabla f(x^k),$$quindi⁶:$$\mathbb{E}\left[f(x^{k+1})\right] \leq \mathbb{E}\left[f(x^k)\right] - \alpha_k \mathbb{E}\left[\|\nabla f(x^k)\|^2\right] + \frac{\alpha_k^2 L G^2}{2}.$$
+Applicando ricorsivamente la disuguaglianza e notando che $\mathbb{E}[f(x^0)] = f(x^0)$, otteniamo:$$
+\mathbb{E}\left[f(x^{k+1})\right] - f(x^0) \leq -\sum_{t=0}^{k} \alpha_t \mathbb{E}\left[\|\nabla f(x^t)\|^2\right] + \frac{L G^2}{2} \sum_{t=0}^{k} \alpha_t^2,$$cioè:$$\sum_{t=0}^{k} \alpha_t \mathbb{E}\left[\|\nabla f(x^t)\|^2\right] \leq f(x^0) - \mathbb{E}\left[f(x^{k+1})\right] + \frac{L G^2}{2} \sum_{t=0}^{k} \alpha_t^2 \leq f(x^0) - f^* + \frac{L G^2}{2} \sum_{t=0}^{k} \alpha_t^2,$$dove $f^*$ è l'**ottimo globale** (finito) di $f$. Ora, consideriamo il valore atteso del gradiente alla soluzione di "output" $z^{k+1}$:$$\begin{aligned}
+\mathbb{E}\left[\|\nabla f(z^{k+1})\|^2\right] &= \sum_{t=0}^{k} \mathbb{E}\left[\|\nabla f(x^t)\|^2\right] \cdot \mathbb{P}(z^{k+1} = x^t) \\
+&= \sum_{t=0}^{k} \mathbb{E}\left[\|\nabla f(x^t)\|^2\right] \cdot \frac{\alpha_t}{\sum_{i=0}^{k} \alpha_i} \\
+&= \frac{1}{\sum_{i=0}^{k} \alpha_i} \sum_{t=0}^{k} \alpha_t \mathbb{E}\left[\|\nabla f(x^t)\|^2\right].
+\end{aligned}$$
+Abbiamo quindi:$$
+\mathbb{E}\left[\|\nabla f(z^{k+1})\|^2\right] \leq \frac{1}{\sum_{i=0}^{k} \alpha_i} \left(f(x^0) - f^* + \frac{L G^2}{2} \sum_{t=0}^{k} \alpha_t^2\right).$$
+Prendendo i limiti per $k \to \infty$, ricordando che $\sum \alpha_t = \infty$ e $\sum \alpha_t^2 < \infty$, otteniamo:
+$$\lim_{k \to \infty} \mathbb{E}\left[\|\nabla f(z^{k+1})\|^2\right] = 0.
+\quad \square$$
+---
+
+**Proposizione 4.8.2**
+
+Sia $\{x^k\}$ la sequenza generata dall'algoritmo SGD con una sequenza di passi $\{\alpha_k\}$ tale che:$$\sum_{k=0}^\infty \alpha_k = \infty, \quad \sum_{k=0}^\infty \alpha_k^2 < \infty$$Allora:
+$$\liminf_{k \to \infty} \|\nabla f(x^k)\| = 0$$
+---
+
+La proposizione sopra ci dice che, se valgono le stesse ipotesi sui passi richieste per la Proposizione 4.8.1, possiamo ottenere ==un risultato di convergenza alla stazionarietà==, in **valore atteso**, per la sequenza $\{x^k\}$. => la sequenza su una sottosequenza converge ad un punto stazionario.
+
+Una regola sui passi che garantisce la convergenza in valore atteso ai punti stazionari per l'algoritmo SGD è, ad esempio: $$\alpha_k = \frac{\alpha_0}{k + 1}$$In pratica, i passi ==devono tendere a **zero** per garantire la convergenza, ma devono farlo "abbastanza **lentamente**"== da **consentire** all'algoritmo di **raggiungere un punto stazionario**.
+
+---
+
+Per quanto riguarda la **complessità** dell'algoritmo, la **velocità di convergenza** ==è inferiore a quella dei metodi full-batch==, come possiamo osservare nella Tabella 4.3. Il limite di complessità nel caso peggiore è peggiore per SGD rispetto a GD nei casi non convesso, convesso e fortemente convesso. In particolare, nel caso *fortemente convesso* abbiamo tassi di convergenza **lineari** vs. **sublineari** per i due algoritmi.
+
+|         | **$f$ non convessa**                           | **$f$ convessa**                               | **$f$ fortemente convessa**                                   |
+| ------- | ---------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------- |
+| **GD**  | $\mathcal{O}\left(\frac{1}{\epsilon^2}\right)$ | $\mathcal{O}\left(\frac{1}{\epsilon}\right)$   | $\mathcal{O}\left(\log\left(\frac{1}{\epsilon}\right)\right)$ |
+| **SGD** | $\mathcal{O}\left(\frac{1}{\epsilon^4}\right)$ | $\mathcal{O}\left(\frac{1}{\epsilon^2}\right)$ | $\mathcal{O}\left(\frac{1}{\epsilon}\right)$                  |
+
+**Tabella 4.3:** Esempi di tipi di complessità. I valori nella tabella dovrebbero aiutare a visualizzare le tendenze; tuttavia, si ricordi che i limiti valgono asintoticamente, cioè sono più accurati per valori piccoli di $\epsilon$.
+
+ Inoltre l'*accelerazione* (momento) non migliora il tasso di convergenza per SGD. Dal'altra parte a differenza del batch GD,==l'SGD **non nasconde** nelle costanti della complessità temporale il **numero N dei termini sommati** nella funzione obiettivo== (ovvero il costo per-iterazione è molto più piccolo di quello del batch GD).
+
+L'**efficienza del GD rispetto all'SGD** si osserva solo per valori molto piccoli di $\epsilon$, cioè ==quando è richiesta un'elevata accuratezza nella soluzione== (vedi Figura sotto). Questo è uno dei motivi principali per cui il **minibatch GD** ($1 < |B| = M \ll N$), rappresentando **una via di mezzo** tra batch e stochastic GD, è nella pratica l'approccio più efficace nelle applicazioni.
+
+![[Pasted image 20250204183712.png]]
+
+----
+### 8.0 SGD per reti Neurali
 
 Uno dei problemi di ottimizzazione più rilevanti oggi è l'**addestramento delle reti neurali artificiali (ANNs)**. Le ANNs rappresentano un potente modello di **apprendimento automatico** (machine learning), utilizzato con risultati impressionanti in numerose applicazioni.
 
-L'**ottimizzazione del rischio empirico** di una rete con pesi $w \in \mathbb{R}^n$, dato un dataset $(X, Y)$ di $N$ campioni, assume la forma del problema (6.2), ma presenta diverse caratteristiche peculiari rispetto ai classici problemi di ottimizzazione non vincolata. In particolare:
+L'**ottimizzazione del rischio empirico** **di una rete** con pesi $w \in \mathbb{R}^n$, dato un **dataset** $(X, Y)$ di $N$ campioni, assume la forma del problema (6.2 => funzione di loss + regolarizzatore), ma presenta diverse caratteristiche peculiari rispetto ai classici problemi di ottimizzazione non vincolata. In particolare:
+1.  Come in altri problemi di machine learning, non si cerca **realmente** di minimizzare il **rischio empirico** (che è solo una funzione obiettivo surrogata), ==ma piuttosto di trovare un modello **efficace in termini di generalizzazione**==. Il problema di addestramento, altamente **non convesso**, presenta numerosi **punti stazionari subottimali**, molti dei quali con un valore di loss molto vicino all’ottimo globale. Tuttavia, la **prestazione fuori campione** di queste soluzioni può variare drasticamente. **Non ha quindi senso cercare l’ottimo globale**(anche perchè diventa difficile definire un ottimo globale...), ma piuttosto individuare soluzioni locali che garantiscano una *buona generalizzazione*, anche se raggiunte con solver a **bassa precisione**.
 
-1. **Obiettivo dell'ottimizzazione e generalizzazione**  
-   Come in altri problemi di machine learning, non si cerca **realmente** di minimizzare il **rischio empirico** (che è solo una funzione obiettivo surrogata), ma piuttosto di trovare un modello **efficace in termini di generalizzazione**.  
-   Il problema di addestramento, altamente **non convesso**, presenta numerosi **punti stazionari subottimali**, molti dei quali con un valore di perdita molto vicino all’ottimo globale. Tuttavia, la **prestazione fuori campione** di queste soluzioni può variare drasticamente.  
-   **Non ha quindi senso cercare l’ottimo globale**, ma piuttosto individuare soluzioni locali che garantiscano una buona generalizzazione, anche se raggiunte con solver a **bassa precisione**.
-
-2. **Efficienza del calcolo del gradiente tramite backpropagation**  
-   Grazie all’**algoritmo di backpropagation**, i **gradienti della funzione di perdita** $\nabla L(w)$  possono essere calcolati in modo **estremamente efficiente**.  
-   Il **costo computazionale** del calcolo dei gradienti è **soltanto il doppio** di quello della valutazione della funzione di perdita stessa.  
+2. Grazie all’**algoritmo di backpropagation**, i **gradienti della funzione di perdita** $\nabla L(w)$  possono essere calcolati in modo **estremamente efficiente**.  
+   Il **costo computazionale** del calcolo dei gradienti è **soltanto il doppio** di quello della **valutazione della funzione** di loss stessa.  
    Maggiori dettagli su backpropagation e differenziazione automatica sono riportati nella **Sezione 8.2**.
 
-3. **Costo computazionale elevato della valutazione della funzione obiettivo**  
-   Il calcolo del valore di **$L(w)$** è **computazionalmente oneroso**, poiché richiede l'uso dell'intero dataset per determinare tutti gli elementi della somma che definisce la funzione.
+3. Il calcolo del valore di **$\mathcal L(w)$** è **computazionalmente oneroso**, poiché richiede l'uso dell'**intero dataset** per determinare tutti gli elementi della somma che definisce la funzione.
 
 L’**ottimizzazione stocastica**, e in particolare il **SGD (Stochastic Gradient Descent)**, è particolarmente adatta per l’addestramento delle ANNs per diversi motivi, che riassumiamo di seguito:
-
-1. **I dati sono spesso ridondanti**, quindi usare **tutte** le informazioni disponibili ad ogni iterazione risulta **inefficiente**.
-
-2. L'esperienza computazionale accumulata dalla comunità del **machine learning** dimostra che, se si seleziona correttamente un **passo $\alpha$**, i metodi **stocastici** sono **molto più veloci** di quelli batch, **soprattutto nelle fasi iniziali** del processo di ottimizzazione.
-
-3. **Il tasso di convergenza** di **SGD** verso una soluzione **$\epsilon$-ottimale** è **più lento** rispetto a quello del metodo **Gradient Descent** batch (cfr. **Tabella 3** in cap 4.8), ma **non dipende** dalla **dimensione del dataset di training**, che è solitamente **molto grande** nelle applicazioni pratiche.  
-   Questo implica che il **costo asintotico inferiore** di **GD** rispetto a **SGD** diventa evidente **solo per valori molto bassi di $\epsilon$**.  
-   Inoltre, recenti studi hanno mostrato che, in molti problemi di **deep learning**, la funzione di perdita soddisfa due proprietà fondamentali:
-   - **Proprietà di interpolazione**:  
-     Un **ottimizzatore globale** $w^* \in \arg\min_w L(w)$ della funzione di perdita totale è anche ottimale per **ciascun termine individuale** nella somma, ovvero:  
-		 $w^* \in \arg\min_w \ell_i(w) \quad \forall i = 1, \dots, N$
-     Questo significa che il modello è **sufficientemente espressivo** da poter **adattarsi perfettamente** a tutti i dati nel dataset.
+1. **I dati sono spesso ridondanti**, quindi usare **tutte** le informazioni disponibili ==ad ogni iterazione== risulta **inefficiente**.
+2. L'esperienza computazionale accumulata dalla comunità del **machine learning** dimostra che, se si seleziona correttamente un **passo $\alpha$**, i metodi **stocastici** sono **molto più veloci** di quelli batch, **soprattutto nelle fasi iniziali** del processo di ottimizzazione. (almeno nel arrivare un ad un certo valore di soglia di loss)
+3. **Il tasso di convergenza** di **SGD** verso una soluzione **$\epsilon$-ottimale** (attenzione verso il valore ottimale) è **più lento** rispetto a quello del metodo **Gradient Descent** batch (cfr. **Tabella 3** in cap 4.8), ==ma **non dipende** dalla **dimensione del dataset di training**, che è solitamente **molto grande** nelle applicazioni pratiche.==  Questo implica che il **costo asintotico inferiore** di **GD** rispetto a **SGD** diventa evidente **solo per valori molto bassi di $\epsilon$**.  
+   Inoltre, recenti studi hanno mostrato che, in molti problemi di **deep learning**, la funzione di loss soddisfa due proprietà fondamentali:
+   - *Proprietà di interpolazione:*  
+     Un **ottimizzatore globale** $w^* \in \arg\min_w \mathcal L(w)$ della funzione di loss totale è anche ottimale per **ciascun termine individuale** nella somma, ovvero:  $$w^* \in \arg\min_w \ell_i(w) \quad \forall i = 1, \dots, N$$Questo significa che il modello è **sufficientemente espressivo** da poter **adattarsi perfettamente** a tutti i dati nel dataset.
 
    - **Condizione di Polyak-Łojasiewicz (PL-condition)**:  
      Se la funzione obiettivo soddisfa la seguente disuguaglianza  
-		 $L(w) - L^* \leq \frac{1}{2\mu} \|\nabla L(w)\|^2 \quad \forall w \in \mathbb{R}^n$
+		 $\mathcal L(w) - \mathcal L^* \leq \frac{1}{2\mu} \|\nabla \mathcal L(w)\|^2 \quad \forall w \in \mathbb{R}^n$
      allora **ogni punto stazionario è un ottimizzatore globale** del problema.  
      
  **Sotto queste due ipotesi, è possibile dimostrare che SGD possiede un tasso di convergenza lineare, esattamente come il batch Gradient Descent.**
 
 4. **SGD evita i minimi locali "stretti"** (**sharp minima**) grazie alla natura **stocastica** dei suoi passi di discesa.  
    - I **minimi stretti** si trovano in **valli molto profonde** con una **curvatura molto alta**, rendendo il modello molto sensibile a piccoli cambiamenti nei dati di input.
-   - **SGD**, a causa della sua natura rumorosa, tende a **sfuggire** da questi minimi stretti e a trovare invece **minimi più "piatti"** (**flat minimizers**), che generalizzano meglio ai dati non visti. Questo effetto comporta **un'operazione di regolarizzazione intrinseca**, migliorando la capacità del modello di generalizzare. **(Figura 15 fornisce un’intuizione visiva di questo comportamento).**
-
-![[Pasted image 20250204223801.png]]
-Figura 8.1: Facendo un confronto fra le due loss, i punti di minimo più stretti sono molto più sensibili rispetto a punti di minimo più piatti.
+   - **SGD**, a causa della sua **natura rumorosa**, tende a **sfuggire** da questi **minimi stretti** e a trovare invece **minimi più "piatti"** (**flat minimizers**), che **generalizzano meglio ai dati non visti**(validi su più funzioni(?)). Questo effetto comporta **un'operazione di *regolarizzazione* intrinseca**, ==migliorando la capacità del modello di generalizzare==. 
+	![[Pasted image 20250204223801.png]]
+	Figura 8.1: Facendo un confronto fra le due loss, i punti di minimo più stretti sono molto più sensibili rispetto a punti di minimo più piatti.
 
 Tuttavia, i metodi **batch** possiedono alcuni **vantaggi intrinseci**, in particolare:
-
 - **Uso completo delle informazioni sul gradiente**  
-  Poiché ogni iterazione utilizza l'intero gradiente, i metodi batch permettono di sfruttare appieno numerose **tecniche deterministiche di ottimizzazione** basate sul gradiente.
-
+  Poiché ogni iterazione utilizza l'intero gradiente, i metodi batch permettono di sfruttare appieno numerose **tecniche deterministiche di ottimizzazione** basate sul **gradiente**.
 - **Parallelizzazione**  
-  A differenza di **SGD**, i metodi batch possono sfruttare il parallelismo in modo più efficace, dato che la computazione principale riguarda **la valutazione della funzione obiettivo e dei gradienti**, operazioni facilmente parallelizzabili.
-
+  A differenza di **SGD**, i metodi batch possono sfruttare il parallelismo in modo più efficace, dato che la computazione principale riguarda **la valutazione della funzione obiettivo e dei gradienti**, operazioni facilmente *parallelizzabili*.
 - **Migliore performance sul lungo termine**  
   Se consideriamo **un numero elevato di epoche**, il metodo batch **supera** SGD in termini di **errore di training**, garantendo una soluzione più accurata.
 
-Queste osservazioni, sia **teoriche** che **empiriche**, suggeriscono che il metodo **minibatch SGD** (con **1 < M ≪ N**) rappresenta **un buon compromesso** tra le caratteristiche positive dei metodi **stocastici** e quelli **batch**.
+Queste osservazioni, sia **teoriche** che **empiriche**, suggeriscono che il metodo **minibatch SGD** (con **1 < M ≪ N**) rappresenta **un buon compromesso** tra le caratteristiche positive dei metodi **stocastici** e quelli **batch**. => favorisco sia un uso meno intensivo di risorse guardando però al parallelismo e ad avere soluzioni accurate. + recupero il fatto di evitare sharp minima (non molto generalizzabili)
 
 ---
-
 ### 8.1 Miglioramenti a SGD per l’Addestramento delle Reti Neurali Profonde
 
 Negli ultimi anni, diverse modifiche all'algoritmo **SGD** si sono dimostrate **praticamente efficaci** per migliorare l'ottimizzazione delle **reti neurali profonde**.
@@ -2900,14 +2877,13 @@ Negli ultimi anni, diverse modifiche all'algoritmo **SGD** si sono dimostrate **
 #### 8.1.1 Accelerazione
 
 I termini di **Momentum** o **Nesterov Acceleration**, discussi in **Sezione 4.4.1**, sono particolarmente efficaci nell'ottimizzazione **stocastica** delle reti neurali per due motivi principali:
-   - Il **momentum** accumula informazioni dai passi precedenti, attenuando le forti **oscillazioni stocastiche** delle direzioni di discesa. Ciò riduce il tipico **comportamento a zigzag** di **SGD**, rendendo l'ottimizzazione più **stabile** ed efficace.
+   - Il **momentum** accumula informazioni dai passi precedenti, ==attenuando le forti **oscillazioni stocastiche** delle direzioni di discesa==. Ciò riduce il tipico **comportamento a zigzag** di **SGD**, rendendo l'ottimizzazione più **stabile** ed **efficace**.
    - Il calcolo della funzione obiettivo e del suo gradiente è **computazionalmente costoso** nelle reti profonde. Tuttavia, i termini $(x^k - x^{k-1})$ necessari per l'accelerazione sono **facilmente ottenibili**, permettendo di **migliorare l'efficacia di ogni iterazione senza costi aggiuntivi significativi**.
 
 ---
-
 #### 8.1.2 Adattamento del passo di apprendimento (Learning Rate)
 
-Il **Momentum** e il **Nesterov AG** sfruttano le informazioni sulle iterazioni passate per modificare e migliorare la qualità delle direzioni di ricerca. L'altra strada che è stata seguita (con successo) negli ultimi anni per i problemi di deep learning nel campo dell'ottimizzazione stocastica non lineare non convessa è quella di utilizzare **learning rate adattativi**: il passo cambia ad ogni iterazione, in base all'andamento del processo; inoltre, poiché i gradienti dei pesi hanno dinamiche diverse a diversi livelli, ogni variabile è associata a un passo diverso.
+Il **Momentum** e il **Nesterov AG** sfruttano le informazioni sulle iterazioni passate per modificare e migliorare la qualità delle direzioni di ricerca. L'altra strada che è stata seguita (con successo) negli ultimi anni per i problemi di deep learning nel campo dell'ottimizzazione stocastica non lineare non convessa è quella di utilizzare **learning rate adattativi**: ==il passo cambia ad ogni iterazione, in base all'andamento del processo==; inoltre, poiché i gradienti dei pesi hanno dinamiche diverse a diversi livelli, ogni variabile è associata a un passo diverso.
 
 Diverse strategie per aggiornare il learning rate sono state proposte; di seguito riportiamo le più rilevanti. Per semplicità, ignoreremo il fatto che nell'ottimizzazione stocastica i gradienti sono calcolati utilizzando solo una porzione della funzione obiettivo. Descriveremo i metodi successivi con la notazione "batch optimization", ma si tratta effettivamente di metodi stocastici.
 
@@ -2917,8 +2893,7 @@ Diverse strategie per aggiornare il learning rate sono state proposte; di seguit
 Uno dei primi algoritmi a introdurre un **learning rate adattivo** è **AdaGrad**.  
 L'idea alla base di **AdaGrad** è **accumulare l’informazione sui gradienti passati**, in modo da **scalare** il passo di aggiornamento in base alla geometria della funzione obiettivo.
 
-Il metodo prevede di memorizzare la **somma cumulativa** dei **quadrati** delle derivate direzionali:$$s^{k+1}_i = s^k_i + (\nabla_i f(x^k))^2$$
-
+Il metodo prevede di memorizzare la **somma cumulativa** dei **quadrati** delle **derivate direzionali**:$$s^{k+1}_i = s^k_i + (\nabla_i f(x^k))^2$$
 Questa quantità viene utilizzata per **normalizzare il gradiente**, ottenendo il seguente **aggiornamento**:	$$x^{k+1} = x^k - \alpha (\text{diag}(s^{k+1}) + \epsilon I)^{-1/2} \nabla f(x^k)$$
 Dove:
 - $\epsilon$ è un piccolo termine di **smorzamento** per evitare divisioni per zero.
@@ -2936,7 +2911,7 @@ Un aspetto critico di **AdaGrad** è che i componenti di $s^k$ **crescono contin
 ---
 ##### **RMSprop (Root Mean Square Propagation)**
 
-**RMSprop** è una variante di AdaGrad che cerca di risolverne le limitazioni, sostituendo la **somma cumulativa** con una **media esponenzialmente pesata** dei gradienti passati:$$s^{k+1}_i = \rho s^k_i + (1 - \rho)(\nabla_i f(x^k))^2$$
+**RMSprop** è una variante di AdaGrad che cerca di risolverne le limitazioni, sostituendo la **somma cumulativa** con una **media esponenzialmente pesata** dei **gradienti passati**:$$s^{k+1}_i = \rho s^k_i + (1 - \rho)(\nabla_i f(x^k))^2$$
 Dove:
 - $\rho$ determina il peso assegnato ai gradienti passati.
 - I parametri vengono aggiornati **esattamente come in AdaGrad**, utilizzando:$$x^{k+1} = x^k - \frac{\alpha}{\sqrt{s^{k+1}_i} + \epsilon} \nabla_i f(x^k)$$
@@ -2957,33 +2932,27 @@ L'algoritmo introduce una **media esponenziale dei quadrati degli spostamenti** 
 - Evita la **riduzione eccessiva** del learning rate osservata in AdaGrad.
 
 ---
-
 ##### **Adam (Adaptive Moment Estimation)**
 
 L'**Adam** (**Adaptive Moment Estimation**) è oggi **l’algoritmo più utilizzato** per l'ottimizzazione delle reti neurali profonde.  
 Può essere visto come un'evoluzione di **RMSprop** e **AdaDelta**, combinando i **benefici del Momentum** con l'adattamento del learning rate.
 
 Adam mantiene due statistiche esponenzialmente pesate:
-16. **Media dei gradienti** (simile a Momentum):	$$m^{k+1}_i = \beta_1 m^k_i + (1 - \beta_1) \nabla_i f(x^k)$$
-
-17. **Varianza dei gradienti** (simile a RMSprop):$$v^{k+1}_i = \beta_2 v^k_i + (1 - \beta_2)(\nabla_i f(x^k))^2$$
-
+- **Media dei gradienti** (simile a Momentum):	$$m^{k+1}_i = \beta_1 m^k_i + (1 - \beta_1) \nabla_i f(x^k)$$
+- **Varianza dei gradienti** (simile a RMSprop):$$v^{k+1}_i = \beta_2 v^k_i + (1 - \beta_2)(\nabla_i f(x^k))^2$$
 Questi vettori sono inizializzati a zero che è molto importante per le iterazioni iniziali dove i tassi di decadimento sono piccoli:
 ![[Pasted image 20250204231614.png]]
 
 L'algoritmo **Adam** presenta un bias iniziale dovuto alla modalità con cui vengono calcolate le stime dei momenti primo ($m^k$) e secondo ($v^k$).  
 Per correggere questo bias, si introducono le seguenti **stime corrette del bias**:$$\hat{m}^k = \frac{m^k}{1 - (\beta_1)^k}, \space \hat{v}^k = \frac{v^k}{1 - (\beta_2)^k}$$
-Il nuovo aggiornamento delle variabili segue quindi la formula:$$x^{k+1}_i = x^k_i - \frac{\alpha \hat{m}^k_i}{\sqrt{\hat{v}^k_i} + \epsilon}$$
-
+Il nuovo aggiornamento delle variabili segue quindi la formula:
+$$x^{k+1}_i = x^k_i - \frac{\alpha }{\sqrt{\hat{v}^k_i} + \epsilon}\hat{m}^k_i$$
 ---
 
 Negli ultimi anni sono state proposte alcune **varianti** dell'algoritmo **Adam** per migliorarne stabilità ed efficienza:
 - **AdaMax**  
    - Proposto insieme ad Adam.  
-   - Sostituisce la stima del secondo momento con una **norma infinita stabilizzata**:
-   
-	$u^{k+1} = \max\{\beta_2 u^k, |\nabla f(x^k)|\}$
-  
+   - Sostituisce la stima del **secondo momento** con una **norma infinita stabilizzata**: $$u^{k+1} = \max\{\beta_2 u^k, |\nabla f(x^k)|\}$$  
    - Questa modifica evita la necessità di correggere il bias iniziale e offre **migliore stabilità empirica**.
 
 - **Nadam (Nesterov-accelerated Adam)**  
@@ -2993,26 +2962,23 @@ Negli ultimi anni sono state proposte alcune **varianti** dell'algoritmo **Adam*
 ---
 ### 8.2 Differenziazione Automatica e Algoritmo di Backpropagation
 
-Uno dei problemi chiave che emergono nell'addestramento delle reti neurali riguarda il calcolo dei gradienti della funzione di loss. Infatti, l'obiettivo del problema di ottimizzazione è (ignorando il termine di regolarizzazione) la somma finita di funzioni di (tipicamente) milioni di variabili, ciascuna delle quali è la composizione a cascata di funzioni elementari. Pertanto, le tecniche di differenziazione numerica sono fuori questione: il costo è troppo alto (è richiesto un gran numero di valutazioni della funzione per ottenere un'approssimazione del gradiente) e soffrono anche di significativi errori di approssimazione; quindi, l'approssimazione alle differenze finite è generalmente usata solo per verificare la correttezza dell'implementazione dei gradienti, a bassa accuratezza.
+Uno dei problemi chiave che emergono nell'addestramento delle reti neurali riguarda **il calcolo dei gradienti della funzione di loss**. Infatti, l'obiettivo del problema di ottimizzazione è (ignorando il termine di regolarizzazione) la somma finita di funzioni di (tipicamente) milioni di variabili, ciascuna delle quali è la composizione a cascata di funzioni elementari. Pertanto, le tecniche di differenziazione numerica sono fuori questione: il costo è troppo alto (è richiesto un gran numero di valutazioni della funzione per ottenere un'approssimazione del gradiente) e soffrono anche di **significativi errori di approssimazione**; quindi, l'approssimazione alle differenze finite è generalmente usata solo per verificare la correttezza dell'implementazione dei gradienti, a bassa accuratezza.
 
 D'altra parte, derivare espressioni esplicite per i gradienti è troppo complesso; persino l'impiego di strumenti di differenziazione simbolica, cioè software per manipolare espressioni al fine di ottenere espressioni delle derivate, porta a formule molto lunghe e complicate e di conseguenza a calcoli massicci.
 
-L'addestramento delle reti neurali è stato effettivamente reso possibile dallo sviluppo delle tecniche di **Differenziazione Automatica** (Automatic Differentiation, AD). Per differenziazione automatica, ci riferiamo a un insieme di approcci che sfruttano in modo intelligente la regola della catena multivariata:$$f = f(g(x)), \quad \frac{\partial f}{\partial x_j} = \sum_i \frac{\partial f}{\partial g_i} \frac{\partial g_i}{\partial x_j}$$
-Poiché valutare una funzione matematica, non importa quanto complicata, consiste nel calcolare una sequenza di operazioni e funzioni elementari (exp, log, sin, cos, ecc.), applicando ripetutamente la regola della catena a queste operazioni, le derivate parziali possono essere ottenute automaticamente.
+L'addestramento delle reti neurali è stato effettivamente reso possibile dallo sviluppo delle tecniche di **Differenziazione Automatica** (Automatic Differentiation, AD). Per differenziazione automatica, ci riferiamo a un insieme di approcci che sfruttano in modo intelligente ***la regola della catena*** multivariata:$$f = f(g(x)), \quad \frac{\partial f}{\partial x_j} = \sum_i \frac{\partial f}{\partial g_i} \frac{\partial g_i}{\partial x_j}$$
+Poiché valutare una funzione matematica, non importa quanto complicata, consiste nel calcolare una sequenza di operazioni e funzioni elementari (exp, log, sin, cos, ecc.), ==applicando ripetutamente la regola della catena a queste operazioni, le derivate parziali possono essere ottenute automaticamente.==
 
 Nel contesto del deep learning, in particolare, l'algoritmo AD tipicamente impiegato è il famoso algoritmo di **backpropagation**, che è, in termini tecnici, differenziazione automatica in una cosiddetta **modalità inversa** (reverse mode). Non approfondiremo i dettagli tecnici dell'AD e dell'algoritmo di backpropagation. Ne avremo solo un'idea dei suoi meccanismi per mezzo di un semplice esempio, vedi Figura 8.2.
 
-Innanzitutto, tutte le operazioni elementari sono mappate in un **Grafo di Calcolo** (Computation Graph, Figura 8.2a), che è una struttura che permette di collegare quantità che dipendono l'una dall'altra. In questo modo, le quantità calcolate che saranno necessarie per calcolare altri termini possono essere memorizzate, evitando calcoli duplicati.
+![[Pasted image 20250204232818.png]]
 
-Il calcolo effettivo procede prima alimentando gli input alla funzione e calcolando i prodotti intermedi fino all'output della funzione; poi, il grafo viene attraversato a ritroso, per calcolare tutte le derivate parziali. Si noti che, per calcolare i gradienti, otteniamo come prodotto intermedio il valore della funzione; quindi, in un'iterazione di gradient descent, possiamo ottenere il valore della funzione nel punto corrente, effettuando un **forward pass** attraverso il grafo di calcolo, e poi i gradienti, dopo un **backward pass** attraverso il grafo.
+Innanzitutto, tutte le operazioni elementari sono mappate in un **Grafo di Calcolo** (Computation Graph, Figura 8.2a), che è una struttura che permette di collegare **quantità che dipendono l'una dall'altra**. In questo modo, le quantità calcolate che saranno necessarie per calcolare altri termini possono essere memorizzate, evitando calcoli duplicati.
+
+![[Pasted image 20250204232851.png]]
+
+Il calcolo effettivo procede prima alimentando gli input alla funzione e ==calcolando i prodotti intermedi fino all'output della funzione==; poi, il grafo viene attraversato a ritroso, per calcolare tutte le **derivate parziali**. Si noti che, per calcolare i gradienti, otteniamo come prodotto intermedio il valore della funzione; quindi, in un'iterazione di gradient descent, possiamo ottenere il **valore della funzione nel punto corrente**, effettuando un **forward pass** attraverso il grafo di calcolo, e poi i gradienti, dopo un **backward pass** attraverso il grafo.
 
 Come accennato in precedenza, alcuni termini compaiono più volte durante il calcolo; per evitare calcoli duplicati, possiamo memorizzare questi valori per riutilizzarli quando necessario; naturalmente, non è difficile immaginare che in reti profonde e complesse i termini si ripetono in modo molto più massiccio rispetto al semplice esempio considerato.
 
----
-
-**Esempio Semplice di Backpropagation**
-
-![[Pasted image 20250204232818.png]]
-
-![[Pasted image 20250204232851.png]][[Pasted image 20250204232851 1.png]
 
