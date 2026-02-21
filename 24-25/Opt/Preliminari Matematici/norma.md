@@ -1,7 +1,7 @@
 **Definizione 1.1.1**
 Una funzione $\|\cdot\| : \mathcal U \to \mathbb R_+$ è una *norma* se soddisfa le seguenti proprietà:
 - $\|x\| \geq 0$ per ogni $x\in\mathcal U$ e $\|x\| = 0$ se e solo se  $x=0 \quad (\text{definita positiva})$
-- $\|\alpha x\| = \|\alpha\|\|x\|$ per ogni $x\in\mathcal U$ e $\alpha \in \mathbb R \quad (\text{homogeneità})$
+- $\|\alpha x\| = \|\alpha\|\|x\|$ per ogni $x\in\mathcal U$ e $\alpha \in \mathbb R \quad (\text{omogeneità})$
 - $\|x+y\| \leq \|x\|+\|y\|$ per ogni $x,y\in\mathcal U \quad (\text{disuguaglianza triangolare})$ 
 
 **Esempio 1.1.1**

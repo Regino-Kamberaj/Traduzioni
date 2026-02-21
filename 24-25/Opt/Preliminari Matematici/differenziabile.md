@@ -7,4 +7,4 @@ Sia $f : \mathbb{R}^n \to \mathbb{R}$. Diciamo che una funzione ha ***derivata p
 **Definizione 1.3.5 (Gradiente)**
 Sia $f : \mathbb{R}^n \to \mathbb{R}$ e si supponga che $f$ ammetta in un punto $x$ la **derivata parziale** rispetto a ciascuna variabile $x_i$, con $i = 1, \dots, n$. => Derivata parziale definita su ogni direzione
 Definiamo il ***gradiente*** $\nabla f(x)$ di $f$ in $x$ come il vettore dato da:$$\nabla f(x) = \begin{pmatrix} \frac{\partial f (x)}{\partial x_1} \\ \vdots \\ \frac{\partial f (x)}{\partial x_n}\end{pmatrix}$$
-=> nota che ongi funzione continuamente differenziale è sempre continua!
+=> nota che ogni funzione continuamente differenziale è sempre continua!
