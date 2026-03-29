@@ -119,20 +119,20 @@ ann-retrieval/
 **Settimana 2** · Obiettivo: Baseline corretta e funzionante
 
 ### 🔧 Implementazione
-- [ ] Implementa lettore `.fvecs` (esistono snippet online)
-- [ ] Implementa funzioni di distanza:
-  - [ ] Euclidea (con e senza radice quadrata)
+- [x] Implementa lettore `.fvecs` (esistono snippet online)
+- [x] Implementa funzioni di distanza:
+  - [x] Euclidea (con e senza radice quadrata)
   - [ ] Coseno
   - [ ] Manhattan
-- [ ] Implementa **brute-force kNN**:
+- [x] Implementa **brute-force kNN**:
   - Per ogni query → calcola distanza con **tutti** i punti del DB
   - Seleziona k minimi (con heap o array ordinato)
-- [ ] Ottimizzazione base: evita sqrt per confronto distanze
+- [x] Ottimizzazione base: evita sqrt per confronto distanze
 
 ### ✅ Testing & Validazione
-- [ ] Crea test su **dataset piccolo 2D** (es. 10 punti, 2 dimensioni)
-- [ ] Calcola manualmente i kNN e verifica output
-- [ ] Test su SIFT con N=1000 per verificare tempi
+- [x] Crea test su **dataset piccolo 2D** (es. 10 punti, 2 dimensioni)
+- [x] Calcola manualmente i kNN e verifica output
+- [x] Test su SIFT con N=1000 per verificare tempi
 
 ### 📊 Profilazione Base
 - [ ] Misura tempo sequenziale su varie dimensioni:
