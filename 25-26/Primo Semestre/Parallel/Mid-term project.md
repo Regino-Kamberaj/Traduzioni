@@ -84,7 +84,7 @@ ann-retrieval/
 
 ### 📚 Studio
 - [x] Leggi [k-NN tutorial (scikit-learn)](https://scikit-learn.org/stable/modules/neighbors.html)
-- [ ] Approfondisci:
+- [x] Approfondisci:
   - [Distanza Euclidea](https://en.wikipedia.org/wiki/Euclidean_distance)
   - [Similarità coseno](https://en.wikipedia.org/wiki/Cosine_similarity)
   - [Distanza Manhattan](https://en.wikipedia.org/wiki/Taxicab_geometry)
@@ -94,16 +94,16 @@ ann-retrieval/
 - [x] Scarica dataset di test da [http://corpus-texmex.irisa.fr/](http://corpus-texmex.irisa.fr/)
   - Consiglio: **SIFT** (`sift_base.fvecs`, `sift_query.fvecs`)
 - [x] Trova/scrivi un reader per file `.fvecs` (formato binario)
-- [ ] Prepara piccolo dataset sintetico per testing (2D/3D, 100 punti)
+- [x] Prepara piccolo dataset sintetico per testing (2D/3D, 100 punti)
 
 ### 🏗️ Progettazione
-- [ ] Definisci strutture dati:
+- [x] Definisci strutture dati:
   - `struct Vector { int dim; float* data; }` (AoS)
   - `struct Dataset { int n_vectors; int dim; float* data_flat; }` (SoA)
-- [ ] Progetta interfaccia funzioni:
+- [x] Progetta interfaccia funzioni:
   - `float euclidean(const float* a, const float* b, int dim)`
   - `vector<int> knn_sequential(const Dataset& db, const Vector& query, int k)`
-- [ ] Crea repository Git
+- [x] Crea repository Git
 - [ ] Scrivi README.md con obiettivi progetto
 
 ### ✅ Deliverable Fase 1
@@ -122,8 +122,8 @@ ann-retrieval/
 - [x] Implementa lettore `.fvecs` (esistono snippet online)
 - [x] Implementa funzioni di distanza:
   - [x] Euclidea (con e senza radice quadrata)
-  - [ ] Coseno
-  - [ ] Manhattan
+  - [x] Coseno
+  - [x] Manhattan
 - [x] Implementa **brute-force kNN**:
   - Per ogni query → calcola distanza con **tutti** i punti del DB
   - Seleziona k minimi (con heap o array ordinato)
@@ -135,7 +135,7 @@ ann-retrieval/
 - [x] Test su SIFT con N=1000 per verificare tempi
 
 ### 📊 Profilazione Base
-- [ ] Misura tempo sequenziale su varie dimensioni:
+- [x] Misura tempo sequenziale su varie dimensioni:
   - N = 1.000, 10.000, 100.000
   - D = 128 (SIFT)
 - [ ] Documenta: tempo medio su 5 esecuzioni
@@ -153,13 +153,13 @@ ann-retrieval/
 **Settimana 3** · Obiettivo: Primo speedup significativo
 
 ### 🧵 Strategia 1: Parallelismo sulle query
-- [ ] Individua loop sulle query (`for each query { ... }`)
-- [ ] Applica `#pragma omp parallel for`
+- [x] Individua loop sulle query (`for each query { ... }`)
+- [x] Applica `#pragma omp parallel for`
 - [ ] Gestisci variabili `private`/`shared`
-- [ ] Test su 2, 4, 8, 16 thread
+- [x] Test su 2, 4, 8, 16 thread
 
 ### 📈 Sperimentazione Scheduling
-- [ ] Testa `schedule(static)`
+- [x] Testa `schedule(static)`
 - [ ] Testa `schedule(dynamic, chunk)`
 - [ ] Testa `schedule(guided)`
 - [ ] Trova chunk size ottimale
@@ -169,7 +169,7 @@ ann-retrieval/
 - [ ] Verifica che gli stessi vicini siano restituiti
 
 ### 📊 Benchmark
-- [ ] Misura speedup su dataset SIFT:
+- [x] Misura speedup su dataset SIFT:
   - Query singola vs batch di query
   - N = 10k, 50k, 100k
 - [ ] Crea primo grafico: speedup vs thread count
